@@ -1,7 +1,33 @@
 LantanHeadoffice::Application.routes.draw do
+
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
-
+#  resources :stores do
+#    member do
+#      post :create
+#    end
+#    collection do
+#      get :show_store
+#      get :edit_store
+#    end
+#  end
+  resources :stores
+  resources :sv_cards
+  resources :sales
+  resources :operate_manages do
+     collection do
+      post :province_change
+      post :new_store_select_province
+    end
+  end
+  resources :login do
+    member do
+      post :create
+    end
+  end
+  resources :backstage 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
@@ -48,7 +74,7 @@ LantanHeadoffice::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'login#index'
 
   # See how all your routes lay out with "rake routes"
 

@@ -1,0 +1,55 @@
+<%= javascript_include_tag "operate_manage" %>
+<%= form_for @store, :html => {:onsubmit => "return new_store_validate()"} do %>
+  <div class="popup_box">
+    <h1>新建门店<a href="#" class="close">关闭</a></h1>
+    <div class="popup_body">
+      <div class="popup_body_area">
+        <div class="item">
+          <label>选择省市：</label>
+          <select id="new_store_select_province" name="new_store_select_province" class="staff">
+            <option value="0">请选择省份</option>
+            <% @provinces.each do |province| %>
+              <option value="<%= province.id %>"><%= province.name %></option>
+            <% end %>
+          </select>
+          <select id="new_store_select_city" name="new_store_select_city" class="staff">
+            <option value="0">------</option>
+          </select>
+        </div>
+        <div class="item">
+          <label>门店名称：</label>
+          <%= text_field_tag 'new_store_name' %>
+        </div>
+        <div class="item">
+          <label>负责人：</label>
+          <%= text_field_tag 'new_store_contact'%>
+        </div>
+        <div class="item">
+          <label>联系电话：</label>
+          <%= text_field_tag 'new_store_phone' %>
+        </div>
+        <div class="item">
+          <label>地址：</label>
+          <%= text_field_tag 'new_store_address'%>
+        </div>
+        <div class="item">
+          <label>开店时间：</label>
+          <%= text_field_tag 'new_store_open_time' %>
+        </div>
+        <div class="item">
+          <label>门店状态：</label>
+          <select name="new_store_status">
+            <option value="2" <% if @store.status == 2%>selected<% end %>>筹备中</option>
+            <option value="1" <% if @store.status == 1%>selected<% end %>>正常营业</option>
+            <option value="0" <% if @store.status == 0%>selected<% end %>>已关闭</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn_box">
+        <button type="submit" class="confirm_btn">确定</button>
+        <button type="reset" class="cancel_btn">取消</button>
+      </div>
+    </div>
+  </div>
+<% end %>
+ 
