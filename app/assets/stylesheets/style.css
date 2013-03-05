@@ -282,7 +282,7 @@ input[type="button"].confirm_btn, .confirm_btn { background: #930205;}
 	line-height: 24px; 
 	border: 1px #CCCCCC solid;	
 }
-.search select { float: left; }
+
 .search select.select_marginRight { margin-right: 10px;}
 .input[type="button"].search_btn, .search_btn, .compile_btn {
     height: 24x;
@@ -568,7 +568,7 @@ input.file { width: 100px; _width: 90px; float: left;}
 }
 .gray_table td select { width: 120px; height: 24px; line-height: 24px; border: 1px #CCCCCC solid; margin: 0 5px 11px 5px;}
 .gray_table_error_bg { background: #ffb0b0;font-weight: bold; color: #F00;}
-.gray_table_error { background: #ffb0b0 url(../images/alert.png) no-repeat 10px center; padding-left: 15px;}
+.gray_table_error { background: #ffb0b0 url(/assets/alert.png) no-repeat 10px center; padding-left: 15px;}
 
 /*work_video施工视频*/
 .work_video {}
