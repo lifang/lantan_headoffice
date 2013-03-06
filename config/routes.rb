@@ -14,8 +14,19 @@ LantanHeadoffice::Application.routes.draw do
 #    end
 #  end
   resources :stores
-  resources :sv_cards
-  resources :sales
+  resources :sv_cards do
+    collection do
+      get :sell_situation
+      post :search
+      get :select_discount_card
+      get :select_storeage_card
+      get :search_products_all
+      post :search_products_part
+    end
+  end
+  resources :sales 
+    
+
   resources :operate_manages do
      collection do
       post :province_change

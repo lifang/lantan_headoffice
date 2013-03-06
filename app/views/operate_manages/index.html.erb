@@ -30,7 +30,7 @@
       <div class="box">
         <div class="data_box">
           <div class="search">
-            <%= form_tag "/operate_manages", :method => :get  do %>
+            <%= form_tag "/operate_manages", :method => :get do %>
               <div>
                 <label>省/市：</label>
                 <select id="select_province" name="select_province" class="select_marginRight">
@@ -62,7 +62,7 @@
             <div><%= flash[:msg] %></div>
           <% end %>
           <div class="data_menu">        
-            <%= link_to "新建申请", "JavaScript:void(0)", :onclick => "new_store()" %>
+            <%= link_to "新建申请", "JavaScript:void(0)", :id => "new_store_a"%>
           </div>
           <div class="clear"></div>
           <div class="data_body">
@@ -108,15 +108,13 @@
                           <td>正在装修</td>
                         <% end %>
                         <td>                        
-                          <%= link_to "编辑", "JavaScript:void(0)", :onclick => "edit_store(#{store.id})" %>
-                          <%= link_to "详细", "JavaScript:void(0)", :onclick => "show_store(#{store.id})" %>
+                          <%= link_to "编辑", "JavaScript:void(0)", :name => "edit_button", :sid => store.id %>
+                          <%= link_to "详细", "JavaScript:void(0)", :name => "show_button", :sid => store.id %>
                           <%= link_to "删除", store_path(store.id), :method => :delete, :confirm => "确定要删除吗？" %>
                         </td>
                       </tr>
                     <% end %>
                   <% end %>
-                       <tr>
-                    </tr>
                 </tbody>
               </table>
              <%= will_paginate  @stores, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
@@ -127,8 +125,7 @@
     </div>
     <div class="foot"><p>Copyright © 2013 杭州澜泰 版权所有</p></div>
     <div class="mask"></div>
-    <div id="new_store" class="tab_popup" style="display:none;">
-     
+    <div id="new_store" class="tab_popup" style="display:none;">    
     </div>
     <div id="show_detail" class="tab_popup" style="display:none;">
     </div>

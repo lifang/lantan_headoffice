@@ -1,0 +1,97 @@
+<div class="setobj_name">项目：</div>
+<div class="setobj_box">
+  <ul>
+    <li><input id="search_products_all" name="products" type="radio" checked/> 全部</li>
+    <li><input id="search_products_part" name="products" type="radio" /> 部分</li>
+  </ul>
+  <div>
+    <div class="search">
+      <div><label>类别：</label>
+        <select id="product_type" name="product_type" disabled="disabled">
+          <% @product_types.each do |key, value|%>
+          <option value="<%= key %>"><%= value %></option>
+          <% end %>
+        </select>
+      </div>
+      <div><label>名称：</label><input id="product_name" name="product_name" type="text" disabled="disabled"/></div>
+      <div><button id="product_search" class="search_btn" disabled="disabled">查询</button></div>
+    </div>
+    <fieldset class="popup_body_fieldset">
+      <legend class="popup_body_title">查询结果</legend>
+      <div id="search_products_result" class="popup_body_result">
+        <ul>
+          <% @products.each do |product| %>
+          <li><input name="show_product[]" type="checkbox" value="<%= product.id %>"/><span><%= product.name %></span></li>
+          <% end unless @products.nil? %>
+        </ul>
+      </div>
+    </fieldset>
+    <div class="pq"></div>
+    <fieldset class="popup_body_fieldset">
+      <legend class="popup_body_title">已选择</legend>
+      <div id="has_selected_result" class="popup_body_result">    <!--已选择产品的层-->
+      </div>
+    </fieldset>
+  </div>
+</div>
+<script>
+  $("#search_products_all").click(function(){     //单选框全部
+      $("#product_type").attr("disabled", "disabled");
+      $("#product_name").attr("disabled", "disabled");
+      $("#product_search").attr("disabled", "disabled");
+      $.ajax({
+        type: "GET",
+        url: "/sv_cards/search_products_all"
+      })
+  })
+  $("#search_products_part").click(function(){    //单选框部分
+      $("#product_type").removeAttr("disabled");
+      $("#product_name").removeAttr("disabled");
+      $("#product_search").removeAttr("disabled");
+  })
+  $('input[name="show_product[]"]').live("click" ,function(){   //判断选择是否重复
+    var id = parseInt($(this).val());
+    var name = $(this).next().text();
+    if($(this).attr("checked")=="checked"){
+      $("#has_selected_result").append("<div id='pro"+id+"'"+"><em>"+name+"</em><a id="+"'procountadd"+id+"'"+" href='JavaScript:void(0)' name='add_button' class='addre_a'>+</a>\n\
+      <span><input id='procount"+id+"'"+" name='product_count' type='text' class='addre_input' value='1' /></span><a id='procountdel"+id+"'"+" href='JavaScript:void(0)'\n\
+      class='addre_a' name='del_button'>-</a><a name='del_a' href='JavaScript:void(0)' class='remove_a'>删除</a><input name='product_hidden_id' type='hidden' value='"+id+"'"+"/></div>"
+    )
+    }else{
+      $("#pro"+id).remove();
+    };
+  })
+  $("a[name='add_button']").live("click", function(){     //加号按钮
+    var a = parseInt($(this).next().find("input").val())
+    $(this).next().find("input").val(a+1)
+  })
+  $("a[name='del_button']").live("click", function(){     //减号按钮
+    var a = parseInt($(this).prev().find("input").val());
+    if(a<=1){
+      alert("至少1个!");
+    }else{
+      $(this).prev().find("input").val(a-1);
+    }
+  })
+  $("a[name='del_a']").live("click", function(){     //删除按钮
+    $(this).parent().remove();
+    var this_id = parseInt($(this).next().val());
+    $("input[name='show_product[]']").each(function(){
+      if(parseInt($(this).val())==this_id){
+        $(this).attr("checked", false);
+      }
+    })
+  })
+  $("#product_search").click(function(){    //查询按钮
+    var type = $("#product_type").val();
+    var name = $("#product_name").val();
+    $.ajax({
+      type: "POST",
+      url: "/sv_cards/search_products_part",
+      data: {
+        product_type : type,
+        product_name : name
+      }
+    })
+  })
+</script>

@@ -1,24 +1,28 @@
-function edit_store(id){
-    $.ajax({
+$(document).ready(function(){
+$("a[name='edit_button']").click(function(){       //编辑门店
+    var sid = parseInt($(this).attr("sid"));
+     $.ajax({
       type: "GET",
-      url: "/stores/" + id + "/edit",
-      data: {store_id : id}
+      url: "/stores/" + sid + "/edit",
+      data: {store_id : sid}
     })
-  }
+})
 
-  function show_store(id){
+$("a[name='show_button']").click(function(){       //门店详情
+    var sid = parseInt($(this).attr("sid"));
     $.ajax({
       type: "GET",
-      url: "/stores/" + id,
-      data: {store_id : id}
+      url: "/stores/" + sid,
+      data: {store_id : sid}
     })
-  }
-  function new_store(){
-      $.ajax({
+})
+  $("#new_store_a").click(function(){            //新建门店
+       $.ajax({
           type: "GET",
           url: "/stores/new"
       })
-  }
+  })
+  
 function new_store_validate(){
   if($("#new_store_select_province").val() == 0){
     alert("请选择门店所在的省市!")
@@ -53,7 +57,6 @@ function new_store_validate(){
   }
 }
 
-  $(document).ready(function(){
     $( "#new_store_open_time" ).datepicker({
         inline: true
     });
