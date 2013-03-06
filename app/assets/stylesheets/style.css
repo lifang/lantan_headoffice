@@ -210,16 +210,21 @@ input[type="button"].confirm_btn, .confirm_btn { background: #930205;}
 }
 .tab_head li.hover { height: 30px; background: #FFF; font-weight: bolder; color: #930205;}
 
-.sort_u, .sort_d { padding: 0 15px; cursor: pointer; background: url(/assets/sort.png) no-repeat}
+.sort_u, .sort_d, .sort_u_s, .sort_d_s { padding: 0 15px; cursor: pointer; background: url(/assets/sort.png) no-repeat}
 .sort_u { background-position:74px -26px; _background-position: 74px -20px;}
 .sort_d { background-position: 74px 6px; _background-position: 74px 12px;}
+
+.sort_u_s { background-position: 46px -26px; _background-position: 74px -20px;}
+.sort_d_s { background-position: 46px 6px; _background-position: 74px 12px;}
+
+
 
 
 
 /*table*/
 .data_table { text-align: center; margin-bottom: 30px;}
-.data_table tr.hbg td { background: #c59fa0; color: #FFF; font-weight: bolder; font-size: 14px;}
-.data_table td { background: #FFF; line-height: 32px; height: 32px; font-size: 12px;}
+.data_table tr.hbg td, .data_table tr.hbg th { background: #c59fa0; color: #FFF; font-weight: bolder; font-size: 14px;}
+.data_table td, .data_table th { background: #FFF; line-height: 32px; height: 32px; font-size: 12px;}
 .data_table tr.tbg td { background: #fff5f6;}
 .data_table td a { background: #026c93; padding: 0px 5px; color: #FFF; font-size: 12px; margin: 0 5px;}
 
@@ -229,6 +234,8 @@ input[type="button"].confirm_btn, .confirm_btn { background: #930205;}
 .data_table td a.other_a {background: none; color: #00F; text-decoration: underline;}
 
 .data_table td .data_input_s { width: 50px; height: 24px; line-height: 24px; border: 1px #CCCCCC solid; text-align: center;}
+
+.td_p { width: 100px; margin: 0 auto; text-align: center;}
 
 
 /*s_table*/
@@ -275,7 +282,7 @@ input[type="button"].confirm_btn, .confirm_btn { background: #930205;}
 	line-height: 24px;
 	border: 1px #CCCCCC solid;
 }
-.search select { float: left; }
+
 .search select.select_marginRight { margin-right: 10px;}
 .input[type="button"].search_btn, .search_btn, .compile_btn {
     height: 24x;
@@ -285,6 +292,7 @@ input[type="button"].confirm_btn, .confirm_btn { background: #930205;}
 	border: none;
 	padding: 0 10px;
 	color: #FFF;
+	display: block;
 }
 
 .search input[type="text"].input_s { width: 50px;}
@@ -559,9 +567,9 @@ input.file { width: 100px; _width: 90px; float: left;}
 	border-bottom: 1px #FFFFFF solid;
 
 }
-.gray_table td select { width: 100px; height: 24px; line-height: 24px; border: 1px #CCCCCC solid; margin: 0 5px 11px 5px;}
+.gray_table td select { width: 120px; height: 24px; line-height: 24px; border: 1px #CCCCCC solid; margin: 0 5px 11px 5px;}
 .gray_table_error_bg { background: #ffb0b0;font-weight: bold; color: #F00;}
-.gray_table_error { background: url(/assets/alert.png) no-repeat 10px center;}
+.gray_table_error { background: #ffb0b0 url(/assets/alert.png) no-repeat 10px center; padding-left: 15px;}
 
 /*work_video施工视频*/
 .work_video {}
