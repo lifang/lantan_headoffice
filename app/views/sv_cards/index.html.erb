@@ -1,0 +1,148 @@
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/sv_cards" class="hover">优惠卡</a>
+      <a href="/sv_cards/sell_situation">销售情况</a>
+      <a href="#">使用情况明细</a>
+      <a href="#">使用情况汇总</a>
+    </div>
+    <div class="data_menu">
+      <a id="new_card" href="JavaScript:void(0)" class="add_btn">新建优惠卡</a>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <div class="card_list">
+          <% if @sv_cards.blank?  %>
+            <h1>当前无任何优惠卡!</h1>
+          <% else %>
+            <% @sv_cards.each do |sv_card| %>
+              <div class="card_list_box">
+                <img src=<%= sv_card.img_url %> />
+                <h2><%= sv_card.name %></h2>
+                <% if sv_card.types.to_i == 1 %>
+                  <p>类型:储值卡</p>
+                  <p>内容:价值<%= sv_card.price %>元</p>
+                <% elsif sv_card.types.to_i == 0 %>
+                  <p>类型:打折卡</p>
+                  <p>内容:可打--折</p>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+          <div class="clear"></div>
+        </div>
+        <div class="pageTurn">
+          <% if !@sv_cards.blank? %>
+          <%= will_paginate  @sv_cards, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="new_card_detail" class="tab_popup" style="display: none;"> <!--储值卡弹出层-->
+  <div class="popup_box">
+    <h1>新建优惠卡<a href="JavaScript:void(0)" id="cancel" class="close">关闭</a></h1>
+    <%= form_tag "/sv_cards" do %>
+    <div class="popup_body">
+      <div id="popup_body_area" class="popup_body_area">
+        <div class="item">
+          <label>名称：</label><input id="card_name" name="card_name" type="text"/>
+        </div>
+        <div class="item">
+          <label>类型：</label>
+          <select id="card_type" name="card_type">           
+            <option value="1" selected>储值卡</option>
+            <option value="0">打折卡</option>
+          </select>
+        </div>
+        <div class="item">
+          <label>图片：</label>
+          <input type="file" name="card_url" id="card_url" style="display:none" onchange="card_img.value=value"/>
+          <input name="card_img"  id="card_img" type="text" class="file"/>
+          <input type="button" class="file_btn" value="浏览" onclick="card_url.click()" />      
+        </div>
+        <div class="item_textarea">
+          <label>具体内容：</label><textarea id="card_description" name="card_description"class="width_textarea"></textarea>
+        </div>
+        <div id="setObj" class="setObj">
+          <div class="setobj_name">项目：</div>
+          <div class="setobj_box">
+            <div class="seto_list">
+              <span>充<input id="started_money" name="started_money" type="text" class="input_s"/>元</span>&nbsp;&nbsp;
+              <span>送<input id="ended_money" name="ended_money" type="text" class="input_s"/>元</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn_box">
+        <button id="search_button" class="confirm_btn">确定</button>
+        <button type="reset" id="cancel1" class="cancel_btn">取消</button>
+        <% end %>
+      </div>
+    </div> 
+  </div>
+</div>
+<script>
+  $("#new_card").click(function(){      //显示新建优惠卡弹出层
+    popup($("#new_card_detail"));
+    $("new_card_detail").attr("style", "display:block")
+  })
+  $("#card_type").change(function(){    //根据卡类型加载不同表格
+    if ($("#card_type").val() == 0){
+      $.ajax({
+        type: "GET",
+        url: "/sv_cards/select_discount_card"
+      })
+    }
+    else if ($("#card_type").val() == 1){
+      $.ajax({
+        type: "GET",
+        url: "/sv_cards/select_storeage_card"
+      })
+    }
+  })
+  $("#cancel").click(function(){      //X按钮
+    location.href="/sv_cards"
+  })
+  $("#cancel1").click(function(){     //取消按钮
+    location.href="/sv_cards"
+  })
+  $("#search_button").click(function(){ //确定提交按钮
+    var type = parseInt($("#card_type").val());
+    if(type == 1){
+      if($("#card_name").val() == ""){
+        alert("优惠卡名称不能为空!");
+        return false;
+      }else if($("#card_img").val() == ""){
+        alert("请上传卡的图片!");
+        return false;
+      }else if($("#card_description").val() == ""){
+        alert("请描述该卡!");
+        return false;
+      }else if($("#started_money").val() == ""){
+        alert("请输入充值金额!");
+        return false;
+      }else if($("#ended_money").val() == ""){
+        alert("请输入赠送金额!");
+        return false;
+      }
+    }else if(type == 0){
+      if($("#card_name").val() == ""){
+        alert("优惠卡名称不能为空!");
+        return false;
+      }else if($("#card_img").val() == ""){
+        alert("请上传卡的图片!");
+        return false;
+      }else if($("#card_description").val() == ""){
+        alert("请描述该卡!");
+        return false;
+      }else if($("input[name='product_hidden_id']").length <= 0){
+        alert("请至少选择一个项目!");
+        return false;
+      }
+    }
+
+  })
+</script>
