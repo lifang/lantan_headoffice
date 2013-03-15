@@ -8,7 +8,8 @@ gem 'rails', '3.1.2'
 gem 'mysql2','0.3.10'
 gem 'spreadsheet', '0.6.5.5'
 gem 'will_paginate', '3.0.pre2'
-
+gem "mini_magick", "~> 3.5.0"
+gem "toPinyin"
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

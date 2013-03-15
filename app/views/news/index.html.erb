@@ -1,0 +1,57 @@
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/news" class="hover">新闻列表</a>
+      <a href="/news/new">发布新闻</a></div>
+    <div class="clear"></div>
+    <div id="news_show"class="data_body">
+      <div>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>标题</td>
+              <td>创建时间</td>
+              <td>状态</td>
+              <td>操作</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @news.blank? %>
+            <tr>
+              <th clospan="3">当前无新闻!</th>
+            </tr>
+            <%  else %>
+            <% @news.each do |new| %>
+            <tr>
+              <td><a href="<%= Constant::FRONT_PATH %>/news/<%= new.id %>"><%= new.title %></a></td>
+              <td><%= new.created_at.strftime("%Y-%m-%d") %></td>
+              <% if new.status == 0 %>
+              <td>已发布</td>
+              <td>
+                <input type="hidden" value="<%= new.id %>"/>
+                <a name="edit_new" href="JavaScript:void(0)">修改</a>
+                <a name="del_new" href="JavaScript:void(0)">删除</a>
+              </td>
+              <% elsif new.status == 1 %>
+              <td>未发布</td>
+              <td>
+                <input type="hidden" value="<%= new.id %>"/>
+                <a name="edit_new" href="JavaScript:void(0)">修改</a>
+                <a name="rel_new" href="JavaScript:void(0)">发布</a>
+                <a name="del_new" href="JavaScript:void(0)">删除</a>
+              </td>
+              <% end %>
+            </tr>
+            <% end %>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+          <% if !@news.blank? %>
+           <%= will_paginate  @news, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

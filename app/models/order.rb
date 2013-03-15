@@ -12,7 +12,8 @@ class Order < ActiveRecord::Base
   IS_VISITED = {:YES => 1, :NO => 0} #1 已访问  0 未访问
   STATUS = {:NOMAL => 0, :SERVICING => 1, :WAIT_PAYMENT => 2, :BEEN_PAYMENT => 3, :FINISHED => 4, :DELETED => 5}
   #0 正常未进行  1 服务中  2 等待付款  3 已经付款  4 已结束  5已删除
-
+  IS_SVC_CARD = {:YES => 1, :NO => 0}   #该订单是否使用优惠卡 1用了 0没有
+  IS_P_CARD ={:YES => 1, :NO => 0} #是否使用套餐卡 1用了 0没有
   #组装查询order的sql语句
   def self.generate_order_sql(started_at, ended_at, is_visited)
     condition_sql = ""

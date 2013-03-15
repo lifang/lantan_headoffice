@@ -1,0 +1,49 @@
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/authorities">权限配置</a>
+      <a href="/authorities/set_staff" class="hover">用户设定</a>
+    </div>
+    <div class="search">
+      <%= form_tag "/authorities/set_staff", :method => :get do %>
+      <div><label>姓名：</label><input name="staff_name" type="text"/></div>
+      <div><button class="search_btn">查询</button></div>
+      <% end %>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>姓名</td>
+              <td>职务</td>
+              <td>操作</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% @staff.each do |staff| %>
+            <tr>
+              <td><%= staff.name %></td>
+              <td>
+                <% staff.roles.each do |sr| %><%= sr.name %>/<% end if !staff.roles.blank? %>
+              </td>
+              <td>
+                <input type="hidden" value="<%= staff.id %>"/>
+                <a name="set_staff_role" href="JavaScript:void(0)">角色设定</a>
+              </td>
+            </tr>
+            <% end if !@staff.blank? %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+           <%= will_paginate  @staff, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="set_staff_role" class="tab_popup" style="display: none;">
+  
+</div>

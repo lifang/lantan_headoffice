@@ -31,7 +31,7 @@ $(function(){
  
  //基础数据权限配置 切换
  $(function() {
-	 $('.groupFunc_h li').bind('click',function(){
+	 $('.groupFunc_h li').live('click',function(){
 	   		$(this).addClass('hover').siblings().removeClass('hover');
 			var index = $('.groupFunc_h li').index(this);
 			$('.groupFunc_b > div').eq(index).show().siblings().hide();
@@ -84,18 +84,18 @@ $(function(){
 
 //car_group car_x
 $(function(){
-	$(".car_group li").hover(
-		function(){$(this).find(".group_x").css("display","block");},
-		function(){$(this).find(".group_x").css("display","none");}
-	)	
-	$(".people_group li").hover(
-		function(){
+	$(".car_group li").live({
+		mouseenter:function(){$(this).find(".group_x").css("display","block");},
+		mouseleave:function(){$(this).find(".group_x").css("display","none");}
+        })
+	$(".people_group li").live({
+		mouseenter:function(){
 			$(this).find(".group_func").css("display","block");
 			$(this).find(".group_x").css("display","block");
 		},
-		function(){
+		mouseleave:function(){
 			$(this).find(".group_func").css("display","none");
 			$(this).find(".group_x").css("display","none");
 		}
-	)	
+        })
 })

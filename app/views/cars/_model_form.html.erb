@@ -1,0 +1,31 @@
+<div class="popup_box">
+  <h1><%= @car_brand.name %>
+    <a href="JavaScript:void(0)" class="close">关闭</a>
+  </h1>
+  <div class="popup_body">
+    <div class="popup_body_area">
+      <div class="car_group">
+        <div class="car_gh">B</div>
+        <ul>
+          <% @car_models.each do |m| %>
+          <li>
+            <a name="edit_model" href="JavaScript:void(0)"><%= m.name %></a>
+            <input type="hidden" value="<%= m.id %>"/>
+            <input name="model_name" type="text" style="display:none" value="<%= m.name %>"/>
+            <a name="del_model" href="JavaScript:void(0)" class="group_x">Close</a>           
+          </li>
+          <% end %>
+          <li style="display:none">
+             <input name="add_model_name" type="text"/>
+             <input type="hidden" value="<%= @car_brand.id %>"/>
+          </li>
+          <li class="addCar_classify">
+            <a name="add_model" href="JavaScript:void(0)">+</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="btn_box">     
+    </div>
+  </div>
+</div>

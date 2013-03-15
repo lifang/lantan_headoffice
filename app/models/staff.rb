@@ -16,7 +16,7 @@ class Staff < ActiveRecord::Base
   N_COMPANY = {0=>"老板",2=>"店长",3=>"接待",1=>"技师"}
   #总部员工职务
 
-  STATUS = {:normal => 0, :delete => 1}
+  STATUS = {:normal => 0, :delete => 1}   #0正常 1已删除
 
   scope :normal, where(:status => STATUS[:normal])
 

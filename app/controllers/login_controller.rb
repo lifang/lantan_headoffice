@@ -1,11 +1,11 @@
 #encoding: utf-8
 class LoginController < ApplicationController #登录控制器
 
-  def index
+  def index   #登陆
     
   end
 
-  def create
+  def create #登陆验证
     @staff = Staff.find_by_username(params[:username])
     if @staff.nil? #or !@staff.has_password?(params[:password])
       flash[:error] = "用户名或密码错误!"

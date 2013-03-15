@@ -1,6 +1,69 @@
-<%#
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
-
-<%= "index.html" %>
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/sales" class="hover">活动列表</a>
+      <a href="/sales/release">发布活动</a>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>活动名称</td>
+              <td>活动代码</td>
+              <td>活动时间</td>
+              <td>状态</td>
+              <td>已报名人数</td>
+              <td>操作</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @sales.blank? %>
+              <tr>
+                <th colspan="6">当前无活动记录!</th>
+              </tr>
+            <% else %>
+              <% @sales.each do |s| %>
+                <tr>
+                  <td><%= s.name %></td>
+                  <td>------</td>
+                  <td><%= s.started_at.strftime("%Y-%m-%d") %>--<%= s.ended_at.strftime("%Y-%m-%d") %></td>
+                  <%  if s.status.to_i == 0 %>
+                    <td>未发布</td>
+                  <% elsif s.status.to_i == 1 %>
+                    <td>已发布</td>
+                  <% else %>
+                    <td>已关闭</td>
+                  <% end %>
+                  <td>10000</td>
+                  <% if  s.status.to_i == 0 %>
+                  <td>
+                    <a name="edit" href="JavaScript:void(0)">修改</a>
+                    <a name="release"href="JavaScript:void(0)">发布</a>
+                    <a name="del" href="JavaScript:void(0)">删除</a>
+                    <a name="sid" value="<%= s.id %>" type="hidden" />
+                  </td>
+                  <% elsif s.status.to_i == 1 %>
+                  <td>
+                    <a name="edit" href="JavaScript:void(0)">修改</a>
+                    <a name="del" href="JavaScript:void(0)">删除</a>
+                    <a name="sid" value="<%= s.id %>" type="hidden" />
+                  </td>
+                  <% else %>
+                  <td>-----</td>
+                  <% end %>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+         <% if !@sales.blank? %>
+           <%= will_paginate  @sales, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+         <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

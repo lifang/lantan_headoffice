@@ -6,7 +6,7 @@ class Sale < ActiveRecord::Base
   STATUS_NAME={0=>"未发布",1=>"已发布"}
   DISC_TYPES = {:FEE=>1,:DIS=>0} #1 优惠金额  0 优惠折扣
   DISC_TIME = {:DAY=>1,:MOUTH=>2,:YEAR=>3,:WEEK=>4,:TIME=>0} #1 每日 2 每月 3 每年 4 每周 0 时间段
-
+  IS_SUBSIDY = {:NO => 1, :YES => 1}#是否总店补贴 0不是 1是
 
   #生成code
   def self.set_code(length)

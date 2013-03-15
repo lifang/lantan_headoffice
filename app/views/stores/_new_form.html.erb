@@ -1,5 +1,4 @@
-<%= javascript_include_tag "operate_manage" %>
-<%= form_for @store, :html => {:onsubmit => "return new_store_validate()"} do %>
+<%= form_for @store do %>
   <div class="popup_box">
     <h1>新建门店<a href="#" class="close">关闭</a></h1>
     <div class="popup_body">
@@ -46,7 +45,7 @@
         </div>
       </div>
       <div class="btn_box">
-        <button type="submit" class="confirm_btn">确定</button>
+        <button id="new_store_btn" type="submit" class="confirm_btn">确定</button>
         <button type="reset" class="cancel_btn">取消</button>
       </div>
     </div>

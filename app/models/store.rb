@@ -1,6 +1,5 @@
 #encoding: utf-8
 class Store < ActiveRecord::Base
-  attr_accessible :name, :address, :phone, :contact, :status, :opened_at, :email, :position, :introduction, :img_url, :account, :city_id
   has_many :stations
   has_many :reservations
   has_many :products
