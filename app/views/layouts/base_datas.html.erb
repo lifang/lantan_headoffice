@@ -17,7 +17,7 @@
      <div class="head">
           <div class="box">
                <div class="logo">澜泰总部后台管理系统</div>
-               <div class="login">你好：XXX | <a href="#">退出</a></div>
+               <div class="login">你好：<%= cookies[:user_name] %> | <a href="/logins/logout">退出</a></div>
                <div class="clear"></div>
                <div class="nav">
                     <ul>
@@ -27,7 +27,7 @@
                         <li><a href="/authorities" class=<%= is_hover("authorities") %>>权限</a></li>
                     </ul>
                </div>
-               <div class="back"><a href="/backstage" title="返回">Back</a>基础数据</div>
+               <div class="back"><a href="/backstages" title="返回">Back</a>基础数据</div>
           </div>
      </div>
      <div class="main">

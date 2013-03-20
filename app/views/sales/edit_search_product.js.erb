@@ -1,0 +1,9 @@
+$("#edit_product_name_div").html("<ul><% @products.each do |product| %><li><input name='edit_product_name' type='checkbox' value='<%= product.id %>'/><span><%= product.name %></span></li><% end %></ul>");
+$("input[name='edit_selected_product_id[]']").each(function(){
+   var s = $(this).val();
+  $("input[name='edit_product_name']").each(function(index){
+     if($(this).val() == s){
+        $(this).attr("checked", "checked");
+     } 
+   });
+ });

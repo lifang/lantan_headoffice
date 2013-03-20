@@ -58,11 +58,11 @@ function popup(t){
     $(t).css('left',(doc_width-layer_width)/2);
     $(t).css('display','block');
 
-    $(" .close").click(function(){
+    $(" .close").live("click",function(){
         $(t).css('display','none');
         $(".mask").css('display','none');
     })
-    $(".cancel_btn").click(function(){
+    $(".cancel_btn").live("click",function(){
         $(t).css('display','none');
         $(".mask").css('display','none');
     })

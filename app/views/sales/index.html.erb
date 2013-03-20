@@ -5,7 +5,7 @@
       <a href="/sales/release">发布活动</a>
     </div>
     <div class="clear"></div>
-    <div class="data_body">
+    <div id="sale_show_and_edit" class="data_body">
       <div>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
           <thead>
@@ -27,8 +27,14 @@
               <% @sales.each do |s| %>
                 <tr>
                   <td><%= s.name %></td>
-                  <td>------</td>
-                  <td><%= s.started_at.strftime("%Y-%m-%d") %>--<%= s.ended_at.strftime("%Y-%m-%d") %></td>
+                  <td><%= s.code %></td>
+                  <td>
+                    <% if s.started_at.nil? && s.ended_at.nil? %>
+                    --/--
+                    <% else %>
+                      <%= s.started_at.strftime("%Y-%m-%d") %>/<%= s.ended_at.strftime("%Y-%m-%d") %>
+                      <% end %>
+                  </td>
                   <%  if s.status.to_i == 0 %>
                     <td>未发布</td>
                   <% elsif s.status.to_i == 1 %>
@@ -36,23 +42,22 @@
                   <% else %>
                     <td>已关闭</td>
                   <% end %>
-                  <td>10000</td>
+                  <td><%= s.orders.length %></td>
                   <% if  s.status.to_i == 0 %>
                   <td>
                     <a name="edit" href="JavaScript:void(0)">修改</a>
                     <a name="release"href="JavaScript:void(0)">发布</a>
                     <a name="del" href="JavaScript:void(0)">删除</a>
-                    <a name="sid" value="<%= s.id %>" type="hidden" />
                   </td>
                   <% elsif s.status.to_i == 1 %>
                   <td>
                     <a name="edit" href="JavaScript:void(0)">修改</a>
-                    <a name="del" href="JavaScript:void(0)">删除</a>
-                    <a name="sid" value="<%= s.id %>" type="hidden" />
+                    <a name="del" href="JavaScript:void(0)">删除</a>                  
                   </td>
                   <% else %>
                   <td>-----</td>
                   <% end %>
+                   <input type="hidden" name="sid" value="<%= s.id %>" />
                 </tr>
               <% end %>
             <% end %>

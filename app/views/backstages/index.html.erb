@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>总部后台首页</title>
+<%= stylesheet_link_tag    "application", "style" %>
+<%= javascript_include_tag "application", "main" %>
+<!--[if IE 6]>
+<script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
+<script>
+  DD_belatedPNG.fix('*');
+</script>
+<![endif]-->
+</head>
+
+<body>
+     <div class="head">
+          <div class="box">
+               <div class="logo1">澜泰门店后台管理系统</div>
+               <div class="login">你好：<%= cookies[:user_name] %> | <a href="/logins/logout">退出</a></div>
+          </div>
+     </div>
+     <div class="main">
+         <div class="module">
+           <ul>
+             <% @menus.each do |menu| %>
+               <% if menu.name == "运营管理" %>
+                 <li><%= link_to "运营管理", stores_path, :class => "m_one" %></li>
+               <%  elsif menu.name == "物流管理" %>
+                 <li><a href="#" class="m_two">物流管理</a></li>
+               <% elsif menu.name == "服务管理" %>
+                 <li><a href="#" class="m_three">服务管理</a></li>
+               <% elsif menu.name == "营销管理" %>
+                 <li><%= link_to "营销管理", sv_cards_path, :class => "m_four" %></li>
+               <% elsif menu.name == "基础数据" %>
+                 <li><%= link_to "基础数据", cars_path, :class => "m_five" %></li>
+                 <% end %>
+              <% end %>
+             </ul>
+              <div class="clear"></div>
+              <div class="message">最近有 <span class="red">2</span> 条订货相关信息需要您去处理<a href="#">点击查看</a><span class="x">Close</span></div>
+         </div>
+     </div>
+     <div class="foot"><p>Copyright © 2013 杭州澜泰 版权所有</p></div>
+</body>
+</html>

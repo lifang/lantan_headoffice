@@ -18,7 +18,8 @@
           <% else %>
             <% @sv_cards.each do |sv_card| %>
               <div class="card_list_box">
-                <img src=<%= sv_card.img_url %> />
+                <input type="hidden" value="<%= sv_card.id %>"/>
+                <a href="JavaScript:void(0)"><img name="edit_card" src="<%= sv_card.img_url %>" title="<%= sv_card.name %>" width="148" height="93"/></a>
                 <h2><%= sv_card.name %></h2>
                 <% if sv_card.types.to_i == 1 %>
                   <p>类型:储值卡</p>
@@ -42,48 +43,5 @@
   </div>
 </div>
 <div id="new_card_detail" class="tab_popup" style="display: none;"> <!--储值卡弹出层-->
-  <div class="popup_box">
-    <h1>新建优惠卡<a href="JavaScript:void(0)" id="cancel" class="close">关闭</a></h1>
-    <%= form_tag "/sv_cards", :multipart => true do %>
-    <div class="popup_body">
-      <div id="popup_body_area" class="popup_body_area">
-        <div class="item">
-          <label>名称：</label><input id="card_name" name="card_name" type="text"/>
-        </div>
-        <div class="item">
-          <label>类型：</label>
-          <select id="card_type" name="card_type">           
-            <option value="1" selected>储值卡</option>
-            <option value="0">打折卡</option>
-          </select>
-        </div>
-        <div class="item">
-          <label>图片：</label>
-          <input type="file" name="card_url" id="card_url" style="display:none" onchange="card_img.value=value"/>
-          <input name="card_img"  id="card_img" type="text" class="file"/>
-          <input type="button" class="file_btn" value="浏览" onclick="card_url.click()" />      
-        </div>
-        <div class="item">
-            <label>折扣：</label><input id="discount_value" name="discount_value" type="text" disabled="disabled"/>
-        </div>
-        <div class="item_textarea">
-          <label>具体内容：</label><textarea id="card_description" name="card_description"class="width_textarea"></textarea>
-        </div>
-        <div id="setObj" class="setObj">
-          <div class="setobj_name">项目：</div>
-          <div class="setobj_box">
-            <div class="seto_list">
-              <span>充<input id="started_money" name="started_money" type="text" class="input_s"/>元</span>&nbsp;&nbsp;
-              <span>送<input id="ended_money" name="ended_money" type="text" class="input_s"/>元</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="btn_box">
-        <button id="search_button" class="confirm_btn">确定</button>
-        <button type="reset" id="cancel1" class="cancel_btn">取消</button>
-        <% end %>
-      </div>
-    </div> 
-  </div>
+ 
 </div>

@@ -7,7 +7,7 @@
     <div class="clear"></div>
     <div class="data_body">
       <div>
-        <%= form_tag "/sales" do %>
+        <%= form_tag "/sales", :multipart => true do %>
           <div class="releaseDiv">
             <div class="releaseDiv_l">标题：</div>
             <div class="releaseDiv_r"><input id="sale_name" name="sale_name" type="text" class="title_input"/></div>
@@ -56,11 +56,11 @@
           <div class="releaseDiv">
             <div class="releaseDiv_l">优惠时间：</div>
             <div class="releaseDiv_r">
-              <input name="sale_disc_time_types" type="radio" value="1" checked/>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <input name="sale_disc_time_types" type="radio" value="4"/>周&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <input name="sale_disc_time_types" type="radio" value="2"/>月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <input name="sale_disc_time_types" type="radio" value="3"/>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <input name="sale_disc_time_types" type="radio" value="0"/>有效期：
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:DAY] %>" checked/>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:WEEK] %>"/>周&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:MOUTH] %>"/>月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:YEAR] %>"/>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:TIME] %>"/>有效期：
               <input id="started_time" name="started_time" type="text" disabled/>&nbsp;&nbsp;到&nbsp;&nbsp;
               <input id="ended_time" name="ended_time" type="text" disabled/>
             </div>
