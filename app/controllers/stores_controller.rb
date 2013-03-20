@@ -1,0 +1,103 @@
+#encoding: utf-8
+class StoresController < ApplicationController  #门店控制器
+  layout "operate_manages"
+  def index
+     store_name_sql = (params[:store_name].nil? || params[:store_name].empty?) ? "1 = 1" : "name like %#{params[:store_name]}%"
+    if params[:select_province].to_i == 0
+      @stores = Store.where(store_name_sql).paginate(:page => params[:page] ||= 1,
+        :per_page => 2,:order => "created_at desc")
+    else
+      if params[:select_city].to_i == 0
+        stores = []
+        @cities = City.where("parent_id = #{params[:select_province].to_i}")
+        @cities.each do |c|
+          Store.where("city_id = #{c.id}").where(store_name_sql).each do |s|
+            stores << s
+          end
+        end
+        @stores = stores.paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
+      else
+        @cities = City.where("parent_id = #{params[:select_province].to_i}")
+        @stores = Store.where("city_id = #{params[:select_city].to_i}")
+        .where(store_name_sql).paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
+      end
+    end
+    @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
+  end
+
+  def show  #门店详情
+   @store = Store.find(params[:store_id].to_i)
+  end
+
+  def new #新建
+    @store = Store.new
+    @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
+  end
+
+  def create    #创建门店
+    store = Store.find(:all, :conditions => ["city_id = ? and name = ? ", params[:new_store_select_city].strip.to_i, params[:new_store_name].strip])
+    if store.blank?
+      current_store = Store.new(:name => params[:new_store_name].strip, :address => params[:new_store_address].strip, :phone => params[:new_store_phone].strip,
+        :contact => params[:new_store_contact].strip, :status => params[:new_store_status].to_i,:opened_at => params[:new_store_open_time].strip,
+        :city_id => params[:new_store_select_city].to_i)
+      if current_store.save
+        flash[:msg] = "创建成功!"
+      end
+    else
+      flash[:msg] = "创建失败，该城市已存在同名的店面!"
+    end
+    redirect_to stores_path
+  end
+
+  def update  #更新门店
+    @store = Store.find(params[:id])
+      if @store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
+        :contact => params[:edit_store_contact].strip, :phone => params[:edit_store_phone].strip, :address => params[:edit_store_address].strip,
+        :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i)
+        flash[:msg] = "更新成功!"
+        redirect_to stores_path
+    end
+  end
+
+  def edit #编辑门店
+    @store = Store.find(params[:store_id].to_i)
+    @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
+    @cities = City.find(:all, :conditions => ["parent_id = ?", City.find(@store.city.parent_id)])
+  end
+  
+   def destroy  #删除门店
+    @store = Store.find(params[:id].to_i)
+    if !@store.nil?
+      if @store.delete
+        flash[:msg] = "删除成功!"
+      else
+        falsh[:mag] = "删除失败!"
+      end
+    end
+    redirect_to operate_manages_path
+  end
+  
+   def province_change     #搜索店面的省份下拉菜单
+    if params[:province_id].to_i != 0
+      @cities = City.find(:all, :conditions => ["parent_id = ?",params[:province_id].to_i])
+    else
+      @cities = nil
+    end
+  end
+  
+   def new_store_select_province #新建门店的省份下拉菜单
+    if params[:province_id].to_i != 0
+      @cities = City.find(:all, :conditions => ["parent_id = ?",params[:province_id].to_i])
+    else
+      @cities = nil
+    end
+  end
+
+   def edit_store_select_province #编辑门店的省份下拉菜单
+      if params[:province_id].to_i != 0
+      @cities = City.find(:all, :conditions => ["parent_id = ?",params[:province_id].to_i])
+    else
+      @cities = nil
+    end
+   end
+end

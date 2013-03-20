@@ -1,0 +1,56 @@
+<%= form_for @store, :url => store_path(@store), :method => :put do %>
+  <div class="popup_box">
+    <h1>新建门店<a href="#" class="close">关闭</a></h1>
+    <div class="popup_body">
+      <div class="popup_body_area">
+        <div class="item">
+          <label>选择省市：</label>
+          <select id="edit_store_select_province" name="edit_store_select_province" class="staff">
+            <option value="0">请选择省份</option>
+            <% @provinces.each do |province| %>
+              <option value="<%= province.id %>" <% if City.find(@store.city.parent_id).id == province.id %>selected<% end %>><%= province.name %></option>
+            <% end %>
+          </select>
+          <select id="edit_store_select_city" name="edit_store_select_city" class="staff">
+            <option value="0">------</option>
+            <% @cities.each do |c| %>
+            <option value="<%= c.id %>" <% if @store.city_id == c.id%>selected<% end %>><%= c.name %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="item">
+          <label>门店名称：</label>
+          <%= text_field_tag 'edit_store_name', @store.name %>
+        </div>
+        <div class="item">
+          <label>负责人：</label>
+          <%= text_field_tag 'edit_store_contact', @store.contact %>
+        </div>
+        <div class="item">
+          <label>联系电话：</label>
+          <%= text_field_tag 'edit_store_phone', @store.phone %>
+        </div>
+        <div class="item">
+          <label>地址：</label>
+          <%= text_field_tag 'edit_store_address', @store.address %>
+        </div>
+        <div class="item">
+          <label>开店时间：</label>
+          <%= text_field_tag 'edit_store_open_time', @store.opened_at.strftime("%Y-%m-%d") %>
+        </div>
+        <div class="item">
+          <label>门店状态：</label>
+          <select name="edit_store_status">
+            <option value="2" <% if @store.status == 2%>selected<% end %>>筹备中</option>
+            <option value="1" <% if @store.status == 1%>selected<% end %>>正常营业</option>
+            <option value="0" <% if @store.status == 0%>selected<% end %>>已关闭</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn_box">
+        <button id="edit_store_btn" type="submit" class="confirm_btn">确定</button>
+        <button type="reset" class="cancel_btn">取消</button>
+      </div>
+    </div>
+  </div>
+<% end %>

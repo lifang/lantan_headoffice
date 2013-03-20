@@ -1,0 +1,15 @@
+<%= form_tag "/news/update_new" do %>
+<div>
+  <div class="news_title">
+    <input id="edit_new_title" name="edit_new_title" type="text" value="<%= @new.title %>"/>
+    <input name="edit_new_id" type="hidden" value="<%= @new.id %>"/>
+  </div>
+  <div class="news_details">
+    <textarea id="edit_new_content" name="edit_new_content" cols="" rows=""><%= @new.content %></textarea>
+  </div>
+</div>
+<div class="btn_box">
+  <button type="submit" id="edit_submit_btn" class="confirm_btn">确定</button>
+  <button type="reset" id="edit_cancel_btn" class="cancel_btn">取消</button>
+</div>
+<% end %>

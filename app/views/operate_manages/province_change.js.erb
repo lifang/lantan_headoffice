@@ -1,0 +1,1 @@
+$("#select_city").html("<% if !@cities.nil? %><option value='0'>请选择城市</option><% @cities.each do |city|%><option value=<%=  city.id %>><%= city.name %></option><% end %><%else%><option value='0'>------</option><% end %>")

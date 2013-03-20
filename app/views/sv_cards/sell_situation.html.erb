@@ -1,0 +1,82 @@
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/sv_cards" >优惠卡</a>
+      <a href="/sv_cards/sell_situation" class="hover">销售情况</a>
+      <a href="/sv_cards/use_detail">使用情况明细</a>
+       <a href="/sv_cards/use_collect">使用情况汇总</a>
+    </div>
+    <div class="search">
+    <%= form_tag "/sv_cards/sell_situation", :method => :get do %>
+      <div><label>会员卡类型：</label>
+        <select name="card_type">
+          <option value="2" <%= @card_type.eql?("2") ? "selected" : "" %>>全部</option>
+          <option value="0" <%= @card_type.eql?("0") ? "selected" : "" %>>打折卡</option>
+         <option value="1" <%= @card_type.eql?("1") ? "selected" : "" %>>储值卡</option>
+        </select>
+      </div>
+      <div><label>时间：</label><input id="started_time" name="started_time" type="text" value="<%= @started_time %>"/>
+        &nbsp;到&nbsp;<input id="ended_time" name="ended_time" type="text" value="<%= @ended_time %>"/></div>
+      <div><button id="use_search" class="search_btn">查询</button></div>
+  <% end %>
+    </div>
+    <div class="data_body_title">
+      <span class="data_body_p">总销售量：<span class="red"><%= @count %></span>张&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        总金额：<span class="red"><%= @total_money.to_i %></span>元</span>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div id="relation_show">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>客户名称</td>
+              <td>手机号码</td>
+              <td>卡类型</td>
+              <td>金额</td>
+              <td>是否开据发票</td>
+              <td>操作</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @relations.blank? %>
+            <tr>
+              <th colspan="6">无销售记录!</th>
+            </tr>
+            <% else %>
+            <% @relations.each do |r| %>
+            <% customer = current_relation_customer(r.customer_id) %>
+            <% card = current_relation_card(r.sv_card_id) %>
+            <tr>
+              <td><%= customer.name %></td>
+              <td><%= customer.mobilephone %></td>
+              <% if card.types == 0 %>
+              <td>打折卡</td>
+              <% else %>
+              <td>储值卡</td>
+              <% end %>
+              <td><%= r.total_price %></td>
+              <% if r.is_billing %>
+              <td>是</td>
+              <td>------</td>
+              <% else %>
+              <td>否</td>
+              <td>
+               <a name="make_billing" href="JavaScript:void(0)">开据发票</a>
+                <input type="hidden" value="<%= r.id %>"/>
+              </td>
+              <% end %>
+            </tr>
+            <% end %>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+          <% if !@relations.blank? %>
+           <%= will_paginate  @relations, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

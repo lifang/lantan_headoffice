@@ -1,0 +1,69 @@
+
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/sv_cards">优惠卡</a>
+      <a href="/sv_cards/sell_situation">销售情况</a>
+      <a href="/sv_cards/use_detail" class="hover">使用情况明细</a>
+       <a href="/sv_cards/use_collect">使用情况汇总</a>
+    </div>
+    <div class="search">
+    <%= form_tag "/sv_cards/use_detail", :method => :get do %>
+      <div><label>时间：</label><input id="started_time" name="started_time" type="text" 
+      <% if !params[:started_time].nil? || params[:started_time] != "" %>value="<%=params[:started_time] %>"<% end %>/>
+        &nbsp;到&nbsp;<input id="ended_time" name="ended_time" type="text"
+       <% if !params[:ended_time].nil? || params[:ended_time] != "" %>value="<%=params[:ended_time] %>"<% end %>/></div>
+      <div><button id="use_search" class="search_btn">查询</button></div>
+      <% end %>
+    </div>
+    <div class="data_body_title">
+      <span class="data_body_p">储值卡总计：<span class="red"><%= @total_money.to_i %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        已使用：<span class="red"><%= @left_money.to_i %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        余额：<span class="red"><%= @total_money.to_i - @left_money.to_i %></span>元</span>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>门店名称</td>
+              <td>使用卡数</td>
+              <td>卡类型</td>
+              <td>使用金额（元）</td>
+              <td>总店已支付门店（元）</td>
+              <td>总店未支付门店（元）</td>
+              <td>操作</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @form_detail.blank? %>
+            <tr>
+              <th colspan="7">没有任何记录!</th>
+            </tr>
+            <% else %>
+             <% @form_detail.each do |form| %>
+               <% f = form.split(",") %>
+            <tr>
+              <td><%= store_name(f[0].to_i) %></td>
+              <td><%= f[1].to_i %></td>
+              <td>储值卡</td>
+              <td><%= f[2].to_i %></td>
+              <td><%= f[3].to_i %></td>
+              <td><%= f[2].to_i - f[3].to_i%></td>
+              <td><a href="JavaScript:void(0)">已开据发票</a></td>
+            </tr>
+            <% end %>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+         <% if !@form_detail.blank? %>
+             <%= will_paginate  @form_detail, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+         <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

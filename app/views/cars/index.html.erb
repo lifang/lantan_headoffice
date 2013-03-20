@@ -1,0 +1,45 @@
+<div class="box">
+  <div class="data_box">
+    <div class="data_menu">   
+      <a id="add_btn" href="JavaScript:void(0)" class="add_btn">添加汽车品牌</a>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div class="car_group">
+        <% @capitals.each do |c|%>
+        <% if !c.car_brands.blank? %>
+        <div class="car_gh"><%= c.name %></div>     
+        <ul>
+          <% c.car_brands.each do |car| %>
+          <li>
+            <a name="check_model" href="JavaScript:void(0)"><%= car.name %></a>
+            <a name="del_brands" href="JavaScript:void(0)" class="group_x">Close</a>
+            <input type="hidden" value="<%= car.id %>"/>
+          </li>
+          <% end %>
+        </ul>
+         <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="new_brand" class="tab_popup" style="display: none;">
+  <div class="popup_box">
+    <h1>添加车型<a href="#" class="close">关闭</a></h1>
+    <%= form_tag "/cars/new_brand" do %>
+    <div class="popup_body">
+      <div class="popup_body_area">
+        <div class="brand">品牌：<input id="brand_name" name="brand_name" type="text"/></div>
+      </div>
+      <div class="btn_box">
+        <button id="new_brands" type="submit" class="confirm_btn">确定</button>
+        <button type="reset" class="cancel_btn">取消</button>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+<div id="check_model" class="tab_popup" style="display: none;">
+</div>

@@ -1,0 +1,47 @@
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/authorities" class="hover">权限配置</a>
+      <a href="/authorities/set_staff">用户设定</a>
+    </div>
+    <div class="data_menu"><a id="add_role_a" href="#" class="add_btn">添加角色</a></div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div class="people_group">
+        <ul>
+          <% @roles.each do |role| %>
+          <li>
+            <input name="hid_id" type="hidden" value="<%= role.id %>"/>
+            <input name="role_new_name" type="text" value="<%= role.name %>" style="display:none;"/>
+            <a><%= role.name %></a>
+            <a name="del_role_a" href="JavaScript:void(0)" class="group_x">Close</a>
+            <span class="group_func">
+              <a name="edit_role" href="JavaScript:void(0)">编辑</a>
+              <a name="set_auth" href="JavaScript:void(0)">设置权限</a>
+            </span>
+          </li>
+          <% end %>
+        </ul>
+      </div>
+      <div id="set_authority" style="display:none;">
+          
+      </div>
+    </div>
+  </div>
+</div>
+<div id="add_role_form" class="tab_popup" style="display:none;">
+  <div class="popup_box">
+    <%= form_tag "/authorities/add_role" do %>
+    <h1>添加角色<a href="JavaScript:void(0)" class="close">关闭</a></h1>
+    <div class="popup_body">
+      <div class="popup_body_area">
+        <div class="brand">角色：<input name="role_name" type="text"/></div>
+      </div>
+      <div class="btn_box">
+        <button id="add_role_btn" type="submit" class="confirm_btn">确定</button>
+        <button type="reset" class="cancel_btn">取消</button>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
