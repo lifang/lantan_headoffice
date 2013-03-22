@@ -11,6 +11,15 @@ LantanHeadoffice::Application.routes.draw do
 #      get :edit_store
 #    end
 #  end
+  resources :materials do
+    collection do
+      get :show_material_beizhu
+      post :material_update
+      get :show_material_order_beizhu
+      post :material_order_update
+      post :material_check
+    end
+  end
   resources :authorities do
     collection do
       post :add_role

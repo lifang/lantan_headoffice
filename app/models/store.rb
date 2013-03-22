@@ -11,6 +11,7 @@ class Store < ActiveRecord::Base
   has_many :notices
   has_many :package_cards
   has_many :staffs
+  has_many :material_orders
   belongs_to :city
   STATUS = {
     :CLOSED => 0,       #0该门店已关闭，1正常营业，2装修中...

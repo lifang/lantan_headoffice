@@ -27,7 +27,7 @@
                <% if menu.name == "运营管理" %>
                  <li><%= link_to "运营管理", stores_path, :class => "m_one" %></li>
                <%  elsif menu.name == "物流管理" %>
-                 <li><a href="#" class="m_two">物流管理</a></li>
+                 <li><%= link_to "物流管理", materials_path, :class => "m_two" %></li>
                <% elsif menu.name == "服务管理" %>
                  <li><a href="#" class="m_three">服务管理</a></li>
                <% elsif menu.name == "营销管理" %>
