@@ -1,0 +1,264 @@
+<div class="box">
+  <div class="data_box">
+    <div class="data_menu">
+      <a href="#">入库</a>
+      <a href="#">打印库存清单</a>
+    </div>
+    <div class="clear"></div>
+    <div class="tab_head">
+      <ul>
+        <li class="hover">库存列表</li>
+        <li>出库记录</li>
+        <li>入库记录</li>
+        <li>门店订货记录</li>
+      </ul>
+    </div>
+    <div id="table_show" class="data_body">
+      <div id="materials_tab">    <!--库存列表-->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>条形码</td>
+              <td><span class="sort_u">物料名称</span></td>
+              <td><span class="sort_d">物料类别</span></td>
+              <td>库存状态</td>
+              <td>库存量（个）</td>
+              <td>成本价（元）</td>
+              <td>盘点实数</td>
+              <td>操作</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% @materials.each do |material| %>
+              <tr>
+                <td <% if material.storage <= 0 %>class="data_table_error"<% end %>><%= material.code %></td>
+                <td><%= material.name %></td>
+                <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == material.types %><%= value %><% end %><% end %></td>
+                <td>存货</td>
+                <td><%= material.storage %></td>
+                <td><%= material.price %></td>
+                <td><input type="text" value="<%= material.storage %>" style="width:50px"/></td>
+                <td>
+                  <input type="hidden" value="<%= material.id %>"/>
+                  <a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a>
+                  <a name="material_check" href="JavaScript:void(0)">已核实</a>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+          <% if !@materials.blank? %>
+            <%= will_paginate  @materials, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="mat_out_tab" style="display:none;">  <!--出库记录-->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>订货单号</td>
+              <td>条形码</td>
+              <td><span class="sort_u">物料名称</span></td>
+              <td><span class="sort_d">物料类别</span></td>
+              <td>库存量（个）</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% @mat_out_orders.each do |moo| %>
+            <tr>
+              <td><a href="#" class="other_a"><%= moo.material_order.code %></a></td>
+              <td><%= moo.material.code %></td>
+              <td><%= moo.material.name %></td>
+              <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == moo.material.types %><%= value %><% end %><% end %></td>
+              <td><%= moo.material.storage %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+           <% if !@mat_out_orders.blank? %>
+            <%= will_paginate  @mat_out_orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="mat_in_tab" style="display:none;"> <!--入库记录-->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>条形码</td>
+              <td><span class="sort_u">物料名称</span></td>
+              <td><span class="sort_d">物料类别</span></td>
+              <td>入库量</td>
+              <td>操作人</td>
+              <td>入库时间</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% @mat_in_orders.each do |mio| %>
+            <tr>
+              <td><%= mio.material.code %></td>
+              <td><%= mio.material.name %></td>
+              <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
+              <td><%= mio.material_num %></td>
+              <td><%= Staff.find(mio.staff_id).name %></td>
+              <td><%= mio.created_at.strftime("%Y-%m-%d")  %></td>
+            </tr>
+           <% end %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+          <% if !@mat_in_orders.blank? %>
+            <%= will_paginate  @mat_in_orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+      </div>
+
+      <div style="display:none;"> <!--门店订货记录-->
+        <div class="search">
+          <div><label>状态：</label>
+            <select name="">
+              <option>已付款</option>
+            </select>
+          </div>
+          <div><label>时间：</label><input name="started_time" type="text" id="started_time"/> 到 <input name="ended_time" type="text" id="ended_time"/></div>
+          <div><button class="search_btn">查询</button></div>
+        </div>
+        <div id="mat_orders_tab">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>订货单号</td>
+              <td>详细内容</td>
+              <td>门店名称</td>
+              <td>总价</td>
+              <td>订货时间</td>
+              <td>预计到货时间</td>
+              <td>物流状态</td>
+              <td>物流信息</td>
+              <td>付款状态</td>
+              <td>操作</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% @mat_orders.each do |mo| %>
+            <tr>
+              <td><%= mo.code %></td>
+              <td>
+                <table width="100%" border="0" cellspacing="1" cellpadding="0" class="s_table">
+                  <tr class="fws">
+                    <td>名称</td>
+                    <td>单价</td>
+                    <td>数量</td>
+                  </tr>
+                  <% mo.mat_order_items.each do |moi| %>
+                  <tr>
+                    <td><%= moi.material.name %></td>
+                    <td><%= moi.price %></td>
+                    <td><%= moi.material_num %></td>
+                  </tr>
+                  <% end %>
+                </table>
+              </td>
+              <td><%= mo.store.name %></td>
+              <td><%= mo.price %></td>
+              <td><%= mo.created_at.strftime("%Y-%m-%d") %></td>
+              <td><%= mo.arrival_at.strftime("%Y-%m-%d") %></td>
+              <td>
+                <% MaterialOrder::M_STATUS.each do |key, value| %>
+                 <% if mo.m_status == key %>
+                  <%= value %>
+                 <% end %>
+                <% end %>
+              </td>
+              <td>物流单号:<%= mo.logistics_code %><br/>承运人：<%= mo.carrier %></td>
+              <td>
+                  <% MaterialOrder::STATUS.each do |key, value| %>
+                    <% if mo.status == key %>
+                      <%= value %>
+                    <% end %>
+                  <% end %>
+              </td>
+              <td>
+                <input type="hidden" value="<%= mo.id %>"/>
+                <a href="JavaScript:void(0)">详情</a>
+                <a name="mat_order_beizhu" href="JavaScript:void(0)">备注</a>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="pageTurn">
+          <% if !@mat_orders.blank? %>
+            <%= will_paginate  @mat_orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $("#started_time").datepicker({
+    inline: true
+  });
+  $("#ended_time").datepicker({
+    inline: true
+  });
+  $("#table_show .pageTurn a").live("click", function(){   //分页AJAX
+       var url = $(this).attr("href");   
+       var tab = $(this).parents('.pageTurn').parent().attr("id");
+       $.ajax({
+            async:true,
+            type : 'get',
+            dataType : 'script',
+            url : url,
+            data : {tab:tab}
+        });
+       return false;
+    });
+    $("a[name='material_beizhu']").live("click", function(){ //库存备注
+      var mid = $(this).parent().find("input").val();
+      $.ajax({
+        type: "get",
+        url: "/materials/show_material_beizhu",
+        data: {m_id : mid}
+      })
+    });
+    $("a[name='material_check']").live("click", function(){ //库存核实
+      var obj = $(this);
+      var mid = $(this).parent().find("input").val();
+      var count = $(this).parent().prev().find("input").val();
+       $.ajax({
+        dataType: "json",
+        type: "post",
+        url: "/materials/material_check",
+        data: {m_id : mid, storage : count},
+        success: function(data){
+          if(data == 0){
+            alert("操作失败!");
+          }else{
+            alert("操作成功！");
+            obj.parent().prev().prev().prev().text(count);
+          }
+        }
+      })
+    })
+    $("a[name='mat_order_beizhu']").live("click", function(){ //门店订货备注
+      var moid = $(this).parent().find("input").val();
+      $.ajax({
+        type: "get",
+        url: "/materials/show_material_order_beizhu",
+        data: {mo_id : moid}
+      })
+    });
+    $("#beizhu_cancel_btn").live("click", function(){  //备注取消按钮
+      $("#beizhu_area").empty();
+      return false;
+    })
+    $("a[name='beizhu_cancel_x']").live("click", function(){  //备注X按钮
+       $("#beizhu_area").empty();
+    })
+</script>

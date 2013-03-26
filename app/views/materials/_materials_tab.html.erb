@@ -1,0 +1,37 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+  <thead>
+    <tr class="hbg">
+      <td>条形码</td>
+      <td><span class="sort_u">物料名称</span></td>
+      <td><span class="sort_d">物料类别</span></td>
+      <td>库存状态</td>
+      <td>库存量（个）</td>
+      <td>成本价（元）</td>
+      <td>盘点实数</td>
+      <td>操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @materials.each do |material| %>
+      <tr>
+        <td <% if material.storage <= 0 %>class="data_table_error"<% end %>><%= material.code %></td>
+        <td><%= material.name %></td>
+        <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == material.types %><%= value %><% end %><% end %></td>
+        <td>存货</td>
+        <td><%= material.storage %></td>
+        <td><%= material.price %></td>
+        <td><input type="text" value="<%= material.storage %>" style="width:50px"/></td>
+        <td>
+         <input name="material_count" type="hidden" value="<%= material.id %>"/>
+         <a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a>
+         <a name="material_check" href="JavaScript:void(0)">已核实</a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="pageTurn">
+  <% if !@materials.blank? %>
+    <%= will_paginate  @materials, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+  <% end %>
+</div>

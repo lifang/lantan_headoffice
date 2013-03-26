@@ -1,0 +1,96 @@
+<div class="popup_box">
+  <h1>编辑优惠卡<a href="JavaScript:void(0)" id="edit_cancel" class="close">关闭</a></h1>
+  <%= form_tag "/sv_cards/update", :multipart => true do %>
+    <div class="popup_body">
+      <div id="popup_body_area" class="popup_body_area">
+        <div class="item">
+          <label>名称：</label><input id="edit_card_name" name="edit_card_name" type="text" value="<%= @card.name %>"/>
+          <input type="hidden" name="edit_card_id" value="<%= @card.id %>"/>
+        </div>
+        <div class="item">
+          <label>类型：</label>
+          <select id="edit_card_type" name="edit_card_type" disabled>
+            <option value="1" <% if @card.types == 1 %>selected<% end %>>储值卡</option>
+            <option value="0" <% if @card.types == 0 %>selected<% end %>>打折卡</option>
+          </select>
+        </div>
+        <div class="item">
+          <label>图片：</label>
+          <input type="file" name="edit_card_url" id="edit_card_url" style="display:none" onchange="edit_card_img.value=value"/>
+          <input name="edit_card_img"  id="edit_card_img" type="text" class="file" value="<%= @card.img_url %>"/>
+          <input type="button" class="file_btn" value="浏览" onclick="edit_card_url.click()" />
+        </div>
+        <div class="item">
+          <label>折扣：</label><input id="edit_discount_value" name="edit_discount_value" type="text" <% if @card.types == 1 %>disabled<% end %> value="<%= @card.discount %>"/>
+        </div>
+        <div class="item_textarea">
+          <label>具体内容：</label><textarea id="edit_card_description" name="edit_card_description"class="width_textarea"><%= @card.description %></textarea>
+        </div>
+        <div id="setObj" class="setObj">
+          <% if @card.types == 1 %>
+          <div class="setobj_name">项目：</div>
+          <div class="setobj_box">
+            <div class="seto_list">
+              <span>充<input id="edit_started_money" name="edit_started_money" type="text" class="input_s"/>元</span>&nbsp;&nbsp;
+              <span>送<input id="edit_ended_money" name="edit_ended_money" type="text" class="input_s"/>元</span>
+            </div>
+          </div>
+          <% else %>
+          <div class="setobj_name">项目：</div>
+          <div class="setobj_box">
+                <ul>
+                  <li><input id="edit_search_products_all" name="products" type="radio" checked/> 全部</li>
+                  <li><input id="edit_search_products_part" name="products" type="radio" /> 部分</li>
+                </ul>
+                <div>
+                  <div class="search">
+                    <div><label>类别：</label>
+                      <select id="edit_product_type" name="edit_product_type" disabled="disabled">
+                        <% @product_types.each do |key, value|%>
+                          <option value="<%= key %>"><%= value %></option>
+                        <% end %>
+                      </select>
+                    </div>
+                    <div><label>名称：</label><input id="edit_product_name" name="product_name" type="text" disabled="disabled"/></div>
+                    <div><button id="edit_product_search" class="search_btn" disabled="disabled">查询</button></div>
+                  </div>
+                  <fieldset class="popup_body_fieldset">
+                    <legend class="popup_body_title">查询结果</legend>
+                    <div id="edit_search_products_result" class="popup_body_result">
+                      <ul>
+                        <% @products.each do |product| %>
+                          <li><input name="edit_show_product[]" type="checkbox" value="<%= product.id %>" <% @card_products.each do |cp| %><%if cp.product_id == product.id%>checked<% end %><% end %>/>
+                            <span><%= product.name %></span>
+                          </li>
+                        <% end unless @products.nil? %>
+                      </ul>
+                    </div>
+                  </fieldset>
+                  <div class="pq"></div>
+                  <fieldset class="popup_body_fieldset">
+                    <legend class="popup_body_title">已选择</legend>
+                    <div id="edit_has_selected_result" class="popup_body_result">    <!--已选择产品的层-->
+                       <% @card_products.each do |cp| %>
+                      <div id="edpro<%= cp.product_id %>">
+                        <em><%= Product.find(cp.product_id).name %></em>
+                        <a id="edprocountadd<%= cp.product_id %>" name="edit_add_p_button" href="JavaScript:void(0)" class="addre_a">+</a>
+                        <span><input id="edprocount<%= cp.product_id %>" name="edit_product_count[]" class="addre_input" value="<%= cp.product_num  %>"/></span>
+                        <a id="edprocountdel<%= cp.product_id %>" name="edit_del_p_button" href="JavaScript:void(0)" class="addre_a">-</a>
+                        <a name="edit_del_p_a" href="JavaScript:void(0)" class="remove_a">删除</a>
+                        <input name="edit_product_hidden_id[]" type="hidden" value="<%= cp.product_id %>"/>
+                      </div>
+                      <% end %>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="btn_box">
+        <button id="edit_search_button" class="confirm_btn">确定</button>
+        <button type="reset" id="edit_cancel1" class="cancel_btn">取消</button>
+    </div>
+  </div>
+   <% end %>
+</div>

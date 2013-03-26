@@ -11,6 +11,15 @@ LantanHeadoffice::Application.routes.draw do
 #      get :edit_store
 #    end
 #  end
+  resources :materials do
+    collection do
+      get :show_material_beizhu
+      post :material_update
+      get :show_material_order_beizhu
+      post :material_order_update
+      post :material_check
+    end
+  end
   resources :authorities do
     collection do
       post :add_role
@@ -59,6 +68,13 @@ LantanHeadoffice::Application.routes.draw do
       post :situation_search
       get :use_detail
       get :use_collect
+      get :new_card
+      get :edit_card
+      get :edit_search_products_all
+      post :edit_search_products_part    
+    end
+    member do
+       post :update
     end
   end
   resources :sales do
@@ -66,15 +82,23 @@ LantanHeadoffice::Application.routes.draw do
       post :del_sale
       post :rel_sale
       post :search_product
+      post :edit_search_product
       get :release
+      get :edit
     end
-  end
-  resources :login do
     member do
-      post :create
+      post :update
     end
   end
-  resources :backstage 
+  resources :logins do
+    member do
+      post :create    
+    end
+    collection do
+       get :logout
+    end
+  end
+  resources :backstages
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
@@ -121,7 +145,7 @@ LantanHeadoffice::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'login#index'
+  root :to => 'logins#index'
 
   # See how all your routes lay out with "rake routes"
 

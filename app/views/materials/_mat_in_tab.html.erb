@@ -1,0 +1,29 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+  <thead>
+    <tr class="hbg">
+      <td>条形码</td>
+      <td><span class="sort_u">物料名称</span></td>
+      <td><span class="sort_d">物料类别</span></td>
+      <td>入库量</td>
+      <td>操作人</td>
+      <td>入库时间</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @mat_in_orders.each do |mio| %>
+      <tr>
+        <td><%= mio.material.code %></td>
+        <td><%= mio.material.name %></td>
+        <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
+        <td><%= mio.material_num %></td>
+        <td><%= Staff.find(mio.staff_id).name %></td>
+        <td><%= mio.created_at.strftime("%Y-%m-%d")  %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="pageTurn">
+  <% if !@mat_in_orders.blank? %>
+    <%= will_paginate  @mat_in_orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+  <% end %>
+</div>
