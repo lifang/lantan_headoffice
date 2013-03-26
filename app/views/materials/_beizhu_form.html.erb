@@ -1,0 +1,15 @@
+<div class="popup_box">
+  <%= form_tag "/materials/#{@action_name}_update", "data-type" => "script", :remote => true do %>
+  <h1>备注<a  name="beizhu_cancel_x" href="JavaScript:void(0)" class="close">关闭</a></h1>
+  <div class="popup_body">
+    <div class="popup_body_area">
+      <input name="beizhu_id" type="hidden" value="<%= @id %>"/>
+      <textarea name="beizhu_content" cols="" rows="" class="beizhu_textarea"><%= @beizhu %></textarea>
+    </div>
+    <div class="btn_box">
+      <button class="confirm_btn">确定</button>
+      <button id="beizhu_cancel_btn" class="cancel_btn">取消</button>
+    </div>
+  </div>
+  <% end %>
+</div>

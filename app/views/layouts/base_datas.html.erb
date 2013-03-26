@@ -1,0 +1,39 @@
+<!doctype html>
+<html>  <!--基础数据布局模板-->
+<head>
+<meta charset="utf-8"/>
+<title>基础数据</title>
+<%= stylesheet_link_tag    "application", "style", "jquery-ui-1.10.0.custom.min.css" %>
+<%= javascript_include_tag "application", "main", "jquery-ui-1.10.0.custom.min.js", "cars", "news", "authorities" %>
+<%= csrf_meta_tags %>
+<!--[if IE 6]>
+<script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
+<script>
+  DD_belatedPNG.fix('*');
+</script>
+<![endif]-->
+</head>
+<body>
+     <div class="head">
+          <div class="box">
+               <div class="logo">澜泰总部后台管理系统</div>
+               <div class="login">你好：<%= cookies[:user_name] %> | <a href="/logins/logout">退出</a></div>
+               <div class="clear"></div>
+               <div class="nav">
+                    <ul>
+                        <li><a href="/cars" class=<%= is_hover("cars") %>>车型</a></li>
+                        <li><a href="#">审批</a></li>
+                        <li><a href="/news" class=<%= is_hover("news") %>>新闻</a></li>
+                        <li><a href="/authorities" class=<%= is_hover("authorities") %>>权限</a></li>
+                    </ul>
+               </div>
+               <div class="back"><a href="/backstages" title="返回">Back</a>基础数据</div>
+          </div>
+     </div>
+     <div class="main">
+      <%= yield %>
+     </div>
+     <div class="foot"><p>Copyright © 2013 杭州澜泰 版权所有</p></div>
+     <div class="mask"></div>
+</body>
+</html>

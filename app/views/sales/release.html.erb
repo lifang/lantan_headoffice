@@ -1,0 +1,107 @@
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/sales">活动列表</a>
+      <a href="/sales/release" class="hover">发布活动</a>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <%= form_tag "/sales", :multipart => true do %>
+          <div class="releaseDiv">
+            <div class="releaseDiv_l">标题：</div>
+            <div class="releaseDiv_r"><input id="sale_name" name="sale_name" type="text" class="title_input"/></div>
+          </div>
+          <div class="releaseDiv">
+            <div class="releaseDiv_l">选择项目：</div>
+            <div class="releaseDiv_r rdTop">
+              <div class="search">
+                <div><label>类别：</label>
+                  <select id="sale_product_types" name="sale_product_types">
+                    <option value="99999">全部</option>
+                    <% Product::PRODUCT_TYPES.each do |key, value| %>
+                      <option value="<%= key %>"><%= value %></option>
+                    <% end %>
+                  </select>
+                </div>
+                <div><label>名称：</label><input id="sale_product_name" name="sale_product_name" type="text"/></div>
+                <div><button id="sale_search_btn"class="search_btn">查询</button></div>
+              </div>
+              <fieldset class="popup_body_fieldset">
+                <legend class="popup_body_title">查询结果</legend>
+                <div id="product_name_div" class="popup_body_result">
+                  <ul>
+                    <% @products.each do |product| %>
+                      <li><input name="product_name" type="checkbox" value="<%= product.id %>"/><span><%= product.name %></span></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </fieldset>
+              <div class="pq"></div>
+              <fieldset class="popup_body_fieldset">
+                <legend class="popup_body_title">已选择</legend>
+                <div id="selected_product_div" class="popup_body_result">
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="releaseDiv">
+            <div class="releaseDiv_l">优惠：</div>
+            <div class="releaseDiv_r">
+              <input name="sale_disc_types" type="radio" value="1" checked/>金额：<input id="disc_money" name="disc_money" type="text"/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_types" type="radio" value="0"/>打折：<input id="disc_discount" name="disc_discount" type="text" disabled/>&nbsp;&nbsp;折
+            </div>
+          </div>
+          <div class="releaseDiv">
+            <div class="releaseDiv_l">优惠时间：</div>
+            <div class="releaseDiv_r">
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:DAY] %>" checked/>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:WEEK] %>"/>周&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:MOUTH] %>"/>月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:YEAR] %>"/>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:TIME] %>"/>有效期：
+              <input id="started_time" name="started_time" type="text" disabled/>&nbsp;&nbsp;到&nbsp;&nbsp;
+              <input id="ended_time" name="ended_time" type="text" disabled/>
+            </div>
+          </div>
+          <div class="releaseDiv">
+            <div class="releaseDiv_l">每辆车享受优惠次数：</div>
+            <div class="releaseDiv_r"><input id="sale_everycar_times" name="sale_everycar_times" type="text"/>&nbsp;&nbsp;次</div>
+          </div>
+          <div class="releaseDiv">
+            <div class="releaseDiv_l">本次活动车辆总数：</div>
+            <div class="releaseDiv_r"><input name="sale_car_num" type="text"/>&nbsp;&nbsp;辆</div>
+          </div>
+
+          <div class="releaseDiv">
+            <div class="releaseDiv_l">活动图片：</div>
+            <div class="releaseDiv_r">
+              <input type="file" name="sale_img" id="sale_img" style="display:none" onchange="sale_img_url.value=value"/>
+              <input name="sale_img_url"  id="sale_img_url" type="text" class="file"/>
+              <input type="button" class="file_btn" value="浏览" onclick="sale_img.click()" />
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">是否总店补贴：</div>
+              <div class="releaseDiv_r">
+                <input name="sale_is_subsidy" type="radio" value="1" checked/>是&nbsp;&nbsp;<input id="sale_subsidy_money" name="sale_subsidy_money" type="text"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input name="sale_is_subsidy" type="radio" value="0"/>&nbsp;&nbsp;否
+              </div>
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">活动介绍：</div>
+              <div class="releaseDiv_r">
+                <textarea name="sale_introduction" cols="" rows=""></textarea>
+              </div>
+            </div>
+            <div class="btn_box">
+              <button id="create_button" type="submit" class="confirm_btn">发布</button>
+              <button id="cancel_button" type="reset" class="cancel_btn">取消</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

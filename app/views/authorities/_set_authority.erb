@@ -1,0 +1,38 @@
+<%= form_tag "/authorities/set_auth_commit", :id => "set_auth_form" do %>
+  <div class="groupFunc_area">
+    <ul class="groupFunc_h">
+      <li class="hover">菜单</li>
+      <li>功能</li>
+    </ul>
+    <div class="groupFunc_b">
+      <div>
+        <input name="role_id" type="hidden" value="<%= @role.id %>"/>
+        <ul>
+          <% @menus.each do |menu| %>
+            <li>
+              <input name="menu[]" type="checkbox" value="<%= menu.id %>" <% @menu_checked.each do |m| %><% if m.to_i == menu.id %>checked<% end %><% end %>/>
+              &nbsp;<%= menu.name %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div style="display: none;">
+        <% @menus.each do |menu| %>
+          <dl>
+            <dt><%= menu.name %></dt>
+            <% Constant::ROLES[menu.controller.to_sym].each do |key, value| %>
+              <dd>
+                <input name="<%= menu.controller %>[]" type="checkbox" value="<%= value[1] %>" <% if @rmr[menu.controller.to_sym].to_i&value[1].to_i==value[1].to_i %>checked<% end if @rmr[menu.controller.to_sym] %>/>
+                &nbsp;<%= value[0] %>
+              </dd>
+            <% end if Constant::ROLES[menu.controller.to_sym] %>
+          </dl>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="btn_box">
+    <button type="submit" class="confirm_btn">确定</button>
+    <button id="cancel_set_auth_form"type="reset" class="cancel_btn">取消</button>
+  </div>
+<% end %>

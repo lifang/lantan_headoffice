@@ -1,0 +1,23 @@
+<div class="popup_box">
+    <h1>角色设定<a href="JavaScript:void(0)" class="close">关闭</a></h1>
+    <div class="popup_body">
+      <%= form_tag "/authorities/set_staff_role_commit" do %>
+      <input name="staff_id" type="hidden" value="<%= @staff.id %>"/>
+      <div class="popup_body_area">
+        <div class="groupFunc_b">
+          <ul>
+            <% @roles.each do |r| %>
+            <li>
+              <input name="staff_roles[]" type="checkbox" value="<%= r.id %>" <% @staff.roles.each do |s| %><% if s.id == r.id %>checked<% end %><% end if !@staff.roles.blank? %>/>&nbsp;<%= r.name %>
+            </li>
+            <% end if !@roles.blank? %>
+          </ul>
+        </div>
+      </div>
+      <div class="btn_box">
+        <button type="submit" class="confirm_btn">确定</button>
+        <button type="reset" class="cancel_btn">取消</button>
+      </div>
+      <% end %>
+    </div>
+  </div>

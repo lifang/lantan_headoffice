@@ -1,7 +1,104 @@
 LantanHeadoffice::Application.routes.draw do
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
-
+#  resources :stores do
+#    member do
+#      post :create
+#    end
+#    collection do
+#      get :show_store
+#      get :edit_store
+#    end
+#  end
+  resources :materials do
+    collection do
+      get :show_material_beizhu
+      post :material_update
+      get :show_material_order_beizhu
+      post :material_order_update
+      post :material_check
+    end
+  end
+  resources :authorities do
+    collection do
+      post :add_role
+      get :del_role
+      post :update_role
+      get :set_auth
+      post :set_auth_commit
+      get :set_staff
+      get :set_staff_role
+      post :set_staff_role_commit
+    end
+  end
+  resources :news do
+    collection do
+      get :release
+      get :detail
+      post :update_new
+    end
+  end
+  resources :cars do
+    collection do
+      post :new_brand
+      get :check_model
+      get :del_brand
+      post :update_model
+      get :del_model
+      post :new_model
+    end
+  end
+  resources :stores do
+     collection do
+      post :province_change
+      post :new_store_select_province
+      post :edit_store_select_province
+    end
+  end
+  resources :sv_cards do
+    collection do
+      get :sell_situation
+      post :search
+      get :select_discount_card
+      get :select_storeage_card
+      get :search_products_all
+      post :search_products_part
+      post :make_billing
+      post :situation_search
+      get :use_detail
+      get :use_collect
+      get :new_card
+      get :edit_card
+      get :edit_search_products_all
+      post :edit_search_products_part    
+    end
+    member do
+       post :update
+    end
+  end
+  resources :sales do
+    collection do
+      post :del_sale
+      post :rel_sale
+      post :search_product
+      post :edit_search_product
+      get :release
+      get :edit
+    end
+    member do
+      post :update
+    end
+  end
+  resources :logins do
+    member do
+      post :create    
+    end
+    collection do
+       get :logout
+    end
+  end
+  resources :backstages
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
@@ -48,7 +145,7 @@ LantanHeadoffice::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'logins#index'
 
   # See how all your routes lay out with "rake routes"
 

@@ -1,0 +1,68 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+  <thead>
+    <tr class="hbg">
+      <td>订货单号</td>
+      <td>详细内容</td>
+      <td>门店名称</td>
+      <td>总价</td>
+      <td>订货时间</td>
+      <td>预计到货时间</td>
+      <td>物流状态</td>
+      <td>物流信息</td>
+      <td>付款状态</td>
+      <td>操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @mat_orders.each do |mo| %>
+      <tr>
+        <td><%= mo.code %></td>
+        <td>
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" class="s_table">
+            <tr class="fws">
+              <td>名称</td>
+              <td>单价</td>
+              <td>数量</td>
+            </tr>
+            <% mo.mat_order_items.each do |moi| %>
+              <tr>
+                <td><%= moi.material.name %></td>
+                <td><%= moi.price %></td>
+                <td><%= moi.material_num %></td>
+              </tr>
+            <% end %>
+          </table>
+        </td>
+        <td><%= mo.store.name %></td>
+        <td><%= mo.price %></td>
+        <td><%= mo.created_at.strftime("%Y-%m-%d") %></td>
+        <td><%= mo.arrival_at.strftime("%Y-%m-%d") %></td>
+        <td>
+          <% MaterialOrder::M_STATUS.each do |key, value| %>
+            <% if mo.m_status == key %>
+              <%= value %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>物流单号:<%= mo.logistics_code %><br/>承运人：<%= mo.carrier %></td>
+        <td>
+          <% MaterialOrder::STATUS.each do |key, value| %>
+            <% if mo.status == key %>
+              <%= value %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <input type="hidden" value="<%= mo.id %>"/>
+          <a href="JavaScript:void(0)">详情</a>
+          <a name="mat_order_beizhu" href="JavaScript:void(0)">备注</a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="pageTurn">
+  <% if !@mat_orders.blank? %>
+    <%= will_paginate  @mat_orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+  <% end %>
+</div>

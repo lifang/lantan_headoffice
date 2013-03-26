@@ -1,0 +1,47 @@
+<div class="box">
+  <div class="data_box">
+    <div class="second_menu">
+      <a href="/sv_cards" class="hover">优惠卡</a>
+      <a href="/sv_cards/sell_situation">销售情况</a>
+      <a href="/sv_cards/use_detail">使用情况明细</a>
+       <a href="/sv_cards/use_collect">使用情况汇总</a>
+    </div>
+    <div class="data_menu">
+      <a id="new_card" href="JavaScript:void(0)" class="add_btn">新建优惠卡</a>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <div class="card_list">
+          <% if @sv_cards.blank?  %>
+            <h1>当前无任何优惠卡!</h1>
+          <% else %>
+            <% @sv_cards.each do |sv_card| %>
+              <div class="card_list_box">
+                <input type="hidden" value="<%= sv_card.id %>"/>
+                <a href="JavaScript:void(0)"><img name="edit_card" src="<%= sv_card.img_url %>" title="<%= sv_card.name %>" width="148" height="93"/></a>
+                <h2><%= sv_card.name %></h2>
+                <% if sv_card.types.to_i == 1 %>
+                  <p>类型:储值卡</p>
+                  <p>内容:价值<%= sv_card.price %>元</p>
+                <% elsif sv_card.types.to_i == 0 %>
+                  <p>类型:打折卡</p>
+                  <p>内容:<%= sv_card.description %></p>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+          <div class="clear"></div>
+        </div>
+        <div class="pageTurn">
+          <% if !@sv_cards.blank? %>
+          <%= will_paginate  @sv_cards, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="new_card_detail" class="tab_popup" style="display: none;"> <!--储值卡弹出层-->
+ 
+</div>
