@@ -36,6 +36,11 @@ LantanHeadoffice::Application.routes.draw do
       post :set_staff_role_commit
     end
   end
+  resources :syncs do
+    collection do
+      post :upload_file
+    end
+  end
   resources :news do
     collection do
       get :release
