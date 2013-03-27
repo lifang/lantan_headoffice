@@ -18,6 +18,10 @@ LantanHeadoffice::Application.routes.draw do
       get :show_material_order_beizhu
       post :material_order_update
       post :material_check
+      get :mat_order_detail
+      post :deliver_good
+      post :ruku
+      get :m_list
     end
   end
   resources :authorities do

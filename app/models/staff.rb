@@ -10,6 +10,7 @@ class Staff < ActiveRecord::Base
   has_many :violation_rwards
   has_many :staff_gr_records
   has_many :month_scores
+  has_many :mat_in_orders
   belongs_to :store
   #门店员工职务
   S_COMPANY = {:BOSS=>0,:CHIC=>2,:FRONT=>3,:TECHNICIAN=>1} #0 老板 2 店长 3接待 1 技师

@@ -16,7 +16,13 @@
         <td><%= mio.material.name %></td>
         <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
         <td><%= mio.material_num %></td>
-        <td><%= Staff.find(mio.staff_id).name %></td>
+        <td>
+            <% if mio.staff %>
+              <%= mio.staff.name %>
+            <% else %>
+              ----
+            <% end %>
+          </td>
         <td><%= mio.created_at.strftime("%Y-%m-%d")  %></td>
       </tr>
     <% end %>

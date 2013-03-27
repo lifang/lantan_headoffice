@@ -24,37 +24,55 @@
               <td>单价</td>
               <td>数量</td>
             </tr>
-            <% mo.mat_order_items.each do |moi| %>
-              <tr>
-                <td><%= moi.material.name %></td>
-                <td><%= moi.price %></td>
-                <td><%= moi.material_num %></td>
-              </tr>
-            <% end %>
+            <% if mo.mat_order_items.blank? %>
+                <tr>
+                  <td colspan="3">------</td>
+                </tr>
+              <% else %>
+                <% mo.mat_order_items.each do |moi| %>
+                  <tr>
+                    <td><%= moi.material.name %></td>
+                    <td><%= moi.price %></td>
+                    <td><%= moi.material_num %></td>
+                  </tr>
+                <% end %>
+              <% end %>
           </table>
         </td>
-        <td><%= mo.store.name %></td>
-        <td><%= mo.price %></td>
+        <td><%= mo.store.nil? ? "------" : mo.store.name %></td>
+        <td> <%= mo.price ||= "------"%></td>
         <td><%= mo.created_at.strftime("%Y-%m-%d") %></td>
-        <td><%= mo.arrival_at.strftime("%Y-%m-%d") %></td>
-        <td>
+        <td id="arrival_at<%= mo.id %>">
+            <%= mo.arrival_at.nil? ? "------" : mo.arrival_at.strftime("%Y-%m-%d")   %>
+        </td>
+        <td id="mo_status<%= mo.id %>">
+          <% if mo.m_status.nil? %>
+          未知
+          <% else %>
           <% MaterialOrder::M_STATUS.each do |key, value| %>
             <% if mo.m_status == key %>
               <%= value %>
             <% end %>
           <% end %>
+          <% end %>
         </td>
-        <td>物流单号:<%= mo.logistics_code %><br/>承运人：<%= mo.carrier %></td>
+        <td id="logi_info<%= mo.id %>">
+          物流单号:<%= mo.logistics_code ||= "-----" %><br/>承运人：<%= mo.carrier ||= "-----" %>
+        </td>
         <td>
+          <% if mo.status.nil? %>
+          未知
+          <% else %>
           <% MaterialOrder::STATUS.each do |key, value| %>
             <% if mo.status == key %>
               <%= value %>
             <% end %>
           <% end %>
+          <% end %>
         </td>
         <td>
           <input type="hidden" value="<%= mo.id %>"/>
-          <a href="JavaScript:void(0)">详情</a>
+          <a name="mat_order_detail" href="JavaScript:void(0)">详情</a>
           <a name="mat_order_beizhu" href="JavaScript:void(0)">备注</a>
         </td>
       </tr>

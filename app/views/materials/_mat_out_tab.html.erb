@@ -11,7 +11,7 @@
   <tbody>
     <% @mat_out_orders.each do |moo| %>
       <tr>
-        <td><a href="#" class="other_a"><%= moo.material_order.code %></a></td>
+        <td><%= moo.material_order.code %></td>
         <td><%= moo.material.code %></td>
         <td><%= moo.material.name %></td>
         <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == moo.material.types %><%= value %><% end %><% end %></td>
