@@ -15,7 +15,6 @@ class Sync < ActiveRecord::Base
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
     filename = img_url.original_filename
     File.open(path+dirs.join+filename, "wb")  {|f|  f.write(img_url.read) }
-    #    
   end
 
   #发送上传请求
@@ -50,11 +49,11 @@ class Sync < ActiveRecord::Base
   end
 
   def self.output_zip(store_id,day=1)
-    file_path ="#{Rails.root}/public/"
+    file_path = Constant::LOCAL_DIR
     dirs=["syncs/","#{Time.now.strftime("%Y-%m").to_s}/","/#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     Zip::ZipFile.open(file_path+dirs.join+"#{Time.now.ago(day).strftime("%Y%m%d")}_#{store_id}.zip"){ |zipFile|
       zipFile.each do |file|
-        if file.name.split(".").reverse[0] =="sql"
+        if file.name.split(".").reverse[0] =="log"
           contents = zipFile.read(file).split("\n\n|::|")
           titles =contents.delete_at(0).split(";||;")
           total_con = []
