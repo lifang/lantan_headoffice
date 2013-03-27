@@ -39,13 +39,13 @@ class Sync < ActiveRecord::Base
   end
 
 
-  def self.input_zip(file_path,store_id)
+  def self.input_zip(file_path)
     get_dir_list(file_path).each {|path|  File.delete(file_path+path) if path =~ /.zip/ }
-    filename ="#{Time.now.strftime("%Y%m%d")}_#{store_id}.zip"
+    filename ="#{Time.now.strftime("%Y%m%d")}.zip"
     Zip::ZipFile.open(file_path+filename, Zip::ZipFile::CREATE) { |zf|
       get_dir_list(file_path).each {|path| zf.file.open(path, "w") { |os| os.write "#{File.open(file_path+path).read}" } }
     }
-    send_file(store_id,file_path+filename,filename)
+    #send_file(store_id,file_path+filename,filename)
   end
 
   def self.output_zip(store_id,day=1)
@@ -73,8 +73,8 @@ class Sync < ActiveRecord::Base
   end
 
 
-  def self.out_data(store_id)
-    models=get_dir_list("#{Rails.root}/app/models")
+  def self.out_data
+    models=['product.rb', 'new.rb', 'car_model.rb']
     path="#{Rails.root}/public/"
     dirs=["syncs_datas/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
@@ -82,9 +82,9 @@ class Sync < ActiveRecord::Base
       model_name =model.split(".")[0]
       unless model_name==""
         cap = eval(model_name.split("_").inject(String.new){|str,name| str + name.capitalize})
-        attrs = cap.where("date_format(created_at,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d')")
+        attrs = cap.where("TO_DAYS(NOW())-TO_DAYS(created_at)=1")
         unless attrs.blank?
-          file = File.open("#{path+dirs.join+model_name}.sql","w+")
+          file = File.open("#{path+dirs.join+model_name}.log","w+")
           file.write("#{cap.column_names.join(";||;")}\r\n|::|")
           file.write("#{attrs.inject(String.new) {|str,attr| 
             str+attr.attributes.values.join(";||;").gsub(";||;true;||;",";||;1;||;").gsub(";||;false;||;",";||;0;||;")+"\r\n|::|"}}")
@@ -92,6 +92,6 @@ class Sync < ActiveRecord::Base
         end
       end
     end
-    input_zip(path+dirs.join,store_id)
+    input_zip(path+dirs.join)
   end
 end
