@@ -8,6 +8,9 @@ class Sync < ActiveRecord::Base
   require 'zip/zip'
   require 'zip/zipfilesystem'
 
+  SYNC_STAT = {:COMPLETE =>1,:ERROR =>0}  #生成/压缩/上传更新文件 完成1 报错0
+  HAS_DATA = {:YES =>1,:NO =>0}  #1 有更新数据 0  没有更新数据
+
   #接收文件文件并存到本地
   def self.accept_file(img_url)
     path="#{Rails.root}/public/"
@@ -86,25 +89,31 @@ class Sync < ActiveRecord::Base
   end
 
 
-  def self.out_data
-    models=['product.rb', 'new.rb', 'car_model.rb']
+  def self.out_data(day=1)
+    path = Constant::LOCAL_DIR
+    Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
+    sync =SSync.find_by_created_at(Time.now.strftime("%Y-%m-%d"))
+    sync =SSync.create(:created_at=>Time.now.strftime("%Y-%m-%d")) if sync.nil?
     path="#{Rails.root}/public/"
     dirs=["syncs_datas/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
+    models=['s_product.rb', 's_sale.rb', 's_car_model.rb']
     models.each do |model|
       model_name =model.split(".")[0]
       unless model_name==""
         cap = eval(model_name.split("_").inject(String.new){|str,name| str + name.capitalize})
-        attrs = cap.where("TO_DAYS(NOW())-TO_DAYS(created_at)=1")
+        attrs = cap.where("TO_DAYS(NOW())-TO_DAYS(created_at)=#{day}")
         unless attrs.blank?
-          file = File.open("#{path+dirs.join+model_name}.log","w+")
-          file.write("#{cap.column_names.join(";||;")}\r\n|::|")
-          file.write("#{attrs.inject(String.new) {|str,attr| 
-            str+attr.attributes.values.join(";||;").gsub(";||;true;||;",";||;1;||;").gsub(";||;false;||;",";||;0;||;")+"\r\n|::|"}}")
+          name_arr = model_name.split('_')
+          name_arr.delete_at(0)
+          file = File.open("#{path+dirs.join+name_arr.join('_')}.log","w+")
+          file.write("#{cap.column_names.join(";||;")}\n\n|::|")
+          file.write("#{attrs.inject(String.new) {|str,attr|
+            str+attr.attributes.values.join(";||;").gsub(";||;true;||;",";||;1;||;").gsub(";||;false;||;",";||;0;||;")+"\n\n|::|"}}")
           file.close
         end
       end
     end
-    input_zip(path+dirs.join)
+    input_zip(path+dirs.join, sync)
   end
 end
