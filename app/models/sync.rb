@@ -81,7 +81,7 @@ class Sync < ActiveRecord::Base
   end
 
 
-  def self.out_data
+  def self.out_data(day=1)
     path = Constant::LOCAL_DIR
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
     sync =SSync.find_by_created_at(Time.now.strftime("%Y-%m-%d"))
@@ -94,7 +94,7 @@ class Sync < ActiveRecord::Base
       model_name =model.split(".")[0]
       unless model_name==""
         cap = eval(model_name.split("_").inject(String.new){|str,name| str + name.capitalize})
-        attrs = cap.where("TO_DAYS(NOW())-TO_DAYS(created_at)=1")
+        attrs = cap.where("TO_DAYS(NOW())-TO_DAYS(created_at)=#{day}")
         unless attrs.blank?
           name_arr = model_name.split('_')
           name_arr.delete_at(0)
