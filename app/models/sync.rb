@@ -58,11 +58,9 @@ class Sync < ActiveRecord::Base
     paths =get_dir_list(file_path+dirs.join)
     unless paths.blank?
       paths.each do |path|
-      p  file_path+dirs.join+path
         if  File.extname(file_path+dirs.join+path) == '.zip'
           Zip::ZipFile.open(file_path+dirs.join+path){ |zipFile|
             zipFile.each do |file|
-              p file.name
               if file.name.split(".").reverse[0] =="log"
                 contents = zipFile.read(file).split("\n\n|::|")
                 titles =contents.delete_at(0).split(";||;")
@@ -76,15 +74,14 @@ class Sync < ActiveRecord::Base
                   object.id = hash["id"]
                   total_con << object
                 end
-                p total_con
-                cap.import total_con
+                cap.import total_con, :timestamps=>false,:on_duplicate_key_update=>titles
               end
             end
           }
         end
       end
     else
-#      file.write("")
+      #      file.write("")
     end
   end
 
