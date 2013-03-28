@@ -63,4 +63,7 @@ module Constant
 
   #  施工现场文件目录
   VIDEO_DIR ="work_videos"
+
+  LOCAL_DIR = "#{Rails.root}/public/"
+  LOG_DIR = LOCAL_DIR + "logs/"
 end
