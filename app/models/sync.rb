@@ -51,29 +51,37 @@ class Sync < ActiveRecord::Base
   def self.output_zip(day=1)
     file_path = Constant::LOCAL_DIR
     dirs=["syncs/","#{Time.now.ago(day.day).strftime("%Y-%m").to_s}/","#{Time.now.ago(day.day).strftime("%Y-%m-%d").to_s}/"]
+    dirs.each_with_index {|dir,index| Dir.mkdir file_path+dirs[0..index].join   unless File.directory? file_path+dirs[0..index].join }
     paths =get_dir_list(file_path+dirs.join)
-    paths.each do |path|
-      if  File.extname(file_path+dirs.join+path) == '.zip'
-        Zip::ZipFile.open(file_path+dirs.join+path){ |zipFile|
-          zipFile.each do |file|
-            if file.name.split(".").reverse[0] =="log"
-              contents = zipFile.read(file).split("\n\n|::|")
-              titles =contents.delete_at(0).split(";||;")
-              total_con = []
-              cap = eval(file.name.split(".")[0].split("_").inject(String.new){|str,name| str + name.capitalize})
-              contents.each do |content|
-                hash ={}
-                cons = content.split(";||;")
-                titles.each_with_index {|title,index| hash[title] = cons[index].nil? ? cons[index] : cons[index].force_encoding("UTF-8")}
-                object = cap.new(hash)
-                object.id = hash["id"]
-                total_con << object
+    unless paths.blank?
+      paths.each do |path|
+      p  file_path+dirs.join+path
+        if  File.extname(file_path+dirs.join+path) == '.zip'
+          Zip::ZipFile.open(file_path+dirs.join+path){ |zipFile|
+            zipFile.each do |file|
+              p file.name
+              if file.name.split(".").reverse[0] =="log"
+                contents = zipFile.read(file).split("\n\n|::|")
+                titles =contents.delete_at(0).split(";||;")
+                total_con = []
+                cap = eval(file.name.split(".")[0].split("_").inject(String.new){|str,name| str + name.capitalize})
+                contents.each do |content|
+                  hash ={}
+                  cons = content.split(";||;")
+                  titles.each_with_index {|title,index| hash[title] = cons[index].nil? ? cons[index] : cons[index].force_encoding("UTF-8")}
+                  object = cap.new(hash)
+                  object.id = hash["id"]
+                  total_con << object
+                end
+                p total_con
+                cap.import total_con
               end
-              cap.import total_con
             end
-          end
-        }
+          }
+        end
       end
+    else
+#      file.write("")
     end
   end
 
