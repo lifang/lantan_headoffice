@@ -2,7 +2,7 @@
 class SyncsController < ActionController::Base
   
   def upload_file
-    Sync.accept_file(params[:upload],params[:sync_time])
+    Sync.accept_file(params[:upload])
     render :text=>"success"
   end
 
