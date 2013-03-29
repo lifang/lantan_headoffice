@@ -42,12 +42,22 @@ class Sync < ActiveRecord::Base
   end
 
 
-  def self.input_zip(file_path)
+  def self.input_zip(file_path, sync)
+    flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
     get_dir_list(file_path).each {|path|  File.delete(file_path+path) if path =~ /.zip/ }
     filename ="#{Time.now.strftime("%Y%m%d")}.zip"
+    is_update = false
     Zip::ZipFile.open(file_path+filename, Zip::ZipFile::CREATE) { |zf|
+      is_update = true
       get_dir_list(file_path).each {|path| zf.file.open(path, "w") { |os| os.write "#{File.open(file_path+path).read}" } }
     }
+    if is_update
+      sync.update_attributes({:sync_status=>Sync::SYNC_STAT[:COMPLETE], :zip_name=>filename,
+                              :sync_at => Time.now.strftime("%Y%m%d")})
+      flog.write("数据更新并压缩成功---#{Time.now}\r\n")
+    else
+      flog.write("数据更新并压缩失败---#{Time.now}\r\n")
+    end
     #send_file(store_id,file_path+filename,filename)
   end
 
