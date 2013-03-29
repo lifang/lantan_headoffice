@@ -1,0 +1,55 @@
+<div class="box">
+  <div class="data_box">
+    <div class="search">
+      <div><label>统计月份：</label><%=  @current_time %></div>
+      <%= form_tag "/pleaseds", :method => :get do  %>
+      <div><label>时间：</label>
+        <select name="search_time">
+          <% @pleased_time.each do |pt| %>
+          <option value="<%= pt %>" <% if !params[:search_time].nil? && params[:search_time] == pt %>selected<% end %>><%= pt %></option>
+          <% end %>
+        </select>
+      </div>
+      <div><label>区域：</label>
+        <select id="search_province" name="search_province" class="select_marginRight">
+          <option value="0">全部</option>
+          <% @provinces.each do |p| %>
+          <option value="<%= p.id %>" <% if !params[:search_province].nil? && params[:search_province].to_i != 0 && params[:search_province].to_i == p.id %>selected<% end %>><%= p.name %></option>
+          <% end %>
+        </select>
+        <select id="search_city" name="search_city">
+          <% if !@cities.blank? %>
+          <option value="0">请选择城市</option>
+          <% @cities.each do |c| %>
+          <option value="<%= c.id %>" <% if params[:search_city].to_i == c.id %>selected<% end %>><%= c.name%></option>
+          <% end %>
+          <% else %>
+          <option value="0">------</option>
+          <% end %>
+        </select>
+      </div>
+      <div><button class="search_btn">查询</button></div>
+      <% end %>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <img src="/assets/b06.jpg"/>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#search_province").change(function(){
+    var p_id = $(this).val();
+    if(p_id == 0){
+      $("#search_city").html("<option value='0'>------</option>");
+    }else{
+      $.ajax({
+        type: "get",
+        url: "/pleaseds/search_cities",
+        data: {pid : p_id}
+      })
+    }
+  })
+</script>

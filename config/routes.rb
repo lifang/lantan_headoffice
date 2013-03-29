@@ -11,6 +11,13 @@ LantanHeadoffice::Application.routes.draw do
 #      get :edit_store
 #    end
 #  end
+  resources :complaints
+  resources :revisits
+  resources :pleaseds do
+    collection do
+      get :search_cities
+    end
+  end
   resources :materials do
     collection do
       get :show_material_beizhu
@@ -20,6 +27,7 @@ LantanHeadoffice::Application.routes.draw do
       post :material_check
       get :mat_order_detail
       post :deliver_good
+      get :urge_payment
       post :ruku
       get :m_list
     end

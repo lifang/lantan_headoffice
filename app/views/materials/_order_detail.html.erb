@@ -32,6 +32,20 @@
         <div class="seeProDiv_l">物流信息：</div>
         <div class="seeProDiv_r">物流单号:<%= @mo.logistics_code ||= "------" %><br/>承运人：<%= @mo.carrier ||= "------" %></div>
       </div>
+      <div class="seeProDiv">
+        <div class="seeProDiv_l">付款状态:</div>
+        <div class="seeProDiv_r">
+          <%if @mo.status.nil?%>
+          未知
+          <% else %>
+            <% MaterialOrder::STATUS.each do |key, value| %>
+          <% if @mo.status == key %>
+          <%= value %>
+          <% end %>
+          <% end %>
+          <% end %>
+        </div>
+      </div>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_tab_table">
         <thead>
           <tr class="hbg">
@@ -61,9 +75,11 @@
       </div>
     </div>
     <div id="order_detail_btn_box" class="btn_box">
-      <button class="confirm_btn">催款</button>
-      <% if @mo.m_status == 0 %>
       <input type="hidden" value="<%= @mo.id %>"/>
+      <% if @mo.status == 0 %>
+      <button id="urge_payment" class="confirm_btn">催款</button>
+      <% end %>
+      <% if @mo.m_status == 0 %>
       <button id="deliver_good" class="confirm_btn">发货</button>
       <% end %>
     </div>

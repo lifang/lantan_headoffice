@@ -7,7 +7,8 @@ class Order < ActiveRecord::Base
   belongs_to :car_num
   belongs_to :c_pcard_relation
   belongs_to :c_svc_relation
-   belongs_to :sale
+  belongs_to :sale
+  belongs_to :store
   has_many :revisit_order_relations
 
   IS_VISITED = {:YES => 1, :NO => 0} #1 已访问  0 未访问
@@ -15,6 +16,9 @@ class Order < ActiveRecord::Base
   #0 正常未进行  1 服务中  2 等待付款  3 已经付款  4 已结束  5已删除
   IS_SVC_CARD = {:YES => 1, :NO => 0}   #该订单是否使用优惠卡 1用了 0没有
   IS_P_CARD ={:YES => 1, :NO => 0} #是否使用套餐卡 1用了 0没有
+  #是否满意
+  IS_PLEASED = {:BAD => 0, :SOSO => 1, :GOOD => 2, :VERY_GOOD => 3}  #0 不满意  1 一般  2 好  3 很好
+  IS_PLEASED_NAME = {0 => "不满意", 1 => "一般", 2 => "好", 3 => "很好"}
   #组装查询order的sql语句
   def self.generate_order_sql(started_at, ended_at, is_visited)
     condition_sql = ""

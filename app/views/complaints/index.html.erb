@@ -1,0 +1,117 @@
+<div class="box">
+  <div class="data_box">
+
+    <div class="search">
+      <div><label>统计月份：</label><%= @current_time %></div>
+      <%= form_tag "/complaints", :method => :get do %>
+      <div><label>时间：</label>
+        <select name="search_time">
+          <% @complaints_time.each do |ct| %>
+          <option value="<%= ct %>" <% if !params[:search_time].nil? && params[:search_time] == ct%>selected<% end %>><%= ct %></option>
+          <% end %>
+        </select>
+      </div>
+      <div><button class="search_btn">查询</button></div>
+      <% end %>
+    </div>
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+          <thead>
+            <tr class="hbg">
+              <td>门店名称</td>
+              <td>投诉时间</td>
+              <td>相关订单</td>
+              <td>相关员工</td>
+              <td>投诉分类</td>
+              <td>投诉原因</td>
+              <td>是否有效</td>
+              <td>是否处理</td>
+              <td>处理时间</td>
+              <td>处理结果</td>
+              <td>是否加入考核</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @complaints.blank? %>
+            <tr>
+              <th colspan="11">无数据!</th>
+            </tr>
+            <% else %>
+            <% @complaints.each do |c| %>
+            <tr>
+              <td><%= c.order_id.nil? ? "----" : c.order.store.name  %></td>
+              <td><%= c.created_at.strftime("%Y-%m-%d %H:%m") %></td>
+              <td><a href="#" class="other_a"><%= c.order_id.nil? ? "----" : c.order.code %></a></td>
+              <td>
+                  <%= c.staff_id_1.nil? ? "--" : find_staff(c.staff_id_1) %>/
+                  <%= c.staff_id_2.nil? ? "--" : find_staff(c.staff_id_2) %>
+              </td>
+              <td>
+                <% Complaint::TYPES_NAMES.each do |key, value| %>
+                <% if c.types == key %>
+                <%= value %>
+                <% end %>
+                <% end %>
+              </td>
+              <td><%= c.reason ||= "----" %></td>
+              <td>
+                <% if c.types != 17 %>
+                是
+                <% else %>
+                否
+                <% end %>
+              </td>
+              <td>
+                <% if c.process_at.nil? %>
+                ----
+                <% else %>
+                是
+                <% end %>
+              </td>
+              <td>
+                <% if c.process_at.nil? %>
+                ----
+                <% else %>
+                <%= c.process_at.strftime("%Y-%m-%d") %>
+                <% end %>
+              </td>
+              <td><%= c.remark ||= "----" %></td>
+              <td>
+                <% if c.is_violation %>
+                是
+                <% else %>
+                否
+                <% end %>
+              </td>
+            </tr>
+            <% end %>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="otherWay">
+          <ul>
+            <li>
+              及时率：<span class="load_box">
+                <span class="load_line" style="width:<%= @timely_rate*200 %>px !important"></span>
+              </span>&nbsp;&nbsp;
+              <em class="red"><%= @timely_rate*100 %>%</em>
+            </li>
+            <li>
+              解决率：<span class="load_box">
+                <span class="load_line" style="width:<%= @processed_rate*200 %>px !important"></span>
+              </span>&nbsp;&nbsp;
+              <em class="red"><%= @processed_rate*100 %>%</em>
+            </li>
+          </ul>
+        </div>
+        <div class="pageTurn">
+          <% if !@complaints.blank? %>
+           <%= will_paginate  @complaints, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

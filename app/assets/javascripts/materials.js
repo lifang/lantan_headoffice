@@ -127,6 +127,27 @@ $(document).ready(function(){
         })
       }
     })
+    $("#urge_payment").live("click", function(){    //催款按钮
+          var moid = $(this).parent().find("input").val();
+          $.ajax({
+              get: "get",
+              url: "/materials/urge_payment",
+              dataType: "json",
+              data: {
+                  mo_id : moid
+              },
+              success: function(data){
+                  if(data == 0){
+                      alert("操作失败！");
+                  }else{
+                      alert("操作成功！");
+                      $("#order_detail").hide();
+                      $(".mask").hide();
+                      $("#order_detail").empty();
+                  }
+              }
+          })
+    })
     $("#mo_search_button").click(function(){   //门店订货记录查询
       var status = $("#select_mo_status").val();
       var started_time = $("#started_time").val();
@@ -190,4 +211,5 @@ $(document).ready(function(){
         })
       }
     })
+    
 })

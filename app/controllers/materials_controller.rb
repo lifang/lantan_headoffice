@@ -1,6 +1,6 @@
 #encoding: utf-8
 class MaterialsController < ApplicationController   #库存控制器
-  layout"logistics_manage"
+  layout"logistics_manages", :except => "m_list"
   def index
     @tab = params[:tab]
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : "status = #{params[:status].to_i}"
@@ -78,7 +78,7 @@ class MaterialsController < ApplicationController   #库存控制器
     end
   end
 
-  def deliver_good #发货按钮
+  def deliver_good #发货
     mo = MaterialOrder.find(params[:m_o_id].to_i)
     arrive_time = params[:arrive_time]
     logistic_code = params[:logistic_code]
@@ -90,6 +90,18 @@ class MaterialsController < ApplicationController   #库存控制器
     end
   end
 
+  def urge_payment #催款
+    mo = MaterialOrder.find(params[:mo_id].to_i)
+    store_id = mo.store_id
+    if !store_id.nil?
+      Notice.create(:types => Notice::TYPES[:URGE_PAYMENT], :content => "请尽快上缴拖欠的货款",
+        :status => Notice::STATUS[:NOMAL], :store_id => store_id)
+      render :json => 1
+    else
+      render :json => 0
+    end
+  end
+  
   def ruku #入库
     m_name = params[:m_name]
     m_type = params[:m_type].to_i
@@ -101,26 +113,28 @@ class MaterialsController < ApplicationController   #库存控制器
     mo = MaterialOrder.where("code = '#{m_o_code}'")
     if !m.blank?
       material = m[0]
+      total_num = material.storage + m_num
       if !mo.blank?
         material_order = mo[0]
         MatInOrder.create(:material_order_id => material_order.id, :material_id => material.id, :material_num => m_num,
-                          :price => m_price)
+                          :price => m_price, :staff_id => cookies[:user_id].to_i)
       else
         material_order = MaterialOrder.create(:code => m_o_code)
         MatInOrder.create(:material_order_id => material_order.id, :material_id => material.id, :material_num => m_num,
-                          :price => m_price)
+                          :price => m_price, :staff_id => cookies[:user_id].to_i)
       end
+      material.update_attribute("storage", total_num)
     else
         material = Material.create(:name => m_name, :code => m_code, :price => m_price, :types => m_type, 
           :status => Material::STATUS[:NORMAL], :storage => m_num)
       if !mo.blank?
         material_order = mo[0]
         MatInOrder.create(:material_order_id => material_order.id, :material_id => material.id, :material_num => m_num,
-                          :price => m_price)
+                          :price => m_price, :staff_id => cookies[:user_id].to_i)
       else
         material_order = MaterialOrder.create(:code => m_o_code)
         MatInOrder.create(:material_order_id => material_order.id, :material_id => material.id, :material_num => m_num,
-                          :price => m_price)
+                          :price => m_price, :staff_id => cookies[:user_id].to_i)
       end
     end
     respond_to do |format|

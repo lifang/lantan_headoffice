@@ -464,7 +464,7 @@ input.file { width: 100px; _width: 90px; float: left;}
 /*load*/
 .load_box, .load_line {height: 5px; display: inline-block;}
 .load_box { width: 200px;  overflow: hidden; border: 1px #e1e1e1 solid; position: relative;}
-.load_line {width: 160px;  background: #930205; position: absolute; top: 0; left: 0;}
+.load_line {  width: 160px; background: #930205; position: absolute; top: 0; left: 0;}
 
 /*员工--统计表*/
 .tj_pic { width: 600px;margin: 5px auto;}

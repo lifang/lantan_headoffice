@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <title>总部后台首页</title>
 <%= stylesheet_link_tag    "application", "style" %>
-<%= javascript_include_tag "application", "main" %>
+<%= javascript_include_tag "application", "main", "backstages" %>
 <!--[if IE 6]>
 <script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
 <script>
@@ -29,7 +29,7 @@
                <%  elsif menu.name == "物流管理" %>
                  <li><%= link_to "物流管理", materials_path, :class => "m_two" %></li>
                <% elsif menu.name == "服务管理" %>
-                 <li><a href="#" class="m_three">服务管理</a></li>
+                 <li><%= link_to "服务管理", "/complaints", :class => "m_three" %></li>
                <% elsif menu.name == "营销管理" %>
                  <li><%= link_to "营销管理", sv_cards_path, :class => "m_four" %></li>
                <% elsif menu.name == "基础数据" %>
@@ -38,7 +38,11 @@
               <% end %>
              </ul>
               <div class="clear"></div>
-              <div class="message">最近有 <span class="red">2</span> 条订货相关信息需要您去处理<a href="#">点击查看</a><span class="x">Close</span></div>
+              <% if @urge_goods_msg > 0 %>
+              <div id="ugm_div" class="message">
+                最近有 <span class="red"><%= @urge_goods_msg %></span> 条订货相关信息需要您去处理<a href="/materials">点击查看</a><span id="ugm_div_close" class="x">Close</span>
+              </div>
+              <% end %>
          </div>
      </div>
      <div class="foot"><p>Copyright © 2013 杭州澜泰 版权所有</p></div>

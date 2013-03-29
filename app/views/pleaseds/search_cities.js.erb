@@ -1,0 +1,1 @@
+$("#search_city").html("<% if @cities.blank? %><option value='0'>------</option><% else %><option value='0 '>请选择城市</option><% @cities.each do |c| %><option value='<%= c.id %>'><%= c.name %></option><% end %><% end %>")
