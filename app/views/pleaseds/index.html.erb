@@ -34,7 +34,11 @@
     <div class="clear"></div>
     <div class="data_body">
       <div>
-        <img src="/assets/b06.jpg"/>
+        <% if @chart_image.nil? %>
+        请选择城市
+        <% else %>
+        <%= image_tag @chart_image.image_url %>
+        <% end %>
       </div>
     </div>
   </div>
