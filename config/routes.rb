@@ -35,6 +35,7 @@ LantanHeadoffice::Application.routes.draw do
   resources :syncs do
     collection do
       post :upload_file
+      get :is_generate_zip
     end
   end
   resources :news do

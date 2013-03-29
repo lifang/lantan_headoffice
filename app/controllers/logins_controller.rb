@@ -2,6 +2,7 @@
 class LoginsController < ApplicationController #登录控制器
 
   def index   #登陆
+    Sync.output_zip
     render :index, :layout => false
   end
 
