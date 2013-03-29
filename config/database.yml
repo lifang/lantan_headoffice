@@ -15,7 +15,7 @@ development:
   database: lantan_store
   pool: 5
   username: root
-  password: root
+  password: comdo2012
   host: localhost
 
 storedb:
