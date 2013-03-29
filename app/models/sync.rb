@@ -123,9 +123,9 @@ class Sync < ActiveRecord::Base
     if is_update
       sync.update_attributes({:sync_status=>Sync::SYNC_STAT[:COMPLETE], :zip_name=>filename,
           :sync_at => Time.now.strftime("%Y%m%d")})
-      flog.write("数据更新并压缩成功---#{Time.now}\r\n")
+      flog.write("数据压缩成功---#{Time.now}\r\n")
     else
-      flog.write("数据更新并压缩失败---#{Time.now}\r\n")
+      flog.write("数据压缩失败---#{Time.now}\r\n")
     end
     #send_file(store_id,file_path+filename,filename)
   end
