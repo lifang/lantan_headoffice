@@ -1,5 +1,7 @@
 #encoding: utf-8
 class SvcReturnRecord < ActiveRecord::Base
+  set_table_name :"lantan_db.svc_return_records"
+  set_primary_key "id"
   belongs_to :store
 
   TYPES = {:in => 0, :out => 1} #门店订货为支出=1   客户消费为收入=0
