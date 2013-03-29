@@ -71,7 +71,7 @@
                   <td><%= store.contact %></td>
                   <td><%= store.phone %></td>
                   <td><%= store.address %></td>
-                  <td><%= store.opened_at.strftime("%Y-%m-%d") %></td>
+                  <td><%= store.opened_at.strftime("%Y-%m-%d") if store.opened_at %></td>
                   <% if store.status == 0 %>
                     <td>已关闭</td>
                   <% elsif store.status == 1 %>

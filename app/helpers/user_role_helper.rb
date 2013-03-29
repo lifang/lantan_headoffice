@@ -5,7 +5,7 @@ module UserRoleHelper
     current_staff = Staff.find(staff_id)
     roles = current_staff.roles
     staff_roles = []
-    model_roles = {}
+    model_role = {}
     roles.each do |role|
       staff_roles << role.id
       role.role_model_relations.each do |m|
