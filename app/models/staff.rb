@@ -31,8 +31,8 @@ class Staff < ActiveRecord::Base
 		encrypted_password == encrypt(submitted_password)
 	end
 
-  def encrypted_password
-    self.encrypt_password=encrypt(password) #确定encrypt值
+  def encrypt_password
+    self.encrypted_password=encrypt(password)
   end
 
   private

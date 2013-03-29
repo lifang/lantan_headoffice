@@ -4,6 +4,8 @@ class CarsController < ApplicationController   #车型控制器
   layout "base_datas"
   def index
     @capitals = Capital.all
+    brands = CarBrand.all
+    @car_brands = brands.group_by { |c| c.capital_id } if brands
   end
 
   def new_brand #添加汽车品牌
@@ -11,8 +13,8 @@ class CarsController < ApplicationController   #车型控制器
     capital_name =  brand_name.pinyin[0][0].upcase
     cb = CarBrand.where("name = '#{params[:brand_name]}'")
     if cb.blank?
-      capital_id = Capital.find_by_name(capital_name).id ||= nil
-      CarBrand.create(:name => params[:brand_name], :capital_id => capital_id)
+      capital = Capital.find_or_create_by_name(capital_name)
+      CarBrand.create(:name => params[:brand_name], :capital_id => capital.id)
       flash[:nitice] = "创建成功!"
     else
       flash[:notice] = "创建失败或该品牌已存在!"

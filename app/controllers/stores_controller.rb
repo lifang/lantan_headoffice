@@ -8,14 +8,9 @@ class StoresController < ApplicationController  #门店控制器
         :per_page => 2,:order => "created_at desc")
     else
       if params[:select_city].to_i == 0
-        stores = []
         @cities = City.where("parent_id = #{params[:select_province].to_i}")
-        @cities.each do |c|
-          Store.where("city_id = #{c.id}").where(store_name_sql).each do |s|
-            stores << s
-          end
-        end
-        @stores = stores.paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
+        @stores = Store.where(["city_id in (?)", @cities]).where(store_name_sql).
+          paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
       else
         @cities = City.where("parent_id = #{params[:select_province].to_i}")
         @stores = Store.where("city_id = #{params[:select_city].to_i}")
@@ -26,7 +21,7 @@ class StoresController < ApplicationController  #门店控制器
   end
 
   def show  #门店详情
-   @store = Store.find(params[:store_id].to_i)
+   @store = Store.find_by_id(params[:store_id].to_i)
   end
 
   def new #新建
@@ -50,7 +45,7 @@ class StoresController < ApplicationController  #门店控制器
   end
 
   def update  #更新门店
-    @store = Store.find(params[:id])
+    @store = Store.find_by_id(params[:id])
       if @store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
         :contact => params[:edit_store_contact].strip, :phone => params[:edit_store_phone].strip, :address => params[:edit_store_address].strip,
         :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i)

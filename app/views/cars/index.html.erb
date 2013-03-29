@@ -7,10 +7,10 @@
     <div class="data_body">
       <div class="car_group">
         <% @capitals.each do |c|%>
-        <% if !c.car_brands.blank? %>
+        <% unless @car_brands.blank? or @car_brands[c.id].blank? %>
         <div class="car_gh"><%= c.name %></div>     
         <ul>
-          <% c.car_brands.each do |car| %>
+          <% @car_brands[c.id].each do |car| %>
           <li>
             <a name="check_model" href="JavaScript:void(0)"><%= car.name %></a>
             <a name="del_brands" href="JavaScript:void(0)" class="group_x">Close</a>

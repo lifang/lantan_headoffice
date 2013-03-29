@@ -1,5 +1,7 @@
 #encoding: utf-8
 class Order < ActiveRecord::Base
+  set_table_name :"lantan_db.orders"
+  set_primary_key "id"
   has_many :order_prod_relations
   has_many :order_pay_types
   has_many :work_orders
