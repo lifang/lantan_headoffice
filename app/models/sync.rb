@@ -9,9 +9,9 @@ class Sync < ActiveRecord::Base
   require 'zip/zipfilesystem'
 
   #接收文件文件并存到本地
-  def self.accept_file(img_url)
+  def self.accept_file(img_url,sync_time)
     path="#{Rails.root}/public/"
-    dirs=["syncs/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
+    dirs=["syncs/","#{sync_time.to_datetime.strftime("%Y-%m").to_s}/","#{sync_time.to_datetime.strftime("%Y-%m-%d").to_s}/"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
     filename = img_url.original_filename
     File.open(path+dirs.join+filename, "wb")  {|f|  f.write(img_url.read) }
@@ -50,7 +50,7 @@ class Sync < ActiveRecord::Base
 
   def self.output_zip(store_id,day=1)
     file_path = Constant::LOCAL_DIR
-    dirs=["syncs/","#{Time.now.strftime("%Y-%m").to_s}/","/#{Time.now.strftime("%Y-%m-%d").to_s}/"]
+    dirs=["syncs/","#{Time.now.ago(day).strftime("%Y-%m").to_s}/","/#{Time.now.ago(day).strftime("%Y-%m-%d").to_s}/"]
     Zip::ZipFile.open(file_path+dirs.join+"#{Time.now.ago(day).strftime("%Y%m%d")}_#{store_id}.zip"){ |zipFile|
       zipFile.each do |file|
         if file.name.split(".").reverse[0] =="log"
