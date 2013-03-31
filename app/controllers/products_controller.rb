@@ -37,7 +37,7 @@ class ProductsController < ApplicationController
 
   def set_product(types)
     parms = {:name=>params[:name],:base_price=>params[:base_price],:sale_price=>params[:sale_price],:description=>params[:desc],
-      :types=>params[:prod_types],:status=>Product::IS_VALIDATE[:YES],:introduction=>params[:intro], :store_id=>params[:store_id],
+      :types=>params[:prod_types],:status=>Product::IS_VALIDATE[:YES],:introduction=>params[:intro], :store_id=>Constant::STORE_ID,
       :is_service=>Product::PROD_TYPES[:"#{types}"],:created_at=>Time.now.strftime("%Y-%M-%d"), :service_code=>"#{types[0]}#{Sale.set_code(3)}"
     }
     product =Product.create(parms)
@@ -125,7 +125,7 @@ class ProductsController < ApplicationController
 
   #加载物料信息
   def load_material
-    sql = "select id,name from materials  where  status=#{Material::STATUS[:NORMAL]}"
+    sql = "select id,name from materials  where  status=#{Material::STATUS[:NORMAL]} and store_id=#{Constant::STORE_ID}"
     sql += " and types=#{params[:mat_types]}" if params[:mat_types] != "" || params[:mat_types].length !=0
     sql += " and name like '%#{params[:mat_name]}%'" if params[:mat_name] != "" || params[:mat_name].length !=0
     @materials=Material.find_by_sql(sql)
