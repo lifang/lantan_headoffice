@@ -8,7 +8,7 @@
             <option value="0">请选择省份</option>
             <% @provinces.each do |province| %>
               <option value="<%= province.id %>" <% if params[:select_province].to_i != 0 && params[:select_province].to_i == province.id%>selected<% end %>><%= province.name %></option>
-            <% end %>
+            <% end if @provinces %>
           </select>
           <select id="select_city" name="select_city" class="select_marginRight">
             <% if params[:select_province].to_i != 0 %>
