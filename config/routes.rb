@@ -2,20 +2,29 @@ LantanHeadoffice::Application.routes.draw do
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
-#  resources :stores do
-#    member do
-#      post :create
-#    end
-#    collection do
-#      get :show_store
-#      get :edit_store
-#    end
-#  end
+  #  resources :stores do
+  #    member do
+  #      post :create
+  #    end
+  #    collection do
+  #      get :show_store
+  #      get :edit_store
+  #    end
+  #  end
   resources :complaints
   resources :revisits
   resources :pleaseds do
     collection do
       get :search_cities
+    end
+  end
+  resources :products do
+    collection do
+      post "edit_prod","add_prod","add_serv","serv_create","load_material"
+      get "prod_services"
+    end
+    member do
+      post "edit_prod","update_prod","serv_update","edit_serv","show_prod","show_serv"
     end
   end
   resources :materials do
@@ -68,7 +77,7 @@ LantanHeadoffice::Application.routes.draw do
     end
   end
   resources :stores do
-     collection do
+    collection do
       post :province_change
       post :new_store_select_province
       post :edit_store_select_province
@@ -92,7 +101,7 @@ LantanHeadoffice::Application.routes.draw do
       post :edit_search_products_part    
     end
     member do
-       post :update
+      post :update
     end
   end
   resources :sales do
@@ -113,7 +122,7 @@ LantanHeadoffice::Application.routes.draw do
       post :create    
     end
     collection do
-       get :logout
+      get :logout
     end
   end
   resources :backstages
