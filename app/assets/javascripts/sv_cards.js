@@ -51,40 +51,40 @@ $(document).ready(function(){
     var type = parseInt($("#card_type").val());
     if(type == 1){
       if($("#card_name").val() == ""){
-        alert("优惠卡名称不能为空!");
+        tishi_alert("优惠卡名称不能为空!");
         return false;
       }else if($("#card_img").val() == ""){
-        alert("请上传卡的图片!");
+        tishi_alert("请上传卡的图片!");
         return false;
       }else if($("#card_description").val() == ""){
-        alert("请描述该卡!");
+        tishi_alert("请描述该卡!");
         return false;
       }else if($("#started_money").val() == ""){
-        alert("请输入充值金额!");
+        tishi_alert("请输入充值金额!");
         return false;
       }else if($("#ended_money").val() == ""){
-        alert("请输入赠送金额!");
+        tishi_alert("请输入赠送金额!");
         return false;
       }
     }else if(type == 0){
       if($("#card_name").val() == ""){
-        alert("优惠卡名称不能为空!");
+        tishi_alert("优惠卡名称不能为空!");
         return false;
       }else if($("#card_img").val() == ""){
-        alert("请上传卡的图片!");
+        tishi_alert("请上传卡的图片!");
         return false;
       }else if($("#discount_value").val()== ""){
-          alert("请输入折扣!");
+          tishi_alert("请输入折扣!");
           return false;
       }else if(parseFloat($("#discount_value").val()) > 10 || parseFloat($("#discount_value").val()) < 1){
-       alert("折扣必须在1~10之间!");
+          tishi_alert("折扣必须在1~10之间!");
           return false;
       }
       else if($("#card_description").val() == ""){
-        alert("请描述该卡!");
+        tishi_alert("请描述该卡!");
         return false;
       }else if($("input[name='product_hidden_id[]']").length <= 0){
-        alert("请至少选择一个项目!");
+        tishi_alert("请至少选择一个项目!");
         return false;
       }
     }
@@ -95,34 +95,34 @@ $(document).ready(function(){
     var type = parseInt($("#edit_card_type").val());
     if(type == 1){
       if($("#edit_card_name").val() == ""){
-        alert("优惠卡名称不能为空!");
+        tishi_alert("优惠卡名称不能为空!");
         return false;
       }else if($("#edit_card_description").val() == ""){
-        alert("请描述该卡!");
+        tishi_alert("请描述该卡!");
         return false;
       }else if($("#edit_started_money").val() == ""){
-        alert("请输入充值金额!");
+        tishi_alert("请输入充值金额!");
         return false;
       }else if($("#edit_ended_money").val() == ""){
-        alert("请输入赠送金额!");
+        tishi_alert("请输入赠送金额!");
         return false;
       }
     }else if(type == 0){
       if($("#edit_card_name").val() == ""){
-        alert("优惠卡名称不能为空!");
+        tishi_alert("优惠卡名称不能为空!");
         return false;
       }else if($("#edit_discount_value").val()== ""){
-          alert("请输入折扣!");
+          tishi_alert("请输入折扣!");
           return false;
       }else if(parseFloat($("#edit_discount_value").val()) > 10 || parseFloat($("#edit_discount_value").val()) < 1){
-       alert("折扣必须在1~10之间!");
+       tishi_alert("折扣必须在1~10之间!");
           return false;
       }
       else if($("#edit_card_description").val() == ""){
-        alert("请描述该卡!");
+        tishi_alert("请描述该卡!");
         return false;
       }else if($("input[name='edit_product_hidden_id[]']").length <= 0){
-        alert("请至少选择一个项目!");
+        tishi_alert("请至少选择一个项目!");
         return false;
       }
     }
@@ -189,7 +189,7 @@ $(document).ready(function(){
   $("a[name='del_p_button']").live("click", function(){     //减号按钮
     var a = parseInt($(this).prev().find("input").val());
     if(a<=1){
-      alert("至少1个!");
+      tishi_alert("至少1个!");
     }else{
       $(this).prev().find("input").val(a-1);
     }
@@ -200,7 +200,7 @@ $(document).ready(function(){
    $("a[name='edit_del_p_button']").live("click", function(){     //编辑时减号按钮
     var a = parseInt($(this).prev().find("input").val());
     if(a<=1){
-      alert("至少1个!");
+      tishi_alert("至少1个!");
     }else{
       $(this).prev().find("input").val(a-1);
     }
@@ -260,9 +260,9 @@ $(document).ready(function(){
           if(data == 1){
              prev_td.prev().text("是");
              prev_td.html("-----");
-             alert("操作成功!");
+             tishi_alert("操作成功!");
           }else{
-            alert("操作失败!")
+            tishi_alert("操作失败!")
           }
         }
       })
