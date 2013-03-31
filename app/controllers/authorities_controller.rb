@@ -1,3 +1,4 @@
+#encoding: utf-8
 class AuthoritiesController < ApplicationController     #权限控制器
   layout "base_datas"
   def index
