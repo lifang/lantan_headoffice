@@ -2,7 +2,7 @@
 function add_prod(){
     $.ajax({
         async:true,
-        type : 'post',
+        type : "POST",
         dataType : 'script',
         url : "/products/add_prod"
     });
@@ -12,7 +12,7 @@ function add_prod(){
 function edit_prod(id){
     $.ajax({
         async:true,
-        type : 'post',
+        type : "POST",
         dataType : 'script',
         url : "/products/"+ id+"/edit_prod"
     });
@@ -22,7 +22,7 @@ function edit_prod(id){
 function show_prod(id){
     $.ajax({
         async:true,
-        type : 'post',
+        type : "POST",
         dataType : 'script',
         url : "/products/"+ id+"/show_prod"
     });
@@ -63,7 +63,7 @@ function add_product(e){
 function show_service(id){
     $.ajax({
         async:true,
-        type : 'post',
+        type : "POST",
         dataType : 'script',
         url : "/products/"+ id+"/show_serv"
     });
@@ -73,7 +73,7 @@ function show_service(id){
 function add_service(){
     $.ajax({
         async:true,
-        type : 'post',
+        type : "POST",
         dataType : 'script',
         url :"/products/add_serv"
     });
@@ -83,7 +83,7 @@ function add_service(){
 function edit_service(store_id,id){
     $.ajax({
         async:true,
-        type : 'post',
+        type : "POST",
         dataType : 'script',
         url : "/products/"+ id+"/edit_serv"
     });
@@ -131,7 +131,7 @@ function load_material(store_id){
     if (types != "" || name != ""){
         $.ajax({
             async:true,
-            type : 'post',
+            type : "POST",
             dataType : 'script',
             url : "/products/load_material",
             data : {
@@ -206,4 +206,22 @@ function show_center(t){
         $(t).css('display','none');
         $(".mask").css('display','none');
     });
+}
+//弹出层
+function popup(t){
+    var doc_height = $(document).height();
+    var doc_width = $(document).width();
+    var layer_width = $(t).width();
+    $(".mask").css({
+        display:'block',
+        height:doc_height
+    });
+    $(t).css('top',"80px");
+    $(t).css('left',(doc_width-layer_width)/2);
+    $(t).css('display','block');
+
+    $(t + " .close").click(function(){
+        $(t).css('display','none');
+        $(".mask").css('display','none');
+    })
 }

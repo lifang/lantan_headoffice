@@ -1,5 +1,6 @@
 #encoding: utf-8
 class Sale < ActiveRecord::Base
+  require 'mini_magick'
   has_many :sale_prod_relations, :dependent => :destroy
   belongs_to :store
   has_many :orders
@@ -22,5 +23,24 @@ class Sale < ActiveRecord::Base
     end
     file.close
     return code
+  end
+
+  #上传图片并裁剪不同比例 目前为50,100,200和原图
+  #img_url 上传文件的路径 sale_id所属对象的id
+  #pic_types存放文件的文件夹名称 store_id 门店编号
+  def self.upload_img(img_url,sale_id,pic_types,store_id,pics_size,img_code=nil)
+    path = Constant::LOCAL_DIR
+    dirs=["/#{pic_types}","/#{store_id}","/#{sale_id}"]
+    dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
+    file=img_url.original_filename
+    filename="#{dirs.join}/#{img_code}img#{sale_id}."+ file.split(".").reverse[0]
+    File.open(path+filename, "wb")  {|f|  f.write(img_url.read) }
+    img = MiniMagick::Image.open path+filename,"rb"
+    pics_size.each do |size|
+      new_file="#{dirs.join}/#{img_code}img#{sale_id}_#{size}."+ file.split(".").reverse[0]
+      resize = size > img["width"] ? img["width"] : size
+      img.run_command("convert #{path+filename}  -resize #{resize}x#{resize} #{path+new_file}")
+    end
+    return filename
   end
 end

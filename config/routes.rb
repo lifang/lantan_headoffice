@@ -20,7 +20,7 @@ LantanHeadoffice::Application.routes.draw do
   end
   resources :products do
     collection do
-      post "edit_prod","add_prod","add_serv","serv_create","load_material"
+      post "edit_prod","add_serv","add_prod","serv_create","load_material"
       get "prod_services"
     end
     member do

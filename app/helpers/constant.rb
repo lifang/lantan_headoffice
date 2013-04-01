@@ -66,4 +66,15 @@ module Constant
 
   LOCAL_DIR = "#{Rails.root}/public/"
   LOG_DIR = LOCAL_DIR + "logs/"
+
+   PCARD_PICS = "pcard_pics"
+  SALE_PICS = "sale_pics"
+  #产品和活动的类别  图片名称分别为 product_pics 和service_pics
+  PRODUCT = "PRODUCT"
+  SERVICE = "SERVICE"
+
+   #上传图片的比例
+  SALE_PICSIZE =[300,230,663]
+  P_PICSIZE = [300,356,50,246]
+  C_PICSIZE = [148]
 end

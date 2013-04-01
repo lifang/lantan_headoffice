@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.paginate_by_sql("select service_code code,name,types,sale_price,id,store_id from products where
-    is_service=#{Product::PROD_TYPES[:PRODUCT]} and status=#{Product::IS_VALIDATE[:YES]} order by created_at desc", :page => params[:page], :per_page => 5)
+    is_service=#{Product::PROD_TYPES[:PRODUCT]} and status=#{Product::IS_VALIDATE[:YES]} and store_id=#{Constant::STORE_ID} order by created_at desc", :page => params[:page], :per_page => 5)
   end  #产品列表页
 
   #新建
@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
 
   def prod_services
     @services = Product.paginate_by_sql("select id, service_code code,store_id,name,types,base_price,cost_time,staff_level level1,staff_level_1
-    level2 from products where is_service=#{Product::PROD_TYPES[:SERVICE]} and status=#{Product::IS_VALIDATE[:YES]}
+    level2 from products where is_service=#{Product::PROD_TYPES[:SERVICE]} and status=#{Product::IS_VALIDATE[:YES]} and store_id=#{Constant::STORE_ID}
     order by created_at asc", :page => params[:page], :per_page => 5)
     @materials={}
     @services.each do |service|
@@ -125,7 +125,7 @@ class ProductsController < ApplicationController
 
   #加载物料信息
   def load_material
-    sql = "select id,name from materials  where  store_id=#{params[:store_id]} and status=#{Material::STATUS[:NORMAL]}"
+    sql = "select id,name from materials  where  status=#{Material::STATUS[:NORMAL]}"
     sql += " and types=#{params[:mat_types]}" if params[:mat_types] != "" || params[:mat_types].length !=0
     sql += " and name like '%#{params[:mat_name]}%'" if params[:mat_name] != "" || params[:mat_name].length !=0
     @materials=Material.find_by_sql(sql)
