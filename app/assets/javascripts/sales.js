@@ -9,10 +9,10 @@ $(document).ready(function(){
       data: {id : sid},
       success: function(data){
         if (data == 1){
-          alert("删除成功!");
+          tishi_alert("删除成功!");
           location.href = "/sales";
         }else{
-          alert("删除失败！");
+          tishi_alert("删除失败！");
         }
       }
     })
@@ -27,10 +27,10 @@ $(document).ready(function(){
     data: {id : sid},
     success: function(data){
       if(data == 1){
-        alert("发布成功!");
+        tishi_alert("发布成功!");
         location.href = "/sales";
       }else{
-        alert("发布失败!");
+        tishi_alert("发布失败!");
       }
     }
   })
@@ -97,7 +97,7 @@ $(document).ready(function(){
   $("a[name='edit_del_button']").live("click", function(){  //编辑时减号按钮
         var a = parseInt($(this).prev().find("input").val());
         if(a<=1){
-      alert("至少1个!");
+      tishi_alert("至少1个!");
     }else{
       $(this).prev().find("input").val(a-1);
     }
@@ -105,7 +105,7 @@ $(document).ready(function(){
    $("a[name='del_button']").live("click", function(){     //减号按钮
     var a = parseInt($(this).prev().find("input").val());
     if(a<=1){
-      alert("至少1个!");
+      tishi_alert("至少1个!");
     }else{
       $(this).prev().find("input").val(a-1);
     }
@@ -212,13 +212,13 @@ $("#ended_time").datepicker({       //结束时间选择插件
 
 $("#create_button").click(function(){
     if(new Date($("#ended_time").val()) > 0 && new Date($("#ended_time").val()) < new Date($("#started_time").val())){
-        alert("结束时间必须在开始时间之后!");
+        tishi_alert("结束时间必须在开始时间之后!");
         return false;
     }
 });
 $("#edit_create_button").live("click",function(){
     if(new Date($("#edit_ended_time").val()) > 0 && new Date($("#edit_ended_time").val()) < new Date($("#edit_started_time").val())){
-        alert("结束时间必须在开始时间之后!");
+        tishi_alert("结束时间必须在开始时间之后!");
         return false;
     }
 });

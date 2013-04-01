@@ -4,7 +4,7 @@ $(document).ready(function(){
   })
   $("#add_role_btn").click(function(){    //添加角色验证
     if($("input[name='role_name']").val() == ""){
-      alert("角色名不能为空!");
+      tishi_alert("角色名不能为空!");
       return false;
     }
   })
@@ -18,10 +18,10 @@ $(document).ready(function(){
         data: {r_id : rid},
         success: function(data){
           if (data == 1){
-            alert("删除成功!");
+            tishi_alert("删除成功!");
             location.href = "/authorities";
           }else{
-            alert("删除失败!");
+            tishi_alert("删除失败!");
           }
         }
       })
@@ -38,7 +38,7 @@ $(document).ready(function(){
   $("input[name='role_new_name']").blur(function(){ //编辑更新
     var obj = $(this);
     if(obj.val() == ""){
-      alert("角色名不能为空!");
+      tishi_alert("角色名不能为空!");
       obj.val(obj.next().text());
       obj.attr("style", "display:none");
       obj.next().attr("style", "display:block");
@@ -51,10 +51,10 @@ $(document).ready(function(){
         data: {r_id : rid, r_name : rname},
         success: function(data){
           if(data == 1){
-            alert("更新成功!");
+            tishi_alert("更新成功!");
             location.href = "/authorities";
           }else{
-           alert("更新失败,该角色名已存在！");
+           tishi_alert("更新失败,该角色名已存在！");
            obj.val(obj.next().text());
            obj.attr("style", "display:none");
            obj.next().attr("style", "display:block");

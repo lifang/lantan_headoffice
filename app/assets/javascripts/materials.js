@@ -30,7 +30,7 @@ $(document).ready(function(){
       var mid = $(this).parent().find("input").val();
       var count = $(this).parent().prev().find("input").val();
        if(isNaN(parseInt(count))){
-         alert("请输入有效的数字!");
+         tishi_alert("请输入有效的数字!");
        }else{
          $.ajax({
         dataType: "json",
@@ -39,10 +39,10 @@ $(document).ready(function(){
         data: {m_id : mid, storage : count},
         success: function(data){
           if(data == 0){
-            alert("操作失败!");
+            tishi_alert("操作失败!");
           }else{
             obj.parent().prev().prev().prev().text(count);
-            alert("操作成功！");
+            tishi_alert("操作成功！");
           }
         }
       })
@@ -93,11 +93,11 @@ $(document).ready(function(){
       var logistic_code = $("#logistic_code").val();
       var carrier = $("#carrier").val();
       if(arrive_time == ""){
-        alert("输入到货时间!")
+        tishi_alert("输入到货时间!")
       }else if(logistic_code == ""){
-        alert("输入运单号码");
+        tishi_alert("输入运单号码");
       }else if(carrier == ""){
-        alert("输入运单人姓名");
+        tishi_alert("输入运单人姓名");
       }else{
         $.ajax({
           type: "post",
@@ -110,12 +110,12 @@ $(document).ready(function(){
           },
           success : function(data){
             if (data == 0){
-              alert("发货失败!");
+              tishi_alert("发货失败!");
               $("#order_detail").hide();
               $(".mask").hide();
               $("#order_detail").empty();
             }else if (data == 1){
-              alert("发货成功！");
+              tishi_alert("发货成功！");
               $("#order_detail").hide();
               $(".mask").hide();
               $("#order_detail").empty();
@@ -138,9 +138,9 @@ $(document).ready(function(){
               },
               success: function(data){
                   if(data == 0){
-                      alert("操作失败！");
+                      tishi_alert("操作失败！");
                   }else{
-                      alert("操作成功！");
+                      tishi_alert("操作成功！");
                       $("#order_detail").hide();
                       $(".mask").hide();
                       $("#order_detail").empty();
@@ -153,7 +153,7 @@ $(document).ready(function(){
       var started_time = $("#started_time").val();
       var ended_time = $("#ended_time").val();
       if(new Date(started_time) > 0 && new Date(ended_time) > 0 && new Date(ended_time) < new Date(started_time)){
-        alert("结束时间必须在开始时间之后!")
+        tishi_alert("结束时间必须在开始时间之后!")
       }else{
         $.ajax({
           type: "get",
@@ -183,19 +183,19 @@ $(document).ready(function(){
       var num_flag = (new RegExp(/^\d+$/)).test( $("#m_num").val());
       var price_flag = (new RegExp("^[1-9][0-9]*\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
       if($("#m_name").val() == ""){
-        alert("物料名不能为空!");
+        tishi_alert("物料名不能为空!");
       }else if( $("#m_o_code").val() == ""){
-        alert("订货单号不能为空!");
+        tishi_alert("订货单号不能为空!");
       }else if($("#m_code").val() == ""){
-        alert("请输入条形码");
+        tishi_alert("请输入条形码");
       }else if( $("#m_price").val() == ""){
-        alert("请输入单价");
+        tishi_alert("请输入单价");
       }else if(price_flag == false){
-        alert("请输入正确的价格");
+        tishi_alert("请输入正确的价格");
       }else if( $("#m_num").val() == ""){
-        alert("请输入数量");
+        tishi_alert("请输入数量");
       }else if(num_flag == false){
-        alert("数量必须是大于等于零的整数");
+        tishi_alert("数量必须是大于等于零的整数");
       }else{
         $.ajax({
           type: "post",

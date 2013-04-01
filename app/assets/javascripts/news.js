@@ -9,9 +9,9 @@ $(document).ready(function(){
           data: {n_id : nid},
           success: function(data){
             if(data == 0){
-              alert("删除失败!");
+              tishi_alert("删除失败!");
             }else{
-              alert("删除成功!");
+              tishi_alert("删除成功!");
               location.href="/news"
             }
           }
@@ -29,9 +29,9 @@ $(document).ready(function(){
          data: {n_id : nid},
          success: function(data){
            if(data == 0){
-              alert("发布失败!");
+              tishi_alert("发布失败!");
             }else{
-              alert("发布成功!");
+              tishi_alert("发布成功!");
               location.href="/news"
             }
          }
@@ -50,10 +50,10 @@ $(document).ready(function(){
 
    $("#edit_submit_btn").live("click",function(){ //编辑时确定按钮验证
     if($("#edit_new_title").val() == ""){
-      alert("标题不能为空!");
+      tishi_alert("标题不能为空!");
       return false;
     }else if($("#edit_new_content").val() == ""){
-      alert("内容不能为空!");
+      tishi_alert("内容不能为空!");
       return false;
     }
   })
@@ -64,10 +64,10 @@ $(document).ready(function(){
 
    $("#create_new_btn").click(function(){ //创建时确定按钮验证
     if($("#create_new_title").val() == ""){
-      alert("标题不能为空!");
+      tishi_alert("标题不能为空!");
       return false;
     }else if($("#create_new_content").val() == ""){
-      alert("内容不能为空!");
+      tishi_alert("内容不能为空!");
       return false;
     }
   })

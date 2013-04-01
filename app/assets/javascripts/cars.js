@@ -4,7 +4,7 @@ $(document).ready(function(){
   });
   $("#new_brands").click(function(){    //添加品牌验证
     if($("#brand_name").val() == ""){
-      alert("请输入车牌名!");
+      tishi_alert("请输入车牌名!");
       return false;
     }
   });
@@ -27,9 +27,9 @@ $(document).ready(function(){
       success: function(data){
         if(data == 1){
           location.href="/cars";
-          alert("删除成功!");
+          tishi_alert("删除成功!");
         }else{
-          alert("删除失败!");
+          tishi_alert("删除失败!");
         }
       }
     })
@@ -46,7 +46,7 @@ $(document).ready(function(){
     var cid = $(this).prev().val();
     var obj = $(this);
     if(obj.val()==""){
-      alert("型号不能为空");
+      tishi_alert("型号不能为空");
       obj.val(obj.prev().prev().text());
       obj.attr("style", "display:none");
       obj.prev().prev().attr("style", "display:block");
@@ -61,12 +61,12 @@ $(document).ready(function(){
             obj.attr("style", "display:none");
             obj.prev().prev().text(obj.val());
             obj.prev().prev().attr("style", "display:block");
-            alert("更新成功!");
+            tishi_alert("更新成功!");
           }else{
             obj.val(obj.prev().prev().text());
             obj.attr("style", "display:none");
             obj.prev().prev().attr("style", "display:block");
-            alert("更新失败!");
+            tishi_alert("更新失败!");
           }
         }
       })
@@ -85,9 +85,9 @@ $(document).ready(function(){
          success: function(data){
            if (data == 1){
              obj.parent().remove();
-             alert("删除成功!");
+             tishi_alert("删除成功!");
            }else{
-             alert("删除失败!")
+             tishi_alert("删除失败!");
            }
          }
        })
@@ -105,7 +105,7 @@ $(document).ready(function(){
     var mid = $(this).next().val();
     var obj = $(this);
     if( mname == ""){
-      alert("创建失败,型号不能为空!");
+      tishi_alert("创建失败,型号不能为空!");
       obj.parent().attr("style", "display:none");
       obj.parent().next().attr("style", "display:block");
     }else{
@@ -115,10 +115,10 @@ $(document).ready(function(){
         data: {model_name : mname, brand_id : mid},
         success: function(data){
           if(data == 1){
-            alert("创建成功!");
+            tishi_alert("创建成功!");
             location.href="/cars";
           }else{
-            alert("创建失败,该型号已存在!");
+            tishi_alert("创建失败,该型号已存在!");
              obj.removeAttr("value");
              obj.parent().attr("style", "display:none");
              obj.parent().next().attr("style", "display:block");
