@@ -1,5 +1,7 @@
 #encoding: utf-8
 class Notice < ActiveRecord::Base
+  set_table_name :"lantan_db.notices"
+  set_primary_key "id"
   belongs_to :store
 
   TYPES = {:BIRTHDAY => 0,  :URGE_GOODS => 1, :URGE_PAYMENT => 2} # 0 客户生日 1 催货  2 催款

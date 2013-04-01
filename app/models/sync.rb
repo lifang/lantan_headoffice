@@ -41,12 +41,16 @@ class Sync < ActiveRecord::Base
     return list
   end
 
+  def self.new_dir(dirs)
+    file_path = Constant::LOCAL_DIR
+    dirs.each_with_index {|dir,index| Dir.mkdir file_path+dirs[0..index].join   unless File.directory? file_path+dirs[0..index].join }
+  end
   def self.output_zip(day=1)
     file_path = Constant::LOCAL_DIR
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
     flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
     dirs=["syncs/","#{Time.now.ago(day.day).strftime("%Y-%m").to_s}/","#{Time.now.ago(day.day).strftime("%Y-%m-%d").to_s}/"]
-    dirs.each_with_index {|dir,index| Dir.mkdir file_path+dirs[0..index].join   unless File.directory? file_path+dirs[0..index].join }
+    Sync.new_dir(dirs)
     paths =get_dir_list(file_path+dirs.join)
     unless paths.blank?
       paths.each do |path|

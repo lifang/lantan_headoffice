@@ -18,3 +18,9 @@ namespace :daily do
     end
   end
 end
+
+namespace :monthly do
+  task(:image_chart => :environment) do
+    ChartImage.gchart 
+  end
+end
