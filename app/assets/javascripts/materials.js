@@ -76,7 +76,7 @@ $(document).ready(function(){
     })
     $("#deliver_good").live("click", function(){  //发货按钮
       var moid = $(this).parent().find("input").val();
-      $("#order_detail_and_deliver").append("<div class='item'><label>预计到货时间:</label><input type='text' id='arrive_time'></div>\n\
+      $("#order_detail_and_deliver").append("<div class='item'><label>预计到货时间:</label><input type='text' id='arrive_time' readonly></div>\n\
                                             <div class='item'><label>运单号:</label><input type='text' id='logistic_code'></div>\n\
                                               <div class='item'><label>运单人:</label><input type='text' id='carrier'/></div>");
       $('#arrive_time').datepicker({inline: true}); //加上时间插件
