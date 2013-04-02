@@ -80,7 +80,7 @@ function add_service(){
 }
 
 //编辑服务
-function edit_service(store_id,id){
+function edit_service(id){
     $.ajax({
         async:true,
         type : "POST",
