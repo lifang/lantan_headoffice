@@ -109,7 +109,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   gchartrb (= 0.8)
-  jquery-rails
+  jquery-rails (~> 2.1.0)
   mini_magick (~> 3.5.0)
   multipart-post (= 1.1.5)
   mysql2 (= 0.3.10)
