@@ -17,38 +17,31 @@
           </thead>
           <tbody>
             <% if @news.blank? %>
-            <tr>
-              <th clospan="3">当前无新闻!</th>
-            </tr>
+              <tr>
+                <th clospan="3">当前无新闻!</th>
+              </tr>
             <%  else %>
-            <% @news.each do |new| %>
-            <tr>
-              <td><a href="<%= Constant::FRONT_PATH %>/news/<%= new.id %>"><%= new.title %></a></td>
-              <td><%= new.created_at.strftime("%Y-%m-%d") %></td>
-              <% if new.status == 0 %>
-              <td>已发布</td>
-              <td>
-                <input type="hidden" value="<%= new.id %>"/>
-                <a name="edit_new" href="JavaScript:void(0)">修改</a>
-                <a name="del_new" href="JavaScript:void(0)">删除</a>
-              </td>
-              <% elsif new.status == 1 %>
-              <td>未发布</td>
-              <td>
-                <input type="hidden" value="<%= new.id %>"/>
-                <a name="edit_new" href="JavaScript:void(0)">修改</a>
-                <a name="rel_new" href="JavaScript:void(0)">发布</a>
-                <a name="del_new" href="JavaScript:void(0)">删除</a>
-              </td>
+              <% @news.each do |new| %>
+                <tr>
+                  <td><a href="<%= Constant::FRONT_PATH %>/news/<%= new.id %>"><%= new.title %></a></td>
+                  <td><%= new.created_at.strftime("%Y-%m-%d") %></td>
+                  <td><%= new.status == 0 ? "已发布" : "未发布"%></td>
+                  <td>
+                    <% if new.status == 0 %> 
+                    <a name="rel_new" href="JavaScript:void(0)">发布</a>
+                    <%end%>
+                    <input type="hidden" value="<%= new.id %>"/>
+                    <a name="edit_new" href="JavaScript:void(0)">修改</a>
+                    <a name="del_new" href="JavaScript:void(0)">删除</a>
+                  </td>
+                </tr>
               <% end %>
-            </tr>
-            <% end %>
             <% end %>
           </tbody>
         </table>
         <div class="pageTurn">
           <% if !@news.blank? %>
-           <%= will_paginate  @news, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+            <%= will_paginate  @news, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
           <% end %>
         </div>
       </div>
