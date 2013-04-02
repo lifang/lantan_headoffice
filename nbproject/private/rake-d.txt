@@ -60,6 +60,7 @@ doc\:rerails=
 environment=
 log\:clear=
 middleware=
+monthly\:image_chart=
 notes=
 notes\:custom=
 notes\:fixme=
@@ -96,4 +97,3 @@ tmp\:create=
 tmp\:pids\:clear=
 tmp\:sessions\:clear=
 tmp\:sockets\:clear=
-

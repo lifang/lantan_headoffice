@@ -1,22 +1,27 @@
 #encoding: utf-8
 class StoresController < ApplicationController  #门店控制器
   layout "operate_manages"
-  def index
-     store_name_sql = (params[:store_name].nil? || params[:store_name].empty?) ? "1 = 1" : "name like %#{params[:store_name]}%"
-    if params[:select_province].to_i == 0
-      @stores = Store.where(store_name_sql).paginate(:page => params[:page] ||= 1,
-        :per_page => 2,:order => "created_at desc")
-    else
-      if params[:select_city].to_i == 0
-        @cities = City.where("parent_id = #{params[:select_province].to_i}")
-        @stores = Store.where(["city_id in (?)", @cities]).where(store_name_sql).
-          paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
-      else
-        @cities = City.where("parent_id = #{params[:select_province].to_i}")
-        @stores = Store.where("city_id = #{params[:select_city].to_i}")
-        .where(store_name_sql).paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
-      end
-    end
+  def index  
+    sql = "select s.*, c.name c_name, cp.name cp_name from stores s
+          left join cities c on c.id = s.city_id
+          left join cities cp on cp.id = c.parent_id where 1 = 1"
+    params_sql = ""
+    sql_params = [""]
+     unless (params[:store_name].nil? || params[:store_name].empty?)
+       params_sql += " and s.name like ? "
+       sql_params << "%#{params[:store_name].strip}%"
+     end
+     unless (params[:select_province].to_i == 0)
+       params_sql += " and cp.id = ?"
+       sql_params << params[:select_province].to_i
+     end
+     unless (params[:select_city].to_i == 0)
+       params_sql += " and c.id = ?"
+       sql_params << params[:select_city].to_i
+       @cities = City.where("parent_id = #{params[:select_province].to_i}")
+     end
+     sql_params[0] = sql + params_sql
+     @stores = Store.paginate_by_sql(sql_params, :page => params[:page] ||= 1, :per_page => 2)
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
   end
 

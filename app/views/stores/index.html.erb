@@ -62,7 +62,7 @@
                 <tr>
                   <% if !store.city_id.nil? %>
                     <td>
-                      <%= City.find(store.city.parent_id).name %>/<%= store.city.name %>
+                      <%= store.cp_name  %>-<%= store.c_name %>
                     </td>
                   <% else %>
                     <td>-/-</td>
