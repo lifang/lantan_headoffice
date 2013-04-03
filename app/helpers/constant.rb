@@ -58,8 +58,8 @@ module Constant
   #催货提醒
   URGE_GOODS_CONTENT = "门店订货提醒，请关注下"
 
-  SERVER_PATH = "http://localhost:3000"
-  FRONT_PATH = "http://localhost:3001"
+  SERVER_PATH = "http://bam.gankao.co/"
+  FRONT_PATH = "http://official.gankao.co/"
 
   #  施工现场文件目录
   VIDEO_DIR ="work_videos"
@@ -74,7 +74,8 @@ module Constant
   SERVICE = "SERVICE"
 
    #上传图片的比例
+  #上传图片的比例
   SALE_PICSIZE =[300,230,663]
-  P_PICSIZE = [300,356,50,246]
-  C_PICSIZE = [148]
+  P_PICSIZE = [50,154,246,300,356]
+  C_PICSIZE = [148,154]
 end
