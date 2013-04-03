@@ -1,7 +1,7 @@
 $(document).ready(function(){
      $("a[name='del']").click(function(){     //删除按钮
    var flag = confirm("确定删除吗？");
-   var sid = $(this).parent().parent().find("input").val();
+   var sid = $(this).parent().find("input").val();
    if(flag){
     $.ajax({
       type: "POST",
@@ -20,7 +20,7 @@ $(document).ready(function(){
  })
 
  $("a[name='release']").click(function(){   //发布按钮
-  var sid =  $(this).parent().parent().find("input").val();
+  var sid =  $(this).parent().find("input").val();
   $.ajax({
     type: "POST",
     url: "/sales/rel_sale",
@@ -37,7 +37,7 @@ $(document).ready(function(){
  })
 
  $("a[name='edit']").click(function(){      //修改按钮
-    var sid = $(this).parent().parent().find("input").val();
+    var sid = $(this).parent().find("input").val();
     $.ajax({
         type: "get",
         url: "/sales/edit",

@@ -1,6 +1,6 @@
 #encoding: utf-8
 class Notice < ActiveRecord::Base
-  set_table_name :"lantan_db.notices"
+  set_table_name :"lantan_db_all.notices"
   set_primary_key "id"
   belongs_to :store
 

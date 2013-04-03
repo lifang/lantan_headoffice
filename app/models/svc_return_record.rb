@@ -1,6 +1,6 @@
 #encoding: utf-8
 class SvcReturnRecord < ActiveRecord::Base
-  set_table_name :"lantan_db.svc_return_records"
+  set_table_name :"lantan_db_all.svc_return_records"
   set_primary_key "id"
   belongs_to :store
 

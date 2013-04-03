@@ -1,5 +1,6 @@
 #encoding: utf-8
 class Complaint < ActiveRecord::Base
+  set_table_name :"lantan_db_all.complaints"
   has_many :revisits
   belongs_to :order
   belongs_to :customer

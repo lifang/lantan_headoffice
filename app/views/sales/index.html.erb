@@ -48,16 +48,17 @@
                     <a name="edit" href="JavaScript:void(0)">修改</a>
                     <a name="release"href="JavaScript:void(0)">发布</a>
                     <a name="del" href="JavaScript:void(0)">删除</a>
+                    <input type="hidden" name="sid" value="<%= s.id %>" />
                   </td>
                   <% elsif s.status.to_i == 1 %>
                   <td>
                     <a name="edit" href="JavaScript:void(0)">修改</a>
-                    <a name="del" href="JavaScript:void(0)">删除</a>                  
+                    <a name="del" href="JavaScript:void(0)">删除</a>
+                    <input type="hidden" name="sid" value="<%= s.id %>" />
                   </td>
                   <% else %>
                   <td>-----</td>
-                  <% end %>
-                   <input type="hidden" name="sid" value="<%= s.id %>" />
+                  <% end %>                  
                 </tr>
               <% end %>
             <% end %>
