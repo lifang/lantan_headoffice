@@ -32,7 +32,7 @@
             </div>
             <div class="seeProDiv">
               <div class="seeProDiv_l">开店时间：</div>
-              <div class="seeProDiv_r"><%= @store.opened_at.strftime("%Y-%m-%d") %></div>
+              <div class="seeProDiv_r"><%= @store.opened_at.nil? ? "" : @store.opened_at.strftime("%Y-%m-%d") %></div>
             </div>
             <div class="seeProDiv">
               <div class="seeProDiv_l">门店状态：</div>

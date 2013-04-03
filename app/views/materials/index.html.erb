@@ -68,9 +68,9 @@
           <tbody>
             <% @mat_out_orders.each do |moo| %>
             <tr>
-              <td><%= moo.material_order.code %></td>
-              <td><%= moo.material.code %></td>
-              <td><%= moo.material.name %></td>
+              <td><%= moo.material_order.code if !moo.material_order.nil? %></td>
+              <td><%= moo.material.code if !moo.material.nil? %></td>
+              <td><%= moo.material.name if !moo.material.nil? %></td>
               <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == moo.material.types %><%= value %><% end %><% end %></td>
               <td><%= moo.material.storage %></td>
             </tr>

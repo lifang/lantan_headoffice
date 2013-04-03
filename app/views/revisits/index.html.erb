@@ -38,8 +38,8 @@
                                     <% else %>
                                     <%  @revisits.each do |r|%>
                                       <tr>
-                                        <td><%= r.complaint_id.nil? ? "----" : r.complaint.order.store.name %></td>
-                                        <td><%= r.created_at.strftime("%Y-%m-%d %H:%m") %></td>
+                                        <td><%= r.complaint.nil? ? "----" : r.complaint.order.store.name %></td>
+                                        <td><%= r.created_at.strftime("%Y-%m-%d %H:%m") if !r.created_at.nil? %></td>
                                         <td><%= r.content %></td>
                                         <td><%= r.answer %></td>
                                         <td>
@@ -51,7 +51,7 @@
                                         </td>
                                         <td><%= r.customer.name %></td>
                                         <td><%= r.customer.mobilephone %></td>
-                                        <td><a href="#" class="other_a"><%= r.complaint.order.code %></a></td>
+                                        <td><a href="#" class="other_a"><%= r.complaint.order.code if !r.complaint.nil? && !r.complaint.order.nil?%></a></td>
                                       </tr>   
                                       <% end %>
                                       <% end %>
