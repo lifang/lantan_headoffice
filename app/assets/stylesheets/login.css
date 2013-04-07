@@ -9,6 +9,7 @@ body {
 ul { list-style: none;}
 a { text-decoration: none;}
 button { font-family:"微软雅黑"; cursor: pointer; border: none;}
+.red { color: #C00;}
 
 .login_bg { 
     width: 510px; 
@@ -17,7 +18,7 @@ button { font-family:"微软雅黑"; cursor: pointer; border: none;}
 	background: url(../assets/login_bg.png) no-repeat;
 	overflow: hidden;
 }
-.login_box { width: 250px; height: 160px; margin: 130px 0 0 130px;}
+.login_box { width: 250px; margin: 130px 0 0 130px;}
 .login_list { height: 39px;}
 .login_list input { 
     height: 39px;
@@ -38,3 +39,48 @@ button { font-family:"微软雅黑"; cursor: pointer; border: none;}
 	color: #FFF;
 	background: url(../assets/btn_bg.jpg) no-repeat;
 }
+
+.login_alert { color: #C00; text-align: center;}
+
+.x, .close {
+	display:block; 
+	text-indent: -999px; 
+	overflow: hidden; 
+	position: absolute; 
+	top: 5px; 
+	right: 5px;
+	cursor: pointer;
+	z-index: 110;
+}
+.x { width: 10px; height: 10px; background: url(../assets/x.png) no-repeat 0 0; }
+.close { width: 13px; height: 13px; background: url(../assets/close.jpg) no-repeat ; }
+
+/*tab提示*/
+.tab_popup.tab_alert { width: 500px;}
+.alert_h { width: 400px; margin: 20px auto; line-height: 24px; font-size: 16px; color:#930205; text-align: center;}
+/*tab_popup*/
+.tab_popup {
+	display: none;
+	position: absolute;
+	z-index: 100;
+	width: 650px;
+	padding: 10px;
+	background: url(../assets/black.png) repeat;
+	border-radius: 0.6em;
+}
+.popup_box { background: #FFF;}
+.popup_box h1 { 
+    height: 32px; 
+	line-height: 32px; 
+	background: #930205; 
+	color: #FFF; 
+	font-size: 16px; 
+	padding-left: 20px; 
+	position: relative;
+}
+.popup_body { overflow: hidden; padding: 10px; position: relative;}
+.popup_body_area { overflow: hidden;}
+
+
+.mark { width: 300px; margin: 20px auto;}
+
