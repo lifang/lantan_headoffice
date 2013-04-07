@@ -18,7 +18,7 @@ button { font-family:"微软雅黑"; cursor: pointer; border: none;}
 	background: url(../assets/login_bg.png) no-repeat;
 	overflow: hidden;
 }
-.login_box { width: 250px; height: 160px; margin: 130px 0 0 130px;}
+.login_box { width: 250px; margin: 130px 0 0 130px;}
 .login_list { height: 39px;}
 .login_list input { 
     height: 39px;
@@ -41,6 +41,19 @@ button { font-family:"微软雅黑"; cursor: pointer; border: none;}
 }
 
 .login_alert { color: #C00; text-align: center;}
+
+.x, .close {
+	display:block; 
+	text-indent: -999px; 
+	overflow: hidden; 
+	position: absolute; 
+	top: 5px; 
+	right: 5px;
+	cursor: pointer;
+	z-index: 110;
+}
+.x { width: 10px; height: 10px; background: url(../assets/x.png) no-repeat 0 0; }
+.close { width: 13px; height: 13px; background: url(../assets/close.jpg) no-repeat ; }
 
 /*tab提示*/
 .tab_popup.tab_alert { width: 500px;}
