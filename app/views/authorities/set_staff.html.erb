@@ -6,7 +6,9 @@
     </div>
     <div class="search">
       <%= form_tag "/authorities/set_staff", :method => :get do %>
-      <div><label>姓名：</label><input name="staff_name" type="text"/></div>
+      <div><label>姓名：</label>
+        <input name="staff_name" type="text" <% if !params[:staff_name].nil? && !params[:staff_name].strip.empty? %>value="<%= params[:staff_name].strip %>"<% end %>/>
+      </div>
       <div><button class="search_btn">查询</button></div>
       <% end %>
     </div>
