@@ -25,9 +25,11 @@
         <div class="login_btn">
           <button>登录</button>
         </div>
+        <% if flash[:notice] %>
         <div class="login_alert">
           <%= flash[:notice] %>
         </div>
+        <% end %>
       <% end %>        
       </div>
     </div>
