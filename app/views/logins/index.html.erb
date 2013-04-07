@@ -25,9 +25,14 @@
         <div class="login_btn">
           <button>登录</button>
         </div>
-        <div><%= flash[:error] %></div>
+        <div class="login_alert">
+          <%= flash[:notice] %>
+        </div>
       <% end %>
+         
       </div>
+     
     </div>
+    <%= render :partial => "/common/tishi_alert" %>
   </body>
 </html>
