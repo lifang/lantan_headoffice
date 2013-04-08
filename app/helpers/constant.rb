@@ -13,9 +13,8 @@ module Constant
     :logistics_manage => {
       :print_list => ["打印库存清单", 1],
       :storage => ["入库", 2],
-      :storage_list => ["库存列表", 4],
-      :out_record => ["出库记录", 8],
-      :in_record => ["入库记录", 16]
+      :out_record => ["出库记录", 4],
+      :in_record => ["入库记录", 8]
     },
     #服务管理
     :service_manage => {
