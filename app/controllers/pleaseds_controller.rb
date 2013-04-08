@@ -12,9 +12,9 @@ class PleasedsController < ApplicationController  #满意度控制器
    if !params[:search_province].nil? && params[:search_province].to_i != 0
      @cities = City.where("parent_id = #{params[:search_province].to_i}")
    end
-   city_condition = params[:search_city].nil? ? '1=1' : params[:search_city]
+   city_condition = params[:search_city].nil? ? '1=1' : "city_id = #{params[:search_city]}"
    current_month_condition = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.strftime("%Y%m") : params[:search_time].delete("-")
-   @chart_image = ChartImage.where("city_id = #{city_condition}").where("current_month = #{current_month_condition}").first
+   @chart_image = ChartImage.where(city_condition).where("current_month = #{current_month_condition}").first
 
     puts "*****************"
     puts @chart_image.inspect

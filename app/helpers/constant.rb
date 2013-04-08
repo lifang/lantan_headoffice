@@ -20,24 +20,19 @@ module Constant
     #服务管理
     :service_manage => {
       :revisit_check => ["回访查询", 1],
-      :satisfied => ["满意度", 2],
-      :complaint => ["投诉情况", 4]
+      :satisfied => ["满意度", 2]
     },
     #营销管理
     :market_manage => {
-      :sv_card => ["优惠卡", 1],
-      :sell_situation => ["销售情况", 2],
-      :use_detail => ["使用情况详细", 4],
-      :use_collect => ["使用情况汇总", 8],
-      :sale_list => ["活动列表", 16],
-      :create_sale => ["发布活动", 32]
+      :sell_situation => ["销售情况", 1],
+      :use_detail => ["使用情况详细", 2],
+      :use_collect => ["使用情况汇总", 4],
+      :sale_list => ["活动列表", 8],
+      :create_sale => ["发布活动", 16]
     },
     #基础数据
     :base_datas => {
-      :cars => ["车型", 1],
-      :approval => ["审批", 2],
-      :news => ["新闻", 4],
-      :authority => ["权限", 8]
+      :news => ["新闻", 1]
     }
   }
 

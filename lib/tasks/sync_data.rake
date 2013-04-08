@@ -6,11 +6,11 @@ namespace :daily do
   end
 
   #定时生成总部新增加的产品，活动，车型成一个zip文件
-  task(:sync_generate_zip => :enviroment) do
+  task(:sync_generate_zip => :environment) do
     Sync.out_data
   end
 
-  task(:sync_right_zip => :enviroment) do
+  task(:sync_right_zip => :environment) do
     syncs = SSync.where("sync_at = null and (sync_status = #{Sync::SYNC_STAT[:ERROR]} or sync_status = null)")
     syncs.each do |sync|
       day = (Time.now - sync.created_at).strftime("%d")

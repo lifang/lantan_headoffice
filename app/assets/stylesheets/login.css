@@ -39,6 +39,7 @@ button { font-family:"微软雅黑"; cursor: pointer; border: none;}
 	color: #FFF;
 	background: url(../assets/btn_bg.jpg) no-repeat;
 }
+
 .login_alert { color: #C00; text-align: center;}
 
 .x, .close {
@@ -82,3 +83,4 @@ button { font-family:"微软雅黑"; cursor: pointer; border: none;}
 
 
 .mark { width: 300px; margin: 20px auto;}
+

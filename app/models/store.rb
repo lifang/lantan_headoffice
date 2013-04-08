@@ -1,6 +1,5 @@
 #encoding: utf-8
 class Store < ActiveRecord::Base
-
   set_table_name :"lantan_db_all.stores"
   set_primary_key "id"
   belongs_to :city
