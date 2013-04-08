@@ -19,7 +19,9 @@ $(document).ready(function(){
         success: function(data){
           if (data == 1){
             tishi_alert("删除成功!");
-            location.href = "/authorities";
+            setTimeout(function(){
+                location.href = "/authorities";
+            }, 1500);
           }else{
             tishi_alert("删除失败!");
           }
@@ -30,8 +32,8 @@ $(document).ready(function(){
 
  $("a[name='edit_role']").click(function(){  //编辑按钮
      var obj = $(this).parent().parent().find($("input[name='role_new_name']"));
-     obj.attr("style", "display:block");
-     obj.next().attr("style", "display:none");
+     obj.prev().attr("style", "display:none");
+     obj.attr("style", "display:block");   
      obj.focus();
   })
 
@@ -39,25 +41,26 @@ $(document).ready(function(){
     var obj = $(this);
     if(obj.val() == ""){
       tishi_alert("角色名不能为空!");
-      obj.val(obj.next().text());
+      obj.val(obj.prev().text());
       obj.attr("style", "display:none");
-      obj.next().attr("style", "display:block");
+      obj.prev().attr("style", "display:block");
     }else{
-      var rid = obj.prev().val();
+      var rid = obj.prev().prev().val();
       var rname = obj.val();
       $.ajax({
         type: "post",
         url: "/authorities/update_role",
         data: {r_id : rid, r_name : rname},
         success: function(data){
-          if(data == 1){
+          if(data == 1){  
             tishi_alert("更新成功!");
-            location.href = "/authorities";
+            setTimeout(function(){
+                location.href = "/authorities";
+            }, 1500);
           }else{
-           tishi_alert("更新失败,该角色名已存在！");
-           obj.val(obj.next().text());
+           obj.val(obj.prev().text());
            obj.attr("style", "display:none");
-           obj.next().attr("style", "display:block");
+           obj.prev().attr("style", "display:block");
           }
         }
       })

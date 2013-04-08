@@ -2,7 +2,7 @@
 class StoresController < ApplicationController  #门店控制器
   layout "operate_manages"
   def index  
-    sql = "select s.*, c.name c_name, cp.name cp_name from stores s
+    sql = "select s.*, c.name c_name, cp.name cp_name from lantan_db_all.stores s
           left join cities c on c.id = s.city_id
           left join cities cp on cp.id = c.parent_id where 1 = 1"
     params_sql = ""

@@ -15,7 +15,7 @@ class CarsController < ApplicationController   #车型控制器
     if cb.blank?
       capital = Capital.find_or_create_by_name(capital_name)
       CarBrand.create(:name => params[:brand_name], :capital_id => capital.id)
-      flash[:nitice] = "创建成功!"
+      flash[:notice] = "创建成功!"
     else
       flash[:notice] = "创建失败或该品牌已存在!"
     end
@@ -32,14 +32,16 @@ class CarsController < ApplicationController   #车型控制器
   end
 
   def check_model #查看所有型号
-    @car_brand = CarBrand.find(params[:id].to_i)
-    @car_models = @car_brand.car_models
+    @car_brand = CarBrand.find(params[:id].to_i)   
+    @car_models = CarModel.where("car_brand_id = #{params[:id].to_i}")
   end
 
   def update_model #修改型号名字
     model = CarModel.find(params[:id].to_i)
-    if model.update_attribute("name", params[:name])
+    if CarModel.where("car_brand_id = #{params[:id].to_i} and name = '#{params[:name]}'").blank?
+      if model.update_attribute("name", params[:name])
       render :text => 1
+      end
     else
       render :text => 0
     end
