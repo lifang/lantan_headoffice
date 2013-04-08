@@ -58,7 +58,15 @@ button { font-family:"微软雅黑"; cursor: pointer; border: none;}
 .tab_popup.tab_alert { width: 500px;}
 .alert_h { width: 400px; margin: 20px auto; line-height: 24px; font-size: 16px; color:#930205; text-align: center;}
 /*tab_popup*/
-.tab_popup { width: 650px; padding: 10px; background: url(../assets/black.png) repeat; border-radius: 0.6em;}
+.tab_popup {
+	display: none;
+	position: absolute;
+	z-index: 100;
+	width: 650px;
+	padding: 10px;
+	background: url(../assets/black.png) repeat;
+	border-radius: 0.6em;
+}
 .popup_box { background: #FFF;}
 .popup_box h1 { 
     height: 32px; 
