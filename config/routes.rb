@@ -185,5 +185,10 @@ LantanHeadoffice::Application.routes.draw do
         get "search_material"
       end
     end
+    resources :syncs_datas do
+      collection do
+        post :syncs_db_to_all, :syncs_pics
+      end
+    end
   end
 end
