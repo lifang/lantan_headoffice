@@ -39,7 +39,7 @@ $(document).ready(function(){
         data: {m_id : mid, storage : count},
         success: function(data){
           if(data == 0){
-            tishi_alert("操作失败!");
+            tishi_alert("已核实过!");
           }else{
             obj.parent().prev().prev().prev().text(count);
             tishi_alert("操作成功！");

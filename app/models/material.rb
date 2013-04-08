@@ -1,5 +1,7 @@
 #encoding: utf-8
 class Material < ActiveRecord::Base
+  set_table_name :"lantan_db_all.materials"
+  set_primary_key "id"
   has_many :prod_mat_relations
   has_many :mat_order_items
   has_many :mat_out_orders

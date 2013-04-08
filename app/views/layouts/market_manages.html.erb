@@ -22,7 +22,7 @@
                <div class="nav">
                     <ul>
                         <li><a href="/sv_cards" class=<%= is_hover("sv_cards") %>>优惠卡</a></li>
-                        <li><a href="/sales" class=<%= is_hover("sales") %>>活动</a></li>
+                        <% if permission?(:market_manage, :create_sale) || permission?(:market_manage, :sale_list) %><li><a href="/sales" class=<%= is_hover("sales") %>>活动</a></li><% end %>
                     </ul>
                </div>
                <div class="back"><a href="/backstages" title="返回">Back</a>营销管理</div>

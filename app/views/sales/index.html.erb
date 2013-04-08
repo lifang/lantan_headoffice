@@ -1,8 +1,8 @@
 <div class="box">
   <div class="data_box">
     <div class="second_menu">
-      <a href="/sales" class="hover">活动列表</a>
-      <a href="/sales/release">发布活动</a>
+      <% if permission?(:market_manage, :sale_list) %><a href="/sales" class="hover">活动列表</a><% end %>
+      <% if permission?(:market_manage, :create_sale) %><a href="/sales/release">发布活动</a><% end %>
     </div>
     <div class="clear"></div>
     <div id="sale_show_and_edit" class="data_body">
