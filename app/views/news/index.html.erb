@@ -32,13 +32,7 @@
                   </td>
                   <td><%= new.created_at.strftime("%Y-%m-%d") %></td>
                   <td>
-                    <% if new.status == 0  %>
-                    已发布
-                    <% elsif new.status == 1 %>
-                    未发布
-                    <% elsif new.status == 2 %>
-                    已删除
-                    <% end %>
+                    <%= new.status == 0 ? "已发布" : "未发布" %>
                   </td>
                   <td>
                     <% if new.status == 1 %>
