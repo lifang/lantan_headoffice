@@ -12,7 +12,7 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: lantan_db
+  database: lantan_store
   pool: 5
   username: root
   password: comdo2012
@@ -22,7 +22,7 @@ storedb:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: lantan_store
+  database: lantan_db
   pool: 5
   username: root
   password: comdo2012
