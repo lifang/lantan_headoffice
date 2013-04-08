@@ -26,8 +26,11 @@ $(document).ready(function(){
       data: {id : cid},
       success: function(data){
         if(data == 1){
-          location.href="/cars";
           tishi_alert("删除成功!");
+          setTimeout(function(){
+                location.href = "/cars";
+            }, 1500);
+        
         }else{
           tishi_alert("删除失败!");
         }
@@ -115,7 +118,9 @@ $(document).ready(function(){
         success: function(data){
           if(data == 1){
             tishi_alert("创建成功!");
-            location.href="/cars";
+            setTimeout(function(){
+                 location.href="/cars";
+            }, 1500);
           }else{
             tishi_alert("创建失败,该型号已存在!");
              obj.removeAttr("value");
