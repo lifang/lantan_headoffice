@@ -15,7 +15,7 @@ class CarsController < ApplicationController   #车型控制器
     if cb.blank?
       capital = Capital.find_or_create_by_name(capital_name)
       CarBrand.create(:name => params[:brand_name], :capital_id => capital.id)
-      flash[:nitice] = "创建成功!"
+      flash[:notice] = "创建成功!"
     else
       flash[:notice] = "创建失败或该品牌已存在!"
     end

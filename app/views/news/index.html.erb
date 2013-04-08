@@ -27,7 +27,7 @@
                     <% if new.status == 0 %>
                     <a href="<%= Constant::FRONT_PATH %>news/<%= new.id %>" class="other_a"><%= new.title %></a>
                     <% else %>
-                    <a><%= new.title %></a>
+                    <a class="no_a"><%= new.title %></a>
                     <% end %>
                   </td>
                   <td><%= new.created_at.strftime("%Y-%m-%d") %></td>

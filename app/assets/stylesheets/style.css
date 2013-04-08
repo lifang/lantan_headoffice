@@ -226,7 +226,7 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 .data_table td.data_table_img img { margin: 5px 0;}
 
 .data_table td a.other_a {background: none; color: #00F; text-decoration: underline;}
-.data_table td a.no_a {background: none; color: #ccc; text-decoration: none;}
+.data_table td a.no_a {background: none; color: #333; text-decoration: none;}
 
 .data_table td .data_input_s { width: 50px; height: 24px; line-height: 24px; border: 1px #CCCCCC solid; text-align: center;}
 

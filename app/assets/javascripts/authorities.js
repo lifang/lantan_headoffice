@@ -32,8 +32,8 @@ $(document).ready(function(){
 
  $("a[name='edit_role']").click(function(){  //编辑按钮
      var obj = $(this).parent().parent().find($("input[name='role_new_name']"));
-     obj.attr("style", "display:block");
-     obj.next().attr("style", "display:none");
+     obj.prev().attr("style", "display:none");
+     obj.attr("style", "display:block");   
      obj.focus();
   })
 
@@ -41,11 +41,11 @@ $(document).ready(function(){
     var obj = $(this);
     if(obj.val() == ""){
       tishi_alert("角色名不能为空!");
-      obj.val(obj.next().text());
+      obj.val(obj.prev().text());
       obj.attr("style", "display:none");
-      obj.next().attr("style", "display:block");
+      obj.prev().attr("style", "display:block");
     }else{
-      var rid = obj.prev().val();
+      var rid = obj.prev().prev().val();
       var rname = obj.val();
       $.ajax({
         type: "post",
@@ -58,9 +58,9 @@ $(document).ready(function(){
                 location.href = "/authorities";
             }, 1500);
           }else{
-           obj.val(obj.next().text());
+           obj.val(obj.prev().text());
            obj.attr("style", "display:none");
-           obj.next().attr("style", "display:block");
+           obj.prev().attr("style", "display:block");
           }
         }
       })
