@@ -64,19 +64,28 @@ class AuthoritiesController < ApplicationController     #权限控制器
   end
 
   def set_auth_commit #设置权限提交
-    role_id = params[:role_id].to_i
-    RoleMenuRelation.destroy_all("role_id = #{role_id}")
-    params[:menu].each do |m| 
-      RoleMenuRelation.create(:role_id => role_id, :menu_id => m.to_i)
-    end unless params[:menu].blank?
-    Constant::ROLES.each do |key, value|
-      num = 0
-      if !params[key].nil? && !params[key].blank?       
-        params[key].each do |m|
-          num += m.to_i
+    if params[:role_id]
+      role_id = params[:role_id]
+      if params[:menu_checks] #处理角色-菜单设置
+        params[:menu_checks].each do |menu_id|
+          if RoleMenuRelation.where(:menu_id => menu_id, :role_id => role_id).empty?
+            RoleMenuRelation.create(:menu_id => menu_id, :role_id => role_id)
+          end
         end
-        RoleModelRelation.create(:role_id => role_id, :num => num, :model_name => key)
-        num = 0
+        deleted_ids = RoleMenuRelation.where(:role_id => role_id).map(&:menu_id) - params[:menu_checks].map(&:to_i)
+        RoleMenuRelation.delete_all(:role_id => role_id, :menu_id => deleted_ids) unless deleted_ids.empty?
+      end
+      if params[:model_nums] #处理角色-功能模块设置
+        params[:model_nums].each do |controller, num|
+          role_model_relation = RoleModelRelation.where(:role_id => role_id, :model_name => controller)
+          if role_model_relation.empty?
+            RoleModelRelation.create(:num => num.map(&:to_i).sum, :role_id => role_id, :model_name => controller)
+          else
+            role_model_relation.first.update_attributes(:num => num.map(&:to_i).sum)
+          end
+        end
+        deleted_menus = RoleModelRelation.where(:role_id => role_id).map(&:model_name) - params[:model_nums].keys
+        RoleModelRelation.delete_all(:role_id => role_id, :model_name => deleted_menus) unless deleted_menus.empty?
       end
     end
     flash[:notice] = "设置成功!"
@@ -102,6 +111,6 @@ class AuthoritiesController < ApplicationController     #权限控制器
       end
     end
     flash[:notice] = "设置成功"
-    redirect_to "/authorities/set_staff"
+    redirect_to "/cars"
   end
 end

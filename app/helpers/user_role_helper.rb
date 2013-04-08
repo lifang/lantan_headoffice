@@ -1,7 +1,7 @@
 # encoding: utf-8
 module UserRoleHelper
 
-  #是否员工
+  #是否客服
   def is_staff?
     #    session_role cookies[:user_id] unless session[:user_roles]
     #    roles.include? Constant::STAFF
@@ -10,11 +10,11 @@ module UserRoleHelper
     roles.include? Constant::STAFF
   end
 
-  #是否店长
+  #是否仓库管理员
   def is_manager?
     session_role cookies[:user_id] unless cookies[:user_roles]
     roles = cookies[:user_roles].split(",")
-    roles.include? Constant::MANAGER
+    roles.include? Constant::STORE_MANAGER
   end
 
   #是否老板
@@ -24,7 +24,7 @@ module UserRoleHelper
     roles.include? Constant::BOSS
   end
 
-  #是否管理员
+  #是否系统管理员
   def is_admin?
     session_role cookies[:user_id] unless cookies[:user_roles]
     roles = cookies[:user_roles].split(",")

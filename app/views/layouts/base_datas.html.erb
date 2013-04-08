@@ -23,7 +23,7 @@
                     <ul>
                         <li><a href="/cars" class=<%= is_hover("cars") %>>车型</a></li>
                         <li><a href="/news" class=<%= is_hover("news") %>>新闻</a></li>
-                        <li><a href="/authorities" class=<%= is_hover("authorities") %>>权限</a></li>
+                        <% if is_admin? %><li><a href="/authorities" class=<%= is_hover("authorities") %>>权限</a></li><% end %>
                     </ul>
                </div>
                <div class="back"><a href="/backstages" title="返回">Back</a>基础数据</div>

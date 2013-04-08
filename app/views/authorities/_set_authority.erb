@@ -10,7 +10,7 @@
         <ul>
           <% @menus.each do |menu| %>
             <li>
-              <input name="menu[]" type="checkbox" value="<%= menu.id %>" <% @menu_checked.each do |m| %><% if m.to_i == menu.id %>checked<% end %><% end %>/>
+              <input name="menu_checks[]" type="checkbox" value="<%= menu.id %>" <% @menu_checked.each do |m| %><% if m.to_i == menu.id %>checked<% end %><% end %>/>
               &nbsp;<%= menu.name %>
             </li>
           <% end %>
@@ -22,7 +22,7 @@
             <dt><%= menu.name %></dt>
             <% Constant::ROLES[menu.controller.to_sym].each do |key, value| %>
               <dd>
-                <input name="<%= menu.controller %>[]" type="checkbox" value="<%= value[1] %>" <% if @rmr[menu.controller.to_sym].to_i&value[1].to_i==value[1].to_i %>checked<% end if @rmr[menu.controller.to_sym] %>/>
+                <input name="model_nums[<%= menu.controller %>][]" type="checkbox" value="<%= value[1] %>" <% if @rmr[menu.controller.to_sym].to_i&value[1].to_i==value[1].to_i %>checked<% end if @rmr[menu.controller.to_sym] %>/>
                 &nbsp;<%= value[0] %>
               </dd>
             <% end if Constant::ROLES[menu.controller.to_sym] %>

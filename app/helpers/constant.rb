@@ -42,8 +42,8 @@ module Constant
   #角色
   SYS_ADMIN = "1"  #系统管理员
   BOSS = "2" #老板
-  MANAGER = "3" #店长
-  STAFF = "4" #员工
+  STORE_MANAGER = "3" #仓库管理员
+  STAFF = "4" #客服
 
   #活动code码生成文件路径
   CODE_PATH="#{Rails.root}/public/code_file.txt"
