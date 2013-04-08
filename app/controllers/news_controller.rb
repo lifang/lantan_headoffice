@@ -43,7 +43,6 @@ class NewsController < ApplicationController  #新闻控制器
     new = New.find(id)
     if !new.nil?
       if new.update_attributes(:title => title, :content => content)
-        p "ddddddd;"
         flash[:notice] = "更新成功!"
         redirect_to "/news"
       end

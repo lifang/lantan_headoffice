@@ -19,7 +19,9 @@ $(document).ready(function(){
         success: function(data){
           if (data == 1){
             tishi_alert("删除成功!");
-            location.href = "/authorities";
+            setTimeout(function(){
+                location.href = "/authorities";
+            }, 1500);
           }else{
             tishi_alert("删除失败!");
           }
@@ -50,11 +52,12 @@ $(document).ready(function(){
         url: "/authorities/update_role",
         data: {r_id : rid, r_name : rname},
         success: function(data){
-          if(data == 1){
+          if(data == 1){  
             tishi_alert("更新成功!");
-            location.href = "/authorities";
+            setTimeout(function(){
+                location.href = "/authorities";
+            }, 1500);
           }else{
-           tishi_alert("更新失败,该角色名已存在！");
            obj.val(obj.next().text());
            obj.attr("style", "display:none");
            obj.next().attr("style", "display:block");

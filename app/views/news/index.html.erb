@@ -25,7 +25,7 @@
                 <tr>
                   <td>
                     <% if new.status == 0 %>
-                    <a href="<%= Constant::FRONT_PATH %>news/<%= new.id %>"><%= new.title %></a>
+                    <a href="<%= Constant::FRONT_PATH %>news/<%= new.id %>" class="other_a"><%= new.title %></a>
                     <% else %>
                     <a><%= new.title %></a>
                     <% end %>
