@@ -8,7 +8,7 @@ class MaterialOrder < ActiveRecord::Base
   has_many  :m_order_types
   belongs_to :supplier
   belongs_to :store
-  scope :is_headoffice, where(:supplier_id => 0)
+  scope :is_headoffice_not_canceled, where(:supplier_id => 0, :status =>[1,2])
 
   STATUS = {0 => "未付款", 1 => "已付款", 4 => "已取消"}
   M_STATUS = {0 => "未发货", 1 => "已发货", 2 => "已收货", 3 => "已入库"}
