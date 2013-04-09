@@ -59,10 +59,10 @@ $(document).ready(function(){
       }else if($("#card_description").val() == ""){
         tishi_alert("请描述该卡!");
         return false;
-      }else if($("#started_money").val() == ""){
+      }else if($("#started_money").val() == "" || isNaN($("#started_money").val())){
         tishi_alert("请输入充值金额!");
         return false;
-      }else if($("#ended_money").val() == ""){
+      }else if($("#ended_money").val() == "" || isNaN($("#ended_money").val())){
         tishi_alert("请输入赠送金额!");
         return false;
       }
@@ -77,7 +77,7 @@ $(document).ready(function(){
           tishi_alert("请输入折扣!");
           return false;
       }else if(parseFloat($("#discount_value").val()) > 10 || parseFloat($("#discount_value").val()) < 1){
-          tishi_alert("折扣必须在1~10之间!");
+          tishi_alert("折扣必须在1~10之间的数字!");
           return false;
       }
       else if($("#card_description").val() == ""){
@@ -100,10 +100,10 @@ $(document).ready(function(){
       }else if($("#edit_card_description").val() == ""){
         tishi_alert("请描述该卡!");
         return false;
-      }else if($("#edit_started_money").val() == ""){
+      }else if($("#edit_started_money").val() == "" || isNaN($("#edit_started_money").val())){
         tishi_alert("请输入充值金额!");
         return false;
-      }else if($("#edit_ended_money").val() == ""){
+      }else if($("#edit_ended_money").val() == "" || isNaN($("#edit_ended_money").val())){
         tishi_alert("请输入赠送金额!");
         return false;
       }
@@ -114,8 +114,8 @@ $(document).ready(function(){
       }else if($("#edit_discount_value").val()== ""){
           tishi_alert("请输入折扣!");
           return false;
-      }else if(parseFloat($("#edit_discount_value").val()) > 10 || parseFloat($("#edit_discount_value").val()) < 1){
-       tishi_alert("折扣必须在1~10之间!");
+      }else if(isNaN($("#edit_discount_value").val()) || parseFloat($("#edit_discount_value").val()) > 10 || parseFloat($("#edit_discount_value").val()) < 1){
+       tishi_alert("折扣必须在1~10之间的数字!");
           return false;
       }
       else if($("#edit_card_description").val() == ""){
@@ -126,9 +126,8 @@ $(document).ready(function(){
         return false;
       }
     }
-    //alert(parseFloat($("#discount_value").val()));
-    //return false;
   })
+  
    $("#search_products_all").live("click",function(){     //新建时单选框全部
       $("#product_type").attr("disabled", "disabled");
       $("#product_name").attr("disabled", "disabled");
