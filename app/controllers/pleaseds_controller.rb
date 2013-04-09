@@ -16,9 +16,6 @@ class PleasedsController < ApplicationController  #满意度控制器
    current_month_condition = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.strftime("%Y%m") : params[:search_time].delete("-")
    @chart_image = ChartImage.where(city_condition).where("current_month = #{current_month_condition}").first
 
-    puts "*****************"
-    puts @chart_image.inspect
-    puts "*****************"
 
 #   pleaseds_time_sql = params[:search_time].nil? ?
 #      "date_format(created_at, '%Y-%m') = '#{Time.now.strftime("%Y-%m")}'" :
@@ -41,7 +38,7 @@ class PleasedsController < ApplicationController  #满意度控制器
 #           end
 #         end if !city.stores.blank?
 #       end if !cities.blank?
-#     elsif params[:search_city].to_i != 0 #如果限制城市...
+#     elsif params[:search_city].to_i != 0 如果限制城市...
 #       city = City.find( params[:search_city].to_i)
 #       city.stores.each do |store|
 #         Order.where("status = #{Order::STATUS[:FINISHED]}").where(pleaseds_time_sql).where("store_id = #{store.id}").each do |order|
