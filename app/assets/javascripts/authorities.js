@@ -33,7 +33,7 @@ $(document).ready(function(){
  $("a[name='edit_role']").click(function(){  //编辑按钮
      var obj = $(this).parent().parent().find($("input[name='role_new_name']"));
      obj.prev().attr("style", "display:none");
-     obj.attr("style", "display:block");   
+     obj.attr("style", "display:inline");
      obj.focus();
   })
 

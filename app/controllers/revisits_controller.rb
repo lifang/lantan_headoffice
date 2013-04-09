@@ -16,6 +16,6 @@ class RevisitsController < ApplicationController  #回访控制器
     for m in (0..(current_month-1))
       @revisit_time << DateTime.now.months_ago(m).strftime("%Y-%m")
     end
-    @revisits = Revisit.paginate_by_sql(revisits_sql, :page => params[:page] ||= 1, :per_page => 2) #回访数据
+    @revisits = Revisit.paginate_by_sql(revisits_sql, :page => params[:page] ||= 1, :per_page => 10) #回访数据
   end
 end

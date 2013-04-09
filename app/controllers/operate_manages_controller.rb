@@ -2,7 +2,7 @@
 class OperateManagesController < ApplicationController   #运营管理控制器
   def index
     if params[:select_province].to_i == 0 && params[:select_city].to_i == 0 && params[:store_name] == "" #如果都不选
-      @stores = Store.all.paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
+      @stores = Store.all.paginate(:page => params[:page] ||= 1,:per_page => 10,:order => "created_at desc")
     elsif params[:select_province].to_i != 0 && params[:select_city].to_i == 0 && params[:store_name] == ""  #如果只选省
       stores = []
       cities = City.find(:all, :conditions => ["parent_id = ?", params[:select_province]])
@@ -12,16 +12,16 @@ class OperateManagesController < ApplicationController   #运营管理控制器
           stores << s
         end
       end
-      @stores = stores.paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
+      @stores = stores.paginate(:page => params[:page] ||= 1,:per_page => 10,:order => "created_at desc")
     elsif params[:select_province].to_i != 0 && params[:select_city].to_i != 0 && params[:store_name] == "" #如果选省市，不输入店名
       @cities = City.find(:all, :conditions => ["parent_id = ?", params[:select_province]])
       @stores = Store.find(:all, :conditions => ["city_id = ?", params[:select_city]]).paginate(:page => params[:page] ||= 1,
-        :per_page => 2,:order => "created_at desc")
+        :per_page => 10,:order => "created_at desc")
     elsif params[:select_province].to_i != 0 && params[:select_city].to_i != 0 && params[:store_name] != "" #如果都选
       @cities = City.find(:all, :conditions => ["parent_id = ?", params[:select_province]])
       @stores = Store.find(:all, :conditions => ["city_id = ? and name like ?", params[:select_city], "%#{params[:store_name]}%"]).
         paginate(:page => params[:page] ||= 1,
-        :per_page => 2,:order => "created_at desc")
+        :per_page => 10,:order => "created_at desc")
     elsif params[:select_province].to_i != 0 && params[:select_city].to_i == 0 && params[:store_name] != "" #如果只选省并且输入店名
       stores = []
       cities = City.find(:all, :conditions => ["parent_id = ?", params[:select_province]])
@@ -31,10 +31,10 @@ class OperateManagesController < ApplicationController   #运营管理控制器
           stores << s
         end
       end
-      @stores = stores.paginate(:page => params[:page] ||= 1,:per_page => 2,:order => "created_at desc")
+      @stores = stores.paginate(:page => params[:page] ||= 1,:per_page => 10,:order => "created_at desc")
     elsif params[:select_province].to_i == 0 && params[:select_city].to_i == 0 && params[:store_name] != "" #如果只输入店名
       @stores = Store.find(:all, :conditions => ["name like ?", "%#{params[:store_name]}%"]).paginate(:page => params[:page] ||= 1,
-        :per_page => 2,:order => "created_at desc")
+        :per_page => 10,:order => "created_at desc")
     end
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
   end

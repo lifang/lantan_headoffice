@@ -4,7 +4,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   require 'mini_magick'
   layout "market_manages"
   def index #优惠卡主页
-    @sv_cards = SvCard.all.paginate(:page => params[:page] ||= 1,:per_page => 6,:order => "created_at asc")
+    @sv_cards = SvCard.all.paginate(:page => params[:page] ||= 1,:per_page => 10,:order => "created_at asc")
   end
 
   def select_discount_card #新建时选择打折卡
@@ -35,7 +35,11 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     card_name = params[:card_name]
     card_description = params[:card_description]
     img = params[:card_url]      #获取上传的图片
-    img_name = "#{card_name}.#{img.original_filename.split('.').reverse[0]}"    #拼凑成xxx.jpg/png...
+    if card_type == 1
+      img_name = "storeagecard#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+    elsif card_type == 0
+      img_name = "discounrcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+    end
     if card_type == 1                                       #如果是储值卡
       started_money = params[:started_money].to_i
       ended_money = params[:ended_money].to_i
@@ -48,6 +52,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
         File.open(Rails.root.join("public", "cardimg",img_name), "wb") do |file|
           file.write(img.read) 
         end
+        SvcardProdRelation.create(:sv_card_id => sv_card.id, :base_price => started_money, :more_price => ended_money)
       end
     elsif card_type == 0                                        #如果是打折卡
       discount = params[:discount_value]
@@ -63,7 +68,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
         end
         product_id.each_with_index do |item,index|  
           p = Product.find(item.to_i)
-          SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sv_card.id, :base_price => p.base_price, :more_price => p.sale_price)
+          SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sv_card.id)
         end
       end    
     end
@@ -79,50 +84,49 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     description = params[:edit_card_description]
     img = params[:edit_card_url]
     if !img.nil?
-      img_name = "#{name}.#{img.original_filename.split('.').reverse[0]}"    #拼凑成xxx.jpg/png...
+      if type == 1
+        img_name = "storeagecard#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+      elsif type == 0
+        img_name = "discounrcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+      end
     end
     if type == 1
       started_money = params[:edit_started_money].to_i
       ended_money = params[:edit_ended_money].to_i
       total_money = started_money + ended_money
-      if !img.nil?
-         FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
-        if sc.update_attributes(:name => name, :price => total_money, :description => description, :img_url => "cardimg/#{img_name}")
+      if sc.update_attributes(:name => name, :price => total_money, :description => description)
+        if !img.nil?
+          sc.update_attribute("img_url", "cardimg/#{img_name}")
+          FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
           File.new(Rails.root.join("public", "cardimg", img_name), "a+")
           File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
             file.write(img.read)
-          end        
+          end
         end
-      else
-        sc.update_attributes(:name => name, :price => total_money, :description => description)
+        SvcardProdRelation.destroy_all("sv_card_id = #{sc.id}")
+        SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)
       end
     elsif type == 0
       discount = params[:edit_discount_value]
       product_count = params[:edit_product_count].to_a
       product_id = params[:edit_product_hidden_id].to_a
-      SvcardProdRelation.destroy_all("sv_card_id= #{params[:edit_card_id].to_i}")
-      if !img.nil?
-         FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
-        if sc.update_attributes(:name => name,:description => description, :discount => discount, :img_url => "cardimg/#{img_name}")
-          File.new(Rails.root.join("public", "cardimg", img_name), "a+")
-          File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
+      if sc.update_attributes(:name => name,:description => description, :discount => discount)
+         if !img.nil?
+            sc.update_attribute(":img_url", "cardimg/#{img_name}")
+             FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
+             File.new(Rails.root.join("public", "cardimg", img_name), "a+")
+             File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
             file.write(img.read)
           end
-          product_id.each_with_index do |item,index|
+         end
+         SvcardProdRelation.destroy_all("sv_card_id= #{params[:edit_card_id].to_i}")
+         product_id.each_with_index do |item,index|
             p = Product.find(item.to_i)
-            SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sc.id, :base_price => p.base_price, :more_price => p.sale_price)
-          end
-        end        
-        else
-          if sc.update_attributes(:name => name,:description => description, :discount => discount)
-            product_id.each_with_index do |item,index|
-              p = Product.find(item.to_i)
-              SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sc.id, :base_price => p.base_price, :more_price => p.sale_price)
-            end
-          end
-        end
+            SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sc.id)
+         end
+      end
     end
-    flash[:notice] = "创建成功!"
+    flash[:notice] = "更新成功!"
     redirect_to sv_cards_path
   end
 
@@ -149,7 +153,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     @total_money = re_total_money
     @count = re.length
 
-    @relations = re.paginate(:page => params[:page] ||= 1,:per_page => 6)   
+    @relations = re.paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 
   def make_billing  #开具发票
@@ -182,7 +186,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       #门店id 使用次数 收入金额 支出金额
         form_detail << key.to_s+","+value.to_s+","+in_money_hash[key].to_s+","+out_money_hash[key].to_s
     end
-     @form_detail = form_detail.paginate(:page => params[:page] ||= 1,:per_page => 6)
+     @form_detail = form_detail.paginate(:page => params[:page] ||= 1,:per_page => 10)
     #获取所有用户的储值卡
     cs = CSvcRelation.includes(:sv_card).where("sv_cards.types = #{SvCard::FAVOR[:value]}")
     @total_money = cs.sum(:total_price) #储值卡总计
@@ -205,6 +209,6 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     form_collect << key.to_s + "," + total_money.to_s
     total_money = 0
     end
-    @form_collect = form_collect.paginate(:page => params[:page] ||= 1,:per_page => 6)
+    @form_collect = form_collect.paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 end

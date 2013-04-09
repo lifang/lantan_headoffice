@@ -259,7 +259,7 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 /*search*/
 .search { padding-top: 8px; overflow: hidden; margin-bottom: 5px;}
 
-.search div { float: left; margin: 0px 20px 10px 0; line-height: 24px; overflow: hidden;}
+.search div { display: inline-block; margin: 0px 20px 10px 0px; line-height: 24px; overflow: hidden;}
 .search label {
 
 	height: 24px;
@@ -346,9 +346,9 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 }
 .item input[type="text"], .item select {  height: 24px; line-height: 24px; width: 160px; border: 1px #CCCCCC solid;}
 
-.item input.file { width: 100px; _width: 90px; float: left;}
-input.file { width: 100px; _width: 90px; float: left;}
-.file_btn { width: 55px; height: 26px; line-height: 26px; margin-left: 5px; background: #ccc;}
+.file {float: left;}
+.show_pic { margin-left: 10px;}
+
 .item select {float: left;}
 .item select.staff { width: 70px; margin-right: 20px; _margin-right: 16px;}
 .item select.ymd { width: 50px; margin-right: 5px;}

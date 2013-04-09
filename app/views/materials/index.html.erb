@@ -99,8 +99,8 @@
           <tbody>
             <% @mat_in_orders.each do |mio| %>
             <tr>
-              <td><%= mio.material.code %></td>
-              <td><%= mio.material.name %></td>
+              <td><%= mio.material.code if mio.material %></td>
+              <td><%= mio.material.name if mio.material%></td>
               <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
               <td><%= mio.material_num %></td>
               <td>

@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.paginate_by_sql("select service_code code,name,types,sale_price,id,store_id from products where
-    is_service=#{Product::PROD_TYPES[:PRODUCT]} and status=#{Product::IS_VALIDATE[:YES]} and store_id=#{Constant::STORE_ID} order by created_at desc", :page => params[:page], :per_page => 5)
+    is_service=#{Product::PROD_TYPES[:PRODUCT]} and status=#{Product::IS_VALIDATE[:YES]} and store_id=#{Constant::STORE_ID} order by created_at desc", :page => params[:page], :per_page => 10)
   end  #产品列表页
 
   #新建
@@ -22,7 +22,7 @@ class ProductsController < ApplicationController
   def prod_services
     @services = Product.paginate_by_sql("select id, service_code code,store_id,name,types,base_price,cost_time,staff_level level1,staff_level_1
     level2 from products where is_service=#{Product::PROD_TYPES[:SERVICE]} and status=#{Product::IS_VALIDATE[:YES]} and store_id=#{Constant::STORE_ID}
-    order by created_at asc", :page => params[:page], :per_page => 5)
+    order by created_at asc", :page => params[:page], :per_page => 10)
     @materials={}
     @services.each do |service|
       @materials[service.id]=Material.find_by_sql("select name,code,p.material_num num from materials m inner join prod_mat_relations p on

@@ -5,23 +5,23 @@ class SalesController < ApplicationController   #活动控制器
   layout "market_manages"
   def index #活动列表
     @sales = Sale.where("status >= #{Sale::STATUS[:UN_RELEASE]} and status <= #{Sale::STATUS[:RELEASE]}").
-      paginate(:page => params[:page] ||= 1,:per_page => 6)
+      paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 
   def release #发布活动
-      @products = Product.where("status = #{Product::IS_VALIDATE[:YES]}")       #选取所有status=1的数据
+      @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
 
   def search_product #查询产品
     p_id = (params[:type].to_i == 99999) ? "1 = 1" : "types = #{params[:type]}"
     p_name = (params[:name].nil? || params[:name].empty?) ? "1 = 1" : "name like '%#{params[:name]}%'"
-    @products = Product.where("status = #{Product::IS_VALIDATE[:YES]}").where(p_id).where(p_name)
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}").where(p_id).where(p_name)
   end
 
   def edit_search_product #编辑活动时查询产品
     p_id = (params[:type].to_i == 99999) ? "1 = 1" : "types = #{params[:type]}"
     p_name = (params[:name].nil? || params[:name].empty?) ? "1 = 1" : "name like '%#{params[:name]}%'"
-    @products = Product.where("status = #{Product::IS_VALIDATE[:YES]}").where(p_id).where(p_name)
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}").where(p_id).where(p_name)
   end
 
   def create  #发布活动
@@ -34,7 +34,7 @@ class SalesController < ApplicationController   #活动控制器
       disc = params[:disc_money].to_i
     end
     img = params[:sale_img]
-    img_name = "#{sale_name}.#{img.original_filename.split('.').reverse[0]}"
+    img_name = "sale#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
     selected_product_count = params[:selected_product_count].to_a
     selected_product_id = params[:selected_product_id].to_a
     sale_disc_time_types = params[:sale_disc_time_types].to_i  #年月日周。。。
@@ -95,7 +95,7 @@ class SalesController < ApplicationController   #活动控制器
         end
       end
     else
-      img_name = "#{sale_name}.#{img.original_filename.split('.').reverse[0]}"
+      img_name = "sale#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
       old_img = sale.img_url   
       if sale.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
           :introduction => sale_introduction, :disc_types => disc_types, :discount => disc,
@@ -118,8 +118,7 @@ class SalesController < ApplicationController   #活动控制器
   def edit #修改活动
     @sale = Sale.find(params[:s_id].to_i)
     @sale_products = @sale.sale_prod_relations
-    @products = Product.where("status = #{Product::IS_VALIDATE[:YES]}")
-    p @sale_products
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
   def del_sale  #删除活动按钮
     sale = Sale.find(params[:id].to_i)

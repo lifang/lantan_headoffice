@@ -15,10 +15,12 @@
           </select>
         </div>
         <div class="item">
+          <!-- <img src="<%= @card.img_url %>" width="59.2" height="37.2"/> -->
           <label>图片：</label>
           <input type="file" name="edit_card_url" id="edit_card_url" style="display:none" onchange="edit_card_img.value=value"/>
-          <input name="edit_card_img"  id="edit_card_img" type="text" class="file" value="<%= @card.img_url %>"/>
+          <input name="edit_card_img"  id="edit_card_img" type="text" class="file" value="<%= @card.img_url %>" readonly/>   
           <input type="button" class="file_btn" value="浏览" onclick="edit_card_url.click()" />
+         
         </div>
         <div class="item">
           <label>折扣：</label><input id="edit_discount_value" name="edit_discount_value" type="text" <% if @card.types == 1 %>disabled<% end %> value="<%= @card.discount %>"/>
@@ -31,8 +33,8 @@
           <div class="setobj_name">项目：</div>
           <div class="setobj_box">
             <div class="seto_list">
-              <span>充<input id="edit_started_money" name="edit_started_money" type="text" class="input_s"/>元</span>&nbsp;&nbsp;
-              <span>送<input id="edit_ended_money" name="edit_ended_money" type="text" class="input_s"/>元</span>
+              <span>充<input id="edit_started_money" name="edit_started_money" type="text" class="input_s" value="<%= @card_products[0].base_price if !@card_products.blank? %>"/>元</span>&nbsp;&nbsp;
+              <span>送<input id="edit_ended_money" name="edit_ended_money" type="text" class="input_s" value="<%= @card_products[0].more_price if !@card_products.blank? %>"/>元</span>
             </div>
           </div>
           <% else %>

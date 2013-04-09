@@ -21,7 +21,7 @@ class StoresController < ApplicationController  #门店控制器
        @cities = City.where("parent_id = #{params[:select_province].to_i}")
      end
      sql_params[0] = sql + params_sql
-     @stores = Store.paginate_by_sql(sql_params, :page => params[:page] ||= 1, :per_page => 2)
+     @stores = Store.paginate_by_sql(sql_params, :page => params[:page] ||= 1, :per_page => 10)
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
   end
 
