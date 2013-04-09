@@ -9,7 +9,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
 
   def select_discount_card #新建时选择打折卡
     @product_types = Product::PRODUCT_TYPES
-    @products = Product.all
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
 
 
