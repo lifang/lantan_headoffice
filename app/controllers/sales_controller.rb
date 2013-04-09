@@ -5,7 +5,7 @@ class SalesController < ApplicationController   #活动控制器
   layout "market_manages"
   def index #活动列表
     @sales = Sale.where("status >= #{Sale::STATUS[:UN_RELEASE]} and status <= #{Sale::STATUS[:RELEASE]}").
-      paginate(:page => params[:page] ||= 1,:per_page => 6)
+      paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 
   def release #发布活动

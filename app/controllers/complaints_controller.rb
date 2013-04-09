@@ -18,7 +18,7 @@ class ComplaintsController < ApplicationController   #投诉控制器
        @complaints_time << DateTime.now.months_ago(m).strftime("%Y-%m")
      end
      complaints = Complaint.where(all_complaints_sql)
-     @complaints = complaints.paginate(:page => params[:page] ||= 1, :per_page => 1) #投诉数据
+     @complaints = complaints.paginate(:page => params[:page] ||= 1, :per_page => 10) #投诉数据
      has_processed_complaints = Complaint.where (has_processed_complaints_sql) #已解决的投诉
      timely_complaints = Complaint.where(timely_sql) #及时解决的投诉
      if complaints.blank?
