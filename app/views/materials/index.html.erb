@@ -172,7 +172,7 @@
                   <% else %>
                   <% mo.mat_order_items.each do |moi| %>
                   <tr>
-                    <td><%= moi.material.name if moi.material %></td>
+                    <td><%= moi.s_material.try(:name) %></td>
                     <td><%= moi.price %></td>
                     <td><%= moi.material_num %></td>
                   </tr>
@@ -250,9 +250,6 @@
                 <option value="<%= key %>"><%= value %></option>
               <% end %>
             </select>
-          </div>
-          <div class="item">
-            <label>订货单号：</label><input id="m_o_code" name="m_o_code" type="text"/>
           </div>
           <div class="item">
             <label>条形码：</label><input id="m_code" name="m_code" type="text"/>
