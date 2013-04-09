@@ -2,9 +2,9 @@
   <div class="data_box">
     <div class="second_menu">
       <a href="/sv_cards" class="hover">优惠卡</a>
-      <a href="/sv_cards/sell_situation">销售情况</a>
-      <a href="/sv_cards/use_detail">使用情况明细</a>
-       <a href="/sv_cards/use_collect">使用情况汇总</a>
+      <% if permission?(:market_manage, :sell_situation) %><a href="/sv_cards/sell_situation">销售情况</a><% end %>
+      <% if permission?(:market_manage, :use_detail) %><a href="/sv_cards/use_detail">使用情况明细</a><% end %>
+      <% if permission?(:market_manage, :use_collect) %><a href="/sv_cards/use_collect">使用情况汇总</a><% end %>
     </div>
     <div class="data_menu">
       <a id="new_card" href="JavaScript:void(0)" class="add_btn">新建优惠卡</a>
