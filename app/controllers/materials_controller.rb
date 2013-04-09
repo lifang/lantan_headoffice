@@ -10,7 +10,7 @@ class MaterialsController < ApplicationController   #库存控制器
     .paginate(:page => params[:page] ||= 1,:per_page => 1) if @tab.nil? || @tab.eql?("materials_tab")
     @mat_out_orders = MatOutOrder.joins(:material).paginate(:page => params[:page] ||= 1, :per_page => 1) if @tab.nil? || @tab.eql?("mat_out_tab")
     @mat_in_orders = MatInOrder.joins(:material).paginate(:page => params[:page] ||= 1, :per_page => 1) if @tab.nil? || @tab.eql?("mat_in_tab")
-    @mat_orders = MaterialOrder.joins(:mat_order_items => :s_material).is_headoffice_not_canceled.where(status).where(started_time).where(ended_time).paginate(:page => params[:page] ||= 1, :per_page => 2) if @tab.nil? || @tab.eql?("mat_orders_tab")
+    @mat_orders = MaterialOrder.joins(:mat_order_items => :material).is_headoffice_not_canceled.where(status).where(started_time).where(ended_time).paginate(:page => params[:page] ||= 1, :per_page => 2) if @tab.nil? || @tab.eql?("mat_orders_tab")
     respond_to do |format|
       format.html
       format.js

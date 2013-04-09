@@ -5,4 +5,21 @@ class Api::MaterialsController < ApplicationController   #库存控制器api
     materials = Material.normal.all(:conditions => str)
     render :json => materials
   end
+
+  def save_mat_info
+    material_order = JSON.parse(params[:material_order])
+    MaterialOrder.create(material_order)
+    material_order_item = JSON.parse(params[:mat_items_code]) if params[:mat_order_items]
+    material_order_item.values.each do |mo|
+      material = Material.find_by_code mo["m_code"]
+
+      mat_order_item =  MatOrderItem.create(mo.except("m_code"))
+      if mat_order_item
+        mat_order_item.material_id = material.id
+        mat_order_item.save
+      end
+    end
+    
+    render :text => 'haha'
+  end
 end
