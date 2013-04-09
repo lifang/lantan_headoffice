@@ -13,9 +13,8 @@ module Constant
     :logistics_manage => {
       :print_list => ["打印库存清单", 1],
       :storage => ["入库", 2],
-      :storage_list => ["库存列表", 4],
-      :out_record => ["出库记录", 8],
-      :in_record => ["入库记录", 16]
+      :out_record => ["出库记录", 4],
+      :in_record => ["入库记录", 8]
     },
     #服务管理
     :service_manage => {
@@ -42,8 +41,8 @@ module Constant
   #角色
   SYS_ADMIN = "1"  #系统管理员
   BOSS = "2" #老板
-  MANAGER = "3" #店长
-  STAFF = "4" #员工
+  STORE_MANAGER = "3" #仓库管理员
+  STAFF = "4" #客服
 
   #活动code码生成文件路径
   CODE_PATH="#{Rails.root}/public/code_file.txt"

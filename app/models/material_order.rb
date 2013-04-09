@@ -1,11 +1,15 @@
 #encoding: utf-8
 class MaterialOrder < ActiveRecord::Base
+  set_table_name :"lantan_db_all.material_orders"
+  set_primary_key "id"
   has_many :mat_order_items
   has_many :mat_out_orders
-  has_many  :mat_in_orders
-  has_many  :m_order_types
+  has_many :mat_in_orders
+  has_many :m_order_types
+  has_many :s_materials, :foreign_key => 's_material_id'
   belongs_to :supplier
   belongs_to :store
+  scope :is_headoffice_not_canceled, where(:supplier_id => 0, :status =>[1,2])
 
   STATUS = {0 => "未付款", 1 => "已付款", 4 => "已取消"}
   M_STATUS = {0 => "未发货", 1 => "已发货", 2 => "已收货", 3 => "已入库"}

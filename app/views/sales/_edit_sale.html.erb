@@ -70,8 +70,8 @@
         <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:MOUTH] %>"<% if @sale.disc_time_types == Sale::DISC_TIME[:MOUTH] %>checked<% end %>/>月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:YEAR] %>" <% if @sale.disc_time_types == Sale::DISC_TIME[:YEAR] %>checked<% end %>/>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:TIME] %>" <% if @sale.disc_time_types == Sale::DISC_TIME[:TIME] %>checked<% end %>/>有效期：
-        <input id="edit_started_time" name="edit_started_time" type="text" <% if !@sale.started_at.nil? %>value="<%= @sale.started_at.strftime("%Y-%m-%d") %>"<% end %> <% if @sale.disc_time_types != Sale::DISC_TIME[:TIME] %>disabled<% end %>/>&nbsp;&nbsp;到&nbsp;&nbsp;
-        <input id="edit_ended_time" name="edit_ended_time" type="text" <% if !@sale.ended_at.nil? %>value="<%= @sale.ended_at.strftime("%Y-%m-%d") %>"<% end %> <% if @sale.disc_time_types != Sale::DISC_TIME[:TIME] %>disabled<% end %>/>
+        <input id="edit_started_time" name="edit_started_time" type="text" <% if !@sale.started_at.nil? %>value="<%= @sale.started_at.strftime("%Y-%m-%d") %>"<% end %> <% if @sale.disc_time_types != Sale::DISC_TIME[:TIME] %>disabled<% end %> readonly/>&nbsp;&nbsp;到&nbsp;&nbsp;
+        <input id="edit_ended_time" name="edit_ended_time" type="text" <% if !@sale.ended_at.nil? %>value="<%= @sale.ended_at.strftime("%Y-%m-%d") %>"<% end %> <% if @sale.disc_time_types != Sale::DISC_TIME[:TIME] %>disabled<% end %> readonly/>
       </div>
     </div>
     <div class="releaseDiv">

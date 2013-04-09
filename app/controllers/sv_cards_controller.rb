@@ -35,7 +35,12 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     card_name = params[:card_name]
     card_description = params[:card_description]
     img = params[:card_url]      #获取上传的图片
-    img_name = "#{card_name}.#{img.original_filename.split('.').reverse[0]}"    #拼凑成xxx.jpg/png...
+    if card_type == 1
+      img_name = "storeagecard#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+    elsif
+      card_type == 0
+      img_name = "discounrcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+    end
     if card_type == 1                                       #如果是储值卡
       started_money = params[:started_money].to_i
       ended_money = params[:ended_money].to_i
@@ -48,6 +53,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
         File.open(Rails.root.join("public", "cardimg",img_name), "wb") do |file|
           file.write(img.read) 
         end
+        SvcardProdRelation.create(:sv_card_id => sv_card.id, :base_price => started_money, :more_price => ended_money)
       end
     elsif card_type == 0                                        #如果是打折卡
       discount = params[:discount_value]
@@ -63,7 +69,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
         end
         product_id.each_with_index do |item,index|  
           p = Product.find(item.to_i)
-          SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sv_card.id, :base_price => p.base_price, :more_price => p.sale_price)
+          SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sv_card.id)
         end
       end    
     end
@@ -79,7 +85,11 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     description = params[:edit_card_description]
     img = params[:edit_card_url]
     if !img.nil?
-      img_name = "#{name}.#{img.original_filename.split('.').reverse[0]}"    #拼凑成xxx.jpg/png...
+      if type == 1
+        img_name = "storeagecard#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+      elsif type == 0
+        img_name = "discounrcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+      end
     end
     if type == 1
       started_money = params[:edit_started_money].to_i
@@ -91,7 +101,9 @@ class SvCardsController < ApplicationController   #优惠卡控制器
           File.new(Rails.root.join("public", "cardimg", img_name), "a+")
           File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
             file.write(img.read)
-          end        
+          end
+          sc.svcard_prod_relations.destroy
+          SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)
         end
       else
         sc.update_attributes(:name => name, :price => total_money, :description => description)
@@ -110,7 +122,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
           end
           product_id.each_with_index do |item,index|
             p = Product.find(item.to_i)
-            SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sc.id, :base_price => p.base_price, :more_price => p.sale_price)
+            SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sc.id)
           end
         end        
         else

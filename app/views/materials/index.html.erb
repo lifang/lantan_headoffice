@@ -1,15 +1,15 @@
 <div class="box">
   <div class="data_box">
     <div class="data_menu">
-      <a id="ruku_a" href="JavaScript:void(0)">入库</a>
-      <a href="/materials/m_list" target="_blank">打印库存清单</a>
+      <% if permission?(:logistics_manage, :storage) %><a id="ruku_a" href="JavaScript:void(0)">入库</a><% end %>
+      <% if permission?(:logistics_manage, :print_list) %><a href="/materials/m_list" target="_blank">打印库存清单</a><% end %>
     </div>
     <div class="clear"></div>
     <div class="tab_head">
       <ul>
         <li class="hover">库存列表</li>
-        <li>出库记录</li>
-        <li>入库记录</li>
+        <% if permission?(:logistics_manage, :out_record) %><li>出库记录</li><% end %>
+        <% if permission?(:logistics_manage, :in_record) %><li>入库记录</li><% end %>
         <li>门店订货记录</li>
       </ul>
     </div>
@@ -41,7 +41,7 @@
                 <td>
                   <input type="hidden" value="<%= material.id %>"/>
                   <a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a>
-                  <a name="material_check" href="JavaScript:void(0)">已核实</a>
+                  <a name="material_check" href="JavaScript:void(0)">核实</a>
                 </td>
               </tr>
             <% end %>
@@ -99,8 +99,8 @@
           <tbody>
             <% @mat_in_orders.each do |mio| %>
             <tr>
-              <td><%= mio.material.code %></td>
-              <td><%= mio.material.name %></td>
+              <td><%= mio.material.code if mio.material %></td>
+              <td><%= mio.material.name if mio.material%></td>
               <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
               <td><%= mio.material_num %></td>
               <td>
@@ -172,7 +172,7 @@
                   <% else %>
                   <% mo.mat_order_items.each do |moi| %>
                   <tr>
-                    <td><%= moi.material.name %></td>
+                    <td><%= moi.s_material.try(:name) %></td>
                     <td><%= moi.price %></td>
                     <td><%= moi.material_num %></td>
                   </tr>
@@ -250,9 +250,6 @@
                 <option value="<%= key %>"><%= value %></option>
               <% end %>
             </select>
-          </div>
-          <div class="item">
-            <label>订货单号：</label><input id="m_o_code" name="m_o_code" type="text"/>
           </div>
           <div class="item">
             <label>条形码：</label><input id="m_code" name="m_code" type="text"/>
