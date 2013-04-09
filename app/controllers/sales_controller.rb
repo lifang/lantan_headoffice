@@ -147,5 +147,4 @@ class SalesController < ApplicationController   #活动控制器
        render :text => 0
      end
   end
-  
 end
