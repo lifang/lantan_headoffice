@@ -8,8 +8,8 @@ class RevisitsController < ApplicationController  #回访控制器
                     left join lantan_db_all.orders o on com.order_id = o.id
                     left join lantan_db_all.stores sto on o.store_id = sto.id"
     params[:search_time].nil? ?
-     revisits_sql += " and date_format(r.created_at, '%Y-%m') = '#{Time.now.strftime("%Y-%m")}'" :
-     revisits_sql += " and date_format(r.created_at, '%Y-%m') = '#{params[:search_time]}'"
+     revisits_sql += " where date_format(r.created_at, '%Y-%m') = '#{Time.now.strftime("%Y-%m")}'" :
+     revisits_sql += " where date_format(r.created_at, '%Y-%m') = '#{params[:search_time]}'"
     @current_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.strftime("%Y-%m") : params[:search_time]
     @revisit_time = []    #当前年份所有已过的月份
     current_month = Time.now.strftime("%m").to_i
