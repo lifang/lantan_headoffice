@@ -15,16 +15,14 @@
           </select>
         </div>
         <div class="item">
-          <!-- <img src="<%= @card.img_url %>" width="59.2" height="37.2"/> -->
-          <label>图片：</label>
-          <input type="file" name="edit_card_url" id="edit_card_url" style="display:none" onchange="edit_card_img.value=value"/>
-          <input name="edit_card_img"  id="edit_card_img" type="text" class="file" value="<%= @card.img_url %>" readonly/>   
-          <input type="button" class="file_btn" value="浏览" onclick="edit_card_url.click()" />
-         
-        </div>
-        <div class="item">
           <label>折扣：</label><input id="edit_discount_value" name="edit_discount_value" type="text" <% if @card.types == 1 %>disabled<% end %> value="<%= @card.discount %>"/>
         </div>
+        <div class="item_textarea">
+          <label>图片：</label>
+          <input class="file" type="file" name="edit_card_url" id="edit_card_url"/>
+          <span class="show_pic"><img src="<%= @card.img_url %>" height="50" width="50"/></span>
+        </div>
+        
         <div class="item_textarea">
           <label>具体内容：</label><textarea id="edit_card_description" name="edit_card_description"class="width_textarea"><%= @card.description %></textarea>
         </div>

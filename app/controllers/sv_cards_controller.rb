@@ -9,25 +9,25 @@ class SvCardsController < ApplicationController   #优惠卡控制器
 
   def select_discount_card #新建时选择打折卡
     @product_types = Product::PRODUCT_TYPES
-    @products = Product.all
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
 
 
   def search_products_all #选择项目时的全部
-    @products = Product.all
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
   def edit_search_products_all  #编辑时选择项目全部
-      @products = Product.all
+      @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
   def search_products_part #选择项目时的部分
     product_type = "types = #{params[:product_type].to_i}"
     product_name = (params[:product_name].nil? || params[:product_name] == "") ? "1=1" : "name like '%#{params[:product_name]}%'"
-    @products = Product.where(product_type).where(product_name)
+    @products = Product.where(product_type).where(product_name).where("status = #{Product::STATUS[:NOMAL]}")
   end
   def edit_search_products_part #编辑时选择项目时的部分
     product_type = "types = #{params[:product_type].to_i}"
     product_name = (params[:product_name].nil? || params[:product_name] == "") ? "1=1" : "name like '%#{params[:product_name]}%'"
-    @products = Product.where(product_type).where(product_name)
+    @products = Product.where(product_type).where(product_name).where("status = #{Product::STATUS[:NOMAL]}")
   end
   def create          #创建优惠卡
     sv_card = SvCard.new
@@ -133,7 +133,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   def edit_card   #编辑优惠卡
     @card = SvCard.find(params[:c_id].to_i)
     @product_types = Product::PRODUCT_TYPES
-    @products = Product.all
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
     @card_products = @card.svcard_prod_relations
   end
 

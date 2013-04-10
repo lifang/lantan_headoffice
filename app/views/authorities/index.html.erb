@@ -12,7 +12,7 @@
           <% @roles.each do |role| %>
           <li>
             <input name="hid_id" type="hidden" value="<%= role.id %>"/>
-             <a style="display:block;"><%= role.name %></a>
+            <a style="display:block;"><%= role.name %></a>
             <input name="role_new_name" type="text" value="<%= role.name %>" style="display:none;"/>
             <a name="del_role_a" href="JavaScript:void(0)" class="group_x">Close</a>
             <span class="group_func">
@@ -23,8 +23,7 @@
           <% end %>
         </ul>
       </div>
-      <div id="set_authority" style="display:none;">
-          
+      <div id="set_authority" style="display:none;">    
       </div>
     </div>
   </div>

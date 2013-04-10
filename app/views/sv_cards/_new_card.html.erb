@@ -13,14 +13,13 @@
             <option value="0">打折卡</option>
           </select>
         </div>
-        <div class="item">
-          <label>图片：</label>
-          <input type="file" name="card_url" id="card_url" style="display:none" onchange="card_img.value=value"/>
-          <input name="card_img"  id="card_img" type="text" class="file" readonly/>
-          <input type="button" class="file_btn" value="浏览" onclick="card_url.click()" />
-        </div>
+        
         <div class="item">
           <label>折扣：</label><input id="discount_value" name="discount_value" type="text" disabled="disabled"/>
+        </div>
+        <div class="item_textarea">
+          <label>图片：</label>
+          <input type="file" name="card_url" id="card_url"/>
         </div>
         <div class="item_textarea">
           <label>具体内容：</label><textarea id="card_description" name="card_description"class="width_textarea"></textarea>
