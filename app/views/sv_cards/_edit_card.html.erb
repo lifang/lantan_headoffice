@@ -17,6 +17,9 @@
         <div class="item">
           <label>折扣：</label><input id="edit_discount_value" name="edit_discount_value" type="text" <% if @card.types == 1 %>disabled<% end %> value="<%= @card.discount %>"/>
         </div>
+        <div class="item">
+          <label>优惠卡金额：</label><input id="edit_discount_price" name="edit_discount_price" type="text" <% if @card.types == 1 %>disabled<% else %> value="<%= @card.price %>"<% end %>/>
+        </div>
         <div class="item_textarea">
           <label>图片：</label>
           <input class="file" type="file" name="edit_card_url" id="edit_card_url"/>
