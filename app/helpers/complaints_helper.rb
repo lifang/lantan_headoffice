@@ -1,7 +1,5 @@
 module ComplaintsHelper
   def find_staff (staff_id)
-    s = Staff.find(staff_id) 
-    name = s.name
-    name
+    s = Staff.find_by_id(staff_id)
   end
 end

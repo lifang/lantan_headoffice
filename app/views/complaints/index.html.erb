@@ -41,12 +41,12 @@
             <% else %>
             <% @complaints.each do |c| %>
             <tr>
-              <td><%= c.order_id.nil? ? "----" : c.order.store.name  %></td>
+              <td><%=  c.order.nil? || c.order.store.nil? ? "------" : c.order.store.name %></td>
               <td><%= c.created_at.strftime("%Y-%m-%d %H:%m") %></td>
-              <td><a href="#" class="other_a"><%= c.order_id.nil? ? "----" : c.order.code %></a></td>
-              <td>
-                  <%= c.staff_id_1.nil? ? "--" : find_staff(c.staff_id_1) %>/
-                  <%= c.staff_id_2.nil? ? "--" : find_staff(c.staff_id_2) %>
+              <td><a href="JavaScript:void(0)" class="other_a"><%= c.order.nil? ? "----" : c.order.code %></a></td>
+              <td>            
+                <%=  c.staff_id_1.nil? || find_staff(c.staff_id_1).nil? ? "------" : find_staff(c.staff_id_1).name%>
+                <%=  c.staff_id_2.nil? || find_staff(c.staff_id_2).nil? ? "------" : find_staff(c.staff_id_2).name %>
               </td>
               <td>
                 <% Complaint::TYPES_NAMES.each do |key, value| %>
