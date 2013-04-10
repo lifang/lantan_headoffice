@@ -9,7 +9,12 @@ class LoginsController < ApplicationController #登录控制器
       if staff.nil?
         render :index, :layout => false
       else
-        redirect_to backstages_path
+        session_role(cookies[:user_id])
+        if is_admin? or is_boss? or is_manager? or is_staff?
+          redirect_to backstages_path
+        else
+          render :index, :layout => false
+        end
       end
     else
       render :index, :layout => false
