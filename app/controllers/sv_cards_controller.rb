@@ -47,7 +47,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       sv_card.update_attributes(:name => card_name, :types => card_type, :price => total_money, :description => card_description,
         :img_url => "/cardimg/#{img_name}")
       if sv_card.save
-         FileUtils.mkdir_p "public/cardimg" if !FileTest.directory?("public/cardimg")
+         FileUtils.mkdir_p "#{Rails.root}/public/cardimg" if !FileTest.directory?("#{Rails.root}/public/cardimg")
         File.new(Rails.root.join("public", "cardimg", img_name), "a+")
         File.open(Rails.root.join("public", "cardimg",img_name), "wb") do |file|
           file.write(img.read) 
@@ -56,9 +56,10 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       end
     elsif card_type == 0                                        #如果是打折卡
       discount = params[:discount_value]
+      price = params[:discount_price]
       product_count = params[:product_count].to_a
       product_id = params[:product_hidden_id].to_a
-      sv_card.update_attributes(:name => card_name, :types => card_type,:discount => discount, :description => card_description,
+      sv_card.update_attributes(:name => card_name, :types => card_type,:discount => discount, :price => price, :description => card_description,
         :img_url => "/cardimg/#{img_name}")
       if sv_card.save
         FileUtils.mkdir_p "public/cardimg" if !FileTest.directory?("public/cardimg")
@@ -108,9 +109,10 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       end
     elsif type == 0
       discount = params[:edit_discount_value]
+      price = params[:edit_discount_price]
       product_count = params[:edit_product_count].to_a
       product_id = params[:edit_product_hidden_id].to_a
-      if sc.update_attributes(:name => name,:description => description, :discount => discount)
+      if sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
          if !img.nil?
             sc.update_attribute(":img_url", "cardimg/#{img_name}")
              FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")

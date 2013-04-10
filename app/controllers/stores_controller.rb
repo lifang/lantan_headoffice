@@ -69,12 +69,12 @@ class StoresController < ApplicationController  #门店控制器
     @store = Store.find(params[:id].to_i)
     if !@store.nil?
       if @store.delete
-        flash[:msg] = "删除成功!"
+        flash[:notice] = "删除成功!"
       else
-        falsh[:mag] = "删除失败!"
+        falsh[:notice] = "删除失败!"
       end
     end
-    redirect_to operate_manages_path
+    redirect_to stores_path
   end
   
    def province_change     #搜索店面的省份下拉菜单

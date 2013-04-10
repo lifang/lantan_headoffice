@@ -1,7 +1,7 @@
 #encoding: utf-8
 class SalesController < ApplicationController   #活动控制器
-   require 'fileutils'
-   require 'mini_magick'
+  require 'fileutils'
+  require 'mini_magick'
   layout "market_manages"
   def index #活动列表
     @sales = Sale.where("status >= #{Sale::STATUS[:UN_RELEASE]} and status <= #{Sale::STATUS[:RELEASE]}").
@@ -9,7 +9,7 @@ class SalesController < ApplicationController   #活动控制器
   end
 
   def release #发布活动
-      @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
 
   def search_product #查询产品
@@ -106,11 +106,11 @@ class SalesController < ApplicationController   #活动控制器
         FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
         File.new(Rails.root.join("public", "saleimg", img_name), "a+")
         File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
-        file.write(img.read)
-      end
+          file.write(img.read)
+        end
       end
     end
-     flash[:notice] = "活动修改成功!"
+    flash[:notice] = "活动修改成功!"
     redirect_to sales_path
   end
 
@@ -134,16 +134,16 @@ class SalesController < ApplicationController   #活动控制器
   end
 
   def rel_sale  #发布活动按钮
-     sale = Sale.find(params[:id].to_i)
-     if !sale.nil?
-       if sale.status != 0
-         render :text => 0
-       else
-          sale.update_attribute("status", Sale::STATUS[:RELEASE])
-          render :text => 1
-       end
-     else
-       render :text => 0
-     end
+    sale = Sale.find(params[:id].to_i)
+    if !sale.nil?
+      if sale.status != 0
+        render :text => 0
+      else
+        sale.update_attribute("status", Sale::STATUS[:RELEASE])
+        render :text => 1
+      end
+    else
+      render :text => 0
+    end
   end
 end

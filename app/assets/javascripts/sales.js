@@ -257,9 +257,6 @@ $("#edit_create_button").live("click",function(){
     }else if($("#edit_sale_car_num").val() == "" || parseInt($("#edit_sale_car_num").val()) <= 0){
          tishi_alert("请输入有效的车辆总数!");
         return false;
-    }else if($("#edit_sale_img").val() == ""){
-        tishi_alert("请选择一张图片!");
-        return false;
     }else if(new Date($("#edit_ended_time").val()) > 0 && new Date($("#edit_ended_time").val()) < new Date($("#edit_started_time").val())){
         tishi_alert("结束时间必须在开始时间之后!");
         return false;
