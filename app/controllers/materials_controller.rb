@@ -4,8 +4,8 @@ class MaterialsController < ApplicationController   #库存控制器
   def index
     @tab = params[:tab]
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : "material_orders.status = #{params[:status].to_i}"
-    started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : "created_at >= '#{params[:started_time]}'"
-    ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : "created_at <= '#{params[:ended_time]}'"
+    started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : "material_orders.created_at >= '#{params[:started_time]}'"
+    ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : "material_orders.created_at <= '#{params[:ended_time]}'"
     @materials = Material.where("status = #{Material::STATUS[:NORMAL]}")
     .paginate(:page => params[:page] ||= 1,:per_page => 10) if @tab.nil? || @tab.eql?("materials_tab")
 
