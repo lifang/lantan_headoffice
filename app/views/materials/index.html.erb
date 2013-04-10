@@ -172,7 +172,7 @@
                   <% else %>
                   <% mo.mat_order_items.each do |moi| %>
                   <tr>
-                    <td><%= moi.s_material.try(:name) %></td>
+                    <td><%= moi.material.try(:name) %></td>
                     <td><%= moi.price %></td>
                     <td><%= moi.material_num %></td>
                   </tr>
