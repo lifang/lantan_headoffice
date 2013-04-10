@@ -52,7 +52,6 @@ class SalesController < ApplicationController   #活动控制器
       :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :img_url => "/saleimg/#{img_name}", :code => sale_code)
     if s.save
       FileUtils.mkdir_p "public/saleimg" if !FileTest.directory?("public/saleimg")
-      File.new(Rails.root.join("public", "saleimg", img_name), "a+")
       File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
         file.write(img.read)
       end

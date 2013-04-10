@@ -133,7 +133,7 @@ class ProductsController < ApplicationController
 
   #加载物料信息
   def load_material
-    sql = "select id,name from materials  where  status=#{Material::STATUS[:NORMAL]} and store_id=#{Constant::STORE_ID}"
+    sql = "select id,name from materials  where  status=#{Material::STATUS[:NORMAL]}"
     sql += " and types=#{params[:mat_types]}" if params[:mat_types] != "" || params[:mat_types].length !=0
     sql += " and name like '%#{params[:mat_name]}%'" if params[:mat_name] != "" || params[:mat_name].length !=0
     @materials=Material.find_by_sql(sql)
