@@ -32,9 +32,6 @@
       <% end %>
     </div>
     <% end %>
-    <% if flash[:msg] %>
-      <div><%= flash[:msg] %></div>
-    <% end %>
     <div class="data_menu">
      <% if permission?(:operate_manage, :new_store) %> <%= link_to "新建申请", "JavaScript:void(0)", :id => "new_store_a"%><% end %>
     </div>

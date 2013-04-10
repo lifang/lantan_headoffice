@@ -19,6 +19,7 @@ $(document).ready(function(){
   $("#card_type").live("change", function(){    //新建时根据卡类型加载不同表格
     if ($("#card_type").val() == 0){
       $("#discount_value").removeAttr("disabled");
+      $("#discount_price").removeAttr("disabled");
       $.ajax({
         type: "GET",
         url: "/sv_cards/select_discount_card"
@@ -26,6 +27,7 @@ $(document).ready(function(){
     }
     else if ($("#card_type").val() == 1){
       $("#discount_value").attr("disabled","disabled");
+      $("#discount_price").attr("disabled","disabled");
       $.ajax({
         type: "GET",
         url: "/sv_cards/select_storeage_card"
@@ -76,8 +78,11 @@ $(document).ready(function(){
       }else if($("#discount_value").val()== ""){
           tishi_alert("请输入折扣!");
           return false;
-      }else if(parseFloat($("#discount_value").val()) > 10 || parseFloat($("#discount_value").val()) < 1){
+      }else if(isNaN($("#discount_value").val()) || parseFloat($("#discount_value").val()) > 10 || parseFloat($("#discount_value").val()) < 1){
           tishi_alert("折扣必须在1~10之间的数字!");
+          return false;
+      }else if($("#discount_price").val() == "" || isNaN($("#discount_price").val())){
+          tishi_alert("请输入有效的打折卡金额!");
           return false;
       }
       else if($("#card_description").val() == ""){
@@ -116,6 +121,9 @@ $(document).ready(function(){
           return false;
       }else if(isNaN($("#edit_discount_value").val()) || parseFloat($("#edit_discount_value").val()) > 10 || parseFloat($("#edit_discount_value").val()) < 1){
        tishi_alert("折扣必须在1~10之间的数字!");
+          return false;
+      }else if($("#edit_discount_price").val() == "" || isNaN($("#edit_discount_price").val())){
+          tishi_alert("请输入有效的打折卡金额!");
           return false;
       }
       else if($("#edit_card_description").val() == ""){

@@ -23,10 +23,7 @@ class LoginsController < ApplicationController #登录控制器
 
   def create #登陆验证
     staff = Staff.find_by_username(params[:username])
-    if staff.nil? or !staff.has_password?(params[:password])
-      flash[:notice] = "用户名或密码错误!"
-      redirect_to '/'
-    else
+    if staff and staff.has_password?(params[:password])
       cookies[:user_id]={:value =>staff.id, :path => "/", :secure  => false}
       cookies[:user_name]={:value =>staff.name, :path => "/", :secure  => false}
       session_role(cookies[:user_id])
@@ -40,6 +37,9 @@ class LoginsController < ApplicationController #登录控制器
         flash[:notice] = "抱歉，您没有访问权限"
         redirect_to "/"
       end
+    else
+      flash[:notice] = "用户名或密码错误!"
+      redirect_to '/'
     end
   end
 
