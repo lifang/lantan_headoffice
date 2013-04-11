@@ -251,3 +251,21 @@ function popup(t){
         $(".mask").css('display','none');
     })
 }
+
+function prod_delete(id){
+    $.ajax({
+        async:true,
+        type : 'post',
+        dataType : 'script',
+        url : "/products/"+ id+"/prod_delete"
+    });
+}
+
+function serve_delete(id){
+    $.ajax({
+        async:true,
+        type : 'post',
+        dataType : 'script',
+        url : "/products/"+ id+"/serve_delete"
+    });
+}
