@@ -53,9 +53,7 @@ class PleasedsController < ApplicationController  #满意度控制器
 #     end
 #   end
 #    all_orders_hash = all_orders.group_by { |o|o.store_id  }
-#    pleased_orders_hash = pleased_orders.group_by { |o|o.store_id  }
-
-    
+#    pleased_orders_hash = pleased_orders.group_by { |o|o.store_id  }  
   end
 
   def search_cities #搜索城市

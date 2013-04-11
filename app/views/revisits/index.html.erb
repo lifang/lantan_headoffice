@@ -38,7 +38,7 @@
                                     <% else %>
                                     <%  @revisits.each do |r|%>
                                       <tr>
-                                        <td><%= r.store_name.nil? ? "----" : r.store_name %></td>
+                                        <td><%= r.store_name || "------" %></td>
                                         <td><%= r.created_at.strftime("%Y-%m-%d %H:%m") if !r.created_at.nil? %></td>
                                         <td><%= r.content %></td>
                                         <td><%= r.answer %></td>
@@ -51,7 +51,7 @@
                                         </td>
                                         <td><%= r.cus_name %></td>
                                         <td><%= r.cus_mobilephone %></td>
-                                        <td><a href="#" class="other_a"><%= r.order_code if !r.order_code.nil? && !r.order_code.nil?%></a></td>
+                                        <td><a href="JavaScript:void(0)" class="other_a"><%= r.order_code if !r.order_code.nil? && !r.order_code.nil?%></a></td>
                                       </tr>   
                                       <% end %>
                                       <% end %>
