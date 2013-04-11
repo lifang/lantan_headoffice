@@ -166,16 +166,16 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 }
 
 /*main*/
-.main { padding: 10px 0 30px 0; overflow: hidden;}
+.main { padding: 10px 0 30px 0; overflow: hidden; min-height: 500px;}
 
 .data_box { padding: 5px 0;}
 .data_body { padding: 5px 0;}
 .data_body_title { line-height: 24px; }
 .data_body_h { display: inline; font-size: 18px; color: #930205; font-weight: bold; line-height: 36px; margin-right: 10px;}
-.data_body_p { display: inline; font-size: 16px;}
+.data_body_p { font-size: 14px; padding: 0 10px 10px 10px; line-height: 24px;}
 .data_body_p span { margin: 0 10px;}
 
-.data_body_ul { color: #930205; padding-left: 10px;}
+.data_body_ul { color: #930205; padding: 0 10px 10px 10px;}
 .data_body_ul li { list-style: inside circle;}
 
 
@@ -316,6 +316,7 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 }
 .popup_body { overflow: hidden; padding: 10px; position: relative;}
 .popup_body_area { overflow: hidden;}
+
 
 .popup_body_fieldset { border: 1px #CCCCCC solid;}
 .popup_body_title { font-size: 14px; line-height: 28px; padding: 0 5px; margin-left: 10px; font-weight:bold;}

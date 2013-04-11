@@ -1,6 +1,8 @@
 #encoding: utf-8
 class StoresController < ApplicationController  #门店控制器
   layout "operate_manages"
+  before_filter :sign?
+  
   def index  
     sql = "select s.*, c.name c_name, cp.name cp_name from lantan_db_all.stores s
           left join cities c on c.id = s.city_id

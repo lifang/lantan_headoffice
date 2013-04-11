@@ -2,6 +2,8 @@
 require "toPinyin"
 class CarsController < ApplicationController   #车型控制器
   layout "base_datas"
+  before_filter :sign?
+  
   def index
     @capitals = Capital.all
     brands = CarBrand.all

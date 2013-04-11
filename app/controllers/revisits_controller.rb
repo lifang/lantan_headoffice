@@ -1,6 +1,8 @@
 #encoding: utf-8
 class RevisitsController < ApplicationController  #回访控制器
   layout "service_manages"
+  before_filter :sign?
+  
   def index
     revisits_sql = "select r.*, sto.name store_name, cu.name cus_name, cu.mobilephone cus_mobilephone, o.code order_code
                     from lantan_db_all.revisits r left join lantan_db_all.complaints com on r.complaint_id = com.id
