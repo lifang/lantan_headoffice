@@ -586,8 +586,8 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 .pageTurn a { padding: 5px 12px; margin: 0px 2px; color: #333; background: #dbdbdb;}
 .pageTurn a:hover, .pageTurn a:active { color: #930205;}
 
-.pageTurn a.current { padding: 5px 12px; font-weight: bold; color: #fff; background: #930205;}
-.pageTurn a.disabled {display: none;}
+.pageTurn em { padding: 5px 12px; font-weight: bold; color: #fff; background: #930205;}
+.pageTurn span.disabled {display: none;}
 
 /*基础数据 car_group*/
 .car_group, .people_group { margin-bottom: 10px; overflow: hidden; clear: both;}

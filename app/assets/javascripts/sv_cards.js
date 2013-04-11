@@ -93,8 +93,6 @@ $(document).ready(function(){
         return false;
       }
     }
-    //alert(parseFloat($("#discount_value").val()));
-    //return false;
   })
     $("#edit_search_button").live("click",function(){ //编辑时确定提交按钮
     var type = parseInt($("#edit_card_type").val());
