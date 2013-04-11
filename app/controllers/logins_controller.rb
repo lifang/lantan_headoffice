@@ -1,8 +1,6 @@
 #encoding: utf-8
 class LoginsController < ApplicationController #登录控制器
 
-  include UserRoleHelper
-  
   def index   #登陆
     if cookies[:user_id]
       staff = Staff.find_by_id(cookies[:user_id])

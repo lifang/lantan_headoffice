@@ -3,6 +3,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   require 'fileutils'
   require 'mini_magick'
   layout "market_manages"
+  before_filter :sign?
+  
   def index #优惠卡主页
     @sv_cards = SvCard.all.paginate(:page => params[:page] ||= 1,:per_page => 10,:order => "created_at asc")
   end

@@ -1,6 +1,8 @@
 #encoding: utf-8
 class NewsController < ApplicationController  #新闻控制器
   layout "base_datas"
+  before_filter :sign?
+  
   def index   #新闻列表
     @news = New.where("status >= #{New::STATUS[:NORMAL]} and status <= #{New::STATUS[:UNRELEASED]}")
     .paginate(:page => params[:page] ||= 1,:per_page => 10)

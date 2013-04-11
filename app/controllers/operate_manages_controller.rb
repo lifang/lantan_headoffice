@@ -1,5 +1,7 @@
 #encoding: utf-8
 class OperateManagesController < ApplicationController   #运营管理控制器
+  before_filter :sign?
+  
   def index
     if params[:select_province].to_i == 0 && params[:select_city].to_i == 0 && params[:store_name] == "" #如果都不选
       @stores = Store.all.paginate(:page => params[:page] ||= 1,:per_page => 10,:order => "created_at desc")

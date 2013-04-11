@@ -1,6 +1,8 @@
 #encoding: utf-8
 class AuthoritiesController < ApplicationController     #权限控制器
+  before_filter :sign?
   layout "base_datas"
+  
   def index
       @roles = Role.all
   end
