@@ -106,7 +106,7 @@ class SalesController < ApplicationController   #活动控制器
         selected_product_id.each_with_index do |item, index|
           SaleProdRelation.create(:sale_id => sale.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
         end
-        FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
+        FileUtils.rm_rf "#{Rails.root}/public/#{old_img}" if FileTest.file?("#{Rails.root}/public/#{old_img}")
         File.new(Rails.root.join("public", "saleimg", img_name), "a+")
         File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
           file.write(img.read)
