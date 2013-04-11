@@ -145,18 +145,13 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     @card_type = params[:card_type] ||= "2"
     @started_time = params[:started_time]
     @ended_time = params[:ended_time]
-
     started_time_sql =  (@started_time.nil? || @started_time.empty?) ? "1 = 1" : "c_svc_relations.created_at >= '#{@started_time}'"
     ended_time_sql = (@ended_time.nil? || @ended_time.empty?) ? "1 = 1" : "c_svc_relations.created_at <= '#{@ended_time}'"
     sv_card_type_sql = @card_type.eql?("2") ? "1 = 1" : "sv_cards.types = #{@card_type}"
-
     re = CSvcRelation.includes(:sv_card).where(started_time_sql).where(ended_time_sql).where(sv_card_type_sql).order("c_svc_relations.created_at asc")
-
     re_total_money = CSvcRelation.includes(:sv_card).where(started_time_sql).where(ended_time_sql).where(sv_card_type_sql).sum(:total_price)
-
     @total_money = re_total_money
     @count = re.length
-
     @relations = re.paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 

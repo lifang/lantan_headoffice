@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.paginate_by_sql("select service_code code,name,types,sale_price,id,store_id from products where
-    is_service=#{Product::PROD_TYPES[:PRODUCT]} and status=#{Product::IS_VALIDATE[:YES]} and store_id=#{Constant::STORE_ID} order by created_at desc", :page => params[:page], :per_page => 10)
+    is_service=#{Product::PROD_TYPES[:PRODUCT]} and status=#{Product::IS_VALIDATE[:YES]} order by created_at desc", :page => params[:page], :per_page => 10)
   end  #产品列表页
 
   #新建
@@ -22,7 +22,7 @@ class ProductsController < ApplicationController
 
   def prod_services
     @services = Product.paginate_by_sql("select id, service_code code,store_id,name,types,base_price,cost_time,staff_level level1,staff_level_1
-    level2 from products where is_service=#{Product::PROD_TYPES[:SERVICE]} and status=#{Product::IS_VALIDATE[:YES]} and store_id=#{Constant::STORE_ID}
+    level2 from products where is_service=#{Product::PROD_TYPES[:SERVICE]} and status=#{Product::IS_VALIDATE[:YES]}
     order by created_at asc", :page => params[:page], :per_page => 10)
     @materials={}
     @services.each do |service|
@@ -51,12 +51,16 @@ class ProductsController < ApplicationController
     else
       product.update_attributes({:standard=>params[:standard]})
     end
-    if params[:img_url] and !params[:img_url].keys.blank?
-      params[:img_url].each_with_index {|img,index|
-        url=Sale.upload_img(img[1],product.id,"#{types.downcase}_pics",product.store_id,Constant::P_PICSIZE,img[0])
-        ImageUrl.create(:product_id=>product.id,:img_url=>url)
-        product.update_attributes({:img_url=>url}) if index == 0
-      }
+    begin
+      if params[:img_url] and !params[:img_url].keys.blank?
+        params[:img_url].each_with_index {|img,index|
+          url=Sale.upload_img(img[1],product.id,"#{types.downcase}_pics",product.store_id,Constant::P_PICSIZE,img[0])
+          ImageUrl.create(:product_id=>product.id,:img_url=>url)
+          product.update_attributes({:img_url=>url}) if index == 0
+        }
+      end
+    rescue
+      flash[:notice] ="图片上传失败，请重新添加！"
     end
   end   #为新建产品或者服务提供参数
 
@@ -85,13 +89,17 @@ class ProductsController < ApplicationController
     else
       parms.merge!({:standard=>params[:standard]})
     end
-    if params[:img_url] and !params[:img_url].keys.blank?
-      product.image_urls.inject(Array.new) {|arr,mat| mat.destroy}
-      params[:img_url].each_with_index {|img,index|
-        url=Sale.upload_img(img[1],product.id,"#{types.downcase}_pics",product.store_id,Constant::P_PICSIZE,img[0])
-        ImageUrl.create(:product_id=>product.id,:img_url=>url)
-        product.update_attributes({:img_url=>url}) if index == 0
-      }
+    begin
+      if params[:img_url] and !params[:img_url].keys.blank?
+        product.image_urls.inject(Array.new) {|arr,mat| mat.destroy}
+        params[:img_url].each_with_index {|img,index|
+          url=Sale.upload_img(img[1],product.id,"#{types.downcase}_pics",product.store_id,Constant::P_PICSIZE,img[0])
+          ImageUrl.create(:product_id=>product.id,:img_url=>url)
+          product.update_attributes({:img_url=>url}) if index == 0
+        }
+      end
+    rescue
+      flash[:notice] ="图片上传失败，请重新添加！"
     end
     product.update_attributes(parms)
   end
@@ -124,9 +132,27 @@ class ProductsController < ApplicationController
     redirect_to "/products/prod_services"
   end
 
+  def prod_delete
+    @redit = delete_p(Constant::PRODUCT,params[:id],params[:store_id])
+  end
+
+  def serve_delete
+    @redit = delete_p(Constant::SERVICE,params[:id],params[:store_id])
+  end
+
+  def delete_p(types,id,store_id)
+    Product.find(id).update_attribute(:status, Product::IS_VALIDATE[:NO])
+    if types == Constant::SERVICE
+      redit = "/stores/#{store_id}/products/prod_services"
+    else
+      redit =  "/stores/#{store_id}/products"
+    end
+    return redit
+  end
+
   #加载物料信息
   def load_material
-    sql = "select id,name from materials  where  status=#{Material::STATUS[:NORMAL]} and store_id=#{Constant::STORE_ID}"
+    sql = "select id,name from materials  where  status=#{Material::STATUS[:NORMAL]}"
     sql += " and types=#{params[:mat_types]}" if params[:mat_types] != "" || params[:mat_types].length !=0
     sql += " and name like '%#{params[:mat_name]}%'" if params[:mat_name] != "" || params[:mat_name].length !=0
     @materials=Material.find_by_sql(sql)
@@ -136,4 +162,5 @@ class ProductsController < ApplicationController
     @prod =Product.find(params[:id])
     @img_urls = @prod.image_urls
   end
+  
 end
