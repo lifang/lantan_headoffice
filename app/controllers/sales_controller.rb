@@ -3,12 +3,14 @@ class SalesController < ApplicationController   #活动控制器
   require 'fileutils'
   require 'mini_magick'
   layout "market_manages"
+  before_filter :sign?
+  
   def index #活动列表
-    @sales = Sale.where("status >= #{Sale::STATUS[:UN_RELEASE]} and status <= #{Sale::STATUS[:RELEASE]}").
+    @sales = Sale.where("status = #{Sale::STATUS[:UN_RELEASE]} or status = #{Sale::STATUS[:RELEASE]}").
       paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 
-  def release #发布活动
+  def release #创建活动
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
 
@@ -103,7 +105,7 @@ class SalesController < ApplicationController   #活动控制器
         selected_product_id.each_with_index do |item, index|
           SaleProdRelation.create(:sale_id => sale.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
         end
-        FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
+        FileUtils.rm_rf "#{Rails.root}/public/#{old_img}" if FileTest.file?("#{Rails.root}/public/#{old_img}")
         File.new(Rails.root.join("public", "saleimg", img_name), "a+")
         File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
           file.write(img.read)

@@ -1,9 +1,9 @@
 $(document).ready(function(){
-     $("#started_time").datepicker({
-    inline: true
+     $("#started_time").click(function(){
+    WdatePicker();
   });
-  $("#ended_time").datepicker({
-    inline: true
+  $("#ended_time").click(function(){
+    WdatePicker();
   });
   $("#table_show .pageTurn a").live("click", function(){   //分页AJAX
        var url = $(this).attr("href");
@@ -79,7 +79,7 @@ $(document).ready(function(){
       $("#order_detail_and_deliver").append("<div class='item'><label>预计到货时间:</label><input type='text' id='arrive_time' readonly></div>\n\
                                             <div class='item'><label>运单号:</label><input type='text' id='logistic_code'></div>\n\
                                               <div class='item'><label>运单人:</label><input type='text' id='carrier'/></div>");
-      $('#arrive_time').datepicker({inline: true}); //加上时间插件
+      $('#arrive_time').click(function(){ WdatePicker();}); //加上时间插件
       $("#order_detail_btn_box").html("<input type='hidden' value='"+moid+"'/><button id='deliver_submit_btn' class='confirm_btn'>确定</button>\n\
       <button id='deliver_cancel_btn'class='cancel_btn'>返回</button>");
     })

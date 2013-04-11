@@ -1,6 +1,8 @@
 #encoding: utf-8
 class MaterialsController < ApplicationController   #库存控制器
   layout"logistics_manages", :except => "m_list"
+  before_filter :sign?
+  
   def index
     @tab = params[:tab]
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : "material_orders.status = #{params[:status].to_i}"

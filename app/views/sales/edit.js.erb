@@ -1,3 +1,3 @@
 $("#sale_show_and_edit").html("<%= escape_javascript(render :partial => "edit_sale") %>");
-$("#edit_started_time").datepicker();
-$("#edit_ended_time").datepicker();
+$("#edit_started_time").click(function(){WdatePicker();});
+$("#edit_ended_time").click(function(){WdatePicker();});

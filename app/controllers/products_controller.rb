@@ -2,6 +2,7 @@
 class ProductsController < ApplicationController
   # 营销管理 -- 产品
   layout 'market_manages'
+  before_filter :sign?
 
   def index
     @products = Product.paginate_by_sql("select service_code code,name,types,sale_price,id,store_id from products where

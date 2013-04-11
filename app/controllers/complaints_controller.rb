@@ -1,6 +1,8 @@
 #encoding: utf-8
 class ComplaintsController < ApplicationController   #投诉控制器
   layout "service_manages"
+  before_filter :sign?
+  
   def index
      all_complaints_sql = (params[:search_time].nil? || params[:search_time].empty?) ?
        "date_format(created_at, '%Y-%m') = '#{Time.now.strftime("%Y-%m")}'" :

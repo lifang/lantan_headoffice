@@ -1,6 +1,8 @@
 #encoding: utf-8
 class PleasedsController < ApplicationController  #满意度控制器
   layout "service_manages"
+  before_filter :sign?
+  
   def index
     @current_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.strftime("%Y-%m") : params[:search_time]
     @pleased_time = []    #当前年份所有已过的月份

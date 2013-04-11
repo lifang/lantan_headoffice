@@ -203,12 +203,12 @@ $("#cancel_button").click(function(){   //取消按钮
 $("#edit_cancel_button").live("click",function(){   //编辑时取消按钮
   location.href="/sales"
 })
- $("#started_time").datepicker({        //开始时间选择插件
-    inline: true
+ $("#started_time").click(function(){        //开始时间选择插件
+    WdatePicker();
 });
  
-$("#ended_time").datepicker({       //结束时间选择插件
-    inline: true
+$("#ended_time").click(function(){       //结束时间选择插件
+    WdatePicker();
 });
 
 $("#create_button").click(function(){  //创建验证

@@ -1,6 +1,8 @@
 #encoding: utf-8
 class AuthoritiesController < ApplicationController     #权限控制器
+  before_filter :sign?
   layout "base_datas"
+  
   def index
       @roles = Role.all
   end
@@ -111,6 +113,6 @@ class AuthoritiesController < ApplicationController     #权限控制器
       end
     end
     flash[:notice] = "设置成功"
-    redirect_to "/cars"
+    redirect_to "/authorities/set_staff"
   end
 end
