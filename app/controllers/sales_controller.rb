@@ -6,11 +6,11 @@ class SalesController < ApplicationController   #活动控制器
   before_filter :sign?
   
   def index #活动列表
-    @sales = Sale.where("status >= #{Sale::STATUS[:UN_RELEASE]} and status <= #{Sale::STATUS[:RELEASE]}").
+    @sales = Sale.where("status = #{Sale::STATUS[:UN_RELEASE]} or status = #{Sale::STATUS[:RELEASE]}").
       paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 
-  def release #发布活动
+  def release #创建活动
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
 
