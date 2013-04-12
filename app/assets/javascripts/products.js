@@ -233,6 +233,23 @@ function show_center(t){
         $(".mask").css('display','none');
     });
 }
+function before_center(t){
+    var doc_height = $(document).height();
+    var doc_width = $(document).width();
+    var layer_height = $(t).height();
+    var layer_width = $(t).width();
+    $(".maskOne").css({
+        display:'block',
+        height:($(t).height()+50)>doc_height?　$(t).height()+180 : doc_height
+    });
+    $(t).css('top',"50px");
+    $(t).css('left',(doc_width-layer_width)/2);
+    $(t).css('display','block');
+    $(t + " .close").click(function(){
+        $(t).css('display','none');
+        $(".maskOne").css('display','none');
+    });
+}
 //弹出层
 function popup(t){
     var doc_height = $(document).height();

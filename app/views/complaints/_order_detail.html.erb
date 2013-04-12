@@ -1,0 +1,56 @@
+<div class="popup_box">
+  <h1>相关订单<a href="javascript:void(0)" class="close">关闭</a></h1>
+  <div class="popup_body">
+    <div class="popup_body_area">
+      <div class="data_body_p">
+        <span>订单编号： <%= @order.code %></span>
+        <span>消费时间：<%= @order.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
+        <span>接待人员：<%= @front_staff.nil? ? "----" : @front_staff.name %></span>
+        <span>施工人员：
+         <%=  @cons_staff1.nil? ? "----" :  @cons_staff1.name %>/
+         <%=  @cons_staff2.nil? ? "----" :  @cons_staff2.name %>
+        </span>
+      </div>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_tab_table">
+        <thead>
+          <tr class="hbg">
+            <td>服务项目</td>
+            <td>数量</td>
+            <td>单价(元)</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @order.order_prod_relations.blank? %>
+          <tr>
+            <td>------</td>
+          </tr>
+          <% else %>
+          <% @order.order_prod_relations.each do |opr| %>
+            <tr>
+              <td><%= opr.product.name if opr.product %></td>
+              <td><%= opr.pro_num %></td>
+              <td><%= opr.price %></td>
+            </tr>
+            <% end %>
+     <% end %>
+            <tr>
+              <td colspan="3">
+                参加活动：<% if @order.sale %><%= @order.sale.name %><% else %>无<% end %>
+              </td>
+            </tr>
+          <% if @order.c_pcard_relation_id %>
+            <tr><td colspan="3">使用套餐卡一次</td></tr>
+          <% end %>
+          <% if @order.c_svc_relation_id %>
+            <tr><td colspan="3">使用储值卡一次</td></tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div class="otherWay">
+        <div class="amount">
+          总计(元)：<%= @order.price %>&nbsp;&nbsp;<% if @order.is_free %>(本次免单)<% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,17 +17,17 @@
     </div>
     <div id="table_show" class="data_body">
       <div id="materials_tab">    <!--库存列表-->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="materials_tab_table">
           <thead>
             <tr class="hbg">
-              <td>条形码</td>
-              <td><span class="sort_<%= column=="name" ? direction : "asc" %>"  data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="name">物料名称</span></td>
-              <td><span class="sort_<%= column=="types" ? direction : "asc" %>" data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="types">物料类别</span></td>
-              <td>库存状态</td>
-              <td>库存量（个）</td>
-              <td>成本价（元）</td>
-              <td>盘点实数</td>
-              <td>操作</td>
+              <th>条形码</th>
+              <th><span class="sort_<%= column=="name" ? direction : "asc" %>"  data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="name">物料名称</span></th>
+              <th><span class="sort_<%= column=="types" ? direction : "asc" %>" data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="types">物料类别</span></th>
+              <th>库存状态</th>
+              <th>库存量（个）</th>
+              <th>成本价（元）</th>
+              <th>盘点实数</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -57,14 +57,22 @@
       </div>
 
       <div id="mat_out_tab" style="display:none;">  <!--出库记录-->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_out_tab_table">
           <thead>
             <tr class="hbg">
+<<<<<<< HEAD
               <td>订货单号</td>
               <td>条形码</td>
       <td><span class="sort_<%= column=="name" ? direction : "asc" %>"  data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="name">物料名称</span></td>
       <td><span class="sort_<%= column=="types" ? direction : "asc" %>" data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="types">物料类别</span></td>
               <td>库存量（个）</td>
+=======
+              <th>订货单号</th>
+              <th>条形码</th>
+              <th><span class="sort_u">物料名称</span></th>
+              <th><span class="sort_d">物料类别</span></th>
+              <th>库存量（个）</th>
+>>>>>>> eb59cadb80ded4aa9a8e1567a5a8c5eae47951fd
             </tr>
           </thead>
           <tbody>
@@ -90,15 +98,24 @@
       </div>
 
       <div id="mat_in_tab" style="display:none;"> <!--入库记录-->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_in_tab_table">
           <thead>
             <tr class="hbg">
+<<<<<<< HEAD
               <td>条形码</td>
               <td><span class="sort_<%= column=="name" ? direction : "asc" %>"  data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="name">物料名称</span></td>
               <td><span class="sort_<%= column=="types" ? direction : "asc" %>" data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="types">物料类别</span></td>
               <td>入库量</td>
               <td>操作人</td>
               <td>入库时间</td>
+=======
+              <th>条形码</th>
+              <th><span class="sort_u">物料名称</span></th>
+              <th><span class="sort_d">物料类别</span></th>
+              <th>入库量</th>
+              <th>操作人</th>
+              <th>入库时间</th>
+>>>>>>> eb59cadb80ded4aa9a8e1567a5a8c5eae47951fd
             </tr>
           </thead>
           <tbody>
@@ -138,8 +155,8 @@
             </select>
           </div>
           <div><label>时间：</label>
-            <input name="started_time" type="text" id="started_time" readonly/> 到
-            <input name="ended_time" type="text" id="ended_time" readonly/>
+            <input name="started_time" type="text" id="started_time" class="Wdate" readonly/> 到
+            <input name="ended_time" type="text" id="ended_time" class="Wdate" readonly/>
           </div>
           <div><button id="mo_search_button" class="search_btn">查询</button></div>
         </div>

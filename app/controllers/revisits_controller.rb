@@ -4,7 +4,7 @@ class RevisitsController < ApplicationController  #回访控制器
   before_filter :sign?
   
   def index
-    revisits_sql = "select r.*, sto.name store_name, cu.name cus_name, cu.mobilephone cus_mobilephone, o.code order_code
+    revisits_sql = "select r.*, sto.name store_name, cu.name cus_name, cu.mobilephone cus_mobilephone, o.code order_code, o.id oid
                     from lantan_db_all.revisits r left join lantan_db_all.complaints com on r.complaint_id = com.id
                     left join lantan_db_all.customers cu on r.customer_id = cu.id
                     left join lantan_db_all.orders o on com.order_id = o.id
