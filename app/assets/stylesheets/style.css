@@ -280,19 +280,19 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 }
 .search select { float: left; }
 .search select.select_marginRight { margin-right: 10px;}
-.search_btn {
-    height: 24x;
-	line-height: 24px;
+.input[type="button"].search_btn, .search .search_btn, .search_btn, .compile_btn, a.compile_btn {
+	line-height: 25px;
+	height: 25px;
 	text-align: center;
 	background: #930205;
 	border: none;
 	padding: 0 10px;
 	color: #FFF;
+	display: inline-block;
 }
+a.compile_btn { width: 100px;}
 
-.search input[type="text"].input_s { width: 50px;}
 .search input.input_s { width: 50px; _width:20px;}
-.input_s { width: 50px; margin: 0 5px;}
 
 .search.paddin_left { padding-left: 40px;}
 
