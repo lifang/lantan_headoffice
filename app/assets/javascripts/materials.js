@@ -79,17 +79,16 @@ $(document).ready(function(){
     $("#ended_time").click(function(){
         WdatePicker();
     });
+
   $("#table_show .pageTurn a").live("click", function(){   //分页AJAX
        var url = $(this).attr("href");
        var tab = $(this).parents('.pageTurn').parent().attr("id");
-       var column = $("#sort_direction").val();
-       var name = $("#sort_column").val();
-       $.ajax({
+        $.ajax({
             async:true,
             type : 'get',
             dataType : 'script',
             url : url,
-            data : {tab:tab, column:column, name:name}
+            data : {tab:tab}
         });
         return false;
     });
@@ -308,33 +307,3 @@ $(document).ready(function(){
         }
     })   
 })
-
-function orderMaterial(obj){
-      var direction = $(obj).attr("class").split("_")[1];
-      var column = $(obj).attr("data-name");
-      var tab = $(obj).parents('table.data_table').parent().attr("id");
-      if(direction=="asc"){
-        direction = "desc";
-        $(obj).removeClass("sort_asc");
-        $(obj).addClass("sort_desc");
-      }else if(direction=="desc" || direction=="none"){
-        direction = "asc";
-        $(obj).removeClass("sort_desc");
-        $(obj).addClass("sort_asc");
-      }
-
-      var url = $(obj).attr("data-link");
-            $.ajax({
-                async:true,
-                url:url,
-                dataType:"script",
-                data: {tab: tab, column:column, direction:direction},
-                type:"GET",
-                success:function(){
-                   //  alert(1);
-                },error:function(){
-                  // alert("error");
-                }
-            });
-            return false;
-    }
