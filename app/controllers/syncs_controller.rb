@@ -1,6 +1,6 @@
 #encoding: utf-8
 class SyncsController < ActionController::Base
-  before_filter :sign?
+  before_filter :sign?,:except=>["upload_file"]
   
   def upload_file
     Sync.accept_file(params[:upload])

@@ -27,6 +27,7 @@
                     <td><%= prod.sale_price %></td>
                     <td><%= Product::PRODUCT_TYPES[prod.types] %></td>
                     <td><%if prod.store_id==Constant::STORE_ID%>
+                        <a href="javascript:void(0)"  onclick="prod_delete('<%=prod.id %>')">删除</a>
                         <a href="javascript:void(0)"  onclick="edit_prod('<%=prod.id %>')">编辑</a>
                       <% end %>
                       <a href="javascript:void(0)" class="see_btn" onclick="show_prod('<%=prod.id %>')">查看</a>
