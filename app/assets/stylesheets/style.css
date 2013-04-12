@@ -209,9 +209,9 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 }
 .tab_head li.hover { height: 30px; background: #FFF; font-weight: bolder; color: #930205;}
 
-.sort_u, .sort_d { padding: 0 15px; cursor: pointer; background: url(../assets/sort.png) no-repeat}
-.sort_u { background-position:74px -26px; _background-position: 74px -20px;}
-.sort_d { background-position: 74px 6px; _background-position: 74px 12px;}
+.sort_u, .sort_d, .sort_asc, .sort_desc{ padding: 0 15px; cursor: pointer; background: url(../assets/sort.png) no-repeat}
+.sort_u, .sort_asc{ background-position:74px -26px; _background-position: 74px -20px;}
+.sort_d, .sort_desc{ background-position: 74px 6px; _background-position: 74px 12px;}
 
 
 
