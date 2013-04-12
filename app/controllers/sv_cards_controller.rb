@@ -90,7 +90,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       if type == 1
         img_name = "storeagecard#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
       elsif type == 0
-        img_name = "discounrcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+        img_name = "discountrcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
       end
     end
     if type == 1
@@ -100,7 +100,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       if sc.update_attributes(:name => name, :price => total_money, :description => description)
         if !img.nil?
           sc.update_attribute("img_url", "cardimg/#{img_name}")
-          FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
+          FileUtils.rm_rf "#{Rails.root}/public/#{old_img}" if FileTest.file?("#{Rails.root}/public/#{old_img}")
           File.new(Rails.root.join("public", "cardimg", img_name), "a+")
           File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
             file.write(img.read)
@@ -116,9 +116,9 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       product_id = params[:edit_product_hidden_id].to_a
       if sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
          if !img.nil?
-            sc.update_attribute(":img_url", "cardimg/#{img_name}")
-             FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
-             File.new(Rails.root.join("public", "cardimg", img_name), "a+")
+            sc.update_attribute("img_url", "cardimg/#{img_name}")
+             FileUtils.rm_rf "#{Rails.root}/public/#{old_img}" if FileTest.file?("#{Rails.root}/public/#{old_img}")
+            File.new(Rails.root.join("public", "cardimg", img_name), "a+")
              File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
             file.write(img.read)
           end

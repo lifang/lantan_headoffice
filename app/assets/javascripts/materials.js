@@ -1,7 +1,47 @@
 $(document).ready(function(){
+    $("#materials_tab_table").tablesorter({
+        headers:
+        {
+            0: {sorter: false},
+            3: {sorter: false},
+            4: {sorter: false},
+            5: {sorter: false},
+            6: {sorter: false},
+            7: {sorter: false}
+        }
+    });
+
+    $("#mat_out_tab_table").tablesorter({
+        headers:
+            {
+             0: {sorter: false},
+             1: {sorter: false},
+             4: {sorter: false}
+            }
+    });
+
+    $("#mat_in_tab_table").tablesorter({
+        headers:
+            {
+             0: {sorter: false},
+             3: {sorter: false},
+             4: {sorter: false},
+             5: {sorter: false}
+            }
+    });
+
+    $("#materials_list_table").tablesorter({
+         headers:
+        {
+            0: {sorter: false},
+            3: {sorter: false},
+            4: {sorter: false},
+            5: {sorter: false}
+        }
+    })
      $("#started_time").click(function(){
-    WdatePicker();
-  });
+        WdatePicker();
+    });
   $("#ended_time").click(function(){
     WdatePicker();
   });
@@ -76,10 +116,10 @@ $(document).ready(function(){
     })
     $("#deliver_good").live("click", function(){  //发货按钮
       var moid = $(this).parent().find("input").val();
-      $("#order_detail_and_deliver").append("<div class='item'><label>预计到货时间:</label><input type='text' id='arrive_time' readonly></div>\n\
+      $("#order_detail_and_deliver").append("<div class='item'><label>预计到货时间:</label><input type='text' id='arrive_time' class='Wdate' readonly></div>\n\
                                             <div class='item'><label>运单号:</label><input type='text' id='logistic_code'></div>\n\
                                               <div class='item'><label>运单人:</label><input type='text' id='carrier'/></div>");
-      $('#arrive_time').click(function(){ WdatePicker();}); //加上时间插件
+      $('#arrive_time').click(function(){WdatePicker();}); //加上时间插件
       $("#order_detail_btn_box").html("<input type='hidden' value='"+moid+"'/><button id='deliver_submit_btn' class='confirm_btn'>确定</button>\n\
       <button id='deliver_cancel_btn'class='cancel_btn'>返回</button>");
     })
