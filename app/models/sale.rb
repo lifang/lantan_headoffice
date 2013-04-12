@@ -11,18 +11,15 @@ class Sale < ActiveRecord::Base
   IS_SUBSIDY = {:NO => 0, :YES => 1}#是否总店补贴 0不是 1是
 
   #生成code
-  def self.set_code(length)
+  def self.set_code(length,model_n,code_name)
     chars = (1..9).to_a + ("a".."z").to_a + ("A".."Z").to_a
     code=(1..length).inject(Array.new) {|codes| codes << chars[rand(chars.length)]}.join("")
-    file = File.open(Constant::CODE_PATH,"a+")
-    codes=file.read
-    if  codes.index(code)
+    codes=eval(model_n.capitalize).all.map(&:"#{code_name}")
+    if codes.index(code)
       set_code(length)
     else
-      file.write(codes+ "#{code}\r\n")
+      return code
     end
-    file.close
-    return code
   end
 
   #上传图片并裁剪不同比例 目前为50,100,200和原图

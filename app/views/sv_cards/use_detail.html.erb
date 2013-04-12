@@ -18,8 +18,8 @@
     </div>
     <div class="data_body_title">
       <span class="data_body_p">储值卡总计：<span class="red"><%= @total_money.to_i %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        已使用：<span class="red"><%= @left_money.to_i %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        余额：<span class="red"><%= @total_money.to_i - @left_money.to_i %></span>元</span>
+        已使用：<span class="red"><%= @total_money.to_i - @left_money.to_i %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        余额：<span class="red"><%= @left_money.to_i %></span>元</span>
     </div>
     <div class="clear"></div>
     <div class="data_body">
@@ -33,33 +33,30 @@
               <td>使用金额（元）</td>
               <td>总店已支付门店（元）</td>
               <td>总店未支付门店（元）</td>
-              <td>操作</td>
             </tr>
           </thead>
           <tbody>
-            <% if @form_detail.blank? %>
+            <% if @orders.blank? %>
             <tr>
               <th colspan="7">没有任何记录!</th>
             </tr>
             <% else %>
-             <% @form_detail.each do |form| %>
-               <% f = form.split(",") %>
+             <% @form_detail.each do |f| %>
             <tr>
-              <td><%= store_name(f[0].to_i) %></td>
+              <td><%= f[0] %></td>
               <td><%= f[1].to_i %></td>
               <td>储值卡</td>
-              <td><%= f[2].to_i %></td>
-              <td><%= f[3].to_i %></td>
-              <td><%= f[2].to_i - f[3].to_i%></td>
-              <td><a href="JavaScript:void(0)">已开据发票</a></td>
+              <td><%= f[2].to_f %></td>
+              <td><%= f[3].to_f %></td>
+              <td><%= f[4].to_f - f[3].to_f %></td>
             </tr>
             <% end %>
             <% end %>
           </tbody>
         </table>
         <div class="pageTurn">
-         <% if !@form_detail.blank? %>
-             <%= will_paginate  @form_detail, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+         <% unless @orders.blank? %>
+             <%= will_paginate  @orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
          <% end %>
         </div>
       </div>
