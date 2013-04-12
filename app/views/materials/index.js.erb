@@ -1,8 +1,4 @@
-   <%  p 11111111111
-    p @direction
-    p @column
-  p @tab%>
-$("#<%= @tab %>").html("<%= escape_javascript(render :partial => "#{@tab}", :locals =>{:direction => @direction, :column => @column}) %>");
+$("#<%= @tab %>").html("<%= escape_javascript(render :partial => "#{@tab}") %>");
 $(".data_table > tbody > tr:odd").addClass("tbg");
 $(".data_tab_table > tbody > tr:odd").addClass("tbg");
 $(".sort_u, .sort_d").click(function(){

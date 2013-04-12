@@ -1,11 +1,11 @@
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_out_tab_table">
   <thead>
     <tr class="hbg">
-      <td>订货单号</td>
-      <td>条形码</td>
-     <td><span class="sort_<%= column=="name" ? direction : "asc" %>"  data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="name">物料名称</span></td>
-      <td><span class="sort_<%= column=="types" ? direction : "asc" %>" data-link="<%= materials_url %>" onclick="orderMaterial(this)" data-name="types">物料类别</span></td>
-      <td>库存量（个）</td>
+      <th>订货单号</th>
+      <th>条形码</th>
+      <th><span class="sort_u">物料名称</span></th>
+      <th><span class="sort_d">物料类别</span></th>
+      <th>库存量（个）</th>
     </tr>
   </thead>
   <tbody>

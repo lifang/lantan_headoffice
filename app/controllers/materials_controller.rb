@@ -1,57 +1,23 @@
 #encoding: utf-8
 class MaterialsController < ApplicationController   #库存控制器
-  require 'will_paginate/array'
   layout"logistics_manages", :except => "m_list"
   before_filter :sign?
   
   def index
     @tab = params[:tab]
-    if params[:column]=="name" && params[:direction]
-      conv = Iconv.new("GBK", "utf-8")
-    elsif params[:column]=="types"
-      order_sql = "materials.#{params[:column]} #{params[:direction]}"
-    end
-    @direction = params[:direction].nil? ? "none" : params[:direction]
-    @column = params[:column].nil? ? "none" : params[:column]
-
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : "material_orders.status = #{params[:status].to_i}"
     started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : "material_orders.created_at >= '#{params[:started_time]}'"
     ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : "material_orders.created_at <= '#{params[:ended_time]}'"
 
-    if conv
-      if @tab.eql?("materials_tab")
-        materials = sort_method(Material.normal, conv, @direction, true)
-        @materials = materials.paginate(:page => params[:page] ||= 1,:per_page => Constant::PER_PAGE)
-      end
-      if @tab.eql?("mat_out_tab")
-        mat_out_orders = sort_method(MatOutOrder.joins(:material).includes(:material),  conv, @direction, false)
-        @mat_out_orders = mat_out_orders.paginate(:page => params[:page] ||= 1,:per_page => Constant::PER_PAGE)
-      end
-      if @tab.eql?("mat_in_tab")
-        mat_in_orders = sort_method(MatInOrder.joins(:material).includes(:material), conv, @direction, false)
-        @mat_in_orders = mat_in_orders.paginate(:page => params[:page] ||= 1,:per_page => Constant::PER_PAGE)
-      end
-    else
-      @materials = Material.normal
-      .paginate(:page => params[:page] ||= 1,:order => order_sql.nil? ? "id asc" : order_sql,:per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("materials_tab")
-      @mat_out_orders = MatOutOrder.joins(:material).includes(:material).paginate(:page => params[:page] ||= 1, :order =>  order_sql.nil? ? "mat_out_orders.created_at desc" : order_sql, :per_page => Constant::PER_PAGE)
-      @mat_in_orders = MatInOrder.joins(:material).includes(:material).paginate(:page => params[:page] ||= 1 ,:order =>  order_sql.nil? ? "mat_in_orders.created_at desc" : order_sql, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_in_tab")
-    end
+    @materials = Material.normal
+    .paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("materials_tab")
+    @mat_out_orders = MatOutOrder.joins(:material).includes(:material).paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_out_tab")
+    @mat_in_orders = MatInOrder.joins(:material).includes(:material).paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_in_tab")
     @mat_orders = MaterialOrder.joins(:mat_order_items => :material).includes(:mat_order_items => :material).is_headoffice_not_canceled.where(status).where(started_time).where(ended_time).uniq
-    .paginate(:page => params[:page] ||= 1 ,:order =>  "material_orders.created_at desc", :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_orders_tab")
+    .paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_orders_tab")
     respond_to do |format|
       format.html
       format.js
-    end
-  end
-  
-  def sort_method(records, conv, direction, is_direct)
-    if is_direct
-      direction.eql?("asc") ? records.sort{|a,b| conv.iconv(a.name) <=> conv.iconv(b.name)}:
-        records.sort{|a,b| conv.iconv(b.name) <=> conv.iconv(a.name)}
-    else
-      direction.eql?("asc") ? records.sort{|a,b| conv.iconv(a.material.name) <=> conv.iconv(b.material.name)}:
-        records.sort{|a,b| conv.iconv(b.material.name) <=> conv.iconv(a.material.name)}
     end
   end
 
