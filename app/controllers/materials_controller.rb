@@ -144,36 +144,20 @@ class MaterialsController < ApplicationController   #库存控制器
     m_name = params[:m_name]
     m_type = params[:m_type].to_i
     m_code = params[:m_code]
-    m_o_code = params[:m_o_code]
     m_num = params[:m_num].to_i
     m_price = params[:m_price]
     m = Material.where("name = '#{m_name}'").where("types = #{m_type}")
-    mo = MaterialOrder.where("code = '#{m_o_code}'")
     if !m.blank?
       material = m[0]
       total_num = material.storage + m_num
-      if !mo.blank?
-        material_order = mo[0]
-        MatInOrder.create(:material_order_id => material_order.id, :material_id => material.id, :material_num => m_num,
-                          :price => m_price, :staff_id => cookies[:user_id].to_i)
-      else
-        material_order = MaterialOrder.create(:code => m_o_code)
-        MatInOrder.create(:material_order_id => material_order.id, :material_id => material.id, :material_num => m_num,
-                          :price => m_price, :staff_id => cookies[:user_id].to_i)
-      end
+      MatInOrder.create(:material_id => material.id, :material_num => m_num,
+        :price => m_price, :staff_id => cookies[:user_id].to_i)
       material.update_attribute("storage", total_num)
     else
-        material = Material.create(:name => m_name, :code => m_code, :price => m_price, :types => m_type, 
-          :status => Material::STATUS[:NORMAL], :storage => m_num)
-      if !mo.blank?
-        material_order = mo[0]
-        MatInOrder.create(:material_order_id => material_order.id, :material_id => material.id, :material_num => m_num,
-                          :price => m_price, :staff_id => cookies[:user_id].to_i)
-      else
-        material_order = MaterialOrder.create(:code => m_o_code)
-        MatInOrder.create(:material_order_id => material_order.id, :material_id => material.id, :material_num => m_num,
-                          :price => m_price, :staff_id => cookies[:user_id].to_i)
-      end
+      material = Material.create(:name => m_name, :code => m_code, :price => m_price, :types => m_type,
+        :status => Material::STATUS[:NORMAL], :storage => m_num)
+      MatInOrder.create(:material_id => material.id, :material_num => m_num,
+        :price => m_price, :staff_id => cookies[:user_id].to_i)
     end
     respond_to do |format|
       format.js

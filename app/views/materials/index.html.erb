@@ -39,7 +39,7 @@
                 <td>存货</td>
                 <td><%= material.storage %></td>
                 <td><%= material.price %></td>
-                <td><input type="text" value="<%= material.storage %>" style="width:50px"/></td>
+                <td><input type="text" value="<%= material.check_num.nil? ? 0 : material.check_num %>" style="width:50px"/></td>
                 <td>
                   <input type="hidden" value="<%= material.id %>"/>
                   <a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a>

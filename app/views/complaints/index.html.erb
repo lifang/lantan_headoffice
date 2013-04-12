@@ -77,7 +77,7 @@
                 <% if c.process_at.nil? %>
                 ----
                 <% else %>
-                <%= c.process_at.strftime("%Y-%m-%d") %>
+                <%= c.process_at.strftime("%Y-%m-%d")  %>
                 <% end %>
               </td>
               <td><%= c.remark ||= "----" %></td>
