@@ -54,7 +54,8 @@
                       </table>
                     </td>
                     <td><%if service.store_id==Constant::STORE_ID%>
-                        <a href="javascript:void(0)" onclick="edit_service(<%=service.id %>)">编辑</a>
+                        <a href="javascript:void(0)"  onclick="serve_delete('<%=  service.id %>')">删除</a>
+                        <a href="javascript:void(0)" onclick="edit_service(<%=  service.id %>)">编辑</a>
                       <%end%>
                       <a href="javascript:void(0)" class="see_btn" onclick="show_service(<%=service.id %>)">查看</a>
                       <a href="/products/<%=service.id %>" target="_blank" class="see_btn"  >预览</a></td>
