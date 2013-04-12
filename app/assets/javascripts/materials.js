@@ -79,17 +79,16 @@ $(document).ready(function(){
     $("#ended_time").click(function(){
         WdatePicker();
     });
-    $("#table_show .pageTurn a").live("click", function(){   //分页AJAX
-        var url = $(this).attr("href");
-        var tab = $(this).parents('.pageTurn').parent().attr("id");
+
+  $("#table_show .pageTurn a").live("click", function(){   //分页AJAX
+       var url = $(this).attr("href");
+       var tab = $(this).parents('.pageTurn').parent().attr("id");
         $.ajax({
             async:true,
             type : 'get',
             dataType : 'script',
             url : url,
-            data : {
-                tab:tab
-            }
+            data : {tab:tab}
         });
         return false;
     });

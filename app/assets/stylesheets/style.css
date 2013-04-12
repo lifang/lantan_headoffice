@@ -209,9 +209,9 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 }
 .tab_head li.hover { height: 30px; background: #FFF; font-weight: bolder; color: #930205;}
 
-.sort_u, .sort_d { padding: 0 15px; cursor: pointer; background: url(../assets/sort.png) no-repeat}
-.sort_u { background-position:74px -26px; _background-position: 74px -20px;}
-.sort_d { background-position: 74px 6px; _background-position: 74px 12px;}
+.sort_u, .sort_d, .sort_asc, .sort_desc{ padding: 0 15px; cursor: pointer; background: url(../assets/sort.png) no-repeat}
+.sort_u, .sort_asc{ background-position:74px -26px; _background-position: 74px -20px;}
+.sort_d, .sort_desc{ background-position: 74px 6px; _background-position: 74px 12px;}
 
 
 
@@ -280,19 +280,19 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 }
 .search select { float: left; }
 .search select.select_marginRight { margin-right: 10px;}
-.search_btn {
-    height: 24x;
-	line-height: 24px;
+.input[type="button"].search_btn, .search .search_btn, .search_btn, .compile_btn, a.compile_btn {
+	line-height: 25px;
+	height: 25px;
 	text-align: center;
 	background: #930205;
 	border: none;
 	padding: 0 10px;
 	color: #FFF;
+	display: inline-block;
 }
+a.compile_btn { width: 100px;}
 
-.search input[type="text"].input_s { width: 50px;}
 .search input.input_s { width: 50px; _width:20px;}
-.input_s { width: 50px; margin: 0 5px;}
 
 .search.paddin_left { padding-left: 40px;}
 

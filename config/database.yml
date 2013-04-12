@@ -16,7 +16,7 @@ development:
   pool: 5
   username: root
   password: comdo2012
-  host: localhost
+  host: 192.168.0.250
 
 storedb:
   adapter: mysql2
@@ -25,6 +25,7 @@ storedb:
   database: lantan_db
   pool: 5
   username: root
+  password: comdo2012
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
