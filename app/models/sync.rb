@@ -45,6 +45,7 @@ class Sync < ActiveRecord::Base
     file_path = Constant::LOCAL_DIR
     dirs.each_with_index {|dir,index| Dir.mkdir file_path+dirs[0..index].join   unless File.directory? file_path+dirs[0..index].join }
   end
+  
   def self.output_zip(day=1)
     file_path = Constant::LOCAL_DIR
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
@@ -58,20 +59,24 @@ class Sync < ActiveRecord::Base
           begin
             Zip::ZipFile.open(file_path+dirs.join+path){ |zipFile|
               zipFile.each do |file|
-                if file.name.split(".").reverse[0] =="log"
-                  contents = zipFile.read(file).split("\n\n|::|")
-                  titles =contents.delete_at(0).split(";||;")
-                  total_con = []
-                  cap = eval(file.name.split(".")[0].split("_").inject(String.new){|str,name| str + name.capitalize})
-                  contents.each do |content|
-                    hash ={}
-                    cons = content.split(";||;")
-                    titles.each_with_index {|title,index| hash[title] = cons[index].nil? ? cons[index] : cons[index].force_encoding("UTF-8")}
-                    object = cap.new(hash)
-                    object.id = hash["id"]
-                    total_con << object
+                begin
+                  if file.name.split(".").reverse[0] =="log"
+                    contents = zipFile.read(file).split("\n\n|::|")
+                    titles =contents.delete_at(0).split(";||;")
+                    total_con = []
+                    cap = eval("As"+file.name.split(".")[0].split("_").inject(String.new){|str,name| str + name.capitalize})
+                    contents.each do |content|
+                      hash ={}
+                      cons = content.split(";||;")
+                      titles.each_with_index {|title,index| hash[title] = cons[index].nil? ? cons[index] : cons[index].force_encoding("UTF-8")}
+                      object = cap.new(hash)
+                      object.id = hash["id"]
+                      total_con << object
+                    end
+                    cap.import total_con,:timestamps=>false,:on_duplicate_key_update=>titles
                   end
-                  cap.import total_con,:timestamps=>false,:on_duplicate_key_update=>titles
+                rescue
+                  flog.write("当前目录#{file.name}中更新失败---#{Time.now}\r\n")
                 end
               end
             }
