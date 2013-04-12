@@ -1,5 +1,30 @@
-<% direction ||= 'none' %>
-<% column ||= 'none' %>
+<script>
+  $(document).ready(function(){
+    $("#materials_tab_table").tablesorter({
+        headers:
+        {
+            0: {
+                sorter: false
+            },
+            3: {
+                sorter: false
+            },
+            4: {
+                sorter: false
+            },
+            5: {
+                sorter: false
+            },
+            6: {
+                sorter: false
+            },
+            7: {
+                sorter: false
+            }
+        }
+    });
+    });
+</script>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="materials_tab_table">
   <thead>
     <tr class="hbg">
@@ -32,8 +57,6 @@
     <% end %>
   </tbody>
 </table>
-<input type="hidden" id="sort_direction" value="<%= direction %>"/>
-<input type="hidden" id="sort_column" value="<%= column %>"/>
   <% if !@materials.blank? %>
     <%= will_paginate  @materials, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
   <% end %>
