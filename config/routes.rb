@@ -11,7 +11,11 @@ LantanHeadoffice::Application.routes.draw do
   #      get :edit_store
   #    end
   #  end
-  resources :complaints
+  resources :complaints do
+    collection do
+      post :show_order_detail
+    end
+  end
   resources :revisits
   resources :pleaseds do
     collection do

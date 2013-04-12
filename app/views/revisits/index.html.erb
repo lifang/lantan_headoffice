@@ -51,7 +51,10 @@
                                         </td>
                                         <td><%= r.cus_name %></td>
                                         <td><%= r.cus_mobilephone %></td>
-                                        <td><a href="JavaScript:void(0)" class="other_a"><%= r.order_code if !r.order_code.nil? && !r.order_code.nil?%></a></td>
+                                        <td>
+                                          <input type="hidden" value="<%= r.oid %>"/>
+                                          <a href="JavaScript:void(0)" name="order_detail" class="other_a"><%= r.order_code if !r.order_code.nil? %></a>
+                                        </td>
                                       </tr>   
                                       <% end %>
                                       <% end %>
