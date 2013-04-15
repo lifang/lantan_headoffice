@@ -39,7 +39,7 @@ class ProductsController < ApplicationController
   def set_product(types)
     parms = {:name=>params[:name],:base_price=>params[:base_price],:sale_price=>params[:sale_price],:description=>params[:desc],
       :types=>params[:prod_types],:status=>Product::IS_VALIDATE[:YES],:introduction=>params[:intro], :store_id=>Constant::STORE_ID,
-      :is_service=>Product::PROD_TYPES[:"#{types}"],:created_at=>Time.now.strftime("%Y-%M-%d"), :service_code=>"#{types[0]}#{Sale.set_code(3)}"
+      :is_service=>Product::PROD_TYPES[:"#{types}"],:created_at=>Time.now.strftime("%Y-%M-%d"), :service_code=>"#{types[0]}#{Sale.set_code(3,"product","service_code")}"
     }
     product =Product.create(parms)
     if types == Constant::SERVICE
@@ -133,19 +133,19 @@ class ProductsController < ApplicationController
   end
 
   def prod_delete
-    @redit = delete_p(Constant::PRODUCT,params[:id],params[:store_id])
+    @redit = delete_p(Constant::PRODUCT,params[:id])
   end
 
   def serve_delete
-    @redit = delete_p(Constant::SERVICE,params[:id],params[:store_id])
+    @redit = delete_p(Constant::SERVICE,params[:id])
   end
 
-  def delete_p(types,id,store_id)
+  def delete_p(types,id)
     Product.find(id).update_attribute(:status, Product::IS_VALIDATE[:NO])
     if types == Constant::SERVICE
-      redit = "/stores/#{store_id}/products/prod_services"
+      redit = "/products/prod_services"
     else
-      redit =  "/stores/#{store_id}/products"
+      redit =  "/products"
     end
     return redit
   end

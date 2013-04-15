@@ -166,30 +166,34 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   end
 
   def use_detail  #使用详情
-    order_started_time_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "1 = 1" : "orders.created_at >= '#{params[:started_time]}'"
-    order_ended_time_sql = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : "orders.created_at <= '#{params[:ended_time]}'"
-    srr_started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "1 = 1" : "created_at >= '#{params[:started_time]}'"
-    srr_ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? "1 = 1" : "created_at <= '#{params[:ended_time]}'"
+    order_started_time_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "" : " and o.created_at >= '#{params[:started_time]}'"
+    order_ended_time_sql = (params[:ended_time].nil? || params[:ended_time].empty?) ? "" : " and o.created_at <= '#{params[:ended_time]}'"
+    srr_started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? " 1 = 1 " : " created_at >= '#{params[:started_time]}'"
+    srr_ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? " 1 = 1" : " created_at <= '#{params[:ended_time]}'"
     #获取时间段内所有使用了储值卡的已完成的订单数量，并且根据门店分组
-    orders = Order.includes(:c_svc_relation => :sv_card).
-      where("orders.status = #{Order::STATUS[:FINISHED]}").
-      where(order_started_time_sql).where(order_ended_time_sql).
-      where("orders.c_svc_relation_id is not null").
-      where("sv_cards.types = #{SvCard::FAVOR[:value]}").group("orders.store_id").count
-    #获取时间段内储值卡返还记录中客户消费收入的钱
-    in_money_hash = SvcReturnRecord.where(srr_started_sql).where(srr_ended_sql).where("types = #{SvcReturnRecord::TYPES[:in]}").group("store_id").sum(:price)
-     #获取时间段内储值卡返还记录中门店已支出的钱
-    out_money_hash = SvcReturnRecord.where(srr_started_sql).where(srr_ended_sql).where("types = #{SvcReturnRecord::TYPES[:out]}").group("store_id").sum(:price)
-    form_detail = []
-    orders.each do |key, value|
+    @orders = Order.paginate_by_sql(["select o.store_id, count(o.id) id_count, sum(opt.price) t_price, s.name from lantan_db_all.orders o
+      inner join lantan_db_all.order_pay_types opt on opt.order_id = o.id left join lantan_db_all.stores s on s.id = o.store_id
+      where opt.pay_type = ? #{order_started_time_sql} #{order_ended_time_sql} group by o.store_id",
+        OrderPayType::PAY_TYPES[:SV_CARD]], :page => params[:page] ||= 1,:per_page => 10)
+
+    in_money_hash = SvcReturnRecord.where(srr_started_sql).where(srr_ended_sql).
+      where("types = #{SvcReturnRecord::TYPES[:IN]}").group("store_id").sum(:price)
+    #获取时间段内储值卡返还记录中门店已支出的钱
+    out_money_hash = SvcReturnRecord.where(srr_started_sql).where(srr_ended_sql).
+      where("types = #{SvcReturnRecord::TYPES[:OUT]}").group("store_id").sum(:price)
+    @form_detail = []
+    @orders.each do |o|
       #门店id 使用次数 收入金额 支出金额
-        form_detail << key.to_s+","+value.to_s+","+in_money_hash[key].to_s+","+out_money_hash[key].to_s
+        in_money =  (in_money_hash and in_money_hash[o.store_id]) ? in_money_hash[o.store_id].to_s : "0"
+        out_money =  (out_money_hash and out_money_hash[o.store_id]) ? out_money_hash[o.store_id].to_s : "0"
+        @form_detail << [o.name, o.id_count, o.t_price, in_money, out_money]
     end
-     @form_detail = form_detail.paginate(:page => params[:page] ||= 1,:per_page => 10)
     #获取所有用户的储值卡
-    cs = CSvcRelation.includes(:sv_card).where("sv_cards.types = #{SvCard::FAVOR[:value]}")
-    @total_money = cs.sum(:total_price) #储值卡总计
-    @left_money = cs.sum(:left_price)  #储值卡余额
+    cs = CSvcRelation.find(:first, :select => "sum(total_price) t_price, sum(left_price) l_price",
+      :joins => "inner join sv_cards on sv_cards.id = c_svc_relations.sv_card_id",
+      :conditions => ["sv_cards.types = #{SvCard::FAVOR[:value]}"])
+    @total_money = cs.t_price #储值卡总计
+    @left_money = cs.l_price  #储值卡余额
     @started_time = params[:started_time]
     @ended_time = params[:ended_time]
   end
@@ -197,7 +201,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   def use_collect   #使用情况汇总
     started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "1 = 1" : "created_at >= '#{params[:started_time]}'"
     ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? "1 = 1" : "created_at <= '#{params[:ended_time]}'"
-    s = SvcReturnRecord.where(started_sql).where(ended_sql).where("types = #{SvcReturnRecord::TYPES[:out]}")
+    s = SvcReturnRecord.where(started_sql).where(ended_sql).where("types = #{SvcReturnRecord::TYPES[:OUT]}")
     ss = s.group_by {|e| e.created_at.beginning_of_month}
     total_money = 0
     form_collect = []

@@ -223,7 +223,7 @@ function show_center(t){
     var layer_width = $(t).width();
     $(".mask").css({
         display:'block',
-        height:($(t).height()+50)>doc_height?　$(t).height()+180 : doc_height
+        height:($(t).height()+50)> doc_height?　$(t).height()+220 : doc_height
     });
     $(t).css('top',"50px");
     $(t).css('left',(doc_width-layer_width)/2);
@@ -240,7 +240,7 @@ function before_center(t){
     var layer_width = $(t).width();
     $(".maskOne").css({
         display:'block',
-        height:($(t).height()+50)>doc_height?　$(t).height()+180 : doc_height
+        height:($(t).height()+50)>doc_height?　$(t).height()+220 : doc_height
     });
     $(t).css('top',"50px");
     $(t).css('left',(doc_width-layer_width)/2);
@@ -259,7 +259,7 @@ function popup(t){
         display:'block',
         height:doc_height
     });
-    $(t).css('top',"80px");
+    $(t).css('top',"50px");
     $(t).css('left',(doc_width-layer_width)/2);
     $(t).css('display','block');
 

@@ -47,7 +47,7 @@ class SalesController < ApplicationController   #活动控制器
     sale_is_subsidy = params[:sale_is_subsidy].to_i
     sale_subsidy_money = params[:sale_subsidy_money] ||= ""
     sale_introduction = params[:sale_introduction]
-    sale_code = Sale.set_code(8)
+    sale_code = Sale.set_code(8,"sale","code")
     s.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
       :introduction => sale_introduction, :disc_types => disc_types, :status => Sale::STATUS[:UN_RELEASE], :discount => disc,
       :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,

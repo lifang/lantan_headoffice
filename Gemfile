@@ -27,7 +27,7 @@ end
 
 
 gem 'jquery-rails', '~> 2.1.0'
-gem 'iconv'
+#gem 'iconv', '1.0.3'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
