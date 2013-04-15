@@ -4,7 +4,7 @@ class MaterialOrder < ActiveRecord::Base
 #  has_many :mat_out_orders
 #  has_many :mat_in_orders
   has_many :m_order_types
-  has_many :materials
+  has_many :materials, :through => :mat_order_items
   belongs_to :supplier
   belongs_to :store
   scope :is_headoffice_not_canceled, where(:supplier_id => 0, :status =>[0,1])
