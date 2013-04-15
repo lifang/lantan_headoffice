@@ -6,7 +6,7 @@ class SalesController < ApplicationController   #活动控制器
   before_filter :sign?
   
   def index #活动列表
-    @sales = Sale.where("status = #{Sale::STATUS[:UN_RELEASE]} or status = #{Sale::STATUS[:RELEASE]}").
+    @sales = Sale.whezre("status = #{Sale::STATUS[:UN_RELEASE]} or status = #{Sale::STATUS[:RELEASE]}").
       paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 

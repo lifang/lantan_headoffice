@@ -166,8 +166,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   end
 
   def use_detail  #使用详情
-    order_started_time_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "" : " and orders.created_at >= '#{params[:started_time]}'"
-    order_ended_time_sql = (params[:ended_time].nil? || params[:ended_time].empty?) ? "" : " and orders.created_at <= '#{params[:ended_time]}'"
+    order_started_time_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "" : " and o.created_at >= '#{params[:started_time]}'"
+    order_ended_time_sql = (params[:ended_time].nil? || params[:ended_time].empty?) ? "" : " and o.created_at <= '#{params[:ended_time]}'"
     srr_started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? " 1 = 1 " : " created_at >= '#{params[:started_time]}'"
     srr_ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? " 1 = 1" : " created_at <= '#{params[:ended_time]}'"
     #获取时间段内所有使用了储值卡的已完成的订单数量，并且根据门店分组
@@ -201,7 +201,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   def use_collect   #使用情况汇总
     started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "1 = 1" : "created_at >= '#{params[:started_time]}'"
     ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? "1 = 1" : "created_at <= '#{params[:ended_time]}'"
-    s = SvcReturnRecord.where(started_sql).where(ended_sql).where("types = #{SvcReturnRecord::TYPES[:out]}")
+    s = SvcReturnRecord.where(started_sql).where(ended_sql).where("types = #{SvcReturnRecord::TYPES[:OUT]}")
     ss = s.group_by {|e| e.created_at.beginning_of_month}
     total_money = 0
     form_collect = []
