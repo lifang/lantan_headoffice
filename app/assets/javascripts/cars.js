@@ -9,7 +9,7 @@ $(document).ready(function(){
     }
   });
   $("a[name='check_model']").click(function(){  //查看汽车型号按钮
-    var cid = $(this).next().next().val();
+    var cid = $(this).next().val();
     $.ajax({
       type: "GET",
       url: "/cars/check_model",

@@ -19,13 +19,15 @@
       <div style="display: none;">
         <% @menus.each do |menu| %>
           <dl>
-            <dt><%= menu.name %></dt>
+            <dt><input type="checkbox" onclick="selectAll(this)"/><%= menu.name %></dt>
+            <div>
             <% Constant::ROLES[menu.controller.to_sym].each do |key, value| %>
               <dd>
                 <input name="model_nums[<%= menu.controller %>][]" type="checkbox" value="<%= value[1] %>" <% if @rmr[menu.controller.to_sym].to_i&value[1].to_i==value[1].to_i %>checked<% end if @rmr[menu.controller.to_sym] %>/>
                 &nbsp;<%= value[0] %>
               </dd>
             <% end if Constant::ROLES[menu.controller.to_sym] %>
+            </div>
           </dl>
         <% end %>
       </div>

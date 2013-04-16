@@ -2,7 +2,7 @@
   <div class="data_box">
     <div class="second_menu">
       <a href="/news" class="hover">新闻列表</a>
-      <a href="/news/new">发布新闻</a></div>
+      <% if permission?(:base_datas, :add_news) %><a href="/news/new">发布新闻</a><% end %></div>
     <div class="clear"></div>
     <div id="news_show"class="data_body">
       <div>
@@ -39,8 +39,8 @@
                     <a name="rel_new" href="JavaScript:void(0)">发布</a>
                     <%end%>
                     <input type="hidden" value="<%= new.id %>"/>
-                    <a name="edit_new" href="JavaScript:void(0)">修改</a>
-                    <a name="del_new" href="JavaScript:void(0)">删除</a>
+                    <% if permission?(:base_datas, :edit_news) %><a name="edit_new" href="JavaScript:void(0)">修改</a><% end %>
+                    <% if permission?(:base_datas, :del_news) %><a name="del_new" href="JavaScript:void(0)">删除</a><% end %>
                   </td>
                 </tr>
               <% end %>
