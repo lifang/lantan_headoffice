@@ -53,8 +53,8 @@
                
               </td>
               <td>            
-                <%=  c.staff_id_1.nil? || find_staff(c.staff_id_1).nil? ? "------" : find_staff(c.staff_id_1).name%>
-                <%=  c.staff_id_2.nil? || find_staff(c.staff_id_2).nil? ? "------" : find_staff(c.staff_id_2).name %>
+                <%=  c.staff_id_1.nil? || find_staff(c.staff_id_1).nil? ? "------" : find_staff(c.staff_id_1).name%>/
+               <%=  c.staff_id_2.nil? || find_staff(c.staff_id_2).nil? ? "------" : find_staff(c.staff_id_2).name %>
               </td>
               <td>
                 <% Complaint::TYPES_NAMES.each do |key, value| %>
