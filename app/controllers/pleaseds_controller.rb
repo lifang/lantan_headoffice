@@ -17,6 +17,7 @@ class PleasedsController < ApplicationController  #满意度控制器
     city_condition = params[:search_city].nil? ? '1=1' : "city_id = #{params[:search_city]}"
     current_month_condition = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.strftime("%Y%m") : params[:search_time].delete("-")
     @chart_image = ChartImage.where(city_condition).where("current_month = #{current_month_condition}").first
+    p @chart_image
   end
 
   def search_cities #搜索城市
