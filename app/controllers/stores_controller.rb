@@ -28,7 +28,11 @@ class StoresController < ApplicationController  #门店控制器
   end
 
   def show  #门店详情
-   @store = Store.find_by_id(params[:store_id].to_i)
+    @store = Store.find_by_sql("select s.*, c.name c_name, p.name p_name from lantan_db_all.stores s
+                                left join cities c on c.id = s.city_id
+                                left join cities p on c.parent_id = p.id
+                                where s.id = params[:store_id]")[0]
+
   end
 
   def new #新建
