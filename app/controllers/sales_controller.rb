@@ -8,6 +8,7 @@ class SalesController < ApplicationController   #活动控制器
   def index #活动列表
     @sales = Sale.where("status = #{Sale::STATUS[:UN_RELEASE]} or status = #{Sale::STATUS[:RELEASE]}").
       paginate(:page => params[:page] ||= 1,:per_page => 10)
+    p @sales
   end
 
   def release #创建活动
