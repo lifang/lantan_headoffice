@@ -97,8 +97,8 @@ class Sync < ActiveRecord::Base
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
 #    sync =SSync.find_by_created_at(Time.now.strftime("%Y-%m-%d"))
 #    sync =SSync.create(:created_at=>Time.now.strftime("%Y-%m-%d")) if sync.nil?
-    sync = SSync.all.order("sync_at desc").first
-    base_sql = sync.nil? ? "updated_at <= #{time}" : "updated_at > #{sync.sync_at} and updated_at <= #{time}"
+    sync = SSync.order("sync_at desc").first
+    base_sql = sync.nil? ? "updated_at <= '#{time}'" : "updated_at > '#{sync.sync_at}' and updated_at <= '#{time}'"
     path="#{Rails.root}/public/"
     dirs=["syncs_datas/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
