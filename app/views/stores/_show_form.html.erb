@@ -4,14 +4,10 @@
           <div class="popup_body_area">
             <div class="seeProDiv">
               <div class="seeProDiv_l">省市：</div>
-              <div class="seeProDiv_r">
-                <% if !@store.city_id.nil? %>
+              <div class="seeProDiv_r">               
                   <td>
-                    <%= City.find(@store.city.parent_id).name %>/<%= @store.city.name %>
+                    <%= @store.c_name.nil? ? "---" : @store.c_name %>/<%= @store.p_name.nil? ? "---" : @store.p_name %>
                   </td>
-                <% else %>
-                  <td>-/-</td>
-                <% end %>
               </div>
             </div>
             <div class="seeProDiv">
