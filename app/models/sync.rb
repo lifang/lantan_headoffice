@@ -105,16 +105,14 @@ class Sync < ActiveRecord::Base
     path="#{Rails.root}/public/"
     dirs=["syncs_datas/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
-    models=['s_product.rb', 's_sale.rb', 's_car_model.rb']
+    models=['product.rb', 'sale.rb', 'capital.rb', 'car_brand.rb', 'car_model.rb']
     models.each do |model|
       model_name =model.split(".")[0]
       unless model_name==""
         cap = eval(model_name.split("_").inject(String.new){|str,name| str + name.capitalize})
         attrs = cap.where(base_sql)
         unless attrs.blank?
-          name_arr = model_name.split('_')
-          name_arr.delete_at(0)
-          file = File.open("#{path+dirs.join+name_arr.join('_')}.log","w+")
+          file = File.open("#{path+dirs.join+model_name}.log","w+")
           file.write("#{cap.column_names.join(";||;")}\n\n|::|")
           file.write("#{attrs.inject(String.new) {|str,attr|
             str+attr.attributes.values.join(";||;").gsub(";||;true;||;",";||;1;||;").gsub(";||;false;||;",";||;0;||;")+"\n\n|::|"}}")
