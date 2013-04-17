@@ -46,13 +46,14 @@ class Sync < ActiveRecord::Base
     dirs.each_with_index {|dir,index| Dir.mkdir file_path+dirs[0..index].join   unless File.directory? file_path+dirs[0..index].join }
   end
   
-  def self.output_zip(day=1)
+  def self.output_zip()
     file_path = Constant::LOCAL_DIR
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
     flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
-    dirs=["syncs/","#{Time.now.ago(day.day).strftime("%Y-%m").to_s}/","#{Time.now.ago(day.day).strftime("%Y-%m-%d").to_s}/"]
+    file_list = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","a+")
+    dirs=["syncs/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     Sync.new_dir(dirs)
-    paths =get_dir_list(file_path+dirs.join)
+    paths =get_dir_list(file_path+dirs.join)-file_list.read.split("|::|")
     unless paths.blank?
       paths.each do |path|
         if  File.extname(file_path+dirs.join+path) == '.zip'
@@ -80,15 +81,17 @@ class Sync < ActiveRecord::Base
                 end
               end
             }
+            file_list.write("#{path}|::|")
           rescue
-            flog.write("当前目录#{Time.now.ago(day.day).strftime("%Y-%m-%d")}中文件#{path}更新失败---#{Time.now}\r\n")
+            flog.write("当前目录#{Time.now.strftime("%Y-%m-%d")}中文件#{path}更新失败---#{Time.now}\r\n")
           end
         end
       end
     else
-      flog.write("当前目录#{Time.now.ago(day.day).strftime("%Y-%m-%d")}暂无文件---#{Time.now}\r\n")
+      flog.write("当前目录#{Time.now.strftime("%Y-%m-%d")}暂无文件---#{Time.now}\r\n")
     end
     flog.close
+    file_list.close
   end
 
 
