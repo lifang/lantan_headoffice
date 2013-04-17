@@ -237,8 +237,9 @@ $("#create_button").click(function(){  //创建验证
         tishi_alert("结束时间必须在开始时间之后!");
         return false;
     }
+     $("#sale_introduction").val(sale_desc.html());
 });
-$("#edit_create_button").live("click",function(){
+$("#edit_create_button").live("click",function(){ //编辑验证
     if($("#edit_sale_name").val() == ""){
        tishi_alert("活动标题不能为空!");
        return false;
@@ -261,5 +262,6 @@ $("#edit_create_button").live("click",function(){
         tishi_alert("结束时间必须在开始时间之后!");
         return false;
     }
+     $("#edit_sale_introduction").val(sale_desc.html());
 });
 })

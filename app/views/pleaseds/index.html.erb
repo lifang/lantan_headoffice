@@ -35,9 +35,9 @@
     <div class="data_body">
       <div>
         <% if @blank_msg %>
-        <h3><%= @blank_msg %></h3>
+        <h3 align="center"><%= @blank_msg %></h3>
         <% elsif @chart_image.nil? %>
-        <h3>当前城市无数据!</h3>
+        <h3 align="center">当前城市无数据!</h3>
          <% else %>
         <%= image_tag @chart_image.image_url %>       
         <% end %>
