@@ -7,7 +7,7 @@ namespace :daily do
 
   #定时生成总部新增加的产品，活动，车型成一个zip文件
   task(:sync_generate_zip => :environment) do
-    Sync.out_data
+    Sync.out_data(Time.now)
   end
 
   task(:sync_right_zip => :environment) do
