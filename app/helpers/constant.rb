@@ -31,7 +31,20 @@ module Constant
     },
     #基础数据
     :base_datas => {
-      :news => ["新闻", 1]
+      :news => ["新闻", 1],
+      :add_news => ["发布新闻", 2],
+      :edit_news => ["修改新闻", 4],
+      :del_news => ["删除新闻", 8],
+      :add_brand => ["添加汽车品牌", 16],
+      :del_brand => ["删除汽车品牌", 32],
+      :roles => ["权限",64],
+      :role_conf => ["权限配置",128],
+      :role_set => ["用户设定",512],
+      :add_role => ["添加角色",1024],
+      :edit_role => ["编辑角色",2048],
+      :del_role => ["删除角色",4096],
+      :role_role_set => ["角色设定",8192]
+
     }
   }
 

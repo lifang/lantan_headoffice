@@ -1,7 +1,7 @@
 <div class="box">
   <div class="data_box">
     <div class="data_menu">   
-      <a id="add_btn" href="JavaScript:void(0)" class="add_btn">添加汽车品牌</a>
+      <% if permission?(:base_datas, :add_brand) %><a id="add_btn" href="JavaScript:void(0)" class="add_btn">添加汽车品牌</a><% end %>
     </div>
     <div class="clear"></div>
     <div class="data_body">
@@ -13,8 +13,9 @@
           <% @car_brands[c.id].each do |car| %>
           <li>
             <a name="check_model" href="JavaScript:void(0)"><%= car.name %></a>
-            <a name="del_brands" href="JavaScript:void(0)" class="group_x">Close</a>
             <input type="hidden" value="<%= car.id %>"/>
+            <% if permission?(:base_datas, :del_brand) %><a name="del_brands" href="JavaScript:void(0)" class="group_x">Close</a><% end %>
+            
           </li>
           <% end %>
         </ul>

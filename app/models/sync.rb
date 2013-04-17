@@ -92,11 +92,13 @@ class Sync < ActiveRecord::Base
   end
 
 
-  def self.out_data(day=1)
+  def self.out_data(time)
     path = Constant::LOCAL_DIR
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
-    sync =SSync.find_by_created_at(Time.now.strftime("%Y-%m-%d"))
-    sync =SSync.create(:created_at=>Time.now.strftime("%Y-%m-%d")) if sync.nil?
+#    sync =SSync.find_by_created_at(Time.now.strftime("%Y-%m-%d"))
+#    sync =SSync.create(:created_at=>Time.now.strftime("%Y-%m-%d")) if sync.nil?
+    sync = SSync.order("sync_at desc").first
+    base_sql = sync.nil? ? "updated_at <= '#{time}'" : "updated_at > '#{sync.sync_at}' and updated_at <= '#{time}'"
     path="#{Rails.root}/public/"
     dirs=["syncs_datas/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
@@ -105,7 +107,7 @@ class Sync < ActiveRecord::Base
       model_name =model.split(".")[0]
       unless model_name==""
         cap = eval(model_name.split("_").inject(String.new){|str,name| str + name.capitalize})
-        attrs = cap.where("TO_DAYS(NOW())-TO_DAYS(created_at)=#{day}")
+        attrs = cap.where(base_sql)
         unless attrs.blank?
           name_arr = model_name.split('_')
           name_arr.delete_at(0)
@@ -117,21 +119,22 @@ class Sync < ActiveRecord::Base
         end
       end
     end
-    generate_zip(path+dirs.join, sync)
+    generate_zip(path+dirs.join, time)
   end
 
-  def self.generate_zip(file_path, sync)
+  def self.generate_zip(file_path, time)
     flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
     get_dir_list(file_path).each {|path|  File.delete(file_path+path) if path =~ /.zip/ }
-    filename ="#{Time.now.strftime("%Y%m%d")}.zip"
-    is_update = false
+    filename ="shared.zip"
+    is_finished = false
     Zip::ZipFile.open(file_path+filename, Zip::ZipFile::CREATE) { |zf|
-      is_update = true
+      is_finished = true
       get_dir_list(file_path).each {|path| zf.file.open(path, "w") { |os| os.write "#{File.open(file_path+path).read}" } }
     }
-    if is_update
-      sync.update_attributes({:sync_status=>Sync::SYNC_STAT[:COMPLETE], :zip_name=>filename,
-          :sync_at => Time.now.strftime("%Y%m%d")})
+    if is_finished
+      SSync.create(:sync_at => time, :zip_name => filename)
+#      sync.update_attributes({:sync_status=>Sync::SYNC_STAT[:COMPLETE], :zip_name=>filename,
+#          :sync_at => Time.now.strftime("%Y%m%d")})
       flog.write("数据压缩成功---#{Time.now}\r\n")
     else
       flog.write("数据压缩失败---#{Time.now}\r\n")
