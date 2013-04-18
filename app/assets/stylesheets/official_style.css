@@ -26,16 +26,6 @@
 .text dd { font-size: 12px; font-style:italic; line-height: 24px;}
 
 
-.foot {
-    border-top: 1px #a22425 solid;
-    padding: 10px 0;
-    color: #cb5c5c;
-    font-size: 12px;
-    text-align: center;
-    text-shadow: 1px 1px rgba(0,0,0,0.5);
-    background: url(../images/f_bg.jpg) repeat;
-}
-
 /*产品服务*/
 
 .leftAera {
@@ -53,7 +43,7 @@
 .leftSales { padding: 10px 0;}
 .leftSales a { font-size: 0; margin-bottom: 10px; display: block;}
 
-.rightAera { width: 740px; float: left; overflow: hidden;}
+.rightAera {overflow: hidden;}
 
 .rightTitle { padding: 10px 0; overflow: hidden;}
 .rightTitle h1 {
