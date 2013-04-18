@@ -11,26 +11,9 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   
   def select_discount_card #新建时选择打折卡
     @product_types = Product::PRODUCT_TYPES
-    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
 
-
-  def search_products_all #选择项目时的全部
-    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
-  end
-  def edit_search_products_all  #编辑时选择项目全部
-    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
-  end
-  def search_products_part #选择项目时的部分
-    product_type = "types = #{params[:product_type].to_i}"
-    product_name = (params[:product_name].nil? || params[:product_name] == "") ? "1=1" : "name like '%#{params[:product_name]}%'"
-    @products = Product.where(product_type).where(product_name).where("status = #{Product::STATUS[:NOMAL]}")
-  end
-  def edit_search_products_part #编辑时选择项目时的部分
-    product_type = "types = #{params[:product_type].to_i}"
-    product_name = (params[:product_name].nil? || params[:product_name] == "") ? "1=1" : "name like '%#{params[:product_name]}%'"
-    @products = Product.where(product_type).where(product_name).where("status = #{Product::STATUS[:NOMAL]}")
-  end
+ 
   def create          #创建优惠卡
     sv_card = SvCard.new
     card_type = params[:card_type].to_i
@@ -45,8 +28,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     if card_type == 1                                       #如果是储值卡
       started_money = params[:started_money].to_i
       ended_money = params[:ended_money].to_i
-      total_money = started_money + ended_money
-      sv_card.update_attributes(:name => card_name, :types => card_type, :price => total_money, :description => card_description,
+#      total_money = started_money + ended_money
+      sv_card.update_attributes(:name => card_name, :types => card_type, :price => started_money, :description => card_description,
         :img_url => "/cardimg/#{img_name}")
       if sv_card.save
         SvcardProdRelation.create(:sv_card_id => sv_card.id, :base_price => started_money, :more_price => ended_money)
@@ -58,21 +41,14 @@ class SvCardsController < ApplicationController   #优惠卡控制器
           end
         rescue
           flash[:notice] ="图片上传失败，请重新添加！"
-        end
-        
+        end       
       end
     elsif card_type == 0                                        #如果是打折卡
       discount = params[:discount_value]
       price = params[:discount_price]
-      product_count = params[:product_count].to_a
-      product_id = params[:product_hidden_id].to_a
       sv_card.update_attributes(:name => card_name, :types => card_type,:discount => discount, :price => price, :description => card_description,
         :img_url => "/cardimg/#{img_name}")
       if sv_card.save
-        product_id.each_with_index do |item,index|
-          p = Product.find(item.to_i)
-          SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sv_card.id)
-        end
         begin
           FileUtils.mkdir_p "public/cardimg" if !FileTest.directory?("public/cardimg")
           File.new(Rails.root.join("public", "cardimg", img_name), "a+")
@@ -106,8 +82,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     if type == 1
       started_money = params[:edit_started_money].to_i
       ended_money = params[:edit_ended_money].to_i
-      total_money = started_money + ended_money
-      if sc.update_attributes(:name => name, :price => total_money, :description => description)
+#      total_money = started_money + ended_money
+      if sc.update_attributes(:name => name, :price => started_money, :description => description)
         SvcardProdRelation.destroy_all("sv_card_id = #{sc.id}")
         SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)
         begin
@@ -127,14 +103,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     elsif type == 0
       discount = params[:edit_discount_value]
       price = params[:edit_discount_price]
-      product_count = params[:edit_product_count].to_a
-      product_id = params[:edit_product_hidden_id].to_a
       if sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
         SvcardProdRelation.destroy_all("sv_card_id= #{params[:edit_card_id].to_i}")
-        product_id.each_with_index do |item,index|
-          p = Product.find(item.to_i)
-          SvcardProdRelation.create(:product_id => item.to_i, :product_num => product_count[index].to_i, :sv_card_id => sc.id)
-        end
         begin
           if !img.nil?
             sc.update_attribute("img_url", "cardimg/#{img_name}")
@@ -155,8 +125,6 @@ class SvCardsController < ApplicationController   #优惠卡控制器
 
   def edit_card   #编辑优惠卡
     @card = SvCard.find(params[:c_id].to_i)
-    @product_types = Product::PRODUCT_TYPES
-    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
     @card_products = @card.svcard_prod_relations
   end
 

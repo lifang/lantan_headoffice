@@ -37,56 +37,7 @@
               <span>充<input id="edit_started_money" name="edit_started_money" type="text" class="input_s" value="<%= @card_products[0].base_price if !@card_products.blank? %>"/>元</span>&nbsp;&nbsp;
               <span>送<input id="edit_ended_money" name="edit_ended_money" type="text" class="input_s" value="<%= @card_products[0].more_price if !@card_products.blank? %>"/>元</span>
             </div>
-          </div>
-          <% else %>
-          <div class="setobj_name">项目：</div>
-          <div class="setobj_box">
-                <ul>
-                  <li><input id="edit_search_products_all" name="products" type="radio" checked/> 全部</li>
-                  <li><input id="edit_search_products_part" name="products" type="radio" /> 部分</li>
-                </ul>
-                <div>
-                  <div class="search">
-                    <div><label>类别：</label>
-                      <select id="edit_product_type" name="edit_product_type" disabled="disabled">
-                        <% @product_types.each do |key, value|%>
-                          <option value="<%= key %>"><%= value %></option>
-                        <% end %>
-                      </select>
-                    </div>
-                    <div><label>名称：</label><input id="edit_product_name" name="product_name" type="text" disabled="disabled"/></div>
-                    <div><button id="edit_product_search" class="search_btn" disabled="disabled">查询</button></div>
-                  </div>
-                  <fieldset class="popup_body_fieldset">
-                    <legend class="popup_body_title">查询结果</legend>
-                    <div id="edit_search_products_result" class="popup_body_result">
-                      <ul>
-                        <% @products.each do |product| %>
-                          <li><input name="edit_show_product[]" type="checkbox" value="<%= product.id %>" <% @card_products.each do |cp| %><%if cp.product_id == product.id%>checked<% end %><% end %>/>
-                            <span><%= product.name %></span>
-                          </li>
-                        <% end unless @products.nil? %>
-                      </ul>
-                    </div>
-                  </fieldset>
-                  <div class="pq"></div>
-                  <fieldset class="popup_body_fieldset">
-                    <legend class="popup_body_title">已选择</legend>
-                    <div id="edit_has_selected_result" class="popup_body_result">    <!--已选择产品的层-->
-                       <% @card_products.each do |cp| %>
-                      <div id="edpro<%= cp.product_id %>">
-                        <em><%= Product.find(cp.product_id).name %></em>
-                        <a id="edprocountadd<%= cp.product_id %>" name="edit_add_p_button" href="JavaScript:void(0)" class="addre_a">+</a>
-                        <span><input id="edprocount<%= cp.product_id %>" name="edit_product_count[]" class="addre_input" value="<%= cp.product_num  %>"/></span>
-                        <a id="edprocountdel<%= cp.product_id %>" name="edit_del_p_button" href="JavaScript:void(0)" class="addre_a">-</a>
-                        <a name="edit_del_p_a" href="JavaScript:void(0)" class="remove_a">删除</a>
-                        <input name="edit_product_hidden_id[]" type="hidden" value="<%= cp.product_id %>"/>
-                      </div>
-                      <% end %>
-                    </div>
-                  </fieldset>
-                </div>
-              </div>
+          </div>         
           <% end %>
         </div>
       </div>

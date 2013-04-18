@@ -1,3 +1,5 @@
+<%= javascript_include_tag "/assets/kindEditor/kindeditor-min.js" %>
+<%= javascript_include_tag "/assets/kindEditor/zh_CN.js" %>
 <div class="box">
   <div class="data_box">
     <div class="clear"></div>
@@ -8,7 +10,8 @@
           <input id="create_new_title" name="create_new_title" type="text"/>
         </div>
         <div class="news_details">
-          <textarea id="create_new_content" name="create_new_content" cols="" rows=""></textarea>
+          <textarea id="create_new_textarea" name="create_new_textarea" cols="" rows=""></textarea>
+          <input type="hidden" id="create_new_content" name="create_new_content"/>
         </div>
       </div>
       <div class="btn_box">
@@ -19,3 +22,11 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  var news_detail;
+  $(function() {
+    news_detail = KindEditor.create('textarea[id="create_new_textarea"]', {
+      allowFileManager : true
+    });
+  });
+</script>
