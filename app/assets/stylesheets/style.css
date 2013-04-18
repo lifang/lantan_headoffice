@@ -468,7 +468,7 @@ a.compile_btn { width: 100px;}
 .srw_ul li { margin: 0 5px; display: inline;}
 .srw_ul li span {color: #930;}
 
-.seeProPic { line-height: inherit;}
+.seeProPic { line-height: inherit; margin: 5px 0;}
 .seeProPic li { margin-right: 10px; display: inline;}
 
 /*发送短消息*/
