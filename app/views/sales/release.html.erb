@@ -1,3 +1,5 @@
+<%= javascript_include_tag "/assets/kindEditor/kindeditor-min.js" %>
+<%= javascript_include_tag "/assets/kindEditor/zh_CN.js" %>
 <div class="box">
   <div class="data_box">
     <div class="clear"></div>
@@ -87,7 +89,8 @@
             <div class="releaseDiv">
               <div class="releaseDiv_l">活动介绍：</div>
               <div class="releaseDiv_r">
-                <textarea name="sale_introduction" cols="" rows=""></textarea>
+                <textarea id="sale_textarea" name="sale_textarea" cols="" rows=""></textarea>
+                <input type="hidden" id="sale_introduction" name="sale_introduction"/>
               </div>
             </div>
             <div class="btn_box">
@@ -99,3 +102,11 @@
       </div>
     </div>
   </div>
+<script type="text/javascript">
+  var sale_desc;
+  $(function() {
+    sale_desc = KindEditor.create('textarea[id="sale_textarea"]', {
+      allowFileManager : true
+    });
+  });
+</script>

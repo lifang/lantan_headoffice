@@ -34,10 +34,12 @@
     <div class="clear"></div>
     <div class="data_body">
       <div>
-        <% if @chart_image.nil? %>
-        请选择城市
-        <% else %>
-        <%= image_tag @chart_image.image_url %>
+        <% if @blank_msg %>
+        <h3 align="center"><%= @blank_msg %></h3>
+        <% elsif @chart_image.nil? %>
+        <h3 align="center">当前城市无数据!</h3>
+         <% else %>
+        <%= image_tag @chart_image.image_url %>       
         <% end %>
       </div>
     </div>
