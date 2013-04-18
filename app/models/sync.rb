@@ -51,7 +51,7 @@ class Sync < ActiveRecord::Base
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
     flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
     file_list = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","a+")
-    dirs=["syncs/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
+    dirs=["bam_syncs/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     Sync.new_dir(dirs)
     paths =get_dir_list(file_path+dirs.join)-file_list.read.split("|::|")
     unless paths.blank?
