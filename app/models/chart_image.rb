@@ -18,12 +18,13 @@ class ChartImage < ActiveRecord::Base
       datas = Order.find_by_sql(sql)
       stores_data =datas.inject(Hash.new){|hash,data| hash[data.s_id].nil? ? hash[data.s_id]={data.is_pleased=>data} : hash[data.s_id][data.is_pleased]=data;hash }
       city_complaints = datas.inject(Hash.new) {|panel,city|
-        satify_v = stores_data[city.s_id].select{|k,v| k != Order::IS_PLEASED[:BAD]}=={} ? 0 : stores_data[city.s_id].select{|k,v|  k != Order::IS_PLEASED[:BAD]}.values.inject(0){|num,level| num+level.total_num}*100/stores_data[city.s_id].values.inject(0){|num,level| num+level.total_num};
+        satify_v = stores_data[city.s_id].select{|k,v| k != Order::IS_PLEASED[:BAD]}=={} ? 0 : stores_data[city.s_id].select{|k,v|
+        k != Order::IS_PLEASED[:BAD]}.values.inject(0){|num,level| num+level.total_num}*100/stores_data[city.s_id].values.inject(0){|num,level| num+level.total_num};
         panel[city.id].nil? ?  panel[city.id]={city.name =>satify_v} : panel[city.id][city.name]=satify_v; panel}
       city_complaints.each do |panel,coplaint|
         unless coplaint.keys.blank?
           size =(0..10).inject(Array.new){|arr,int| arr << (coplaint.values.max%10==0 ? coplaint.values.max/10 : coplaint.values.max/10+1)*int} #生成图表的y的坐标
-          GoogleChart::BarChart.new('1000x300', "#{Time.now.months_ago(1).strftime('%Y-%m')}投诉情况分类表", :vertical, false) do |bc|
+          GoogleChart::BarChart.new('1000x300', "#{Time.now.months_ago(1).strftime('%Y-%m')}各门店满意度柱状图", :vertical, false) do |bc|
             bc.data "Trend 2", coplaint.values, 'ff0000'
             bc.width_spacing_options :bar_width => 15, :bar_spacing => (1000-(15*coplaint.keys.length))/coplaint.keys.length,
               :group_spacing =>(1000-(15*coplaint.keys.length))/coplaint.keys.length
@@ -32,7 +33,7 @@ class ChartImage < ActiveRecord::Base
             bc.axis :y, :labels =>size
             bc.grid :x_step => 3.333, :y_step => 10, :length_segment => 1, :length_blank => 3
             img_url = write_img(URI.escape(URI.unescape(bc.to_url)),panel,Time.now.months_ago(1).strftime('%Y-%m'))
-            ChartImage.create({:city_id =>panel,:created_at => Time.now, :image_url => img_url, :current_month => Time.now.months_ago(1)})
+            ChartImage.create({:city_id =>panel,:created_at => Time.now, :image_url => img_url, :current_month => Time.now.months_ago(1).strftime('%Y-%m').to_i})
           end
         end
       end
