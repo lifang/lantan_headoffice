@@ -1,11 +1,12 @@
 #encoding: utf-8
 class SyncsController < ActionController::Base
-  before_filter :sign?,:except=>["upload_file", "is_generate_zip"]
+  #  before_filter :sign?,:except=>["upload_file", "is_generate_zip"]
   
   def upload_file
     Sync.accept_file(params[:upload])
     render :text=>"success"
   end
+
 
   def is_generate_zip
     #sync = SSync.find_by_sync_at(Time.now.strftime("%Y%m%d"))
