@@ -1,8 +1,10 @@
+<%= javascript_include_tag "/assets/kindEditor/kindeditor-min.js" %>
+<%= javascript_include_tag "/assets/kindEditor/zh_CN.js" %>
 <div class="box">
   <div class="data_box">
-    <div class="second_menu">
-      <a href="/news" class="hover">新闻列表</a>
-      <% if permission?(:base_datas, :add_news) %><a href="/news/new">发布新闻</a><% end %></div>
+    <div class="data_menu">
+      <% if permission?(:base_datas, :add_news) %><a href="/news/new">发布新闻</a><% end %>
+    </div>
     <div class="clear"></div>
     <div id="news_show"class="data_body">
       <div>

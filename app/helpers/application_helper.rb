@@ -5,10 +5,7 @@ module ApplicationHelper
   end
   
   def current_user
-    if cookies[:user_id]
-      user = Staff.find cookies[:user_id]
-    end
-    user
+    @current_user ||= Staff.find cookies[:user_id] if cookies[:user_id]
   end
 
   def sign?

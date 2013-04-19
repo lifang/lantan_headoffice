@@ -5,7 +5,8 @@
     <input name="edit_new_id" type="hidden" value="<%= @new.id %>"/>
   </div>
   <div class="news_details">
-    <textarea id="edit_new_content" name="edit_new_content" cols="" rows=""><%= @new.content %></textarea>
+    <textarea id="edit_new_textarea" name="edit_new_textarea" cols="" rows=""><%= @new.content %></textarea>
+    <input type="hidden" id="edit_new_content" name="edit_new_content"/>
   </div>
 </div>
 <div class="btn_box">
@@ -13,3 +14,11 @@
   <button type="reset" id="edit_cancel_btn" class="cancel_btn">取消</button>
 </div>
 <% end %>
+<script type="text/javascript">
+  var edit_news_detail;
+  $(function() {
+    edit_news_detail = KindEditor.create('textarea[id="edit_new_textarea"]', {
+      allowFileManager : true
+    });
+  });
+</script>
