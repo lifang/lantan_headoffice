@@ -18,8 +18,8 @@ class PleasedsController < ApplicationController  #满意度控制器
       @blank_msg = "请选择需要查询的城市!"
     else
       city_condition = "city_id = #{params[:search_city]}"
-      current_month_condition = params[:search_time].delete("-")
-      @chart_image = ChartImage.where(city_condition).where("current_month = #{current_month_condition}").first
+      current_month_condition = params[:search_time].nil? ? "1 = 1" : "current_month = #{params[:search_time].split("-").join.to_i}"
+      @chart_image = ChartImage.where(city_condition).where(current_month_condition).first
     end
   end
 
