@@ -48,13 +48,13 @@
             <% customer = current_relation_customer(r.customer_id) %>
             <% card = current_relation_card(r.sv_card_id) %>
             <tr>
-              <td><%= customer.name %></td>
-              <td><%= customer.mobilephone %></td>
+              <td><%= customer.name if  customer %></td>
+              <td><%= customer.mobilephone if customer %></td>
               <% if card.types == 0 %>
               <td>打折卡</td>
               <% else %>
               <td>储值卡</td>
-              <% end %>
+              <% end if card %>
               <td><%= r.total_price %></td>
               <% if r.is_billing %>
               <td>是</td>
