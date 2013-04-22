@@ -11,7 +11,11 @@ LantanHeadoffice::Application.routes.draw do
   #      get :edit_store
   #    end
   #  end
-  resources :complaints
+  resources :complaints do
+    collection do
+      post :show_order_detail
+    end
+  end
   resources :revisits
   resources :pleaseds do
     collection do
@@ -24,7 +28,7 @@ LantanHeadoffice::Application.routes.draw do
       get "prod_services"
     end
     member do
-      post "edit_prod","update_prod","serv_update","edit_serv","show_prod","show_serv"
+      post "edit_prod","update_prod","serv_update","edit_serv","show_prod","show_serv","prod_delete","serve_delete"
     end
   end
   resources :materials do

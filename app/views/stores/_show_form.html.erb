@@ -4,35 +4,31 @@
           <div class="popup_body_area">
             <div class="seeProDiv">
               <div class="seeProDiv_l">省市：</div>
-              <div class="seeProDiv_r">
-                <% if !@store.city_id.nil? %>
+              <div class="seeProDiv_r">               
                   <td>
-                    <%= City.find(@store.city.parent_id).name %>/<%= @store.city.name %>
+                    <%= @store.c_name.nil? ? "---" : @store.c_name %>/<%= @store.p_name.nil? ? "---" : @store.p_name %>
                   </td>
-                <% else %>
-                  <td>-/-</td>
-                <% end %>
               </div>
             </div>
             <div class="seeProDiv">
               <div class="seeProDiv_l">门店名称：</div>
-              <div class="seeProDiv_r"><%= @store.name %></div>
+              <div class="seeProDiv_r"><%= @store.name.nil? ? "----" : @store.name %></div>
             </div>
             <div class="seeProDiv">
               <div class="seeProDiv_l">负责人：</div>
-              <div class="seeProDiv_r"><%= @store.contact %></div>
+              <div class="seeProDiv_r"><%= @store.contact.nil? ? "----" : @store.contact %></div>
             </div>
             <div class="seeProDiv">
               <div class="seeProDiv_l">联系电话：</div>
-              <div class="seeProDiv_r"><%= @store.phone %></div>
+              <div class="seeProDiv_r"><%= @store.phone.nil? ? "----" : @store.phone %></div>
             </div>
             <div class="seeProDiv">
               <div class="seeProDiv_l">地址：</div>
-              <div class="seeProDiv_r"><%= @store.address %></div>
+              <div class="seeProDiv_r"><%= @store.address.nil? ? "----" : @store.address %></div>
             </div>
             <div class="seeProDiv">
               <div class="seeProDiv_l">开店时间：</div>
-              <div class="seeProDiv_r"><%= @store.opened_at.nil? ? "" : @store.opened_at.strftime("%Y-%m-%d") %></div>
+              <div class="seeProDiv_r"><%= @store.opened_at.nil? ? "----" : @store.opened_at.strftime("%Y-%m-%d") %></div>
             </div>
             <div class="seeProDiv">
               <div class="seeProDiv_l">门店状态：</div>

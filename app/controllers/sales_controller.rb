@@ -1,15 +1,17 @@
 #encoding: utf-8
 class SalesController < ApplicationController   #活动控制器
-   require 'fileutils'
-   require 'mini_magick'
+  require 'fileutils'
+  require 'mini_magick'
   layout "market_manages"
+  before_filter :sign?
+  
   def index #活动列表
-    @sales = Sale.where("status >= #{Sale::STATUS[:UN_RELEASE]} and status <= #{Sale::STATUS[:RELEASE]}").
+    @sales = Sale.where("status = #{Sale::STATUS[:UN_RELEASE]} or status = #{Sale::STATUS[:RELEASE]}").
       paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 
-  def release #发布活动
-      @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
+  def release #创建活动
+    @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
 
   def search_product #查询产品
@@ -45,14 +47,13 @@ class SalesController < ApplicationController   #活动控制器
     sale_is_subsidy = params[:sale_is_subsidy].to_i
     sale_subsidy_money = params[:sale_subsidy_money] ||= ""
     sale_introduction = params[:sale_introduction]
-    sale_code = Sale.set_code(8)
+    sale_code = Sale.set_code(8,"sale","code")
     s.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
       :introduction => sale_introduction, :disc_types => disc_types, :status => Sale::STATUS[:UN_RELEASE], :discount => disc,
       :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
       :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :img_url => "/saleimg/#{img_name}", :code => sale_code)
     if s.save
       FileUtils.mkdir_p "#{Rails.root}/public/saleimg" if !FileTest.directory?("#{Rails.root}/public/saleimg")
-      File.new(Rails.root.join("public", "saleimg", img_name), "a+")
       File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
         file.write(img.read)
       end
@@ -104,14 +105,14 @@ class SalesController < ApplicationController   #活动控制器
         selected_product_id.each_with_index do |item, index|
           SaleProdRelation.create(:sale_id => sale.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
         end
-        FileUtils.rm_rf "public/#{old_img}" if FileTest.file?("public/#{old_img}")
+        FileUtils.rm_rf "#{Rails.root}/public/#{old_img}" if FileTest.file?("#{Rails.root}/public/#{old_img}")
         File.new(Rails.root.join("public", "saleimg", img_name), "a+")
         File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
-        file.write(img.read)
-      end
+          file.write(img.read)
+        end
       end
     end
-     flash[:notice] = "活动修改成功!"
+    flash[:notice] = "活动修改成功!"
     redirect_to sales_path
   end
 
@@ -135,16 +136,16 @@ class SalesController < ApplicationController   #活动控制器
   end
 
   def rel_sale  #发布活动按钮
-     sale = Sale.find(params[:id].to_i)
-     if !sale.nil?
-       if sale.status != 0
-         render :text => 0
-       else
-          sale.update_attribute("status", Sale::STATUS[:RELEASE])
-          render :text => 1
-       end
-     else
-       render :text => 0
-     end
+    sale = Sale.find(params[:id].to_i)
+    if !sale.nil?
+      if sale.status != 0
+        render :text => 0
+      else
+        sale.update_attribute("status", Sale::STATUS[:RELEASE])
+        render :text => 1
+      end
+    else
+      render :text => 0
+    end
   end
 end

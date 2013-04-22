@@ -1,9 +1,9 @@
 $(document).ready(function(){
-     $("#started_time").datepicker({
-    inline: true
+     $("#started_time").click(function(){
+        WdatePicker();
 });
-$("#ended_time").datepicker({
-    inline: true
+$("#ended_time").click(function(){
+       WdatePicker();
 });
 $("#use_search").click(function(){
     if(new Date($("#ended_time").val()) > 0 && new Date($("#ended_time").val()) < new Date($("#started_time").val())){

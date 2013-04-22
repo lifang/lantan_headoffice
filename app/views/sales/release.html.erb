@@ -1,9 +1,7 @@
+<%= javascript_include_tag "/assets/kindEditor/kindeditor-min.js" %>
+<%= javascript_include_tag "/assets/kindEditor/zh_CN.js" %>
 <div class="box">
   <div class="data_box">
-    <div class="second_menu">
-      <a href="/sales">活动列表</a>
-      <a href="/sales/release" class="hover">发布活动</a>
-    </div>
     <div class="clear"></div>
     <div class="data_body">
       <div>
@@ -61,8 +59,8 @@
               <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:MOUTH] %>"/>月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:YEAR] %>"/>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:TIME] %>"/>有效期：
-              <input id="started_time" name="started_time" type="text" disabled readonly/>&nbsp;&nbsp;到&nbsp;&nbsp;
-              <input id="ended_time" name="ended_time" type="text" disabled readonly/>
+              <input id="started_time" name="started_time" type="text" class="Wdate" disabled readonly/>&nbsp;&nbsp;到&nbsp;&nbsp;
+              <input id="ended_time" name="ended_time" type="text" class="Wdate" disabled readonly/>
             </div>
           </div>
           <div class="releaseDiv">
@@ -79,6 +77,7 @@
             <div class="releaseDiv_r">
               <input type="file" name="sale_img" id="sale_img"/>             
             </div>
+          </div>
             <div class="releaseDiv">
               <div class="releaseDiv_l">是否总店补贴：</div>
               <div class="releaseDiv_r">
@@ -90,7 +89,8 @@
             <div class="releaseDiv">
               <div class="releaseDiv_l">活动介绍：</div>
               <div class="releaseDiv_r">
-                <textarea name="sale_introduction" cols="" rows=""></textarea>
+                <textarea id="sale_textarea" name="sale_textarea" cols="" rows=""></textarea>
+                <input type="hidden" id="sale_introduction" name="sale_introduction"/>
               </div>
             </div>
             <div class="btn_box">
@@ -102,4 +102,11 @@
       </div>
     </div>
   </div>
-</div>
+<script type="text/javascript">
+  var sale_desc;
+  $(function() {
+    sale_desc = KindEditor.create('textarea[id="sale_textarea"]', {
+      allowFileManager : true
+    });
+  });
+</script>

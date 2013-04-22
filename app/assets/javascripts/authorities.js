@@ -89,3 +89,10 @@ $(document).ready(function(){
       })
   })
 })
+function selectAll(obj){
+    if($(obj).attr("checked")=="checked"){
+        $(obj).parent().next().find("input[type='checkbox']").attr("checked", "checked")
+    }else{
+        $(obj).parent().next().find("input[type='checkbox']").attr("checked", false)
+    }
+}

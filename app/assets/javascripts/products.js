@@ -34,6 +34,7 @@ function add_product(e){
     var base=$("#base_price").val();
     var sale=$("#sale_price").val();
     var standard =$("#standard").val();
+    var pic_format =["png","gif","jpg","bmp"];
     if (name=="" || name.length==0){
         tishi_alert("请输入产品的名称");
         return false;
@@ -50,9 +51,21 @@ function add_product(e){
         tishi_alert("请输入产品的规格");
         return false;
     }
+    var img_f  = false
     $(".add_img #img_div input[name$='img_url']").each(function (){
-        $(this).attr("name","img_url["+this.id+"]");
+        if (this.value!="" || this.value.length!=0){
+            var pic_type =this.value.substring(this.value.lastIndexOf(".")).toLowerCase()
+            if (pic_format.indexOf(pic_type.substring(1,pic_type.length))== -1){
+                img_f = true
+            }else{
+                $(this).attr("name","img_url["+this.id+"]");
+            }
+        }
     })
+    if(img_f){
+        tishi_alert("请选择正确格式的图片,正确格式是："+pic_format );
+        return false
+    }
     $("#desc").val(serv_editor.html());
     $("#add_prod").submit();
     $(e).removeAttr("onclick");
@@ -75,7 +88,7 @@ function add_service(){
         async:true,
         type : "POST",
         dataType : 'script',
-        url :"/products/add_serv"
+        url : "/products/add_serv"
     });
 }
 
@@ -96,6 +109,7 @@ function edit_serv(e){
     var sale=$("#sale_price").val();
     var time=$("#cost_time").val();
     var deduct =$("#deduct_percent").val();
+    var pic_format =["png","gif","jpg","bmp"];
     if (name=="" || name.length==0){
         tishi_alert("请输入服务的名称");
         return false;
@@ -116,9 +130,21 @@ function edit_serv(e){
         tishi_alert("请输入服务的施工时间");
         return false;
     }
+    var img_f  = false
     $(".add_img #img_div input[name$='img_url']").each(function (){
-        $(this).attr("name","img_url["+this.id+"]");
+        if (this.value!="" || this.value.length!=0){
+            var pic_type =this.value.substring(this.value.lastIndexOf(".")).toLowerCase()
+            if (pic_format.indexOf(pic_type.substring(1,pic_type.length))== -1){
+                img_f = true
+            }else{
+                $(this).attr("name","img_url["+this.id+"]");
+            }
+        }
     })
+    if(img_f){
+        tishi_alert("请选择正确格式的图片,正确格式是："+pic_format );
+        return false
+    }
     $("#desc").val(serv_editor.html());
     $(e).removeAttr("onclick");
     $("#edit_serv").submit();
@@ -197,7 +223,7 @@ function show_center(t){
     var layer_width = $(t).width();
     $(".mask").css({
         display:'block',
-        height:($(t).height()+50)>doc_height?　$(t).height()+180 : doc_height
+        height:($(t).height()+50)> doc_height?　$(t).height()+220 : doc_height
     });
     $(t).css('top',"50px");
     $(t).css('left',(doc_width-layer_width)/2);
@@ -205,6 +231,23 @@ function show_center(t){
     $(t + " .close").click(function(){
         $(t).css('display','none');
         $(".mask").css('display','none');
+    });
+}
+function before_center(t){
+    var doc_height = $(document).height();
+    var doc_width = $(document).width();
+    var layer_height = $(t).height();
+    var layer_width = $(t).width();
+    $(".maskOne").css({
+        display:'block',
+        height:($(t).height()+50)>doc_height?　$(t).height()+220 : doc_height
+    });
+    $(t).css('top',"50px");
+    $(t).css('left',(doc_width-layer_width)/2);
+    $(t).css('display','block');
+    $(t + " .close").click(function(){
+        $(t).css('display','none');
+        $(".maskOne").css('display','none');
     });
 }
 //弹出层
@@ -216,7 +259,7 @@ function popup(t){
         display:'block',
         height:doc_height
     });
-    $(t).css('top',"80px");
+    $(t).css('top',"50px");
     $(t).css('left',(doc_width-layer_width)/2);
     $(t).css('display','block');
 
@@ -224,4 +267,26 @@ function popup(t){
         $(t).css('display','none');
         $(".mask").css('display','none');
     })
+}
+
+function prod_delete(id){
+    if (confirm("确定删除该产品吗？")){
+        $.ajax({
+            async:true,
+            type : 'post',
+            dataType : 'script',
+            url : "/products/"+ id+"/prod_delete"
+        });
+    }
+}
+
+function serve_delete(id){
+    if (confirm("确定删除该服务吗？")){
+        $.ajax({
+            async:true,
+            type : 'post',
+            dataType : 'script',
+            url : "/products/"+ id+"/serve_delete"
+        });
+    }
 }

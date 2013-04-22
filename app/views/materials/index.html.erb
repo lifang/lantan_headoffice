@@ -15,29 +15,29 @@
     </div>
     <div id="table_show" class="data_body">
       <div id="materials_tab">    <!--库存列表-->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="materials_tab_table">
           <thead>
             <tr class="hbg">
-              <td>条形码</td>
-              <td><span class="sort_u">物料名称</span></td>
-              <td><span class="sort_d">物料类别</span></td>
-              <td>库存状态</td>
-              <td>库存量（个）</td>
-              <td>成本价（元）</td>
-              <td>盘点实数</td>
-              <td>操作</td>
+              <th>条形码</th>
+              <th><span class="sort_u">物料名称</span></th>
+              <th><span class="sort_d">物料类别</span></th>
+              <th>库存状态</th>
+              <th>库存量（个）</th>
+              <th>成本价（元）</th>
+              <th>盘点实数</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
             <% @materials.each do |material| %>
               <tr>
-                <td <% if material.storage <= 0 %>class="data_table_error"<% end %>><%= material.code %></td>
-                <td><%= material.name %></td>
+                <td <% if material.storage && material.storage <= 0 %>class="data_table_error"<% end %>><%= material.code.nil? ? "----" : material.code %></td>
+                <td><%= material.name.nil? ? "------" : material.name%></td>
                 <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == material.types %><%= value %><% end %><% end %></td>
                 <td>存货</td>
-                <td><%= material.storage %></td>
-                <td><%= material.price %></td>
-                <td><input type="text" value="<%= material.storage %>" style="width:50px"/></td>
+                <td><%= material.storage.nil? ? "----" : material.storage %></td>
+                <td><%= material.price.nil? ? "----" : material.price %></td>
+                <td><input type="text" value="<%= material.check_num.nil? ? 0 : material.check_num %>" style="width:50px"/></td>
                 <td>
                   <input type="hidden" value="<%= material.id %>"/>
                   <a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a>
@@ -55,24 +55,27 @@
       </div>
 
       <div id="mat_out_tab" style="display:none;">  <!--出库记录-->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_out_tab_table">
           <thead>
             <tr class="hbg">
-              <td>订货单号</td>
-              <td>条形码</td>
-              <td><span class="sort_u">物料名称</span></td>
-              <td><span class="sort_d">物料类别</span></td>
-              <td>库存量（个）</td>
+              <th>订货单号</th>
+              <th>条形码</th>
+              <th><span class="sort_u">物料名称</span></th>
+              <th><span class="sort_d">物料类别</span></th>
+              <th>库存量（个）</th>
             </tr>
           </thead>
           <tbody>
             <% @mat_out_orders.each do |moo| %>
             <tr>
-              <td><%= moo.material_order.code if !moo.material_order.nil? %></td>
-              <td><%= moo.material.code if !moo.material.nil? %></td>
-              <td><%= moo.material.name if !moo.material.nil? %></td>
+              <td>
+                <input type="hidden" value="<%= moo.material_order.nil? ? "" : moo.material_order.id %>"/>
+                <a href="JavaScript:void(0)" name="mat_order_detail" class="other_a"><%= moo.material_order.nil? ? "------" : moo.material_order.code %></a>
+              </td>
+              <td><%= moo.material.nil? || moo.material.code.nil? ? "----" : moo.material.code %></td>
+              <td><%= moo.material.nil? || moo.material.name.nil? ? "----" : moo.material.name %></td>
               <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == moo.material.types %><%= value %><% end %><% end %></td>
-              <td><%= moo.material.storage %></td>
+              <td><%= moo.material.nil? || moo.material.storage.nil? ? "----" : moo.material.storage %></td>
             </tr>
             <% end %>
           </tbody>
@@ -85,32 +88,32 @@
       </div>
 
       <div id="mat_in_tab" style="display:none;"> <!--入库记录-->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_in_tab_table">
           <thead>
             <tr class="hbg">
-              <td>条形码</td>
-              <td><span class="sort_u">物料名称</span></td>
-              <td><span class="sort_d">物料类别</span></td>
-              <td>入库量</td>
-              <td>操作人</td>
-              <td>入库时间</td>
+              <th>条形码</th>
+              <th><span class="sort_u">物料名称</span></th>
+              <th><span class="sort_d">物料类别</span></th>
+              <th>入库量</th>
+              <th>操作人</th>
+              <th>入库时间</th>
             </tr>
           </thead>
           <tbody>
             <% @mat_in_orders.each do |mio| %>
             <tr>
-              <td><%= mio.material.code if mio.material %></td>
-              <td><%= mio.material.name if mio.material%></td>
+              <td><%= mio.material.nil? || mio.material.code.nil? ? "----" : mio.material.code %></td>
+              <td><%= mio.material.nil? || mio.material.name.nil? ? "----" : mio.material.name %></td>
               <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
-              <td><%= mio.material_num %></td>
+              <td><%= mio.material_num.nil? ? "----" : mio.material_num %></td>
               <td>
-                <% if mio.staff %>
+                <% if mio.staff && mio.staff.name %>
                 <%= mio.staff.name %>
                 <% else %>
                 ----
                 <% end %>
               </td>
-              <td><%= mio.created_at.strftime("%Y-%m-%d")  %></td>
+              <td><%= mio.created_at.nil? ? "----" : mio.created_at.strftime("%Y-%m-%d")  %></td>
             </tr>
            <% end %>
           </tbody>
@@ -133,8 +136,8 @@
             </select>
           </div>
           <div><label>时间：</label>
-            <input name="started_time" type="text" id="started_time" readonly/> 到
-            <input name="ended_time" type="text" id="ended_time" readonly/>
+            <input name="started_time" type="text" id="started_time" class="Wdate" readonly/> 到
+            <input name="ended_time" type="text" id="ended_time" class="Wdate" readonly/>
           </div>
           <div><button id="mo_search_button" class="search_btn">查询</button></div>
         </div>
@@ -172,21 +175,21 @@
                   <% else %>
                   <% mo.mat_order_items.each do |moi| %>
                   <tr>
-                    <td><%= moi.material.try(:name) %></td>
-                    <td><%= moi.price %></td>
-                    <td><%= moi.material_num %></td>
+                    <td><%= moi.material.nil? || moi.material.name.nil? ? "----" : moi.material.try(:name) %></td>
+                    <td><%= moi.price.nil? ? "----" : moi.price %></td>
+                    <td><%= moi.material_num.nil? ? "----" : moi.material_num %></td>
                   </tr>
                   <% end %>
                   <% end %>
                 </table>
               </td>
               <td>               
-                <%= mo.store.nil? ? "------" : mo.store.name %>
+                <%= mo.store.nil? || mo.store.name.nil? ? "------" : mo.store.name %>
               </td>
               <td>             
                 <%= mo.price ||= "------"%>
               </td>
-              <td><%= mo.created_at.strftime("%Y-%m-%d") %></td>
+              <td><%= mo.created_at.nil? ? "----" : mo.created_at.strftime("%Y-%m-%d") %></td>
               <td id="arrival_at<%= mo.id %>">
                 <%= mo.arrival_at.nil? ? "------" : mo.arrival_at.strftime("%Y-%m-%d")   %>
               </td>

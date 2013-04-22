@@ -1,6 +1,8 @@
 #encoding: utf-8
 class ComplaintsController < ApplicationController   #投诉控制器
   layout "service_manages"
+  before_filter :sign?
+  
   def index
      all_complaints_sql = (params[:search_time].nil? || params[:search_time].empty?) ?
        "date_format(created_at, '%Y-%m') = '#{Time.now.strftime("%Y-%m")}'" :
@@ -28,5 +30,15 @@ class ComplaintsController < ApplicationController   #投诉控制器
        @processed_rate = ((has_processed_complaints.count() * 100)/complaints.count)*0.01
        @timely_rate = ((timely_complaints.count() * 100)/complaints.count)*0.01
      end
+  end
+
+  def show_order_detail
+    @order = Order.find_by_id(params[:oid].to_i)
+    @front_staff = Staff.find_by_id(@order.front_staff_id)
+    @cons_staff1 = Staff.find_by_id(@order.cons_staff_id_1)
+    @cons_staff2 = Staff.find_by_id(@order.cons_staff_id_2)
+    respond_to do |format|
+      format.js
+    end
   end
 end

@@ -3,6 +3,6 @@ module CSvcRelationHelper
     Customer.find_by_id(id)
   end
   def current_relation_card(id)
-    SvCard.find(id)
+    SvCard.find_by_id(id)
   end
 end

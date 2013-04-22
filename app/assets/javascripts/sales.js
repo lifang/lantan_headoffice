@@ -203,12 +203,12 @@ $("#cancel_button").click(function(){   //取消按钮
 $("#edit_cancel_button").live("click",function(){   //编辑时取消按钮
   location.href="/sales"
 })
- $("#started_time").datepicker({        //开始时间选择插件
-    inline: true
+ $("#started_time").click(function(){        //开始时间选择插件
+    WdatePicker();
 });
  
-$("#ended_time").datepicker({       //结束时间选择插件
-    inline: true
+$("#ended_time").click(function(){       //结束时间选择插件
+    WdatePicker();
 });
 
 $("#create_button").click(function(){  //创建验证
@@ -225,7 +225,7 @@ $("#create_button").click(function(){  //创建验证
         tishi_alert("请选择优惠时间段!");
         return false;
     }else if($("#sale_everycar_times").val() == "" || parseInt($("#sale_everycar_times").val()) <= 0){
-        tishi_alert("请输入有效的优惠次数!");
+        tishi_alert("请输入每辆车的优惠次数!");
         return false;
     }else if($("#sale_car_num").val() == "" || parseInt($("#sale_car_num").val()) <= 0){
          tishi_alert("请输入有效的车辆总数!");
@@ -236,9 +236,13 @@ $("#create_button").click(function(){  //创建验证
     }else if(new Date($("#ended_time").val()) > 0 && new Date($("#ended_time").val()) < new Date($("#started_time").val())){
         tishi_alert("结束时间必须在开始时间之后!");
         return false;
+    }else if(sale_desc.html() == ""){
+        tishi_alert("请输入活动介绍!");
+        return false;
     }
+     $("#sale_introduction").val(sale_desc.html());
 });
-$("#edit_create_button").live("click",function(){
+$("#edit_create_button").live("click",function(){ //编辑验证
     if($("#edit_sale_name").val() == ""){
        tishi_alert("活动标题不能为空!");
        return false;
@@ -261,5 +265,6 @@ $("#edit_create_button").live("click",function(){
         tishi_alert("结束时间必须在开始时间之后!");
         return false;
     }
+     $("#edit_sale_introduction").val(edit_sale_desc.html());
 });
 })

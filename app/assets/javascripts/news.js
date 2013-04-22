@@ -52,10 +52,11 @@ $(document).ready(function(){
     if($("#edit_new_title").val() == ""){
       tishi_alert("标题不能为空!");
       return false;
-    }else if($("#edit_new_content").val() == ""){
+    }else if(edit_news_detail.html() == ""){
       tishi_alert("内容不能为空!");
       return false;
     }
+     $("#edit_new_content").val(edit_news_detail.html());
   })
 
   $("#edit_cancel_btn").live("click",function(){
@@ -66,10 +67,11 @@ $(document).ready(function(){
     if($("#create_new_title").val() == ""){
       tishi_alert("标题不能为空!");
       return false;
-    }else if($("#create_new_content").val() == ""){
+    }else if(news_detail.html() == ""){
       tishi_alert("内容不能为空!");
       return false;
     }
+     $("#create_new_content").val(news_detail.html());
   })
   $("#cancel_new_btn").click(function(){
     location.href="/news";

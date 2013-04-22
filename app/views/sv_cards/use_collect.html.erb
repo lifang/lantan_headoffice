@@ -11,10 +11,10 @@
       <%= form_tag "/sv_cards/use_collect", :method => :get do %>
       <div><label>时间：</label>
         <input id="started_time" name="started_time" type="text" 
-         <% if !params[:started_time].nil? || params[:started_time] != "" %>value="<%=params[:started_time] %>"<% end %> readonly/>
+         <% if !params[:started_time].nil? || params[:started_time] != "" %>value="<%=params[:started_time] %>"<% end %> class="Wdate" readonly/>
         &nbsp;到&nbsp;
         <input id="ended_time" name="ended_time" type="text"
-          <% if !params[:ended_time].nil? || params[:ended_time] != "" %>value="<%=params[:ended_time] %>"<% end %> readonly/>
+          <% if !params[:ended_time].nil? || params[:ended_time] != "" %>value="<%=params[:ended_time] %>"<% end %> class="Wdate" readonly/>
       </div>
       <div><button id="use_search" class="search_btn">查询</button></div>
       <% end %>
@@ -39,7 +39,7 @@
             <% f = form.split(",") %>
             <tr>
               <td><%=  DateTime.parse(f[0]).strftime("%Y/%m") %></td>
-              <td><%=  f[1].to_i %></td>
+              <td><%=  f[1].to_f %></td>
             </tr>
             <% end %>
             <% end %>

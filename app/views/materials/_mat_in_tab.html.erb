@@ -1,29 +1,50 @@
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+<script>
+  $(document).ready(function(){
+   $("#mat_in_tab_table").tablesorter({
+        headers:
+        {
+            0: {
+                sorter: false
+            },
+            3: {
+                sorter: false
+            },
+            4: {
+                sorter: false
+            },
+            5: {
+                sorter: false
+            }
+        }
+    });
+  });
+</script>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_in_tab_table">
   <thead>
     <tr class="hbg">
-      <td>条形码</td>
-      <td><span class="sort_u">物料名称</span></td>
-      <td><span class="sort_d">物料类别</span></td>
-      <td>入库量</td>
-      <td>操作人</td>
-      <td>入库时间</td>
+        <th>条形码</th>
+        <th><span class="sort_u">物料名称</span></th>
+        <th><span class="sort_d">物料类别</span></th>
+        <th>入库量</th>
+        <th>操作人</th>
+        <th>入库时间</th>
     </tr>
   </thead>
   <tbody>
     <% @mat_in_orders.each do |mio| %>
       <tr>
-        <td><%= mio.material.code %></td>
-        <td><%= mio.material.name %></td>
+        <td><%= mio.material.nil? || mio.material.code.nil? ? "----" : mio.material.code %></td>
+        <td><%= mio.material.nil? || mio.material.name.nil? ? "----" : mio.material.name %></td>
         <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
-        <td><%= mio.material_num %></td>
+        <td><%= mio.material_num ||= "----" %></td>
         <td>
-            <% if mio.staff %>
+            <% if mio.staff && mio.staff.name %>
               <%= mio.staff.name %>
             <% else %>
               ----
             <% end %>
           </td>
-        <td><%= mio.created_at.strftime("%Y-%m-%d")  %></td>
+        <td><%= mio.created_at.nil? ? "----" : mio.created_at.strftime("%Y-%m-%d")  %></td>
       </tr>
     <% end %>
   </tbody>

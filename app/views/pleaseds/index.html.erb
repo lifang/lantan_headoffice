@@ -34,26 +34,14 @@
     <div class="clear"></div>
     <div class="data_body">
       <div>
-        <% if @chart_image.nil? %>
-        请选择城市
-        <% else %>
-        <%= image_tag @chart_image.image_url %>
+        <% if @blank_msg %>
+        <h3 align="center"><%= @blank_msg %></h3>
+        <% elsif @chart_image.nil? %>
+        <h3 align="center">当前城市无数据!</h3>
+         <% else %>
+        <%= image_tag @chart_image.image_url %>       
         <% end %>
       </div>
     </div>
   </div>
 </div>
-<script>
-  $("#search_province").change(function(){
-    var p_id = $(this).val();
-    if(p_id == 0){
-      $("#search_city").html("<option value='0'>------</option>");
-    }else{
-      $.ajax({
-        type: "get",
-        url: "/pleaseds/search_cities",
-        data: {pid : p_id}
-      })
-    }
-  })
-</script>

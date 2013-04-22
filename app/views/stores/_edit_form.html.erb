@@ -36,7 +36,7 @@
         </div>
         <div class="item">
           <label>开店时间：</label>
-          <%= text_field_tag 'edit_store_open_time', @store.opened_at.nil? ? "" : @store.opened_at.strftime("%Y-%m-%d") %>
+          <%= text_field_tag 'edit_store_open_time', @store.opened_at.nil? ? "" : @store.opened_at.strftime("%Y-%m-%d"), :class => "Wdate", :readonly => true %>
         </div>
         <div class="item">
           <label>门店状态：</label>

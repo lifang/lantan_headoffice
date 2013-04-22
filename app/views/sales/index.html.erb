@@ -1,8 +1,9 @@
+<%= javascript_include_tag "/assets/kindEditor/kindeditor-min.js" %>
+<%= javascript_include_tag "/assets/kindEditor/zh_CN.js" %>
 <div class="box">
   <div class="data_box">
-    <div class="second_menu">
-      <% if permission?(:market_manage, :sale_list) %><a href="/sales" class="hover">活动列表</a><% end %>
-      <% if permission?(:market_manage, :create_sale) %><a href="/sales/release">发布活动</a><% end %>
+    <div class="data_menu">
+      <a href="/sales/release">发布活动</a>
     </div>
     <div class="clear"></div>
     <div id="sale_show_and_edit" class="data_body">
@@ -26,14 +27,10 @@
             <% else %>
               <% @sales.each do |s| %>
                 <tr>
-                  <td><%= s.name %></td>
-                  <td><%= s.code %></td>
+                  <td><%= s.name ||= "----" %></td>
+                  <td><%= s.code ||= "----"%></td>
                   <td>
-                    <% if s.started_at.nil? && s.ended_at.nil? %>
-                    --/--
-                    <% else %>
-                      <%= s.started_at.strftime("%Y-%m-%d") %>/<%= s.ended_at.strftime("%Y-%m-%d") %>
-                      <% end %>
+                      <%= s.started_at.nil? || s.started_at == "" ? "----" : s.started_at.strftime("%Y-%m-%d") %>/<%= s.ended_at.nil? || s.ended_at == "" ? "----" : s.ended_at.strftime("%Y-%m-%d") %>
                   </td>
                   <%  if s.status.to_i == 0 %>
                     <td>未发布</td>
@@ -44,30 +41,30 @@
                   <% end %>
                   <td><%= s.orders.length %></td>
                   <% if  s.status.to_i == 0 %>
-                  <td>
-                    <a name="edit" href="JavaScript:void(0)">修改</a>
-                    <a name="release"href="JavaScript:void(0)">发布</a>
-                    <a name="del" href="JavaScript:void(0)">删除</a>
-                    <input type="hidden" name="sid" value="<%= s.id %>" />
-                  </td>
+                    <td>
+                      <a name="edit" href="JavaScript:void(0)">修改</a>
+                      <a name="release"href="JavaScript:void(0)">发布</a>
+                      <a name="del" href="JavaScript:void(0)">删除</a>
+                      <input type="hidden" name="sid" value="<%= s.id %>" />
+                    </td>
                   <% elsif s.status.to_i == 1 %>
-                  <td>
-                    <a name="edit" href="JavaScript:void(0)">修改</a>
-                    <a name="del" href="JavaScript:void(0)">删除</a>
-                    <input type="hidden" name="sid" value="<%= s.id %>" />
-                  </td>
+                    <td>
+                      <a name="edit" href="JavaScript:void(0)">修改</a>
+                      <a name="del" href="JavaScript:void(0)">删除</a>
+                      <input type="hidden" name="sid" value="<%= s.id %>" />
+                    </td>
                   <% else %>
-                  <td>-----</td>
-                  <% end %>                  
+                    <td>-----</td>
+                  <% end %>
                 </tr>
               <% end %>
             <% end %>
           </tbody>
         </table>
         <div class="pageTurn">
-         <% if !@sales.blank? %>
-           <%= will_paginate  @sales, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
-         <% end %>
+          <% if !@sales.blank? %>
+            <%= will_paginate  @sales, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <% end %>
         </div>
       </div>
     </div>

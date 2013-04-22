@@ -15,8 +15,8 @@
          <option value="1" <%= @card_type.eql?("1") ? "selected" : "" %>>储值卡</option>
         </select>
       </div>
-      <div><label>时间：</label><input id="started_time" name="started_time" type="text" value="<%= @started_time %>" readonly/>
-        &nbsp;到&nbsp;<input id="ended_time" name="ended_time" type="text" value="<%= @ended_time %>" readonly/></div>
+      <div><label>时间：</label><input id="started_time" name="started_time" type="text" value="<%= @started_time if @started_time %>" class="Wdate" readonly/>
+        &nbsp;到&nbsp;<input id="ended_time" name="ended_time" type="text" value="<%= @ended_time if @ended_time %>" class="Wdate" readonly/></div>
       <div><button id="use_search" class="search_btn">查询</button></div>
   <% end %>
     </div>
@@ -45,17 +45,21 @@
             </tr>
             <% else %>
             <% @relations.each do |r| %>
-            <% customer = current_relation_customer(r.customer_id) %>
-            <% card = current_relation_card(r.sv_card_id) %>
+           <% customer = current_relation_customer(r.customer_id) if r.customer_id %>
+            <% card = current_relation_card(r.sv_card_id) if r.sv_card_id %>
             <tr>
-              <td><%= customer.name %></td>
-              <td><%= customer.mobilephone %></td>
+              <td><%= customer.nil? ? "----" : customer.name  %></td>
+              <td><%= customer.nil? ? "----" : customer.mobilephone %></td>
+              <% if card.nil? %>
+              <td>----</td>
+              <% else %>
               <% if card.types == 0 %>
               <td>打折卡</td>
               <% else %>
               <td>储值卡</td>
               <% end %>
-              <td><%= r.total_price %></td>
+              <% end %>
+              <td><%= r.total_price ||= "----" %></td>
               <% if r.is_billing %>
               <td>是</td>
               <td>------</td>
