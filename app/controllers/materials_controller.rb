@@ -15,7 +15,6 @@ class MaterialsController < ApplicationController   #库存控制器
     @mat_in_orders = MatInOrder.joins(:material).includes(:material).order("mat_in_orders.created_at desc").paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_in_tab")
     @mat_orders = MaterialOrder.joins(:mat_order_items => :material).includes(:mat_order_items => :material).is_headoffice_not_canceled.where(status).where(started_time).where(ended_time).order("material_orders.created_at desc").uniq
     .paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_orders_tab")
-    p @mat_orders
     respond_to do |format|
       format.html
       format.js
@@ -49,7 +48,7 @@ class MaterialsController < ApplicationController   #库存控制器
     if material.storage == params[:storage].to_i
       render :json => 0
     else
-      material.update_attribute("storage", params[:storage].to_i)
+      material.update_attributes(:storage => params[:storage].to_i, :check_num => params[:storage].to_i)
       render :json => 1
     end
   end
@@ -103,11 +102,10 @@ class MaterialsController < ApplicationController   #库存控制器
   end
 
   def urge_payment #催款
-    mo = MaterialOrder.find(params[:mo_id].to_i)
-    store_id = mo.store_id
-    if !store_id.nil?
+    mo = MaterialOrder.find_by_id(params[:mo_id].to_i)
+    if !mo.nil?
       Notice.create(:types => Notice::TYPES[:URGE_PAYMENT], :content => "请尽快上缴拖欠的货款",
-        :status => Notice::STATUS[:NOMAL], :store_id => store_id)
+        :status => Notice::STATUS[:NOMAL], :store_id => mo.id)
       render :json => 1
     else
       render :json => 0
@@ -119,7 +117,7 @@ class MaterialsController < ApplicationController   #库存控制器
     m_type = params[:m_type].to_i
     m_code = params[:m_code]
     m_num = params[:m_num].to_i
-    m_price = params[:m_price]
+    m_price = params[:m_price].to_f
     m = Material.where("name = '#{m_name}'").where("types = #{m_type}")
     if !m.blank?
       material = m[0]

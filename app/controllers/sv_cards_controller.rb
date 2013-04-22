@@ -26,8 +26,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       img_name = "discounrcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
     end
     if card_type == 1                                       #如果是储值卡
-      started_money = params[:started_money].to_i
-      ended_money = params[:ended_money].to_i
+      started_money = params[:started_money].to_f
+      ended_money = params[:ended_money].to_f
 #      total_money = started_money + ended_money
       sv_card.update_attributes(:name => card_name, :types => card_type, :price => started_money, :description => card_description,
         :img_url => "/cardimg/#{img_name}")
@@ -45,7 +45,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       end
     elsif card_type == 0                                        #如果是打折卡
       discount = params[:discount_value]
-      price = params[:discount_price]
+      price = params[:discount_price].to_f
       sv_card.update_attributes(:name => card_name, :types => card_type,:discount => discount, :price => price, :description => card_description,
         :img_url => "/cardimg/#{img_name}")
       if sv_card.save
@@ -80,8 +80,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       end
     end
     if type == 1
-      started_money = params[:edit_started_money].to_i
-      ended_money = params[:edit_ended_money].to_i
+      started_money = params[:edit_started_money].to_f
+      ended_money = params[:edit_ended_money].to_f
 #      total_money = started_money + ended_money
       if sc.update_attributes(:name => name, :price => started_money, :description => description)
         SvcardProdRelation.destroy_all("sv_card_id = #{sc.id}")
