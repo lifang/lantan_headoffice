@@ -270,19 +270,23 @@ function popup(t){
 }
 
 function prod_delete(id){
-    $.ajax({
-        async:true,
-        type : 'post',
-        dataType : 'script',
-        url : "/products/"+ id+"/prod_delete"
-    });
+    if (confirm("确定删除该产品吗？")){
+        $.ajax({
+            async:true,
+            type : 'post',
+            dataType : 'script',
+            url : "/products/"+ id+"/prod_delete"
+        });
+    }
 }
 
 function serve_delete(id){
-    $.ajax({
-        async:true,
-        type : 'post',
-        dataType : 'script',
-        url : "/products/"+ id+"/serve_delete"
-    });
+    if (confirm("确定删除该服务吗？")){
+        $.ajax({
+            async:true,
+            type : 'post',
+            dataType : 'script',
+            url : "/products/"+ id+"/serve_delete"
+        });
+    }
 }
