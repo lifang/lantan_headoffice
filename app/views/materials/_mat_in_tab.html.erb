@@ -33,18 +33,18 @@
   <tbody>
     <% @mat_in_orders.each do |mio| %>
       <tr>
-        <td><%= mio.material.code %></td>
-        <td><%= mio.material.name %></td>
+        <td><%= mio.material.nil? || mio.material.code.nil? ? "----" : mio.material.code %></td>
+        <td><%= mio.material.nil? || mio.material.name.nil? ? "----" : mio.material.name %></td>
         <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
-        <td><%= mio.material_num %></td>
+        <td><%= mio.material_num ||= "----" %></td>
         <td>
-            <% if mio.staff %>
+            <% if mio.staff && mio.staff.name %>
               <%= mio.staff.name %>
             <% else %>
               ----
             <% end %>
           </td>
-        <td><%= mio.created_at.strftime("%Y-%m-%d")  %></td>
+        <td><%= mio.created_at.nil? ? "----" : mio.created_at.strftime("%Y-%m-%d")  %></td>
       </tr>
     <% end %>
   </tbody>

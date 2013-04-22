@@ -38,22 +38,22 @@
                                     <% else %>
                                     <%  @revisits.each do |r|%>
                                       <tr>
-                                        <td><%= r.store_name || "------" %></td>
-                                        <td><%= r.created_at.strftime("%Y-%m-%d %H:%m") if !r.created_at.nil? %></td>
-                                        <td><%= r.content %></td>
-                                        <td><%= r.answer %></td>
+                                        <td><%= r.store_name || "----" %></td>
+                                        <td><%= r.created_at.nil? ? "----" : r.created_at.strftime("%Y-%m-%d %H:%m") %></td>
+                                        <td><%= r.content ||= "----" %></td>
+                                        <td><%= r.answer ||= "----"%></td>
                                         <td>
-                                          <% if r.types == Revisit::TYPES[:COMPLAINT] %>
+                                          <% if r.types && r.types == Revisit::TYPES[:COMPLAINT] %>
                                           是
                                           <% else %>
                                           否
                                           <% end %>
                                         </td>
-                                        <td><%= r.cus_name %></td>
-                                        <td><%= r.cus_mobilephone %></td>
+                                        <td><%= r.cus_name ||= "----" %></td>
+                                        <td><%= r.cus_mobilephone ||= "----"%></td>
                                         <td>
-                                          <input type="hidden" value="<%= r.oid %>"/>
-                                          <a href="JavaScript:void(0)" name="order_detail" class="other_a"><%= r.order_code if !r.order_code.nil? %></a>
+                                          <input type="hidden" value="<%= r.oid.nil? ? "" : r.oid %>"/>
+                                          <% if r.oid && r.order_code %><a href="JavaScript:void(0)" name="order_detail" class="other_a"><%= r.order_code %></a><% end %>
                                         </td>
                                       </tr>   
                                       <% end %>

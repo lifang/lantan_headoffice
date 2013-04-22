@@ -185,15 +185,15 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   end
 
   def use_collect   #使用情况汇总
-    started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "1 = 1" : "created_at >= '#{params[:started_time]}'"
-    ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? "1 = 1" : "created_at <= '#{params[:ended_time]}'"
-    s = SvcReturnRecord.where(started_sql).where(ended_sql).where("types = #{SvcReturnRecord::TYPES[:OUT]}")
+    started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? "1 = 1" : "date_format(created_at, '%Y-%m-%d') >= '#{params[:started_time]}'"
+    ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? "1 = 1" : "date_format(created_at, '%Y-%m-%d') <= '#{params[:ended_time]}'"
+    s = SvcardUseRecord.where(started_sql).where(ended_sql).where("types = #{SvcardUseRecord::TYPES[:OUT]}")
     ss = s.group_by {|e| e.created_at.beginning_of_month}
     total_money = 0
     form_collect = []
     ss.each do |key, value|
       value.each do |v|
-        total_money += v.price
+        total_money += v.use_price
       end
       form_collect << key.to_s + "," + total_money.to_s
       total_money = 0

@@ -27,12 +27,12 @@
       <tbody>
         <% @materials.each do |material| %>
           <tr>
-            <td><%= material.code %></td>
-            <td><%= material.name %></td>
+            <td><%= material.code ||= "----" %></td>
+            <td><%= material.name ||= "----"%></td>
             <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == material.types %><%= value %><% end %><% end %></td>
             <td>存货</td>
-            <td><%= material.storage %></td>
-            <td><%= material.price %></td>
+            <td><%= material.storage ||= "----"%></td>
+            <td><%= material.price ||= "----"%></td>
           </tr>
         <% end %>
       </tbody>

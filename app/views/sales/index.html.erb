@@ -27,14 +27,10 @@
             <% else %>
               <% @sales.each do |s| %>
                 <tr>
-                  <td><%= s.name %></td>
-                  <td><%= s.code %></td>
+                  <td><%= s.name ||= "----" %></td>
+                  <td><%= s.code ||= "----"%></td>
                   <td>
-                    <% if s.started_at.nil? && s.ended_at.nil? %>
-                      --/--
-                    <% else %>
-                      <%= s.started_at.strftime("%Y-%m-%d") %>/<%= s.ended_at.strftime("%Y-%m-%d") %>
-                    <% end %>
+                      <%= s.started_at.nil? || s.started_at == "" ? "----" : s.started_at.strftime("%Y-%m-%d") %>/<%= s.ended_at.nil? || s.ended_at == "" ? "----" : s.ended_at.strftime("%Y-%m-%d") %>
                   </td>
                   <%  if s.status.to_i == 0 %>
                     <td>未发布</td>
