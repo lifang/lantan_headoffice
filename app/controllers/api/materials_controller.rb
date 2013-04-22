@@ -21,6 +21,12 @@ class Api::MaterialsController < ApplicationController   #库存控制器api
       end
     end if material_order_item
     
-    render :text => 'haha'
+    render :text => '1'
+  end
+
+  def update_status
+    mat_order = MaterialOrder.find_by_code params[:mo_code]
+    mat_order.update_attributes(:status => params[:mo_status]) if mat_order
+    render :text => "1"
   end
 end

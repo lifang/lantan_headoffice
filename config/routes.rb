@@ -183,7 +183,7 @@ LantanHeadoffice::Application.routes.draw do
     resources :materials do
       collection do
         get "search_material"
-        post "save_mat_info"
+        post "save_mat_info","update_status"
       end
     end
     resources :syncs_datas do
