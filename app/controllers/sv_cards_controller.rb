@@ -28,7 +28,6 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     if card_type == 1                                       #如果是储值卡
       started_money = params[:started_money].to_f
       ended_money = params[:ended_money].to_f
-#      total_money = started_money + ended_money
       sv_card.update_attributes(:name => card_name, :types => card_type, :price => started_money, :description => card_description,
         :img_url => "/cardimg/#{img_name}")
       if sv_card.save
