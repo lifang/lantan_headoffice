@@ -1,7 +1,6 @@
 #encoding: utf-8
 class SalesController < ApplicationController   #活动控制器
   require 'fileutils'
-  require 'mini_magick'
   layout "market_manages"
   before_filter :sign?
   
@@ -36,7 +35,7 @@ class SalesController < ApplicationController   #活动控制器
       disc = params[:disc_money].to_i
     end
     img = params[:sale_img]
-    img_name = "sale#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
+#    img_name = "sale#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
     selected_product_count = params[:selected_product_count].to_a
     selected_product_id = params[:selected_product_id].to_a
     sale_disc_time_types = params[:sale_disc_time_types].to_i  #年月日周。。。
@@ -51,12 +50,15 @@ class SalesController < ApplicationController   #活动控制器
     s.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
       :introduction => sale_introduction, :disc_types => disc_types, :status => Sale::STATUS[:UN_RELEASE], :discount => disc,
       :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
-      :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :img_url => "/saleimg/#{img_name}", :code => sale_code)
+      :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :code => sale_code)
+
     if s.save
-      FileUtils.mkdir_p "#{Rails.root}/public/saleimg" if !FileTest.directory?("#{Rails.root}/public/saleimg")
-      File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
-        file.write(img.read)
-      end
+#      FileUtils.mkdir_p "#{Rails.root}/public/saleimg" if !FileTest.directory?("#{Rails.root}/public/saleimg")
+#      File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
+#        file.write(img.read)
+#      end
+      url = Sale.upload_img(img, s.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
+      s.update_attribute("img_url", url)
       selected_product_id.each_with_index do |item, index|
         SaleProdRelation.create(:sale_id => s.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
       end    

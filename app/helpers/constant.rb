@@ -79,6 +79,7 @@ module Constant
   #产品和活动的类别  图片名称分别为 product_pics 和service_pics
   PRODUCT = "PRODUCT"
   SERVICE = "SERVICE"
+  SALE = "SALE"
 
    #上传图片的比例
   #上传图片的比例
