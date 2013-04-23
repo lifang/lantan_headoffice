@@ -13,6 +13,7 @@ class Product < ActiveRecord::Base
     6 => "清洗服务", 7 => "维修服务", 8 => "钣喷服务", 9 => "美容服务", 10 => "安装服务", 11 => "其他服务"} #产品类别
   PRODUCT_END = 6
   PROD_TYPES = {:PRODUCT =>0,:SERVICE =>1}  #0 为产品 1 为服务
+
   STATUS = {:NOMAL => 1, :DELETED => 0} #1 正常  0 删除
   IS_VALIDATE={:NO=>0,:YES=>1} #0 无效 已删除状态 1 有效
 end
