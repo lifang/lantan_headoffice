@@ -112,6 +112,9 @@ class Sync < ActiveRecord::Base
         cap = eval(model_name.split("_").inject(String.new){|str,name| str + name.capitalize})
         attrs = cap.where(base_sql)
         unless attrs.blank?
+          arr = model_name.split("_")
+          arr.delete("as")
+          model_name = arr.join("_")
           file = File.open("#{path+dirs.join+model_name}.log","w+")
           file.write("#{cap.column_names.join(";||;")}\n\n|::|")
           file.write("#{attrs.inject(String.new) {|str,attr|
