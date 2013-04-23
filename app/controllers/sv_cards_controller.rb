@@ -1,7 +1,6 @@
 #encoding: utf-8
 class SvCardsController < ApplicationController   #优惠卡控制器
   require 'fileutils'
-  require 'mini_magick'
   layout "market_manages"
   before_filter :sign?
   
@@ -20,48 +19,27 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     card_name = params[:card_name]
     card_description = params[:card_description]
     img = params[:card_url]      #获取上传的图片
-    if card_type == 1
-      img_name = "storeagecard#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
-    elsif card_type == 0
-      img_name = "discountcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
-    end
     if card_type == 1                                       #如果是储值卡
       started_money = params[:started_money].to_f
       ended_money = params[:ended_money].to_f
-      sv_card.update_attributes(:name => card_name, :types => card_type, :price => started_money, :description => card_description,
-        :img_url => "/cardimg/#{img_name}")
+      sv_card.update_attributes(:name => card_name, :types => card_type, :price => started_money, :description => card_description)
       if sv_card.save
-        SvcardProdRelation.create(:sv_card_id => sv_card.id, :base_price => started_money, :more_price => ended_money)
-        begin
-          FileUtils.mkdir_p "#{Rails.root}/public/cardimg" if !FileTest.directory?("#{Rails.root}/public/cardimg")
-          File.new(Rails.root.join("public", "cardimg", img_name), "a+")
-          File.open(Rails.root.join("public", "cardimg",img_name), "wb") do |file|
-            file.write(img.read)
-          end
-        rescue
-          flash[:notice] ="图片上传失败，请重新添加！"
-        end       
+        SvcardProdRelation.create(:sv_card_id => sv_card.id, :base_price => started_money, :more_price => ended_money)        
       end
     elsif card_type == 0                                        #如果是打折卡
       discount = params[:discount_value]
       price = params[:discount_price].to_f
-      sv_card.update_attributes(:name => card_name, :types => card_type,:discount => discount, :price => price, :description => card_description,
-        :img_url => "/cardimg/#{img_name}")
-      if sv_card.save
-        begin
-          FileUtils.mkdir_p "public/cardimg" if !FileTest.directory?("public/cardimg")
-          File.new(Rails.root.join("public", "cardimg", img_name), "a+")
-          File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
-            file.write(img.read)
-          end
-        rescue
-          flash[:notice] ="图片上传失败，请重新添加！"
-        end
-
-      end    
+      sv_card.update_attributes(:name => card_name, :types => card_type,:discount => discount, :price => price, :description => card_description)
+      sv_card.save
     end
-    flash[:notice] = "创建成功!"
-    redirect_to sv_cards_path
+     begin
+          url = SvCard.upload_img(img, sv_card.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
+          sv_card.update_attribute("img_url", url)
+          flash[:notice] = "创建成功!"
+          redirect_to sv_cards_path
+        rescue
+          flash[:notice] = "图片上传失败!"
+      end
   end
 
   def update    #更新优惠卡
@@ -71,55 +49,28 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     type = sc.types
     description = params[:edit_card_description]
     img = params[:edit_card_url]
-    if !img.nil?
-      if type == 1
-        img_name = "storeagecard#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
-      elsif type == 0
-        img_name = "discountrcard#{Time.now.strftime('%Y%m%d%H%m')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
-      end
-    end
     if type == 1
       started_money = params[:edit_started_money].to_f
       ended_money = params[:edit_ended_money].to_f
-#      total_money = started_money + ended_money
       if sc.update_attributes(:name => name, :price => started_money, :description => description)
         SvcardProdRelation.destroy_all("sv_card_id = #{sc.id}")
-        SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)
-        begin
-          if !img.nil?
-            sc.update_attribute("img_url", "cardimg/#{img_name}")
-            FileUtils.rm_rf "#{Rails.root}/public/#{old_img}" if FileTest.file?("#{Rails.root}/public/#{old_img}")
-            File.new(Rails.root.join("public", "cardimg", img_name), "a+")
-            File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
-              file.write(img.read)
-            end
-          end
-        rescue
-          flash[:notice] ="图片更新失败，请重新添加！"
-        end
-
+        SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)       
       end
     elsif type == 0
       discount = params[:edit_discount_value]
       price = params[:edit_discount_price]
-      if sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
-        SvcardProdRelation.destroy_all("sv_card_id= #{params[:edit_card_id].to_i}")
-        begin
-          if !img.nil?
-            sc.update_attribute("img_url", "cardimg/#{img_name}")
-            FileUtils.rm_rf "#{Rails.root}/public/#{old_img}" if FileTest.file?("#{Rails.root}/public/#{old_img}")
-            File.new(Rails.root.join("public", "cardimg", img_name), "a+")
-            File.open(Rails.root.join("public", "cardimg", img_name), "wb") do |file|
-              file.write(img.read)
-            end
-          end
-        rescue
-          flash[:notice] ="图片更新失败，请重新添加！"
-        end
-      end
+      sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
     end
-    flash[:notice] = "更新成功!"
-    redirect_to sv_cards_path
+    if !img.nil?
+          begin
+            new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
+            sc.update_attribute("img_url", new_url)
+            flash[:notice] = "更新成功!"
+            redirect_to sv_cards_path
+          rescue
+            flash[:notice] ="图片更新失败！"
+          end
+    end
   end
 
   def edit_card   #编辑优惠卡

@@ -68,22 +68,25 @@ module Constant
   SERVER_PATH = "http://bam.gankao.co/"
   FRONT_PATH = "http://official.gankao.co/"
 
-  #  施工现场文件目录
+  #施工现场文件目录
   VIDEO_DIR ="work_videos"
 
   LOCAL_DIR = "#{Rails.root}/public/"
   LOG_DIR = LOCAL_DIR + "logs/"
 
-   PCARD_PICS = "pcard_pics"
+  PCARD_PICS = "pcard_pics"
   SALE_PICS = "sale_pics"
+  SVCARD_PICS = "svcard_pics"
   #产品和活动的类别  图片名称分别为 product_pics 和service_pics
   PRODUCT = "PRODUCT"
   SERVICE = "SERVICE"
   SALE = "SALE"
+  SV_CARD = "SV_CARD"
 
-   #上传图片的比例
   #上传图片的比例
-  SALE_PICSIZE =[300,230,663]
+  #上传图片的比例
+  SALE_PICSIZE =[300,230,663,50]
   P_PICSIZE = [50,154,246,300,356]
   C_PICSIZE = [148,154]
+  SVCARD_PICSIZE = [148,154,50]
 end
