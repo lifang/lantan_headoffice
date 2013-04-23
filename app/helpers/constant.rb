@@ -75,8 +75,8 @@ module Constant
   LOG_DIR = LOCAL_DIR + "logs/"
 
   PCARD_PICS = "pcard_pics"
-  SALE_PICS = "sale_pics"
-  SVCARD_PICS = "svcard_pics"
+  SALE_PICS = "saleimg"
+  SVCARD_PICS = "cardimg"
   #产品和活动的类别  图片名称分别为 product_pics 和service_pics
   PRODUCT = "PRODUCT"
   SERVICE = "SERVICE"
