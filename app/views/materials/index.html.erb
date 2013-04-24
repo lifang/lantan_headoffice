@@ -35,7 +35,7 @@
                 <td><%= material.name.nil? ? "------" : material.name%></td>
                 <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == material.types %><%= value %><% end %><% end %></td>
                 <td>存货</td>
-                <td><%= material.storage.nil? ? "----" : material.storage %></td>
+                <td class="mat_stor"><%= material.storage.nil? ? "----" : material.storage %></td>
                 <td><%= material.price.nil? ? "----" : material.price %></td>
                 <td><input type="text" value="<%= material.check_num.nil? ? 0 : material.check_num %>" style="width:50px"/></td>
                 <td>
