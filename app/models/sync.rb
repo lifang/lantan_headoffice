@@ -20,25 +20,15 @@ class Sync < ActiveRecord::Base
     File.open(path+dirs.join+filename, "wb")  {|f|  f.write(img_url.read) }
   end
 
-  #发送上传请求
-  def self.send_file(store_id,file_url,filename)
-    query={:store_id=>store_id}
-    url = URI.parse Constant::HEAD_OFFICE
-    File.open(file_url) do |file|
-      req = Net::HTTP::Post::Multipart.new url.path,query.merge!("upload" => UploadIO.new(file, "application/zip", "#{filename}"))
-      http = Net::HTTP.new(url.host, url.port)
-      if  http.request(req).body == "success"
 
-      end
-    end
-  end
-
-  def self.get_dir_list(path)
+  @@files =[]
+  def get_dir_list(path)
     #获取目录列表
     list = Dir.entries(path)
     list.delete('.')
     list.delete('..')
-    return list
+    list.each {|file| File.file?(path+"/"+file) ? @@files << file : get_dir_list(path+"/"+file) }
+    return @@files
   end
 
   def self.new_dir(dirs)
@@ -53,7 +43,7 @@ class Sync < ActiveRecord::Base
     file_list = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","a+")
     dirs=["bam_syncs/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
     Sync.new_dir(dirs)
-    paths =get_dir_list(file_path+dirs.join)-file_list.read.split("|::|")
+    paths =get_dir_list(file_path+dirs[0])-file_list.read.split("|::|")
     unless paths.blank?
       paths.each do |path|
         if  File.extname(file_path+dirs.join+path) == '.zip'
@@ -98,8 +88,8 @@ class Sync < ActiveRecord::Base
   def self.out_data(time)
     path = Constant::LOCAL_DIR
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
-#    sync =SSync.find_by_created_at(Time.now.strftime("%Y-%m-%d"))
-#    sync =SSync.create(:created_at=>Time.now.strftime("%Y-%m-%d")) if sync.nil?
+    #    sync =SSync.find_by_created_at(Time.now.strftime("%Y-%m-%d"))
+    #    sync =SSync.create(:created_at=>Time.now.strftime("%Y-%m-%d")) if sync.nil?
     sync = SSync.order("sync_at desc").first
     base_sql = sync.nil? ? "updated_at <= '#{time}'" : "updated_at > '#{sync.sync_at}' and updated_at <= '#{time}'"
     path="#{Rails.root}/public/"
@@ -137,8 +127,8 @@ class Sync < ActiveRecord::Base
     }
     if is_finished
       SSync.create(:sync_at => time, :zip_name => dirs+filename)
-#      sync.update_attributes({:sync_status=>Sync::SYNC_STAT[:COMPLETE], :zip_name=>filename,
-#          :sync_at => Time.now.strftime("%Y%m%d")})
+      #      sync.update_attributes({:sync_status=>Sync::SYNC_STAT[:COMPLETE], :zip_name=>filename,
+      #          :sync_at => Time.now.strftime("%Y%m%d")})
       flog.write("数据压缩成功---#{Time.now}\r\n")
     else
       flog.write("数据压缩失败---#{Time.now}\r\n")
