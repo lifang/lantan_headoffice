@@ -8,7 +8,7 @@ class LoginsController < ApplicationController #登录控制器
         render :index, :layout => false
       else
         session_role(cookies[:user_id])
-        if is_admin? or is_boss? or is_manager? or is_staff?
+        if has_authority?
           redirect_to backstages_path
         else
           render :index, :layout => false
@@ -21,11 +21,11 @@ class LoginsController < ApplicationController #登录控制器
 
   def create #登陆验证
     staff = Staff.find_by_username(params[:username])
-   if staff #and staff.has_password?(params[:password])
+   if staff and staff.has_password?(params[:password])
       cookies[:user_id]={:value =>staff.id, :path => "/", :secure  => false}
       cookies[:user_name]={:value =>staff.name, :path => "/", :secure  => false}
       session_role(cookies[:user_id])
-      if is_admin? or is_boss? or is_manager? or is_staff?
+      if has_authority?
         redirect_to backstages_path
       else
         cookies.delete(:user_id)
