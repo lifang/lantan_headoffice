@@ -10,12 +10,12 @@ class RevisitsController < ApplicationController  #回访控制器
                     left join lantan_db_all.orders o on com.order_id = o.id
                     left join lantan_db_all.stores sto on o.store_id = sto.id"
     params[:search_time].nil? ?
-     revisits_sql += " where date_format(r.created_at, '%Y-%m') = '#{Time.now.strftime("%Y-%m")}'" :
+     revisits_sql += " where date_format(r.created_at, '%Y-%m') = '#{Time.now.months_ago(1).strftime("%Y-%m")}'" :
      revisits_sql += " where date_format(r.created_at, '%Y-%m') = '#{params[:search_time]}'"
-    @current_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.strftime("%Y-%m") : params[:search_time]
+    @current_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.months_ago(1).strftime("%Y-%m") : params[:search_time]
     @revisit_time = []    #当前年份所有已过的月份
     current_month = Time.now.strftime("%m").to_i
-    for m in (0..(current_month-1))
+    for m in (1..(current_month-1))
       @revisit_time << DateTime.now.months_ago(m).strftime("%Y-%m")
     end
     @revisits = Revisit.paginate_by_sql(revisits_sql, :page => params[:page] ||= 1, :per_page => 10) #回访数据

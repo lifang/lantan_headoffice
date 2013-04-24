@@ -32,7 +32,9 @@ $(document).ready(function(){
               tishi_alert("发布失败!");
             }else{
               tishi_alert("发布成功!");
-              location.href="/news"
+              setTimeout(function(){
+                location.href="/news";
+            }, 1500);
             }
          }
        })

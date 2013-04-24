@@ -114,9 +114,12 @@ $(document).ready(function(){
     $("a[name='material_check']").live("click", function(){ //库存核实
         var obj = $(this);
         var mid = $(this).parent().find("input").val();
+        var mat_storage = parseInt($(this).parent().siblings(".mat_stor").text());
         var count = $(this).parent().prev().find("input").val();
         if(isNaN(parseInt(count))){
             tishi_alert("请输入有效的数字!");
+        }else if(count==0||mat_storage==count){
+             tishi_alert("已核实过!");
         }else{
             $.ajax({
                 dataType: "json",
@@ -127,12 +130,10 @@ $(document).ready(function(){
                     storage : count
                 },
                 success: function(data){
-                    if(data == 0){
-                        tishi_alert("已核实过!");
-                    }else{
                         obj.parent().prev().prev().prev().text(count);
                         tishi_alert("操作成功！");
-                    }
+                        obj.parent().prev().find("input").val(0);
+                   
                 }
             })
         }

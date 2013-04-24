@@ -41,7 +41,7 @@
             <% else %>
             <% @complaints.each do |c| %>
             <tr>
-              <td><%=  c.order.nil? || c.order.store.nil? ? "----" : c.order.store.name %></td>
+              <td><%= c.order.nil? || c.order.store.nil? ? "----" : c.order.store.name %></td>
               <td><%= c.created_at.nil? ? "----" : c.created_at.strftime("%Y-%m-%d %H:%m") %></td>
               <td>
                 <input type="hidden" <% if !c.order.nil? %>value="<%= c.order.id %>"<% end %>/>

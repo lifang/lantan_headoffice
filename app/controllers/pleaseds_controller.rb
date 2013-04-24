@@ -4,10 +4,10 @@ class PleasedsController < ApplicationController  #满意度控制器
   before_filter :sign?
   
   def index   
-    @current_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.strftime("%Y-%m") : params[:search_time]
+    @current_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.months_ago(1).strftime("%Y-%m") : params[:search_time]
     @pleased_time = []    #当前年份所有已过的月份
     current_month = Time.now.strftime("%m").to_i
-    for m in (0..(current_month-1))
+    for m in (1..(current_month-1))
       @pleased_time << DateTime.now.months_ago(m).strftime("%Y-%m")
     end
     @provinces = City.where("parent_id = 0")
