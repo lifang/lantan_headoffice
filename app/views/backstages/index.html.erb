@@ -12,18 +12,16 @@
     </script>
     <![endif]-->
   </head>
-
   <body>
     <div class="head">
       <div class="box">
-        <div class="logo1">澜泰门店后台管理系统</div>
+        <div class="logo1"></div>
         <div class="login">你好：<%= cookies[:user_name] %> | <a href="/logins/logout">退出</a></div>
       </div>
     </div>
     <div class="main">
       <div class="module">
         <ul>
-
           <% if permissions_on_menus?(:operate_manage)%><li><%= link_to "运营管理", stores_path, :class => "m_one" %></li><% end %>
           <% if permissions_on_menus?(:logistics_manage)%><li><%= link_to "物流管理", materials_path, :class => "m_two" %></li><% end %>
           <% if permissions_on_menus?(:service_manage)%><li><a href="/complaints" class="m_three">服务管理</a></li><% end %>
