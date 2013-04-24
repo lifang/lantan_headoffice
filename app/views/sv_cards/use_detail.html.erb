@@ -17,9 +17,9 @@
       <% end %>
     </div>
     <div class="data_body_title">
-      <span class="data_body_p">储值卡总计：<span class="red"><%= @total_money.to_i %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        已使用：<span class="red"><%= @total_money.to_i - @left_money.to_i %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        余额：<span class="red"><%= @left_money.to_i %></span>元</span>
+      <span class="data_body_p">储值卡总计：<span class="red"><%= @total_money.to_f %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        已使用：<span class="red"><%= @total_money.to_f - @left_money.to_f %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        余额：<span class="red"><%= @left_money.to_f %></span>元</span>
     </div>
     <div class="clear"></div>
     <div class="data_body">
