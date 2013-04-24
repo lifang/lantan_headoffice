@@ -1,4 +1,5 @@
 #encoding: utf-8
+require 'json'
 class SyncsController < ActionController::Base
   #  before_filter :sign?,:except=>["upload_file", "is_generate_zip"]
   
@@ -9,9 +10,10 @@ class SyncsController < ActionController::Base
 
 
   def is_generate_zip
-    sync = SSync.order("sync_at desc").first
-    if !sync.nil?
-      render :text => sync.zip_name
+    time_cond = params[:time].nil? ? '1=1' : "sync_at >= '#{params[:time]}'"
+    syncs = SSync.where(time_cond)
+    if syncs.length > 0
+      render :json => syncs
     else
       render :text => "uncomplete"
     end

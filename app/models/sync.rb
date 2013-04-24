@@ -98,12 +98,10 @@ class Sync < ActiveRecord::Base
   def self.out_data(time)
     path = Constant::LOCAL_DIR
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
-#    sync =SSync.find_by_created_at(Time.now.strftime("%Y-%m-%d"))
-#    sync =SSync.create(:created_at=>Time.now.strftime("%Y-%m-%d")) if sync.nil?
     sync = SSync.order("sync_at desc").first
     base_sql = sync.nil? ? "updated_at <= '#{time}'" : "updated_at > '#{sync.sync_at}' and updated_at <= '#{time}'"
     path="#{Rails.root}/public/"
-    dirs=["syncs_datas/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/","#{time.strftime("%H")}/"]
+    dirs=["syncs_datas/","#{time.strftime("%Y-%m").to_s}/","#{time.strftime("%Y-%m-%d").to_s}/","#{time.strftime("%H")}/"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
     models=['product.rb', 'sale.rb', 'capital.rb', 'car_brand.rb', 'car_model.rb', 'material_order.rb', 'customer.rb', 'as_car_num.rb', 'as_customer_num_relation.rb', 'as_reservation.rb', 'as_res_prod_relation.rb']
     models.each do |model|
@@ -127,7 +125,7 @@ class Sync < ActiveRecord::Base
   end
 
   def self.generate_zip(file_path, time, dirs)
-    flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
+    flog = File.open(Constant::LOG_DIR+"generate_zip_"+time.strftime("%Y-%m").to_s+".log","a+")
     get_dir_list(file_path).each {|path|  File.delete(file_path+path) if path =~ /.zip/ }
     filename ="shared.zip"
     is_finished = false
@@ -136,14 +134,11 @@ class Sync < ActiveRecord::Base
       is_finished = true
     }
     if is_finished
-      SSync.create(:sync_at => time, :zip_name => dirs+filename)
-#      sync.update_attributes({:sync_status=>Sync::SYNC_STAT[:COMPLETE], :zip_name=>filename,
-#          :sync_at => Time.now.strftime("%Y%m%d")})
-      flog.write("数据压缩成功---#{Time.now}\r\n")
+      SSync.create(:sync_at => time.strftime("%Y-%m-%d %H"), :zip_name => dirs+filename)
+      flog.write("数据压缩成功---#{time.strftime("%Y-%m-%d %H")}\r\n")
     else
-      flog.write("数据压缩失败---#{Time.now}\r\n")
+      flog.write("数据压缩失败---#{time.strftime("%Y-%m-%d %H")}\r\n")
     end
-    #send_file(store_id,file_path+filename,filename)
   end
   
 end
