@@ -8,7 +8,6 @@ assets\:precompile\:nondigest=
 assets\:precompile\:primary=
 daily\:sync_data=
 daily\:sync_generate_zip=
-daily\:sync_right_zip=
 db\:abort_if_pending_migrations=
 db\:charset=
 db\:collation=

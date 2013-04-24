@@ -28,5 +28,5 @@ tmp
 .yardoc
 _yardoc
 doc/
-nbproject/*.*
-nbproject/private/*.*
+nbproject/
+nbproject/private/
