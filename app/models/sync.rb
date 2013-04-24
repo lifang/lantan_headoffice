@@ -10,6 +10,7 @@ class Sync < ActiveRecord::Base
 
   SYNC_STAT = {:COMPLETE =>1,:ERROR =>0}  #生成/压缩/上传更新文件 完成1 报错0
   HAS_DATA = {:YES =>1,:NO =>0}  #1 有更新数据 0  没有更新数据
+  SYNC_TYPE = {:BUILD =>0 , :SETIN => 1}  #生成数据  0  本地数据导入 1
 
   #接收文件文件并存到本地
   def self.accept_file(img_url)
@@ -134,7 +135,7 @@ class Sync < ActiveRecord::Base
       is_finished = true
     }
     if is_finished
-      SSync.create(:sync_at => time.strftime("%Y-%m-%d %H"), :zip_name => dirs+filename)
+      SSync.create(:sync_at => time.strftime("%Y-%m-%d %H"), :zip_name => dirs+filename, :types => Sync::SYNC_TYPE[:BUILD])
       flog.write("数据压缩成功---#{time.strftime("%Y-%m-%d %H")}\r\n")
     else
       flog.write("数据压缩失败---#{time.strftime("%Y-%m-%d %H")}\r\n")

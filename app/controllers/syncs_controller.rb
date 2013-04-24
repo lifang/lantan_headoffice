@@ -11,7 +11,8 @@ class SyncsController < ActionController::Base
 
   def is_generate_zip
     time_cond = params[:time].nil? ? '1=1' : "sync_at >= '#{params[:time]}'"
-    syncs = SSync.where(time_cond)
+    types_cond = "types = #{Sync::SYNC_TYPE[:BUILD]}"
+    syncs = SSync.where(time_cond).where(types_cond)
     if syncs.length > 0
       render :json => syncs
     else
