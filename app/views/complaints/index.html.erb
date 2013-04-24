@@ -41,20 +41,19 @@
             <% else %>
             <% @complaints.each do |c| %>
             <tr>
-              <td><%=  c.order.nil? || c.order.store.nil? ? "------" : c.order.store.name %></td>
-              <td><%= c.created_at.strftime("%Y-%m-%d %H:%m") %></td>
+              <td><%=  c.order.nil? || c.order.store.nil? ? "----" : c.order.store.name %></td>
+              <td><%= c.created_at.nil? ? "----" : c.created_at.strftime("%Y-%m-%d %H:%m") %></td>
               <td>
                 <input type="hidden" <% if !c.order.nil? %>value="<%= c.order.id %>"<% end %>/>
                 <% if c.order.nil? %>
                 <a class="other_a"></a>
                 <% else %>
                  <a href="JavaScript:void(0)" name="order_detail" class="other_a"><%= c.order.code %></a>
-                <% end %>
-               
+                <% end %>             
               </td>
               <td>            
-                <%=  c.staff_id_1.nil? || find_staff(c.staff_id_1).nil? ? "------" : find_staff(c.staff_id_1).name%>/
-               <%=  c.staff_id_2.nil? || find_staff(c.staff_id_2).nil? ? "------" : find_staff(c.staff_id_2).name %>
+                <%=  c.staff_id_1.nil? || find_staff(c.staff_id_1).nil? ? "----" : find_staff(c.staff_id_1).name%>/
+               <%=  c.staff_id_2.nil? || find_staff(c.staff_id_2).nil? ? "----" : find_staff(c.staff_id_2).name %>
               </td>
               <td>
                 <% Complaint::TYPES_NAMES.each do |key, value| %>
@@ -78,13 +77,7 @@
                 否
                 <% end %>
               </td>
-              <td>
-                <% if c.process_at.nil? %>
-                ----
-                <% else %>
-                <%= c.process_at.strftime("%Y-%m-%d")  %>
-                <% end %>
-              </td>
+              <td><%= c.process_at.nil? ? "----" : c.process_at.strftime("%Y-%m-%d")  %></td>
               <td><%= c.remark ||= "----" %></td>
               <td>
                 <% if c.is_violation %>

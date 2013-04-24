@@ -1,7 +1,6 @@
 #encoding: utf-8
 class SalesController < ApplicationController   #活动控制器
   require 'fileutils'
-  require 'mini_magick'
   layout "market_manages"
   before_filter :sign?
   
@@ -36,7 +35,6 @@ class SalesController < ApplicationController   #活动控制器
       disc = params[:disc_money].to_i
     end
     img = params[:sale_img]
-    img_name = "sale#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
     selected_product_count = params[:selected_product_count].to_a
     selected_product_id = params[:selected_product_id].to_a
     sale_disc_time_types = params[:sale_disc_time_types].to_i  #年月日周。。。
@@ -51,18 +49,20 @@ class SalesController < ApplicationController   #活动控制器
     s.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
       :introduction => sale_introduction, :disc_types => disc_types, :status => Sale::STATUS[:UN_RELEASE], :discount => disc,
       :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
-      :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :img_url => "/saleimg/#{img_name}", :code => sale_code)
+      :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :code => sale_code)
     if s.save
-      FileUtils.mkdir_p "#{Rails.root}/public/saleimg" if !FileTest.directory?("#{Rails.root}/public/saleimg")
-      File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
-        file.write(img.read)
-      end
       selected_product_id.each_with_index do |item, index|
-        SaleProdRelation.create(:sale_id => s.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
-      end    
-    end
-    flash[:notice] = "活动创建成功!"
-    redirect_to sales_path
+          SaleProdRelation.create(:sale_id => s.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
+        end
+      begin
+        url = Sale.upload_img(img, s.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
+        s.update_attribute("img_url", url)       
+        flash[:notice] = "活动创建成功!"
+        redirect_to sales_path
+      rescue
+        flash[:notice] = "图片上传失败!"
+      end
+    end    
   end
 
   def update #更新活动
@@ -72,7 +72,7 @@ class SalesController < ApplicationController   #活动控制器
     if disc_types == 0
       disc = params[:disc_discount].to_f
     else
-      disc = params[:disc_money].to_i
+      disc = params[:disc_money].to_f
     end
     img = params[:edit_sale_img]
     selected_product_count = params[:edit_selected_product_count].to_a
@@ -86,34 +86,24 @@ class SalesController < ApplicationController   #活动控制器
     sale_subsidy_money = params[:edit_sale_subsidy_money] ||= ""
     sale_introduction = params[:edit_sale_introduction]
     SaleProdRelation.destroy_all("sale_id = #{sale.id}")
-    if img.nil?
-      if sale.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
-          :introduction => sale_introduction, :disc_types => disc_types, :discount => disc,
-          :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
-          :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money)
-        selected_product_id.each_with_index do |item, index|
-          SaleProdRelation.create(:sale_id => sale.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
-        end
-      end
-    else
-      img_name = "sale#{Time.now.strftime('%Y%m%d%H%m%s')+(0...5).map{('a'...'z').to_a[rand(26)]}.join}.#{img.original_filename.split('.').reverse[0]}"
-      old_img = sale.img_url   
-      if sale.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
-          :introduction => sale_introduction, :disc_types => disc_types, :discount => disc,
-          :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
-          :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money,:img_url => "/saleimg/#{img_name}")
-        selected_product_id.each_with_index do |item, index|
-          SaleProdRelation.create(:sale_id => sale.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
-        end
-        FileUtils.rm_rf "#{Rails.root}/public/#{old_img}" if FileTest.file?("#{Rails.root}/public/#{old_img}")
-        File.new(Rails.root.join("public", "saleimg", img_name), "a+")
-        File.open(Rails.root.join("public", "saleimg", img_name), "wb") do |file|
-          file.write(img.read)
-        end
+    if sale.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
+        :introduction => sale_introduction, :disc_types => disc_types, :discount => disc,
+        :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
+        :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money)
+      selected_product_id.each_with_index do |item, index|
+        SaleProdRelation.create(:sale_id => sale.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
       end
     end
-    flash[:notice] = "活动修改成功!"
-    redirect_to sales_path
+    if !img.nil?
+      begin
+        new_url = Sale.upload_img(img, sale.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
+        sale.update_attribute("img_url", new_url)
+        flash[:notice] = "活动修改成功!"
+        redirect_to sales_path
+      rescue
+        flash[:notice] = "图片上传失败!"
+      end
+    end
   end
 
   def edit #修改活动

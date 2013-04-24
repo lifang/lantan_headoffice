@@ -30,7 +30,7 @@
             <tr>
               <td><%= staff.name %></td>
               <td>
-                <% staff.roles.each do |sr| %><%= sr.name %>/<% end if !staff.roles.blank? %>
+                <%= staff.roles.map(&:name).join("、")%>
               </td>
               <td>
                 <input type="hidden" value="<%= staff.id %>"/>

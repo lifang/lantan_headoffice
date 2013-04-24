@@ -6,16 +6,13 @@ class MaterialsController < ApplicationController   #库存控制器
   def index
     @tab = params[:tab]
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : "material_orders.status = #{params[:status].to_i}"
-    started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : "material_orders.created_at >= '#{params[:started_time]}'"
-    ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : "material_orders.created_at <= '#{params[:ended_time]}'"
+    started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : "date_format(material_orders.created_at, '%Y-%m-%d') >= '#{params[:started_time]}'"
+    ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : "date_format(material_orders.created_at, '%Y-%m-%d') <= '#{params[:ended_time]}'"
 
-    @materials = Material.normal
-    .paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("materials_tab")
+    @materials = Material.normal.paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("materials_tab")
     @mat_out_orders = MatOutOrder.joins(:material).includes(:material).order("mat_out_orders.created_at desc").paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_out_tab")
     @mat_in_orders = MatInOrder.joins(:material).includes(:material).order("mat_in_orders.created_at desc").paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_in_tab")
-    @mat_orders = MaterialOrder.joins(:mat_order_items => :material).includes(:mat_order_items => :material).is_headoffice_not_canceled.where(status).where(started_time).where(ended_time).order("material_orders.created_at desc").uniq
-    .paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_orders_tab")
-    p @mat_orders
+    @mat_orders = MaterialOrder.joins(:mat_order_items => :material).includes(:mat_order_items => :material).is_headoffice_not_canceled.where(status).where(started_time).where(ended_time).order("material_orders.created_at desc").uniq.paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_orders_tab")
     respond_to do |format|
       format.html
       format.js
@@ -46,12 +43,8 @@ class MaterialsController < ApplicationController   #库存控制器
 
   def material_check #库存核实
     material = Material.find(params[:m_id].to_i)
-    if material.storage == params[:storage].to_i
-      render :json => 0
-    else
-      material.update_attribute("storage", params[:storage].to_i)
-      render :json => 1
-    end
+    material.update_attributes(:storage => params[:storage].to_i, :check_num => 0)
+    render :json => 1
   end
   
   def show_material_order_beizhu #显示门店订货备注
@@ -103,11 +96,10 @@ class MaterialsController < ApplicationController   #库存控制器
   end
 
   def urge_payment #催款
-    mo = MaterialOrder.find(params[:mo_id].to_i)
-    store_id = mo.store_id
-    if !store_id.nil?
+    mo = MaterialOrder.find_by_id(params[:mo_id].to_i)
+    if !mo.nil?
       Notice.create(:types => Notice::TYPES[:URGE_PAYMENT], :content => "请尽快上缴拖欠的货款",
-        :status => Notice::STATUS[:NOMAL], :store_id => store_id)
+        :status => Notice::STATUS[:NOMAL], :store_id => mo.id)
       render :json => 1
     else
       render :json => 0
@@ -119,7 +111,7 @@ class MaterialsController < ApplicationController   #库存控制器
     m_type = params[:m_type].to_i
     m_code = params[:m_code]
     m_num = params[:m_num].to_i
-    m_price = params[:m_price]
+    m_price = params[:m_price].to_f
     m = Material.where("name = '#{m_name}'").where("types = #{m_type}")
     if !m.blank?
       material = m[0]

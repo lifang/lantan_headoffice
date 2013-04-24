@@ -29,10 +29,10 @@
                     <% if new.status == 0 %>
                     <a href="<%= Constant::FRONT_PATH %>news/<%= new.id %>" class="other_a" target="_blank"><%= new.title %></a>
                     <% else %>
-                    <a class="no_a"><%= new.title %></a>
+                    <a class="no_a"><%= new.title ||= "----" %></a>
                     <% end %>
                   </td>
-                  <td><%= new.created_at.strftime("%Y-%m-%d") %></td>
+                  <td><%= new.created_at.nil? ? "----" : new.created_at.strftime("%Y-%m-%d") %></td>
                   <td>
                     <%= new.status == 0 ? "已发布" : "未发布" %>
                   </td>

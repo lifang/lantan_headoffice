@@ -61,22 +61,22 @@
                 <tr>
                   <% if !store.city_id.nil? %>
                     <td>
-                      <%= store.cp_name  %>-<%= store.c_name %>
+                      <%= store.cp_name  %>/<%= store.c_name %>
                     </td>
                   <% else %>
-                    <td>-/-</td>
+                    <td>--/--</td>
                   <% end %>
-                  <td><%= store.name %></td>
-                  <td><%= store.contact %></td>
-                  <td><%= store.phone %></td>
-                  <td><%= store.address %></td>
-                  <td><%= store.opened_at.strftime("%Y-%m-%d") if store.opened_at %></td>
+                <td><%= store.name.nil? ? "----" : store.name %></td>
+                 <td><%= store.contact.nil? ? "----" : store.contact %></td>
+                  <td><%= store.phone.nil? ? "----" : store.phone %></td>
+                  <td><%= store.address.nil? ? "----" : store.address %></td>
+                  <td><%= store.opened_at.nil? ? "----" : store.opened_at.strftime("%Y-%m-%d")  %></td>
                   <% if store.status == 0 %>
                     <td>已关闭</td>
                   <% elsif store.status == 1 %>
                     <td>正常营业</td>
                   <% else %>
-                    <td>正在装修</td>
+                    <td>筹备中</td>
                   <% end %>
                   <td>
                     <% if permission?(:operate_manage, :edit_store) %> <%= link_to "编辑", "JavaScript:void(0)", :name => "edit_button", :sid => store.id %><% end %>

@@ -33,7 +33,7 @@ class ChartImage < ActiveRecord::Base
             bc.axis :y, :labels =>size
             bc.grid :x_step => 3.333, :y_step => 10, :length_segment => 1, :length_blank => 3
             img_url = write_img(URI.escape(URI.unescape(bc.to_url)),panel,Time.now.months_ago(1).strftime('%Y-%m'))
-            ChartImage.create({:city_id =>panel,:created_at => Time.now, :image_url => img_url, :current_month => Time.now.months_ago(1).strftime('%Y-%m').to_i})
+            ChartImage.create({:city_id =>panel,:created_at => Time.now, :image_url => img_url, :current_month => Time.now.months_ago(1).strftime('%Y%m').to_i})
           end
         end
       end

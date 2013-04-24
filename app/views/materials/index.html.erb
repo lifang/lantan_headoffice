@@ -31,12 +31,12 @@
           <tbody>
             <% @materials.each do |material| %>
               <tr>
-                <td <% if material.storage <= 0 %>class="data_table_error"<% end %>><%= material.code %></td>
-                <td><%= material.name %></td>
+                <td <% if material.storage && material.storage <= 0 %>class="data_table_error"<% end %>><%= material.code.nil? ? "----" : material.code %></td>
+                <td><%= material.name.nil? ? "------" : material.name%></td>
                 <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == material.types %><%= value %><% end %><% end %></td>
                 <td>存货</td>
-                <td><%= material.storage %></td>
-                <td><%= material.price %></td>
+                <td class="mat_stor"><%= material.storage.nil? ? "----" : material.storage %></td>
+                <td><%= material.price.nil? ? "----" : material.price %></td>
                 <td><input type="text" value="<%= material.check_num.nil? ? 0 : material.check_num %>" style="width:50px"/></td>
                 <td>
                   <input type="hidden" value="<%= material.id %>"/>
@@ -72,10 +72,10 @@
                 <input type="hidden" value="<%= moo.material_order.nil? ? "" : moo.material_order.id %>"/>
                 <a href="JavaScript:void(0)" name="mat_order_detail" class="other_a"><%= moo.material_order.nil? ? "------" : moo.material_order.code %></a>
               </td>
-              <td><%= moo.material.code if !moo.material.nil? %></td>
-              <td><%= moo.material.name if !moo.material.nil? %></td>
+              <td><%= moo.material.nil? || moo.material.code.nil? ? "----" : moo.material.code %></td>
+              <td><%= moo.material.nil? || moo.material.name.nil? ? "----" : moo.material.name %></td>
               <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == moo.material.types %><%= value %><% end %><% end %></td>
-              <td><%= moo.material.storage %></td>
+              <td><%= moo.material.nil? || moo.material.storage.nil? ? "----" : moo.material.storage %></td>
             </tr>
             <% end %>
           </tbody>
@@ -102,18 +102,18 @@
           <tbody>
             <% @mat_in_orders.each do |mio| %>
             <tr>
-              <td><%= mio.material.code if mio.material %></td>
-              <td><%= mio.material.name if mio.material%></td>
+              <td><%= mio.material.nil? || mio.material.code.nil? ? "----" : mio.material.code %></td>
+              <td><%= mio.material.nil? || mio.material.name.nil? ? "----" : mio.material.name %></td>
               <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == mio.material.types %><%= value %><% end %><% end %></td>
-              <td><%= mio.material_num %></td>
+              <td><%= mio.material_num.nil? ? "----" : mio.material_num %></td>
               <td>
-                <% if mio.staff %>
+                <% if mio.staff && mio.staff.name %>
                 <%= mio.staff.name %>
                 <% else %>
                 ----
                 <% end %>
               </td>
-              <td><%= mio.created_at.strftime("%Y-%m-%d")  %></td>
+              <td><%= mio.created_at.nil? ? "----" : mio.created_at.strftime("%Y-%m-%d")  %></td>
             </tr>
            <% end %>
           </tbody>
@@ -175,21 +175,21 @@
                   <% else %>
                   <% mo.mat_order_items.each do |moi| %>
                   <tr>
-                    <td><%= moi.material.try(:name) %></td>
-                    <td><%= moi.price %></td>
-                    <td><%= moi.material_num %></td>
+                    <td><%= moi.material.nil? || moi.material.name.nil? ? "----" : moi.material.try(:name) %></td>
+                    <td><%= moi.price.nil? ? "----" : moi.price %></td>
+                    <td><%= moi.material_num.nil? ? "----" : moi.material_num %></td>
                   </tr>
                   <% end %>
                   <% end %>
                 </table>
               </td>
               <td>               
-                <%= mo.store.nil? ? "------" : mo.store.name %>
+                <%= mo.store.nil? || mo.store.name.nil? ? "------" : mo.store.name %>
               </td>
               <td>             
                 <%= mo.price ||= "------"%>
               </td>
-              <td><%= mo.created_at.strftime("%Y-%m-%d") %></td>
+              <td><%= mo.created_at.nil? ? "----" : mo.created_at.strftime("%Y-%m-%d") %></td>
               <td id="arrival_at<%= mo.id %>">
                 <%= mo.arrival_at.nil? ? "------" : mo.arrival_at.strftime("%Y-%m-%d")   %>
               </td>

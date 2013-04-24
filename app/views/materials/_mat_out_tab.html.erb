@@ -29,11 +29,11 @@
   <tbody>
     <% @mat_out_orders.each do |moo| %>
       <tr>
-        <td><%= moo.material_order.code %></td>
-        <td><%= moo.material.code %></td>
-        <td><%= moo.material.name %></td>
+        <td><%= moo.material_order.nil? || moo.material_order.code.nil? ? "----" : moo.material_order.code %></td>
+        <td><%= moo.material.nil? || moo.material.code.nil? ? "----" : moo.material.code %></td>
+        <td><%= moo.material.nil? || moo.material.name.nil? ? "----" : moo.material.name %></td>
         <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == moo.material.types %><%= value %><% end %><% end %></td>
-        <td><%= moo.material.storage %></td>
+        <td><%= moo.material.nil? || moo.material.storage.nil? ? "----" : moo.material.storage %></td>
       </tr>
     <% end %>
   </tbody>

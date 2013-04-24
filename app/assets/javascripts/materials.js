@@ -114,9 +114,12 @@ $(document).ready(function(){
     $("a[name='material_check']").live("click", function(){ //库存核实
         var obj = $(this);
         var mid = $(this).parent().find("input").val();
+        var mat_storage = parseInt($(this).parent().siblings(".mat_stor").text());
         var count = $(this).parent().prev().find("input").val();
         if(isNaN(parseInt(count))){
             tishi_alert("请输入有效的数字!");
+        }else if(count==0||mat_storage==count){
+             tishi_alert("已核实过!");
         }else{
             $.ajax({
                 dataType: "json",
@@ -127,12 +130,10 @@ $(document).ready(function(){
                     storage : count
                 },
                 success: function(data){
-                    if(data == 0){
-                        tishi_alert("已核实过!");
-                    }else{
                         obj.parent().prev().prev().prev().text(count);
                         tishi_alert("操作成功！");
-                    }
+                        obj.parent().prev().find("input").val(0);
+                   
                 }
             })
         }
@@ -169,8 +170,8 @@ $(document).ready(function(){
     })
     $("#deliver_good").live("click", function(){  //发货按钮
         var moid = $(this).parent().find("input").val();
-        $("#order_detail_and_deliver").append("<div class='item'><label>预计到货时间:</label><input type='text' id='arrive_time' class='Wdate' readonly></div>\n\
-                                            <div class='item'><label>运单号:</label><input type='text' id='logistic_code'></div>\n\
+        $("#order_detail_and_deliver").append("<div class='item'><label>预计到货时间:</label><input type='text' id='arrive_time' class='Wdate' readonly/></div>\n\
+                                            <div class='item'><label>运单号:</label><input type='text' id='logistic_code'/></div>\n\
                                               <div class='item'><label>运单人:</label><input type='text' id='carrier'/></div>");
         $('#arrive_time').click(function(){
             WdatePicker();
@@ -276,7 +277,7 @@ $(document).ready(function(){
     })
     $("#ruku_btn").click(function(){  //入库
         var num_flag = (new RegExp(/^\d+$/)).test( $("#m_num").val());
-        var price_flag = (new RegExp("^[1-9][0-9]*\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
+        var price_flag = (new RegExp("^[0-9]+\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
         if($("#m_name").val() == ""){
             tishi_alert("物料名不能为空!");
         }else if( $("#m_o_code").val() == ""){
