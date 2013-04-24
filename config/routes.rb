@@ -130,6 +130,7 @@ LantanHeadoffice::Application.routes.draw do
     end
   end
   resources :backstages
+  resources :staffs
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
