@@ -131,7 +131,7 @@ class Sync < ActiveRecord::Base
     filename ="shared.zip"
     is_finished = false
     Zip::ZipFile.open(file_path+filename, Zip::ZipFile::CREATE) { |zf|
-      get_dir_list(file_path).each {|path| zf.file.open(path, "w") { |os| os.write "#{File.open(file_path+path).read}" } }
+      get_dir_list(file_path).each {|path| zf.file.open(path, "w+") { |os| os.write "#{File.open(file_path+path).read}" } }
       is_finished = true
     }
     if is_finished
