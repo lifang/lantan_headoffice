@@ -97,7 +97,7 @@
               及时率：<span class="load_box">
                 <span class="load_line" style="width:<%= @timely_rate*200 %>px !important"></span>
               </span>&nbsp;&nbsp;
-              <em class="red"><%= @timely_rate*100 %>%</em>
+              <em class="red"><%= format("%.2f",@timely_rate*100).to_f %>%</em>
             </li>
             <li>
               解决率：<span class="load_box">
