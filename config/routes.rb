@@ -130,6 +130,7 @@ LantanHeadoffice::Application.routes.draw do
     end
   end
   resources :backstages
+  resources :staffs
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
@@ -193,6 +194,9 @@ LantanHeadoffice::Application.routes.draw do
     resources :syncs_datas do
       collection do
         post :syncs_db_to_all, :syncs_pics
+      end
+      member do
+        get :return_sync_all_to_db
       end
     end
   end
