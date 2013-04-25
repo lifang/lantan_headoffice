@@ -213,10 +213,7 @@ $(document).ready(function(){
                 },
                 success : function(data){
                     if (data == 0){
-                        tishi_alert("发货失败!");
-                        $("#order_detail").hide();
-                        $(".mask").hide();
-                        $("#order_detail").empty();
+                        tishi_alert("发货失败!");                       
                     }else if (data == 1){
                         tishi_alert("发货成功！");
                         $("#order_detail").hide();
@@ -225,6 +222,8 @@ $(document).ready(function(){
                         $("#arrival_at"+moid).text(arrive_time);
                         $("#mo_status"+moid).text("已发货");
                         $("#logi_info"+moid).html("物流单号:"+logistic_code+"<br/>承运人:"+carrier);
+                    }else if(data == 2){
+                        tishi_alert("订单所需的物料数量库存不足,请核实!");
                     }
                 }
             })

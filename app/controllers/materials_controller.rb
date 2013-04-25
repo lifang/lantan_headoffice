@@ -83,13 +83,17 @@ class MaterialsController < ApplicationController   #库存控制器
     carrier = params[:carrier]
     mo.materials.each do |material|
       mat_order_item = MatOrderItem.find_by_material_order_id_and_material_id(mo.id, material.id)
-      mat_out_order = MatOutOrder.create(:material => material, :material_order => mo, :price => material.price,
-        :material_num => mat_order_item.material_num, :staff_id  => cookies[:user_id])
-      material.storage -= mat_out_order.material_num
-      material.save
+      if mat_order_item.material_num > material.storage
+        render :json => 2 and return
+      else
+        mat_out_order = MatOutOrder.create(:material => material, :material_order => mo, :price => material.price,
+          :material_num => mat_order_item.material_num, :staff_id  => cookies[:user_id])
+        material.storage -= mat_out_order.material_num
+        material.save
+      end
     end
     if mo.update_attributes(:carrier => carrier, :arrival_at => arrive_time, :logistics_code => logistic_code, :m_status => 1)
-     render :json => 1
+      render :json => 1
     else
       render :json => 0
     end
