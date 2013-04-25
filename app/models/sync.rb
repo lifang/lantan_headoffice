@@ -22,14 +22,21 @@ class Sync < ActiveRecord::Base
   end
 
 
-  @@files =[]
   def self.get_dir_list(path)
     #获取目录列表
     list = Dir.entries(path)
     list.delete('.')
     list.delete('..')
-    list.each {|file| File.file?(path+"/"+file) ? @@files << file : get_dir_list(path+"/"+file) }
-    return @@files
+    return list
+  end
+
+  def self.search_dir_list(path)
+    #获取目录列表
+    list = Dir.entries(path)
+    list.delete('.')
+    list.delete('..')
+    list=list.inject(Array.new) {|arr,file| arr << (path+"/"+file) }
+    return list
   end
 
   def self.new_dir(dirs)
@@ -38,54 +45,63 @@ class Sync < ActiveRecord::Base
   end
   
   def self.output_zip()
-    file_path = Constant::LOCAL_DIR
+    file_path = Constant::LOCAL_DIR+"bam_syncs"
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
     flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
-    file_list = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","a+")
-    dirs =["bam_syncs/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
-    Sync.new_dir(dirs)
-    file_paths = file_list.read.split("/")
-    file_paths[1..(file_paths.length-2)].reverse.each do |file_path|
-      paths =get_dir_list(file_path+file_paths[].join("/"))
-      unless paths.blank?
-        paths.each do |path|
-          if  File.extname(file_path+dirs.join+path) == '.zip'
-            begin
-              Zip::ZipFile.open(file_path+dirs.join+path){ |zipFile|
-                zipFile.each do |file|
-                  begin
-                    if file.name.split(".").reverse[0] =="log"
-                      contents = zipFile.read(file).split("\n\n|::|")
-                      titles =contents.delete_at(0).split(";||;")
-                      total_con = []
-                      cap = eval("As"+file.name.split(".")[0].split("_").inject(String.new){|str,name| str + name.capitalize})
-                      contents.each do |content|
-                        hash ={}
-                        cons = content.split(";||;")
-                        titles.each_with_index {|title,index| hash[title] = cons[index].nil? ? cons[index] : cons[index].force_encoding("UTF-8")}
-                        object = cap.new(hash)
-                        object.id = hash["id"]
-                        total_con << object
-                      end
-                      cap.import total_con,:timestamps=>false,:on_duplicate_key_update=>titles
+    file_list = File.new(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","r+")
+    files = file_list.read
+    file_list.close
+    if files.split("bam_syncs").length == 2
+      file_paths =  files.split("bam_syncs")[1].split("/")
+      paths =[]
+      file_p = file_paths[2]
+      while(File.directory? file_path +"/"+ file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p)
+        paths << search_dir_list(file_path+"/"+file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p)
+        file_p = file_p.to_datetime.tomorrow.strftime("%Y-%m-%d").to_s
+      end
+      paths = paths.flatten.sort.select { |item| item > files}
+    else
+      paths =  search_dir_list(file_path)
+    end
+    unless paths.blank?
+      paths.each do |path|
+        if  File.extname(path) == '.zip'
+          begin
+            file_list = File.new(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","r+")
+            Zip::ZipFile.open(path){ |zipFile|
+              zipFile.each do |file|
+                begin
+                  if file.name.split(".").reverse[0] =="log"
+                    contents = zipFile.read(file).split("\n\n|::|")
+                    titles =contents.delete_at(0).split(";||;")
+                    total_con = []
+                    cap = eval("As"+file.name.split(".")[0].split("_").inject(String.new){|str,name| str + name.capitalize})
+                    contents.each do |content|
+                      hash ={}
+                      cons = content.split(";||;")
+                      titles.each_with_index {|title,index| hash[title] = cons[index].nil? ? cons[index] : cons[index].force_encoding("UTF-8")}
+                      object = cap.new(hash)
+                      object.id = hash["id"]
+                      total_con << object
                     end
-                  rescue
-                    flog.write("当前目录#{file.name}中更新失败---#{Time.now}\r\n")
+                    cap.import total_con,:timestamps=>false,:on_duplicate_key_update=>titles
                   end
+                rescue
+                  flog.write("当前目录#{file.name}中更新失败---#{Time.now}\r\n")
                 end
-              }
-              file_list.write("#{dirs+path}")
-            rescue
-              flog.write("当前目录#{Time.now.strftime("%Y-%m-%d")}中文件#{path}更新失败---#{Time.now}\r\n")
-            end
+              end
+            }
+            file_list.write("#{path}")
+            file_list.close
+          rescue
+            flog.write("当前目录#{Time.now.strftime("%Y-%m-%d")}中文件#{path}更新失败---#{Time.now}\r\n")
           end
         end
-      else
-        flog.write("当前目录#{Time.now.strftime("%Y-%m-%d")}暂无文件---#{Time.now}\r\n")
       end
+    else
+      flog.write("当前目录#{Time.now.strftime("%Y-%m-%d")}暂无文件---#{Time.now}\r\n")
     end
     flog.close
-    file_list.close
   end
 
 
