@@ -43,8 +43,11 @@ class MaterialsController < ApplicationController   #库存控制器
 
   def material_check #库存核实
     material = Material.find(params[:m_id].to_i)
-    material.update_attributes(:storage => params[:storage].to_i, :check_num => 0)
-    render :json => 1
+    if material.update_attributes(:storage => params[:storage].to_i)
+      render :json => 1
+    else
+      render :json => 0
+    end
   end
   
   def show_material_order_beizhu #显示门店订货备注
@@ -115,10 +118,10 @@ class MaterialsController < ApplicationController   #库存控制器
       total_num = material.storage + m_num
       MatInOrder.create(:material_id => material.id, :material_num => m_num,
         :price => m_price, :staff_id => cookies[:user_id].to_i)
-      material.update_attributes(:storage => m_num, :check_num => m_num)
+      material.update_attributes(:storage => m_num)
     else
       material = Material.create(:name => m_name, :code => m_code, :price => m_price, :types => m_type,
-        :status => Material::STATUS[:NORMAL], :storage => m_num, :check_num => m_num)
+        :status => Material::STATUS[:NORMAL], :storage => m_num)
       MatInOrder.create(:material_id => material.id, :material_num => m_num,
         :price => m_price, :staff_id => cookies[:user_id].to_i)
     end
