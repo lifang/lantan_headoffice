@@ -67,10 +67,7 @@ class MaterialsController < ApplicationController   #库存控制器
 
   def mat_order_detail #订单详情
     @mo = MaterialOrder.find(params[:mo_id].to_i)
-    @total_money = 0
-    @mo.mat_order_items.each do |moi|
-      @total_money += moi.price * moi.material_num
-    end
+    @total_money = @mo.price
     respond_to do |format|
       format.js
     end
@@ -83,7 +80,7 @@ class MaterialsController < ApplicationController   #库存控制器
     carrier = params[:carrier]
     mo.materials.each do |material|
       mat_order_item = MatOrderItem.find_by_material_order_id_and_material_id(mo.id, material.id)
-      mat_out_order = MatOutOrder.create(:material => material, :material_order => mo, :price => mo.price,
+      mat_out_order = MatOutOrder.create(:material => material, :material_order => mo, :price => material.price,
         :material_num => mat_order_item.material_num, :staff_id  => cookies[:user_id])
       material.storage -= mat_out_order.material_num
       material.save
@@ -118,10 +115,10 @@ class MaterialsController < ApplicationController   #库存控制器
       total_num = material.storage + m_num
       MatInOrder.create(:material_id => material.id, :material_num => m_num,
         :price => m_price, :staff_id => cookies[:user_id].to_i)
-      material.update_attribute("storage", total_num)
+      material.update_attributes(:storage => m_num, :check_num => m_num)
     else
       material = Material.create(:name => m_name, :code => m_code, :price => m_price, :types => m_type,
-        :status => Material::STATUS[:NORMAL], :storage => m_num)
+        :status => Material::STATUS[:NORMAL], :storage => m_num, :check_num => m_num)
       MatInOrder.create(:material_id => material.id, :material_num => m_num,
         :price => m_price, :staff_id => cookies[:user_id].to_i)
     end

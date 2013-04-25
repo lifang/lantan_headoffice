@@ -87,7 +87,35 @@ $(document).ready(function(){
           url: "/authorities/set_staff_role",
           data: {s_id : sid}
       })
-  })
+  });
+
+
+    //创建员工信息验证, 编辑员工信息验证
+    $(".save_staff").live("click", function(){
+       if($(this).parents('form').find("#staff_name").val() == ''){
+           tishi_alert("名称不能为空!");
+           return false;
+       }
+       if($(this).parents('form').find("#staff_phone").val() == ''){
+           tishi_alert("联系方式不能为空!");
+           return false;
+       }
+       if($(this).parents('form').find("#staff_id_card").val() == ''){
+           tishi_alert("身份证不能为空!");
+           return false;
+       }
+       if($(this).parents('form').find("#staff_address").val() == ''){
+           tishi_alert("地址不能为空!");
+           return false;
+       }
+       if($(this).attr("id") == "new_staff_btn"){
+           if($(this).parents('form').find("#staff_photo").val() == ''){
+               tishi_alert("照片不能为空!");
+               return false;
+           }
+       }
+       $(this).parents('form').submit();
+    });
 })
 function selectAll(obj){
     if($(obj).attr("checked")=="checked"){

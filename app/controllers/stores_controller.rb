@@ -6,7 +6,7 @@ class StoresController < ApplicationController  #门店控制器
   def index  
     sql = "select s.*, c.name c_name, cp.name cp_name from lantan_db_all.stores s
           left join cities c on c.id = s.city_id
-          left join cities cp on cp.id = c.parent_id where 1 = 1"
+          left join cities cp on cp.id = c.parent_id where s.status != #{Store::STATUS[:DELETED]}"
     params_sql = ""
     sql_params = [""]
      unless (params[:store_name].nil? || params[:store_name].empty?)
@@ -72,9 +72,9 @@ class StoresController < ApplicationController  #门店控制器
   end
   
    def destroy  #删除门店
-    @store = Store.find(params[:id].to_i)
+    @store = Store.find_by_id(params[:id].to_i)
     if !@store.nil?
-      if @store.delete
+      if @store.update_attribute("status", Store::STATUS[:DELETED])
         flash[:notice] = "删除成功!"
       else
         falsh[:notice] = "删除失败!"

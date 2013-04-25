@@ -10,7 +10,9 @@ $(document).ready(function(){
       success: function(data){
         if (data == 1){
           tishi_alert("删除成功!");
-          location.href = "/sales";
+          setTimeout(function(){
+                location.href="/sales";
+            }, 1500);
         }else{
           tishi_alert("删除失败！");
         }
@@ -28,6 +30,7 @@ $(document).ready(function(){
     success: function(data){
       if(data == 1){
         tishi_alert("发布成功!");
+        
         location.href = "/sales";
       }else{
         tishi_alert("发布失败!");

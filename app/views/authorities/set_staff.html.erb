@@ -8,11 +8,12 @@
     <% end %>
     <div class="search">
       <%= form_tag "/authorities/set_staff", :method => :get do %>
-      <div><label>姓名：</label>
-        <input name="staff_name" type="text" <% if !params[:staff_name].nil? && !params[:staff_name].strip.empty? %>value="<%= params[:staff_name].strip %>"<% end %>/>
-      </div>
-      <div><button class="search_btn">查询</button></div>
+        <div><label>姓名：</label>
+          <input name="staff_name" type="text" <% if !params[:staff_name].nil? && !params[:staff_name].strip.empty? %>value="<%= params[:staff_name].strip %>"<% end %>/>
+        </div>
+        <div><button class="search_btn">查询</button></div>
       <% end %>
+      <%= link_to "新增员工", new_staff_path, :remote => true, 'data-type' => 'script', :class => "confirm_btn"%>
     </div>
     <div class="clear"></div>
     <div class="data_body">
@@ -27,21 +28,24 @@
           </thead>
           <tbody>
             <% @staff.each do |staff| %>
-            <tr>
-              <td><%= staff.name %></td>
-              <td>
-                <%= staff.roles.map(&:name).join("、")%>
-              </td>
-              <td>
-                <input type="hidden" value="<%= staff.id %>"/>
-                <% if permission?(:base_datas, :role_role_set) %><a name="set_staff_role" href="JavaScript:void(0)">角色设定</a><% end %>
-              </td>
-            </tr>
+              <tr>
+                <td>
+                    <%= staff.name %>
+                  
+                </td>
+                <td>
+                  <%= staff.roles.map(&:name).join("、")%>
+                </td>
+                <td>
+                  <input type="hidden" value="<%= staff.id %>"/>
+                  <% if permission?(:base_datas, :role_role_set) %><a name="set_staff_role" href="JavaScript:void(0)">角色设定</a><% end %>
+                </td>
+              </tr>
             <% end if !@staff.blank? %>
           </tbody>
         </table>
         <div class="pageTurn">
-           <%= will_paginate  @staff, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+          <%= will_paginate  @staff, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
         </div>
       </div>
     </div>
@@ -49,5 +53,7 @@
 </div>
 
 <div id="set_staff_role" class="tab_popup" style="display: none;">
-  
+</div>
+<div id="edit_staff_area" class="tab_popup" style="display:none;">
+
 </div>

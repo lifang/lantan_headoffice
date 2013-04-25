@@ -111,6 +111,7 @@ class SalesController < ApplicationController   #活动控制器
     @sale_products = @sale.sale_prod_relations
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
   end
+  
   def del_sale  #删除活动按钮
     sale = Sale.find(params[:id].to_i)
     if !sale.nil?
