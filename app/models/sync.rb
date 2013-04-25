@@ -99,7 +99,7 @@ class Sync < ActiveRecord::Base
   def self.out_data(time)
     path = Constant::LOCAL_DIR
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
-    sync = SSync.order("sync_at desc").first
+    sync = SSync.where("types = #{Sync::SYNC_TYPE[:BUILD]}").order("sync_at desc").first
     base_sql = sync.nil? ? "updated_at <= '#{time}'" : "updated_at > '#{sync.sync_at}' and updated_at <= '#{time}'"
     path="#{Rails.root}/public/"
     dirs=["syncs_datas/","#{time.strftime("%Y-%m").to_s}/","#{time.strftime("%Y-%m-%d").to_s}/","#{time.strftime("%H")}/"]
@@ -134,6 +134,7 @@ class Sync < ActiveRecord::Base
       get_dir_list(file_path).each {|path| zf.file.open(path, "w") { |os| os.write "#{File.open(file_path+path).read}" } }
       is_finished = true
     }
+    File.chmod(0644, file_path+filename)
     if is_finished
       SSync.create(:sync_at => time.strftime("%Y-%m-%d %H"), :zip_name => dirs+filename, :types => Sync::SYNC_TYPE[:BUILD])
       flog.write("数据压缩成功---#{time.strftime("%Y-%m-%d %H")}\r\n")
