@@ -606,7 +606,7 @@ a.compile_btn { width: 100px;}
 	line-height: 50px;
 	text-align: center;
 	position: relative;
-	float: left;
+	display:inline-block;
 	margin: 0 20px 20px 0;
 }
 .car_group li a, .people_group li a { color: #333;}
