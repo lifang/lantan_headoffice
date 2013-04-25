@@ -194,6 +194,9 @@ LantanHeadoffice::Application.routes.draw do
       collection do
         post :syncs_db_to_all, :syncs_pics
       end
+      member do
+        get :return_sync_all_to_db
+      end
     end
   end
 end
