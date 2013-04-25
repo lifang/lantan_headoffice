@@ -25,8 +25,7 @@ class SalesController < ApplicationController   #活动控制器
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}").where(p_id).where(p_name)
   end
 
-  def create  #发布活动
-    s = Sale.new
+  def create  #发布活动  
     sale_name = params[:sale_name]
     disc_types = params[:sale_disc_types].to_i
     if disc_types == 0
@@ -46,23 +45,27 @@ class SalesController < ApplicationController   #活动控制器
     sale_subsidy_money = params[:sale_subsidy_money] ||= ""
     sale_introduction = params[:sale_introduction]
     sale_code = Sale.set_code(8,"sale","code")
-    s.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
+     s = Sale.new(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
       :introduction => sale_introduction, :disc_types => disc_types, :status => Sale::STATUS[:UN_RELEASE], :discount => disc,
       :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
-      :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :code => sale_code)
-    if s.save
-      selected_product_id.each_with_index do |item, index|
-          SaleProdRelation.create(:sale_id => s.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
-        end
+     :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :code => sale_code)
+    selected_product_id.each_with_index do |item, index|
+          s.sale_prod_relations.new(:product_id => item.to_i, :prod_num => selected_product_count[index])
+       end
+    Sale.transaction do
       begin
-        url = Sale.upload_img(img, s.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
-        s.update_attribute("img_url", url)       
-        flash[:notice] = "活动创建成功!"
-        redirect_to sales_path
+        if s.save
+          if !img.nil?
+            url = Sale.upload_img(img, s.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
+            s.update_attribute("img_url", url)
+          end
+          flash[:notice] = "活动创建成功!"
+        end
       rescue
-        flash[:notice] = "图片上传失败!"
+        flash[:notice] = "活动创建失败!"
       end
-    end    
+    end
+    redirect_to sales_path
   end
 
   def update #更新活动
@@ -86,24 +89,26 @@ class SalesController < ApplicationController   #活动控制器
     sale_subsidy_money = params[:edit_sale_subsidy_money] ||= ""
     sale_introduction = params[:edit_sale_introduction]
     SaleProdRelation.destroy_all("sale_id = #{sale.id}")
-    if sale.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
-        :introduction => sale_introduction, :disc_types => disc_types, :discount => disc,
-        :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
-        :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money)
-      selected_product_id.each_with_index do |item, index|
-        SaleProdRelation.create(:sale_id => sale.id, :product_id => item.to_i, :prod_num => selected_product_count[index])
-      end
+    selected_product_id.each_with_index do |item, index|
+      sale.sale_prod_relations.new(:product_id => item.to_i, :prod_num => selected_product_count[index])
     end
-    if !img.nil?
+    Sale.transaction do
       begin
-        new_url = Sale.upload_img(img, sale.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
-        sale.update_attribute("img_url", new_url)
-        flash[:notice] = "活动修改成功!"
-        redirect_to sales_path
+        if sale.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
+          :introduction => sale_introduction, :disc_types => disc_types, :discount => disc,
+          :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
+          :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money)
+          if !img.nil?
+            new_url = Sale.upload_img(img, sale.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
+            sale.update_attribute("img_url", new_url)
+          end
+          flash[:notice] = "活动修改成功!"
+        end
       rescue
-        flash[:notice] = "图片上传失败!"
+        flash[:notice] = "更新失败!"
       end
     end
+    redirect_to sales_path
   end
 
   def edit #修改活动
