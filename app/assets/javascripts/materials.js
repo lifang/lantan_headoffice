@@ -272,7 +272,7 @@ $(document).ready(function(){
         }
     })
     $("#ruku_a").click(function(){ //入库按钮
-        popup($("#ruku"));
+        popup("#ruku");
     })
     $("#ruku_cancel_x").click(function(){ //入库取消按钮
         $("#m_name").val("");
