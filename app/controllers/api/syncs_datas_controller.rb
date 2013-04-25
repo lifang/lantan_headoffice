@@ -43,9 +43,12 @@ class Api::SyncsDatasController < ApplicationController
   def return_sync_all_to_db
     target_id = params[:id]
     if target_id.nil? or target_id.to_i == 0
-      jv_sync = JvSync.all
+      jv_sync = JvSync.find(:all,
+        :conditions => [" types in(#{JvSync::TYPES[:LANTAN_STORE]}, #{JvSync::TYPES[:LANTAN_DB_ALL]})"])
     else
-      jv_sync = JvSync.find(:all, :conditions => ["target_id > ?", target_id.to_id])
+      jv_sync = JvSync.find(:all, 
+        :conditions => [" types in(#{JvSync::TYPES[:LANTAN_STORE]}, #{JvSync::TYPES[:LANTAN_DB_ALL]}) and target_id > ?",
+          target_id.to_i])
     end
     render :json => jv_sync.to_json
   end
