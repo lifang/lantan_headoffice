@@ -31,13 +31,13 @@
           <tbody>
             <% @materials.each do |material| %>
               <tr>
-                <td <% if material.storage && material.storage <= 0 %>class="data_table_error"<% end %>><%= material.code.nil? ? "----" : material.code %></td>
+                <td <% if material.storage.to_i <= 0 %>class="data_table_error"<% end %>><%= material.code.nil? ? "----" : material.code %></td>
                 <td><%= material.name.nil? ? "------" : material.name%></td>
                 <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == material.types %><%= value %><% end %><% end %></td>
-                <td>存货</td>
+                <td><%if material.storage.to_i > 0 %>存货<% else %>缺货<% end %></td>
                 <td class="mat_stor"><%= material.storage.nil? ? "----" : material.storage %></td>
                 <td><%= material.price.nil? ? "----" : material.price %></td>
-                <td><input type="text" value="<%= material.check_num.nil? ? 0 : material.check_num %>" style="width:50px"/></td>
+                <td><input type="text" style="width:50px"/></td>
                 <td>
                   <input type="hidden" value="<%= material.id %>"/>
                   <a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a>

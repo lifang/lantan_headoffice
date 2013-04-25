@@ -58,7 +58,7 @@ function popup(t){
     $(t).css('left',(doc_width-layer_width)/2);
     $(t).css('display','block');
 
-    $(" .close").live("click",function(){
+    $(t+" a.close").live("click",function(){
         $(t).css('display','none');
         $(".mask").css('display','none');
     })

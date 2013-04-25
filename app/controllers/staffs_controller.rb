@@ -13,8 +13,8 @@ class StaffsController < ApplicationController
     @staff = Staff.new(params[:staff])
     @staff.encrypt_password
     @staff.photo = params[:staff][:photo].original_filename.split(".")[0]+"_#{Constant::STAFF_PICSIZE.first}."+params[:staff][:photo].original_filename.split(".").reverse[0] unless params[:staff][:photo].nil?
+    @staff.staff_role_relations.new(:role_id => Constant::STAFF)
     if @staff.save   #save staff info and picture
-      @staff.staff_role_relations.new(:role_id => Constant::STAFF)
       @staff.operate_picture(params[:staff][:photo], "create") unless params[:staff][:photo].nil?
       flash[:notice] = "创建员工成功!"
     else

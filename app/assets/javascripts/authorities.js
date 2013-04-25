@@ -1,6 +1,6 @@
 $(document).ready(function(){
      $("#add_role_a").click(function(){  //添加角色按钮
-    popup($("#add_role_form"));
+    popup("#add_role_form");
   })
   $("#add_role_btn").click(function(){    //添加角色验证
     if($("input[name='role_name']").val() == ""){
@@ -69,6 +69,8 @@ $(document).ready(function(){
 
   $("a[name='set_auth']").click(function(){   //设置权限按钮
    var rid = $(this).parent().parent().find($("input[name='hid_id']")).val();
+   $(this).parent().parent().siblings().css( "backgroundColor", "#ffffff" );
+   $(this).parent().parent().css("background-color", "#ebebeb")
    $.ajax({
      type: "get",
      url: "/authorities/set_auth",

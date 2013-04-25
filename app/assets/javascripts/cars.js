@@ -1,6 +1,6 @@
 $(document).ready(function(){
      $("#add_btn").click(function(){     //添加汽车品牌按钮
-     popup($("#new_brand"));
+     popup("#new_brand");
   });
   $("#new_brands").click(function(){    //添加品牌验证
     if($("#brand_name").val() == ""){
@@ -9,7 +9,7 @@ $(document).ready(function(){
     }
   });
   $("a[name='check_model']").click(function(){  //查看汽车型号按钮
-    var cid = $(this).next().val();
+    var cid = $(this).attr("alt");
     $.ajax({
       type: "GET",
       url: "/cars/check_model",
@@ -17,7 +17,7 @@ $(document).ready(function(){
     })
   });
   $("a[name='del_brands']").click(function(){   //删除品牌
-    var cid = $(this).next().val();
+    var cid = $(this).attr("alt");
     var flag = confirm("确定删除该品牌吗？");
     if(flag){
       $.ajax({
@@ -116,16 +116,20 @@ $(document).ready(function(){
         url: "/cars/new_model",
         data: {model_name : mname, brand_id : mid},
         success: function(data){
-          if(data == 1){
-            tishi_alert("创建成功!");
-            setTimeout(function(){
-                 location.href="/cars";
-            }, 1500);
-          }else{
+          if(data == 0){
             tishi_alert("创建失败,该型号已存在!");
              obj.removeAttr("value");
              obj.parent().attr("style", "display:none");
              obj.parent().next().attr("style", "display:block");
+          }else{
+            tishi_alert("创建成功!");
+            if($(".car_models li.saved_model").length > 0)
+               {$(".car_models li.saved_model:last").after(data);}
+            else{
+                $(".car_models").prepend(data);
+               }
+            obj.parent().attr("style", "display:none");
+            obj.parent().next().attr("style", "display:block");
           }
         }
       })
