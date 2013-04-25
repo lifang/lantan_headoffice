@@ -61,11 +61,11 @@ class CarsController < ApplicationController   #车型控制器
   def new_model #添加型号
     name = params[:model_name]
     id = params[:brand_id].to_i
-    if !CarModel.where("name = '#{name}'").blank?
+    if !CarModel.where("name = '#{name}' and car_brand_id='#{id}'").blank?
       render :text => 0
     else
-      CarModel.create(:name => name, :car_brand_id => id)
-      render :text => 1
+      model = CarModel.create(:name => name, :car_brand_id => id)
+      render :partial => 'car_model', :locals => {:m => model}
     end
   end
   
