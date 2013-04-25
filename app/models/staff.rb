@@ -25,6 +25,18 @@ class Staff < ActiveRecord::Base
   S_HEAD = {:BOSS=>0,:MANAGER=>2,:NORMAL=>1} #0老板 2 部门经理 1员工
   N_HEAD = {0=>"老板", 2=>"部门经理",1=>"员工"}
 
+
+  #教育程度
+  N_EDUCATION = {0 => "研究生", 1 => "本科", 2 => "专科", 3 => "高中", 4 => "初中",
+    5 => "小学", 6 => "无"}
+  S_EDUCATION = {:GRADUATE => 0,  :UNIVERSITY => 1, :COLLEGE => 2, :SENIOR => 3, :JUNIOR => 4, :PRIMARY => 5, :NONE => 6}
+
+  #员工性别
+  N_SEX = {0 => "男", 1 => "女"}
+
+  #分页页数
+  PerPage = 10
+
   attr_accessor :password
   validates:password, :allow_nil => true, :length=>{:within=>6..20} #:confirmation=>true
 
@@ -35,6 +47,24 @@ class Staff < ActiveRecord::Base
 
   def encrypt_password
     self.encrypted_password=encrypt(password)
+  end
+
+  def operate_picture(photo, status)
+    FileUtils.remove_dir "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}" if status.eql?("update") && FileTest.directory?("#{File.expand_path(Rails.root)}/public/uploads/#{self.id}")
+    FileUtils.mkdir_p "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}"
+    File.new(Rails.root.join('public', "uploads", "#{self.id}", photo.original_filename), 'a+')
+    File.open(Rails.root.join('public', "uploads", "#{self.id}", photo.original_filename), 'wb') do |file|
+      file.write(photo.read)
+    end
+    file_path = "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}/#{photo.original_filename}"
+    img = MiniMagick::Image.open file_path,"rb"
+
+    Constant::STAFF_PICSIZE.each do |size|
+      resize = size > img["width"] ? img["width"] : size
+      img.resize "#{resize}x#{resize}"
+      new_file = file_path.split(".")[0]+"_#{resize}."+file_path.split(".").reverse[0]
+      img.write(new_file)
+    end
   end
 
   private

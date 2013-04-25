@@ -38,5 +38,19 @@ class Api::SyncsDatasController < ApplicationController
     File.open(path+"/"+filename, "wb")  {|f|  f.write(params[:url].read) }
     render :text=>"success"
   end
+
+  #门店向总部请求数据包记录
+  def return_sync_all_to_db
+    target_id = params[:id]
+    if target_id.nil? or target_id.to_i == 0
+      jv_sync = JvSync.find(:all,
+        :conditions => [" types in(#{JvSync::TYPES[:LANTAN_STORE]}, #{JvSync::TYPES[:LANTAN_DB_ALL]})"])
+    else
+      jv_sync = JvSync.find(:all, 
+        :conditions => [" types in(#{JvSync::TYPES[:LANTAN_STORE]}, #{JvSync::TYPES[:LANTAN_DB_ALL]}) and target_id > ?",
+          target_id.to_i])
+    end
+    render :json => jv_sync.to_json
+  end
   
 end
