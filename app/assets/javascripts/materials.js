@@ -137,7 +137,14 @@ $(document).ready(function(){
                     if(data == 1){
                         obj.parent().prev().prev().prev().text(count);
                         tishi_alert("操作成功！");
-                        obj.parent().prev().find("input").val("");    
+                        obj.parent().prev().find("input").val("");
+                        if(parseInt(count)<=0){
+                            $("#"+mid+"storage").attr("class","data_table_error");
+                            $("#"+mid+"status").text("缺货");
+                        }else{
+                            $("#"+mid+"storage").removeAttr("class");
+                            $("#"+mid+"status").text("存货");
+                        }                      
                     }else if(data == 0){
                           tishi_alert("操作失败!");        
                     }
