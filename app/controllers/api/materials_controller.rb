@@ -8,7 +8,10 @@ class Api::MaterialsController < ApplicationController   #库存控制器api
 
   def save_mat_info
     material_order_data = JSON.parse(params[:material_order])
+    material_order_id = material_order_data.id
     material_order = MaterialOrder.create(material_order_data)
+    material_order.id = material_order_id
+    material_order.save
     material_order_item = JSON.parse(params[:mat_items_code]) if params[:mat_items_code]
     material_order_item.values.each do |mo|
       material = Material.find_by_code mo["m_code"]
