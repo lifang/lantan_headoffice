@@ -116,13 +116,13 @@ class MaterialsController < ApplicationController   #库存控制器
     m_code = params[:m_code]
     m_num = params[:m_num].to_i
     m_price = params[:m_price].to_f
-    m = Material.where("name = '#{m_name}'").where("types = #{m_type}")
+    m = Material.where("name = '#{m_name}'").where("types = #{m_type}").where("code = '#{m_code}'").where("price = #{m_price}")
     if !m.blank?
       material = m[0]
       total_num = material.storage + m_num
       MatInOrder.create(:material_id => material.id, :material_num => m_num,
         :price => m_price, :staff_id => cookies[:user_id].to_i)
-      material.update_attributes(:storage => m_num)
+      material.update_attributes(:storage => total_num)
     else
       material = Material.create(:name => m_name, :code => m_code, :price => m_price, :types => m_type,
         :status => Material::STATUS[:NORMAL], :storage => m_num)
