@@ -21,18 +21,6 @@ class Sync < ActiveRecord::Base
     File.open(path+dirs.join+filename, "wb")  {|f|  f.write(img_url.read) }
   end
 
-  #发送上传请求
-  def self.send_file(store_id,file_url,filename)
-    query={:store_id=>store_id}
-    url = URI.parse Constant::HEAD_OFFICE
-    File.open(file_url) do |file|
-      req = Net::HTTP::Post::Multipart.new url.path,query.merge!("upload" => UploadIO.new(file, "application/zip", "#{filename}"))
-      http = Net::HTTP.new(url.host, url.port)
-      if  http.request(req).body == "success"
-
-      end
-    end
-  end
 
   def self.get_dir_list(path)
     #获取目录列表
@@ -42,24 +30,78 @@ class Sync < ActiveRecord::Base
     return list
   end
 
+  def self.search_dir_list(path)
+    #获取目录列表
+    list = Dir.entries(path)
+    list.delete('.')
+    list.delete('..')
+    list=list.inject(Array.new) {|arr,file| arr << (path+"/"+file) }
+    return list
+  end
+
+  #当初次更新的时候选择目录下的所有为念
+  @@files =[]
+  def self.get_all_list(path)
+    #获取目录列表
+    list = Dir.entries(path)
+    list.delete('.')
+    list.delete('..')
+    list.each {|file| File.file?(path+"/"+file) ? @@files << (path+"/"+file) : get_all_list(path+"/"+file) }
+    return @@files
+  end
+
   def self.new_dir(dirs)
     file_path = Constant::LOCAL_DIR
     dirs.each_with_index {|dir,index| Dir.mkdir file_path+dirs[0..index].join   unless File.directory? file_path+dirs[0..index].join }
   end
   
   def self.output_zip()
-    file_path = Constant::LOCAL_DIR
+    file_path = Constant::LOCAL_DIR+"bam_syncs"
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
     flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
-    file_list = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","a+")
-    dirs=["bam_syncs/","#{Time.now.strftime("%Y-%m").to_s}/","#{Time.now.strftime("%Y-%m-%d").to_s}/"]
-    Sync.new_dir(dirs)
-    paths =get_dir_list(file_path+dirs.join)-file_list.read.split("|::|")
+    file_list = File.new(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","r+")
+    files = file_list.read
+    file_list.close
+    if files.split("bam_syncs").length == 2
+      file_paths =  files.split("bam_syncs")[1].split("/")
+      paths =[]
+      file_p = file_paths[2]
+      unless File.directory? file_path +"/"+ file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p
+        new_file = get_dir_list(file_path+"/"+file_p.to_datetime.strftime("%Y-%m").to_s).sort.select { |item| item > file_p }
+        file_p = new_file.blank? ? file_p : new_file[0]
+      end
+      while(File.directory? file_path +"/"+ file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p)
+        paths << search_dir_list(file_path+"/"+file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p)
+        file_p = file_p.to_datetime.tomorrow.strftime("%Y-%m-%d").to_s
+        unless File.directory? file_path +"/"+ file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p
+          new_file = get_dir_list(file_path+"/"+file_p.to_datetime.strftime("%Y-%m").to_s).sort.select { |item| item > file_p }
+          if new_file.blank?
+            dirs = get_dir_list(file_path).sort.select { |item| item > file_p.to_datetime.strftime("%Y-%m").to_s}
+            unless dirs.blank?
+              dirs.each do |dir|
+                new_dirs = get_dir_list(file_path+"/"+dir).sort
+                unless new_dirs.blank?
+                  file_p =  new_dirs[0]
+                  break
+                end
+              end
+            end
+          else
+            file_p = new_file[0]
+          end
+        end
+      end
+      paths = paths.flatten.sort.select { |item| item > files}
+    else
+      paths =  get_all_list(file_path)
+    end
+    p paths
     unless paths.blank?
       paths.each do |path|
-        if  File.extname(file_path+dirs.join+path) == '.zip'
+        if  File.extname(path) == '.zip'
           begin
-            Zip::ZipFile.open(file_path+dirs.join+path){ |zipFile|
+            file_list = File.new(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","r+")
+            Zip::ZipFile.open(path){ |zipFile|
               zipFile.each do |file|
                 begin
                   if file.name.split(".").reverse[0] =="log"
@@ -82,7 +124,8 @@ class Sync < ActiveRecord::Base
                 end
               end
             }
-            file_list.write("#{path}|::|")
+            file_list.write("#{path}")
+            file_list.close
           rescue
             flog.write("当前目录#{Time.now.strftime("%Y-%m-%d")}中文件#{path}更新失败---#{Time.now}\r\n")
           end
@@ -92,7 +135,6 @@ class Sync < ActiveRecord::Base
       flog.write("当前目录#{Time.now.strftime("%Y-%m-%d")}暂无文件---#{Time.now}\r\n")
     end
     flog.close
-    file_list.close
   end
 
 

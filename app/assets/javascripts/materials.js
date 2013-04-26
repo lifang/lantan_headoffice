@@ -117,9 +117,13 @@ $(document).ready(function(){
         var mat_storage = parseInt($(this).parent().siblings(".mat_stor").text());
         var count = $(this).parent().prev().find("input").val();
         if(isNaN(parseInt(count))){
-            tishi_alert("请输入有效的数字!");
-        }else if(count==0||mat_storage==count){
-             tishi_alert("已核实过!");
+            tishi_alert("请输入核实数目!");
+        }else if(parseInt(count) < 0){
+            tishi_alert("数量至少为零!");
+        }else if(count==""){
+            tishi_alert("请输入核实数目!")
+        }else if(mat_storage==count){
+            tishi_alert("已核实过!");
         }else{
             $.ajax({
                 dataType: "json",
@@ -130,10 +134,20 @@ $(document).ready(function(){
                     storage : count
                 },
                 success: function(data){
+                    if(data == 1){
                         obj.parent().prev().prev().prev().text(count);
                         tishi_alert("操作成功！");
-                        obj.parent().prev().find("input").val(0);
-                   
+                        obj.parent().prev().find("input").val("");
+                        if(parseInt(count)<=0){
+                            $("#"+mid+"storage").attr("class","data_table_error");
+                            $("#"+mid+"status").text("缺货");
+                        }else{
+                            $("#"+mid+"storage").removeAttr("class");
+                            $("#"+mid+"status").text("存货");
+                        }                      
+                    }else if(data == 0){
+                          tishi_alert("操作失败!");        
+                    }
                 }
             })
         }
@@ -206,10 +220,7 @@ $(document).ready(function(){
                 },
                 success : function(data){
                     if (data == 0){
-                        tishi_alert("发货失败!");
-                        $("#order_detail").hide();
-                        $(".mask").hide();
-                        $("#order_detail").empty();
+                        tishi_alert("发货失败!");                       
                     }else if (data == 1){
                         tishi_alert("发货成功！");
                         $("#order_detail").hide();
@@ -218,6 +229,8 @@ $(document).ready(function(){
                         $("#arrival_at"+moid).text(arrive_time);
                         $("#mo_status"+moid).text("已发货");
                         $("#logi_info"+moid).html("物流单号:"+logistic_code+"<br/>承运人:"+carrier);
+                    }else if(data == 2){
+                        tishi_alert("订单所需的物料数量库存不足,请核实!");
                     }
                 }
             })
@@ -265,7 +278,7 @@ $(document).ready(function(){
         }
     })
     $("#ruku_a").click(function(){ //入库按钮
-        popup($("#ruku"));
+        popup("#ruku");
     })
     $("#ruku_cancel_x").click(function(){ //入库取消按钮
         $("#m_name").val("");

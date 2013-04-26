@@ -4,15 +4,19 @@ class SyncsController < ActionController::Base
   #  before_filter :sign?,:except=>["upload_file", "is_generate_zip"]
   
   def upload_file
-    Sync.accept_file(params[:upload])
-    render :text=>"success"
+    begin
+      Sync.accept_file(params[:upload])
+      render :text=>"success"
+    rescue
+      render :text=>"fail"
+    end
   end
 
 
   def is_generate_zip
-    time_cond = params[:time].nil? ? '1=1' : "sync_at >= '#{params[:time]}'"
+    time_cond = params[:time].nil? ? '1=1' : "sync_at > '#{params[:time]}'"
     types_cond = "types = #{Sync::SYNC_TYPE[:BUILD]}"
-    syncs = SSync.where(time_cond).where(types_cond)
+    syncs = SSync.where(time_cond).where(types_cond).order("sync_at asc")
     if syncs.length > 0
       render :json => syncs
     else
