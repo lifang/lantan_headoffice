@@ -39,6 +39,17 @@ class Sync < ActiveRecord::Base
     return list
   end
 
+  #当初次更新的时候选择目录下的所有为念
+  @@files =[]
+  def self.get_all_list(path)
+    #获取目录列表
+    list = Dir.entries(path)
+    list.delete('.')
+    list.delete('..')
+    list.each {|file| File.file?(path+"/"+file) ? @@files << (path+"/"+file) : get_all_list(path+"/"+file) }
+    return @@files
+  end
+
   def self.new_dir(dirs)
     file_path = Constant::LOCAL_DIR
     dirs.each_with_index {|dir,index| Dir.mkdir file_path+dirs[0..index].join   unless File.directory? file_path+dirs[0..index].join }
@@ -82,8 +93,9 @@ class Sync < ActiveRecord::Base
       end
       paths = paths.flatten.sort.select { |item| item > files}
     else
-      paths =  search_dir_list(file_path)
+      paths =  get_all_list(file_path)
     end
+    p paths
     unless paths.blank?
       paths.each do |path|
         if  File.extname(path) == '.zip'
