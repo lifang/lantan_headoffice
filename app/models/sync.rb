@@ -55,9 +55,30 @@ class Sync < ActiveRecord::Base
       file_paths =  files.split("bam_syncs")[1].split("/")
       paths =[]
       file_p = file_paths[2]
+      unless File.directory? file_path +"/"+ file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p
+        new_file = get_dir_list(file_path+"/"+file_p.to_datetime.strftime("%Y-%m").to_s).sort.select { |item| item > file_p }
+        file_p = new_file.blank? ? file_p : new_file[0]
+      end
       while(File.directory? file_path +"/"+ file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p)
         paths << search_dir_list(file_path+"/"+file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p)
         file_p = file_p.to_datetime.tomorrow.strftime("%Y-%m-%d").to_s
+        unless File.directory? file_path +"/"+ file_p.to_datetime.strftime("%Y-%m").to_s+"/"+file_p
+          new_file = get_dir_list(file_path+"/"+file_p.to_datetime.strftime("%Y-%m").to_s).sort.select { |item| item > file_p }
+          if new_file.blank?
+            dirs = get_dir_list(file_path).sort.select { |item| item > file_p.to_datetime.strftime("%Y-%m").to_s}
+            unless dirs.blank?
+              dirs.each do |dir|
+                new_dirs = get_dir_list(file_path+"/"+dir).sort
+                unless new_dirs.blank?
+                  file_p =  new_dirs[0]
+                  break
+                end
+              end
+            end
+          else
+            file_p = new_file[0]
+          end
+        end
       end
       paths = paths.flatten.sort.select { |item| item > files}
     else
