@@ -50,7 +50,12 @@ class Api::SyncsDatasController < ApplicationController
         :conditions => [" types in(#{JvSync::TYPES[:LANTAN_STORE]}, #{JvSync::TYPES[:LANTAN_DB_ALL]}) and target_id > ?",
           target_id.to_i])
     end
-    render :json => jv_sync.to_json
+    jv_sync_arr = []
+    jv_sync.each do |js|
+      jv_sync_arr << {:id => js.id, :types => js.types, :current_day => js.current_day.strftime("%Y-%m-%d"),
+        :hours => js.hours, :zip_name => js.zip_name, :target_id => js.target_id}
+    end unless jv_sync.blank?
+    render :json => jv_sync_arr.to_json
   end
   
 end
