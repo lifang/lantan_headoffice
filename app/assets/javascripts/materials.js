@@ -117,7 +117,7 @@ $(document).ready(function(){
         var mat_storage = parseInt($(this).parent().siblings(".mat_stor").text());
         var count = $(this).parent().prev().find("input").val();
         if(isNaN(parseInt(count))){
-            tishi_alert("请输入有效的数字!");
+            tishi_alert("请输入核实数目!");
         }else if(parseInt(count) < 0){
             tishi_alert("数量至少为零!");
         }else if(count==""){
