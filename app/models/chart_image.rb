@@ -13,7 +13,7 @@ class ChartImage < ActiveRecord::Base
   
   def self.gchart()
     sql="select count(*) total_num,s.name,s.id s_id,t.id,o.is_pleased from lantan_db_all.orders o inner join lantan_db_all.stores s on o.store_id=s.id inner join lantan_db_all.cities t on t.id=s.city_id
-    where date_format(o.created_at,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') and o.status=#{Order::STATUS[:BEEN_PAYMENT]} group by t.id,s.id,o.is_pleased"
+    where date_format(o.created_at,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') and o.status in (#{Order::STATUS[:BEEN_PAYMENT]},#{Order::STATUS[:FINISHED]}) group by t.id,s.id,o.is_pleased"
     begin   
       datas = Order.find_by_sql(sql)
       stores_data =datas.inject(Hash.new){|hash,data| hash[data.s_id].nil? ? hash[data.s_id]={data.is_pleased=>data} : hash[data.s_id][data.is_pleased]=data;hash }

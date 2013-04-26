@@ -4,8 +4,12 @@ class SyncsController < ActionController::Base
   #  before_filter :sign?,:except=>["upload_file", "is_generate_zip"]
   
   def upload_file
-    Sync.accept_file(params[:upload])
-    render :text=>"success"
+    begin
+      Sync.accept_file(params[:upload])
+      render :text=>"success"
+    rescue
+      render :text=>"fail"
+    end
   end
 
 

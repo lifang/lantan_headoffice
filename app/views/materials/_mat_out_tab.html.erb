@@ -29,7 +29,10 @@
   <tbody>
     <% @mat_out_orders.each do |moo| %>
       <tr>
-        <td><%= moo.material_order.nil? || moo.material_order.code.nil? ? "----" : moo.material_order.code %></td>
+        <td>
+            <input type="hidden" value="<%= moo.material_order.nil? ? "" : moo.material_order.id %>"/>
+             <a href="JavaScript:void(0)" name="mat_order_detail" class="other_a"><%= moo.material_order.nil? || moo.material_order.code.nil? ? "----" : moo.material_order.code %></a>
+        </td>
         <td><%= moo.material.nil? || moo.material.code.nil? ? "----" : moo.material.code %></td>
         <td><%= moo.material.nil? || moo.material.name.nil? ? "----" : moo.material.name %></td>
         <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == moo.material.types %><%= value %><% end %><% end %></td>
