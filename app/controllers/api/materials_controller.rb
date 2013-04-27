@@ -29,7 +29,14 @@ class Api::MaterialsController < ApplicationController   #库存控制器api
 
   def update_status
     mat_order = MaterialOrder.find_by_code params[:mo_code]
-    mat_order.update_attributes(:status => params[:mo_status]) if mat_order
+    mat_order.update_attributes(:status => params[:mo_status], :price => params[:mo_price]) if mat_order
+
+    if params[:mat_order_types]
+      JSON.parse(params[:mat_order_types]).each do |m_order_type|
+       mot =  MOrderType.new(m_order_type)
+       mot.save
+      end
+    end
     render :text => "1"
   end
 end
