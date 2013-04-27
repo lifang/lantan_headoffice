@@ -47,19 +47,24 @@ $(function(){
 
 //弹出层
 function popup(t){
+var scolltop = document.body.scrollTop|document.documentElement.scrollTop;
     var doc_height = $(document).height();
     var doc_width = $(document).width();
     var layer_width = $(t).width();
     $(".mask").css({
         display:'block',
-        height:doc_height
+       // height:doc_height
+         height:$(t).height()>doc_height?　$(t).height()+280+ scolltop : doc_height+ scolltop
     });
-    var scolltop = document.body.scrollTop|document.documentElement.scrollTop;
+    
     var win_height = document.documentElement.clientHeight;//jQuery(document).height();
     var layer_height = $(t).height();
-    $(t).css('top',(win_height-layer_height)/2 + scolltop);
+    $(t).css('top',(win_height-layer_height)/2);
+
     $(t).css('left',(doc_width-layer_width)/2);
     $(t).css('display','block');
+
+
 
     $(t+" a.close").live("click",function(){
         $(t).css('display','none');
