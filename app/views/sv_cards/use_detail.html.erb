@@ -9,16 +9,16 @@
     <div class="search">
     <%= form_tag "/sv_cards/use_detail", :method => :get do %>
       <div><label>时间：</label><input id="started_time" name="started_time" type="text" 
-      <% if !params[:started_time].nil? || params[:started_time] != "" %>value="<%=params[:started_time] %>"<% end %> class="Wdate" readonly/>
+      <% if !params[:started_time].nil? && params[:started_time] != "" %>value="<%=params[:started_time] %>"<% end %> class="Wdate" readonly/>
         &nbsp;到&nbsp;<input id="ended_time" name="ended_time" type="text"
-       <% if !params[:ended_time].nil? || params[:ended_time] != "" %>value="<%=params[:ended_time] %>"<% end %> class="Wdate" readonly/></div>
+       <% if !params[:ended_time].nil? && params[:ended_time] != "" %>value="<%=params[:ended_time] %>"<% end %> class="Wdate" readonly/></div>
       <div><button id="use_search" class="search_btn">查询</button></div>
       <% end %>
     </div>
     <div class="data_body_title">
-      <span class="data_body_p">储值卡总计：<span class="red"><%= format("%.2f",@total_money).to_f %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        已使用：<span class="red"><%= format("%.2f",(@total_money.to_f - @left_money.to_f)).to_f %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        余额：<span class="red"><%= format("%.2f",@left_money).to_f %></span>元</span>
+      <span class="data_body_p">储值卡总计：<span class="red"><%= @total_money.nil? ? " " : format("%.2f",@total_money).to_f %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        已使用：<span class="red"><%= @total_money.nil? || @left_money.nil? ? " " : format("%.2f",(@total_money.to_f - @left_money.to_f)).to_f %></span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        余额：<span class="red"><%= @left_money.nil? ? " " : format("%.2f",@left_money).to_f %></span>元</span>
     </div>
     <div class="clear"></div>
     <div class="data_body">
