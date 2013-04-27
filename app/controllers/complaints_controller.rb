@@ -41,4 +41,5 @@ class ComplaintsController < ApplicationController   #投诉控制器
       format.js
     end
   end
+
 end
