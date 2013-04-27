@@ -12,7 +12,9 @@ $(document).ready(function(){
               tishi_alert("删除失败!");
             }else{
               tishi_alert("删除成功!");
-              location.href="/news"
+              setTimeout(function(){
+                location.href="/news";
+            }, 1500);
             }
           }
         })
