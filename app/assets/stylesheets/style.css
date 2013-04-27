@@ -598,7 +598,7 @@ a.compile_btn { width: 100px;}
 /*基础数据 car_group*/
 .car_group, .people_group { margin-bottom: 10px; overflow: hidden; clear: both;}
 .car_gh { width: 30px; height: 30px; line-height: 30px; text-align: center; background: #930205; color: #FFF;}
-.car_group ul, .people_group ul { padding: 5px 30px; overflow: hidden; display: block; width: 940px;}
+.car_group ul, .people_group ul { padding: 5px 30px; overflow: hidden; display: block;}
 .car_group li, .people_group li {
     border: 1px #CCCCCC solid;
 	width: 120px;
@@ -606,7 +606,7 @@ a.compile_btn { width: 100px;}
 	line-height: 50px;
 	text-align: center;
 	position: relative;
-	display:inline-block;
+	float:left;
 	margin: 0 20px 20px 0;
 }
 .car_group li a, .people_group li a { color: #333;}
