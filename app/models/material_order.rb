@@ -28,4 +28,15 @@ class MaterialOrder < ActiveRecord::Base
     end
     store + Time.now.strftime("%Y%m%d%H%M%S")
   end
+
+   def svc_use_price
+    MOrderType.find_by_material_order_id_and_pay_types(self.id, PAY_TYPES[:SAV_CARD]).try(:price)
+  end
+
+  def sale_price
+    if self.sale_id
+      sale = Sale.find self.sale_id
+      sale.sub_content
+    end
+  end
 end
