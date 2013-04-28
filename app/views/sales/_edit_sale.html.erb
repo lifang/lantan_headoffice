@@ -42,7 +42,7 @@
           <div id="edit_selected_product_div" class="popup_body_result">
             <% @sale_products.each do |sp| %>
             <div id="edpro<%= sp.product_id %>">
-              <em><%= Product.find(sp.product_id).name %></em>
+              <em><%= sp.product.name if sp.product %></em>
               <a name="edit_add_button" href="JavaScript:void(0)" class="addre_a">+</a>
               <span><input name="edit_selected_product_count[]" type="text" class="addre_input" value="<%= sp.prod_num %>"/></span>
               <a name="edit_del_button" href="JavaScript:void(0)" class="addre_a" >-</a>

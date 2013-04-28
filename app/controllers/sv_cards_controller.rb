@@ -35,11 +35,11 @@ class SvCardsController < ApplicationController   #优惠卡控制器
      begin
           url = SvCard.upload_img(img, sv_card.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
           sv_card.update_attribute("img_url", url)
-          flash[:notice] = "创建成功!"
-          redirect_to sv_cards_path
+          flash[:notice] = "创建成功!"         
         rescue
           flash[:notice] = "图片上传失败!"
       end
+       redirect_to sv_cards_path
   end
 
   def update    #更新优惠卡
@@ -62,15 +62,15 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
     end
     if !img.nil?
-          begin
-            new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
-            sc.update_attribute("img_url", new_url)
-            flash[:notice] = "更新成功!"
-            redirect_to sv_cards_path
-          rescue
-            flash[:notice] ="图片更新失败！"
-          end
+      begin
+        new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
+        sc.update_attribute("img_url", new_url)
+        flash[:notice] = "更新成功!"
+      rescue
+        flash[:notice] ="图片更新失败！"
+      end
     end
+    redirect_to sv_cards_path
   end
 
   def edit_card   #编辑优惠卡

@@ -146,7 +146,7 @@ class Sync < ActiveRecord::Base
     path="#{Rails.root}/public/"
     dirs=["syncs_datas/","#{time.strftime("%Y-%m").to_s}/","#{time.strftime("%Y-%m-%d").to_s}/","#{time.strftime("%H")}/"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
-    models=['product.rb', 'sale.rb', 'capital.rb', 'car_brand.rb', 'car_model.rb', 'material_order.rb', 'customer.rb', 'as_car_num.rb', 'as_customer_num_relation.rb', 'as_reservation.rb', 'as_res_prod_relation.rb']
+    models=['product.rb', 'image_url.rb', 'sale.rb', 'capital.rb', 'car_brand.rb', 'car_model.rb', 'material_order.rb', 'customer.rb', 'as_car_num.rb', 'as_customer_num_relation.rb', 'as_reservation.rb', 'as_res_prod_relation.rb']
     models.each do |model|
       model_name =model.split(".")[0]
       unless model_name==""
