@@ -91,10 +91,11 @@
   </table>
   <% end %>
    <div class="otherWay">
-    <div class="amount">总计：<%= @total_money %></div>
-    <div class="amount">储值卡抵用：<%= @mo.svc_use_price %></div>
-    <div class="amount">活动优惠：<%= @mo.sale_price %></div>
-    <div class="amount">合计：<%= @mo.price %></div>
+    <div class="amount">总计：<%= @total_money %>&nbsp;
+        <% if @mo.svc_use_price %>储值卡抵用：<%= @mo.svc_use_price %>&nbsp;<% end %>
+        <% if @mo.sale_price %>活动优惠：<%= @mo.sale_price %><% end %>
+    </div>
+    <div class="amount">合计：<%= @mo.price %>&nbsp;</div>
   </div>
     </div>
     <div id="order_detail_btn_box" class="btn_box">
