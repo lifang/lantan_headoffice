@@ -22,7 +22,7 @@
     </div>
     <div class="data_body_title">
       <span class="data_body_p">总销售量：<span class="red"><%= @count %></span>张&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        总金额：<span class="red"><%= @total_money.to_i %></span>元</span>
+        总金额：<span class="red"><%= @total_money.nil? ? "" : format("%.2f",@total_money).to_f %></span>元</span>
     </div>
     <div class="clear"></div>
     <div class="data_body">

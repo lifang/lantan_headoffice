@@ -39,7 +39,7 @@
             <% f = form.split(",") %>
             <tr>
               <td><%=  DateTime.parse(f[0]).strftime("%Y/%m") %></td>
-              <td><%=  f[1].to_f %></td>
+              <td><%=  f[1].nil? || f[1]=="" ? "" : sprintf("%.2f",f[1].to_f) %></td>
             </tr>
             <% end %>
             <% end %>

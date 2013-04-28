@@ -4,6 +4,7 @@ class MaterialsController < ApplicationController   #库存控制器
   before_filter :sign?
   
   def index
+    @init_tab = params[:init_tab]
     @tab = params[:tab]
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : "material_orders.status = #{params[:status].to_i}"
     started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : "date_format(material_orders.created_at, '%Y-%m-%d') >= '#{params[:started_time]}'"

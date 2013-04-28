@@ -14,9 +14,9 @@ development:
   reconnect: false
   database: lantan_store
   pool: 5
-  username: root
+  username: comdo
   password: comdo2012
-  host: localhost
+  host: 116.255.135.175
 
 storedb:
   adapter: mysql2

@@ -31,7 +31,7 @@
         </ul>
         <div class="clear"></div>
         <% if @urge_goods_msg > 0 %>
-        <div id="ugm_div" class="message">最近有 <span class="red"><%= @urge_goods_msg %></span> 条订货相关信息需要您去处理<a href="/materials">点击查看</a><span id="ugm_div_close" class="x">Close</span></div>
+        <div id="ugm_div" class="message">最近有 <span class="red"><%= @urge_goods_msg %></span> 条订货相关信息需要您去处理<a href="/materials?init_tab=mat_order">点击查看</a><span id="ugm_div_close" class="x">Close</span></div>
         <% end %>
       </div>
     </div>
