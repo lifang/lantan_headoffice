@@ -71,7 +71,10 @@ class MaterialsController < ApplicationController   #库存控制器
 
   def mat_order_detail #订单详情
     @mo = MaterialOrder.find(params[:mo_id].to_i)
-    @total_money = @mo.price
+    @total_money = 0
+    @mo.mat_order_items.each do |moi|
+      @total_money += moi.price * moi.material_num
+    end
     respond_to do |format|
       format.js
     end
