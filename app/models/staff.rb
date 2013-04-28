@@ -39,8 +39,8 @@ class Staff < ActiveRecord::Base
 
   attr_accessor :password
  # validates:password, :allow_nil => true, :length=>{:within=>6..20} #:confirmation=>true
-
-
+  after_save :save_photo
+  
   def has_password?(submitted_password)
 		encrypted_password == encrypt(submitted_password)
 	end
@@ -64,6 +64,7 @@ class Staff < ActiveRecord::Base
       new_file = file_path.split(".")[0]+"_#{resize}."+file_path.split(".").reverse[0]
       img.run_command("convert #{file_path}  -resize #{resize}x#{resize} #{new_file}")
     end
+    
   end
 
   private
@@ -79,5 +80,10 @@ class Staff < ActiveRecord::Base
   def secure_hash(string)
     Digest::SHA2.hexdigest(string)
   end
+
+  def save_photo
+     self.update_column(:photo, "/uploads/#{self.id}/"+self.photo ) if self.photo
+  end
+
 
 end
