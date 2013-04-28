@@ -1,6 +1,6 @@
 $(document).ready(function(){
   $("#new_card").click(function(){       //显示新建优惠卡弹出层
-    popup("#new_card_detail");
+   
     $.ajax({
         type: "get",
         url: "/sv_cards/new_card"
@@ -9,7 +9,7 @@ $(document).ready(function(){
 
   $("img[name='edit_card']").click(function(){  //编辑优惠卡
     var cid = $(this).parent().prev().val();
-    popup("#new_card_detail");
+  
     $.ajax({
         type: "get",
         url: "/sv_cards/edit_card",
