@@ -33,7 +33,7 @@ class Api::MaterialsController < ApplicationController   #库存控制器api
 
     if params[:mat_order_types]
       JSON.parse(params[:mat_order_types]).each do |m_order_type|
-       mot =  MOrderType.new(m_order_type)
+       mot =  MOrderType.new(m_order_type.except('id'))
        mot.save
       end
     end
