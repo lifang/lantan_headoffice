@@ -7,14 +7,14 @@
     <div class="clear"></div>
     <div class="tab_head">
       <ul>
-        <li class="hover">库存列表</li>
+        <li class="<%= @init_tab.nil? ? "hover" : "" %>">库存列表</li>
         <% if permission?(:logistics_manage, :out_record) %><li>出库记录</li><% end %>
         <% if permission?(:logistics_manage, :in_record) %><li>入库记录</li><% end %>
-        <li>门店订货记录</li>
+        <li class="<%= @init_tab.nil? ? "" : "hover" %>">门店订货记录</li>
       </ul>
     </div>
     <div id="table_show" class="data_body">
-      <div id="materials_tab">    <!--库存列表-->
+      <div id="materials_tab" style="<%= @init_tab.nil? ? "display:block" : "display:none" %>">    <!--库存列表-->
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="materials_tab_table">
           <thead>
             <tr class="hbg">
@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div id="mat_out_tab" style="display:none;">  <!--出库记录-->
+      <div id="mat_out_tab" style="display:none">  <!--出库记录-->
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_out_tab_table">
           <thead>
             <tr class="hbg">
@@ -87,7 +87,7 @@
         </div>
       </div>
 
-      <div id="mat_in_tab" style="display:none;"> <!--入库记录-->
+      <div id="mat_in_tab" style="display:none"> <!--入库记录-->
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_in_tab_table">
           <thead>
             <tr class="hbg">
@@ -125,7 +125,7 @@
         </div>
       </div>
 
-      <div style="display:none;"> <!--门店订货记录-->
+      <div style="<%= @init_tab.nil? ? "display:none" : "display:block" %>"> <!--门店订货记录-->
         <div class="search">
           <div><label>状态：</label>
             <select id="select_mo_status" name="select_mo_status">

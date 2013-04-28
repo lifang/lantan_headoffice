@@ -27,10 +27,10 @@
       <tbody>
         <% @materials.each do |material| %>
           <tr>
-            <td><%= material.code ||= "----" %></td>
+            <td <% if material.storage.to_i <= 0 %>class="data_table_error"<% end %>><%= material.code ||= "----" %></td>
             <td><%= material.name ||= "----"%></td>
             <td><% Material::TYPES_NAMES.each do |key, value| %><% if key == material.types %><%= value %><% end %><% end %></td>
-            <td>存货</td>
+            <td><%if material.storage.to_i > 0 %>存货<% else %>缺货<% end %></td>
             <td><%= material.storage ||= "----"%></td>
             <td><%= material.price ||= "----"%></td>
           </tr>
