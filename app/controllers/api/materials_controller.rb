@@ -33,8 +33,11 @@ class Api::MaterialsController < ApplicationController   #库存控制器api
     mat_order.update_attribute(:sale_id, params[:sale_id]) unless params[:sale_id].blank?
     if params[:mat_order_types]
       JSON.parse(params[:mat_order_types]).each do |m_order_type|
+       mot = MOrderType.find_by_material_order_id_and_pay_types(m_order_type['material_order_id'], m_order_type['pay_types'])
+      unless mot
        mot =  MOrderType.new(m_order_type.except('id'))
        mot.save
+      end
       end
     end
     render :text => "1"

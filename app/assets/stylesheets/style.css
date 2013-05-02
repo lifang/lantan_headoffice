@@ -320,6 +320,13 @@ a.compile_btn { width: 100px;}
 }
 .popup_body { overflow: hidden; padding: 10px; position: relative;}
 .popup_body_area { overflow: hidden;}
+.popup_body_area h2 {
+    height: 32px;
+    line-height: 32px;
+    color:#930205;
+    display: block;
+    font-size: 18px;
+}
 
 
 .popup_body_fieldset { border: 1px #CCCCCC solid;}
