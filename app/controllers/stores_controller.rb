@@ -66,9 +66,11 @@ class StoresController < ApplicationController  #门店控制器
   end
 
   def edit #编辑门店
-    @store = Store.find(params[:store_id].to_i)
+    @store = Store.find_by_id(params[:store_id].to_i)
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
-    @cities = City.where(:parent_id => @provinces.map(&:id))
+    @store_city = City.find_by_id(@store.city_id) if @store.city_id
+    @store_province = City.find_by_id(@store_city.parent_id) if @store_city
+    @cities = City.where(:parent_id => @store_city.parent_id) if @store_city && @store_city.parent_id != 0
   end
   
    def destroy  #删除门店

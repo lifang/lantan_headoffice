@@ -8,13 +8,17 @@
           <select id="edit_store_select_province" name="edit_store_select_province" class="staff">
             <option value="0">请选择省份</option>
             <% @provinces.each do |province| %>
-              <option value="<%= province.id %>" <% if City.find(@store.city.parent_id).id == province.id %>selected<% end %>><%= province.name %></option>
+              <option value="<%= province.id %>" <% if @store_province && @store_province.id == province.id %>selected<% end %>><%= province.name %></option>
             <% end %>
           </select>
           <select id="edit_store_select_city" name="edit_store_select_city" class="staff">
             <option value="0">------</option>
+            <% if @cities %>
             <% @cities.each do |c| %>
-            <option value="<%= c.id %>" <% if @store.city_id == c.id%>selected<% end %>><%= c.name %></option>
+            <option value="<%= c.id %>" <% if @store_city && @store_city.id == c.id%>selected<% end %>><%= c.name %></option>
+            <% end %>
+            <% else %>
+            <option value="<%= @store_city.id %>" selected><%= @store_city.name %></option>
             <% end %>
           </select>
         </div>
