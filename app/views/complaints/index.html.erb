@@ -1,6 +1,5 @@
 <div class="box">
   <div class="data_box">
-
     <div class="search">
       <div><label>统计月份：</label><%= @current_time %></div>
       <%= form_tag "/complaints", :method => :get do %>
@@ -77,7 +76,7 @@
                 否
                 <% end %>
               </td>
-              <td><%= c.process_at.nil? ? "----" : c.process_at.strftime("%Y-%m-%d")  %></td>
+              <td><%= c.process_at.nil? ? "----" : c.process_at.strftime("%Y-%m-%d %H:%m")  %></td>
               <td><%= c.remark ||= "----" %></td>
               <td>
                 <% if c.is_violation %>
@@ -95,15 +94,15 @@
           <ul>
             <li>
               及时率：<span class="load_box">
-                <span class="load_line" style="width:<%= @timely_rate*200 %>px !important"></span>
+                <span class="load_line" style="width:<%= @timely_rate*2 %>px !important"></span>
               </span>&nbsp;&nbsp;
-              <em class="red"><%= format("%.2f",@timely_rate*100).to_f %>%</em>
+              <em class="red"><%= sprintf("%.2f",@timely_rate) %>%</em>
             </li>
             <li>
               解决率：<span class="load_box">
-                <span class="load_line" style="width:<%= @processed_rate*200 %>px !important"></span>
+                <span class="load_line" style="width:<%= @processed_rate*2 %>px !important"></span>
               </span>&nbsp;&nbsp;
-              <em class="red"><%= format("%.2f",@processed_rate*100).to_f  %>%</em>
+              <em class="red"><%= sprintf("%.2f",@processed_rate)  %>%</em>
             </li>
           </ul>
         </div>
@@ -115,5 +114,4 @@
       </div>
     </div>
   </div>
- 
 </div>

@@ -45,9 +45,9 @@
               <td><%= f[0] %></td>
               <td><%= f[1].to_i %></td>
               <td>储值卡</td>
-              <td><%= f[2].to_f %></td>
-              <td><%= f[3].to_f %></td>
-              <td><%= f[4].to_f - f[3].to_f %></td>
+              <td><%= sprintf("%.2f",f[2].to_f) %></td>
+              <td><%= sprintf("%.2f",f[3].to_f) %></td>
+              <td><%= sprintf("%.2f",f[4].to_f - f[3].to_f) %></td>
             </tr>
             <% end %>
             <% end %>
