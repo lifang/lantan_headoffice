@@ -24,15 +24,7 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 }
 .x { width: 10px; height: 10px; background: url(../assets/x.png) no-repeat 0 0; }
 .close { width: 13px; height: 13px; background: url(../assets/close.jpg) no-repeat ; }
-.message {
-    padding: 5px 10px;
-	margin: 5px 0;
-	background: #fffbc1;
-	border: 1px #ed1010 solid;
-	line-height: 24px;
-	position: relative;
-}
-.message a { margin-left: 10px;}
+
 
 .red { color: #F00;}
 /*tab提示*/
@@ -115,6 +107,16 @@ textarea { height: 100px; font-size: 14px; line-height: 24px; padding: 5px;}
 
 .module li a.m_six { background: #930205 url(../assets/module.png) no-repeat -300px -150px;}
 .module li a.m_six:hover { background: #a60205 url(../assets/module.png) no-repeat -300px -150px;}
+
+.module li a.message {
+	width: 31px; 
+	height:24px;
+	background: url(/assets/message.png) no-repeat;
+	position:absolute; 
+	top: 0px;
+	right: 0px;
+	padding-top:3px;
+}
 
 
 /*内页*/
