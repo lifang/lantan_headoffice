@@ -15,8 +15,10 @@ development:
   database: lantan_store
   pool: 5
   username: comdo
+#  username: root
   password: comdo2012
   host: 116.255.135.175
+#  host: localhost
 
 storedb:
   adapter: mysql2

@@ -11,8 +11,8 @@ class ComplaintsController < ApplicationController   #投诉控制器
        "status = 1 and date_format(created_at, '%Y-%m') = '#{Time.now.months_ago(1).strftime("%Y-%m")}'" :
        "status = 1 and date_format(created_at, '%Y-%m') = '#{params[:search_time]}'"
      timely_sql = (params[:search_time].nil? || params[:search_time].empty?) ?
-       "status = 1 and date_format(created_at, '%Y-%m') = '#{Time.now.months_ago(1).strftime("%Y-%m")}' and TO_DAYS(process_at)-TO_DAYS(created_at)<=#{Complaint::TIMELY_DAY} " :
-       "status = 1 and date_format(created_at, '%Y-%m') = '#{params[:search_time]}' and TO_DAYS(process_at)-TO_DAYS(created_at)<=#{Complaint::TIMELY_DAY} "
+       "status = 1 and date_format(created_at, '%Y-%m') = '#{Time.now.months_ago(1).strftime("%Y-%m")}' and timestampdiff(hour,created_at,process_at)<=2" :
+       "status = 1 and date_format(created_at, '%Y-%m') = '#{params[:search_time]}' and timestampdiff(hour,created_at,process_at)<=2 "
     @current_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.months_ago(1).strftime("%Y-%m") : params[:search_time]
     @complaints_time = []    #当前年份所有已过的月份
      current_month = Time.now.strftime("%m").to_i
@@ -27,8 +27,8 @@ class ComplaintsController < ApplicationController   #投诉控制器
        @processed_rate = 0    #解决率
        @timely_rate = 0  #及时率
      else
-       @processed_rate = ((has_processed_complaints.count() * 100)/complaints.count)*0.01
-       @timely_rate = ((timely_complaints.count() * 100)/complaints.count)*0.01
+       @processed_rate = (has_processed_complaints.count().to_f * 100)/complaints.count
+       @timely_rate = (timely_complaints.count().to_f * 100)/complaints.count
      end
   end
 

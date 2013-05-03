@@ -20,5 +20,5 @@ class Complaint < ActiveRecord::Base
 
   STATUS = {:UNTREATED => 0, :PROCESSED => 1} #0 投诉未处理  1 投诉已处理
   IS_VIOLATION = {:YES => 1, :NO => 0} #是否加入考核， 1是 0否
-  TIMELY_DAY = 2 #及时解决的标准
+  TIMELY_HOURS = 2 #XX小时之内解决算及时
 end
