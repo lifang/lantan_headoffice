@@ -1,9 +1,11 @@
 <div class="box">
   <% unless @mat_orders_urgent.blank? %>
+  <div class="message">
     有 <span class="red"><%= @mat_orders_urgent.length %></span> 条催款订单，请您及时与总部联系
     <a href="javascript:void(0);" onclick="toggle_notice(this)">点击查看</a>
     <%= render :partial => 'mat_order_notice', :locals => {:mo_notices => @mat_orders_urgent} %>
-  <% end %>
+  </div>
+<% end %>
   <div class="data_box">
     <div class="data_menu">
       <% if permission?(:logistics_manage, :storage) %><a id="ruku_a" href="JavaScript:void(0)">入库</a><% end %>
