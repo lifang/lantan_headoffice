@@ -23,16 +23,14 @@
       <div class="module">
         <ul>
           <% if permissions_on_menus?(:operate_manage)%><li><%= link_to "运营管理", stores_path, :class => "m_one" %></li><% end %>
-          <% if permissions_on_menus?(:logistics_manage)%><li><%= link_to "物流管理", materials_path, :class => "m_two" %></li><% end %>
+          <% if permissions_on_menus?(:logistics_manage)%><li><%= link_to "物流管理", materials_path, :class => "m_two" %><% if @mat_orders_urgent.length>0 %><a href="/materials?init_tab=mat_order" class="message"><%= @mat_orders_urgent.length %>+</a><% end %></li><% end %>
           <% if permissions_on_menus?(:service_manage)%><li><a href="/complaints" class="m_three">服务管理</a></li><% end %>
           <% if permissions_on_menus?(:market_manage)%><li><%= link_to "营销管理", sv_cards_path, :class => "m_four" %></li><% end %>
           <% if permissions_on_menus?(:base_datas)%><li><%= link_to "基础数据", cars_path, :class => "m_five" %></li><% end %>
 
         </ul>
         <div class="clear"></div>
-        <% if @urge_goods_msg > 0 %>
-        <div id="ugm_div" class="message">最近有 <span class="red"><%= @urge_goods_msg %></span> 条订货相关信息需要您去处理<a href="/materials?init_tab=mat_order">点击查看</a><span id="ugm_div_close" class="x">Close</span></div>
-        <% end %>
+        
       </div>
     </div>
     <div class="foot"><p>Copyright © 2013 杭州澜泰 版权所有</p></div>
