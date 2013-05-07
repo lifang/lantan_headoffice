@@ -9,7 +9,8 @@ class MaterialsController < ApplicationController   #库存控制器
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : "material_orders.status = #{params[:status].to_i}"
     started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : "date_format(material_orders.created_at, '%Y-%m-%d') >= '#{params[:started_time]}'"
     ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : "date_format(material_orders.created_at, '%Y-%m-%d') <= '#{params[:ended_time]}'"
-
+    @urge_goods_msg = Notice.where("status = #{Notice::STATUS[:NOMAL]} and types = #{Notice::TYPES[:URGE_GOODS]}")
+    @mat_orders_urgent = MaterialOrder.where(:id => @urge_goods_msg.map(&:target_id))
     @materials = Material.normal.paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("materials_tab")
     @mat_out_orders = MatOutOrder.joins(:material).includes(:material).order("mat_out_orders.created_at desc").paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_out_tab")
     @mat_in_orders = MatInOrder.joins(:material).includes(:material).order("mat_in_orders.created_at desc").paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_in_tab")

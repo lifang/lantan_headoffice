@@ -321,3 +321,9 @@ $(document).ready(function(){
         }
     })   
 })
+function toggle_notice(obj){
+    if($(obj).text()=="点击查看"){
+       $(obj).text(" 隐藏");
+    }else{$(obj).text("点击查看")}
+    $(obj).next().toggle();
+}
