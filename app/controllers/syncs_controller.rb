@@ -1,7 +1,7 @@
 #encoding: utf-8
 require 'json'
 class SyncsController < ActionController::Base
-  #  before_filter :sign?,:except=>["upload_file", "is_generate_zip"]
+  before_filter :sign?,:except=>["upload_file", "is_generate_zip","upload_image"]
   
   def upload_file
     begin
@@ -24,4 +24,16 @@ class SyncsController < ActionController::Base
     end
   end
 
+
+  def upload_image
+    filename = Time.now.to_i.to_s + params[:imgFile].original_filename
+    time = Time.now.strftime("%Y%m%d")
+    dir = "#{File.expand_path(Rails.root)}/public/upload_images"
+    Dir.mkdir(dir) unless File.directory?(dir)
+    Dir.mkdir("#{dir}/#{time}") unless File.directory?("#{dir}/#{time}")
+    File.open("#{dir}/#{time}/#{filename}", "wb") do |f|
+      f.write(params[:imgFile].read)
+    end
+    render :json => {:error=>0, :url=>"/upload_images/#{time}/#{filename}"}.to_json
+  end
 end
