@@ -45,22 +45,23 @@ class StoresController < ApplicationController  #门店控制器
     if store.blank?
       current_store = Store.new(:name => params[:new_store_name].strip, :address => params[:new_store_address].strip, :phone => params[:new_store_phone].strip,
         :contact => params[:new_store_contact].strip, :status => params[:new_store_status].to_i,:opened_at => params[:new_store_open_time].strip,
-        :city_id => params[:new_store_select_city].to_i)
+        :city_id => params[:new_store_select_city].to_i, :position => params[:new_store_location_x].strip+","+params[:new_store_location_y].strip)
       if current_store.save
-        flash[:msg] = "创建成功!"
+        flash[:notice] = "创建成功!"
       end
     else
-      flash[:msg] = "创建失败，该城市已存在同名的店面!"
+      flash[:notice] = "创建失败，该城市已存在同名的店面!"
     end
     redirect_to stores_path
   end
 
   def update  #更新门店
-    @store = Store.find_by_id(params[:id])
-      if @store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
+    store = Store.find_by_id(params[:id])
+      if store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
         :contact => params[:edit_store_contact].strip, :phone => params[:edit_store_phone].strip, :address => params[:edit_store_address].strip,
-        :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i)
-        flash[:msg] = "更新成功!"
+        :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i, :position =>
+          params[:edit_store_location_x]+","+params[:edit_store_location_y])
+        flash[:notice] = "更新成功!"
         redirect_to stores_path
     end
   end

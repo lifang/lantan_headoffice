@@ -1,6 +1,6 @@
 <%= form_for @store do %>
   <div class="popup_box">
-    <h1>新建门店<a href="#" class="close">关闭</a></h1>
+    <h1>新建门店<a href="JavaScript:void(0)" class="close">关闭</a></h1>
     <div class="popup_body">
       <div class="popup_body_area">
         <div class="item">
@@ -38,10 +38,15 @@
         <div class="item">
           <label>门店状态：</label>
           <select name="new_store_status">
-            <option value="2" <% if @store.status == 2%>selected<% end %>>筹备中</option>
-            <option value="1" <% if @store.status == 1%>selected<% end %>>正常营业</option>
-            <option value="0" <% if @store.status == 0%>selected<% end %>>已关闭</option>
+            <option value="2">筹备中</option>
+            <option value="1">正常营业</option>
+            <option value="0">已关闭</option>
           </select>
+        </div>
+        <div class="item">
+          <label>门店坐标：</label>
+          <%= text_field_tag 'new_store_location_x',"", :class => "xyAxis" %>
+         <%= text_field_tag 'new_store_location_y',"", :class => "xyAxis" %>
         </div>
       </div>
       <div class="btn_box">
