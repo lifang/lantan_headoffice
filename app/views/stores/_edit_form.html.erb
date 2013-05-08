@@ -1,6 +1,6 @@
 <%= form_for @store, :url => store_path(@store), :method => :put do %>
   <div class="popup_box">
-    <h1>编辑门店<a href="#" class="close">关闭</a></h1>
+    <h1>编辑门店<a href="JavaScript:void(0)" class="close">关闭</a></h1>
     <div class="popup_body">
       <div class="popup_body_area">
         <div class="item">
@@ -49,6 +49,11 @@
             <option value="1" <% if @store.status == 1%>selected<% end %>>正常营业</option>
             <option value="0" <% if @store.status == 0%>selected<% end %>>已关闭</option>
           </select>
+        </div>
+        <div class="item">
+          <label>门店坐标：</label>
+          <%= text_field_tag 'edit_store_location_x', @store.position.nil? ? "" : @store.position.split(",")[0], :class => "xyAxis" %>
+          <%= text_field_tag 'edit_store_location_y', @store.position.nil? ? "" : @store.position.split(",")[1], :class => "xyAxis" %>
         </div>
       </div>
       <div class="btn_box">

@@ -35,8 +35,8 @@ class MaterialOrder < ActiveRecord::Base
 
   def sale_price
     if self.sale_id && self.sale_id!=0
-      sale = Sale.find self.sale_id
-      sale.sub_content
+      sale = Sale.find_by_id self.sale_id
+      return sale.nil? ? nil : sale.sub_content
     end
   end
 
