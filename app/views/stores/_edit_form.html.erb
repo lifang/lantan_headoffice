@@ -50,6 +50,10 @@
             <option value="0" <% if @store.status == 0%>selected<% end %>>已关闭</option>
           </select>
         </div>
+        <div class="item">
+          <label>门店坐标：</label>
+          X:<input type="text" name="location_x" id="location_x"/>&nbsp:Y:<input type="text" name="location_y" id="location_y"/>
+        </div>
       </div>
       <div class="btn_box">
         <button id="edit_store_btn" type="submit" class="confirm_btn">确定</button>
