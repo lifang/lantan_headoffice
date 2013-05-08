@@ -90,10 +90,10 @@
   </table>
   <% end %>
    <div class="otherWay">
-    <div class="amount">总计：<%= @total_money %>&nbsp;</div>
-    <% if @mo.svc_use_price %><div class="amount">储值卡抵用：<%= @mo.svc_use_price %>&nbsp;</div><% end %>
-    <% if @mo.sale_price %><div class="amount">活动优惠：<%= @mo.sale_price %></div><% end %>
-    <% if @mo.pay_type_name %><div class="amount"><%= @mo.pay_type_name %>：<%= @mo.price %></div><% end %>
+    <div class="amount"><span>总计：</span><%= @total_money %>&nbsp;</div>
+    <% if @mo.svc_use_price %><div class="amount"><span>储值卡抵用：</span><%= @mo.svc_use_price %>&nbsp;</div><% end %>
+    <% if @mo.sale_price %><div class="amount"><span>活动优惠：</span><%= @mo.sale_price %>&nbsp;</div><% end %>
+    <% if @mo.pay_type_name %><div class="amount"><span><%= @mo.pay_type_name %>：</span><%= @mo.price %>&nbsp;</div><% end %>
   </div>
     </div>
     <div id="order_detail_btn_box" class="btn_box">
