@@ -59,7 +59,7 @@ class Sync < ActiveRecord::Base
     file_path = Constant::LOCAL_DIR+"bam_syncs"
     Dir.mkdir Constant::LOG_DIR  unless File.directory?  Constant::LOG_DIR
     flog = File.open(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+".log","a+")
-    file_list = File.new(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","r+")
+    file_list = File.new(Constant::LOG_DIR+Time.now.strftime("%Y-%m").to_s+"_list.log","a+")
     files = file_list.read
     file_list.close
     if files.split("bam_syncs").length == 2
@@ -93,9 +93,8 @@ class Sync < ActiveRecord::Base
       end
       paths = paths.flatten.sort.select { |item| item > files}
     else
-      paths =  get_all_list(file_path)
+      paths =  get_all_list(file_path).sort
     end
-    p paths
     unless paths.blank?
       paths.each do |path|
         if  File.extname(path) == '.zip'
