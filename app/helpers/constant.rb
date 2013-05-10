@@ -90,4 +90,6 @@ module Constant
   C_PICSIZE = [148,154]
   SVCARD_PICSIZE = [148,154,50]
   STAFF_PICSIZE = [100]
+
+  PIC_SIZE =1024  #按kb计算
 end

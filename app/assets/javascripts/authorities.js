@@ -92,7 +92,7 @@ $(document).ready(function(){
       })
   });
 
-
+var pic_types = ['gif', 'jpg', 'jpeg', 'png', 'bmp'];
     //创建员工信息验证, 编辑员工信息验证
     $(".save_staff").live("click", function(){
        if($(this).parents('form').find("#staff_name").val() == ''){
@@ -111,12 +111,18 @@ $(document).ready(function(){
            tishi_alert("地址不能为空!");
            return false;
        }
-       if($(this).attr("id") == "new_staff_btn"){
-           if($(this).parents('form').find("#staff_photo").val() == ''){
-               tishi_alert("照片不能为空!");
-               return false;
-           }
+       if($(this).parents('form').find("#staff_photo").val() == ''){
+           tishi_alert("照片不能为空!");
+           return false;
+       }else{
+           var photo = $("#staff_photo").val().split(".")
+           var photo_type = photo[photo.length -1].toLowerCase();
+           if(pic_types.indexOf(photo_type)<0){
+              tishi_alert("照片格式不对！正确格式是："+pic_types);
+              return false;
+           }else{ return true}
        }
+       
        $(this).parents('form').submit();
     });
 })

@@ -9,7 +9,6 @@ $(document).ready(function(){
 
   $("img[name='edit_card']").click(function(){  //编辑优惠卡
     var cid = $(this).parent().prev().val();
-  
     $.ajax({
         type: "get",
         url: "/sv_cards/edit_card",
