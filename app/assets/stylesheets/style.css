@@ -41,10 +41,10 @@ textarea {
 .alert_h { width: 400px; margin: 20px auto; line-height: 24px; font-size: 16px; color:#930205; text-align: center;}
 
 /*确定  取消 btn*/
-.btn_box { width: 170px; margin: 10px auto; text-align: center;}
-.btn_box_s { width: 85px; margin: 10px auto;}
-.btn_box_w { width: 195px; margin: 10px auto;}
-.confirm_btn, .cancel_btn { padding: 5px 15px; _padding: 2px 7px; margin: 0 10px; color: #FFF;cursor: pointer; display: inline-block;}
+.btn_box, { width: 200px; margin: 10px auto; text-align: center;}
+.btn_box_s { width: 200px; margin: 10px auto; text-align: center;}
+.btn_box_w { width: 200px; margin: 10px auto; text-align: center;}
+.confirm_btn, .cancel_btn { padding: 5px 15px; margin: 0 10px; color: #FFF;cursor: pointer; display: inline-block;}
 .confirm_btn { background: #930205;}
 .cancel_btn { background: #999999;}
 
@@ -386,7 +386,8 @@ a.compile_btn { width: 100px;}
 .item select {float: left;}
 .item select.staff { width: 70px; margin-right: 20px; _margin-right: 16px;}
 .item select.ymd { width: 50px; margin-right: 5px;}
-.item input.xyAxis { width: 75px; margin-right: 5px;}
+.item input.xyAxis { width: 40px; margin-right: 5px;}
+.mapIcon { float: right; margin-right:17px;}
 
 .item_textarea { margin: 20px 10px; float: left; overflow: hidden; width: 590px;}
 .width_textarea { width: 460px;}
