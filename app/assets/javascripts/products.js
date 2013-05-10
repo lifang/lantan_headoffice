@@ -285,7 +285,7 @@ function prod_delete(id){
             type : 'post',
             dataType : 'script',
             url : "/products/"+ id+"/prod_delete"
-        });
+        })
     }
 }
 

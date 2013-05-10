@@ -69,6 +69,7 @@ $(document).ready(function(){
             obj.val(obj.prev().prev().text());
             obj.attr("style", "display:none");
             obj.prev().prev().attr("style", "display:block");
+            tishi_alert("更新失败，已有该型号!")
           }
         }
       })

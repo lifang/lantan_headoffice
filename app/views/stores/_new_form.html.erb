@@ -1,4 +1,4 @@
-<%= form_for @store do %>
+<%= form_for @store, :html =>{:multipart => true } do %>
   <div class="popup_box">
     <h1>新建门店<a href="JavaScript:void(0)" class="close">关闭</a></h1>
     <div class="popup_body">
@@ -18,7 +18,7 @@
         <div class="item">
           <label>门店名称：</label>
           <%= text_field_tag 'new_store_name' %>
-        </div>
+        </div>       
         <div class="item">
           <label>负责人：</label>
           <%= text_field_tag 'new_store_contact'%>
@@ -45,8 +45,13 @@
         </div>
         <div class="item">
           <label>门店坐标：</label>
-          <%= text_field_tag 'new_store_location_x',"", :class => "xyAxis" %>
-         <%= text_field_tag 'new_store_location_y',"", :class => "xyAxis" %>
+          <span>X-</span><%= text_field_tag 'new_store_location_x',"", :class => "xyAxis" %>
+          <span>Y-</span><%= text_field_tag 'new_store_location_y',"", :class => "xyAxis" %>
+          <a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank" class="mapIcon"><img src="assets/mapIcon.png" alt="点击打开地图查看" title="不知道门店坐标?点击此处"/></a>
+        </div>
+        <div class="item_textarea">
+          <label>门店照片：</label>
+          <%= file_field_tag 'new_store_img' %>
         </div>
       </div>
       <div class="btn_box">

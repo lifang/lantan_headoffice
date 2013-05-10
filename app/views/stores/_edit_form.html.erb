@@ -1,4 +1,4 @@
-<%= form_for @store, :url => store_path(@store), :method => :put do %>
+<%= form_for @store, :url => store_path(@store),:html => {:multipart => true}, :method => :put do %>
   <div class="popup_box">
     <h1>编辑门店<a href="JavaScript:void(0)" class="close">关闭</a></h1>
     <div class="popup_body">
@@ -54,7 +54,12 @@
           <label>门店坐标：</label>
           <span>X-</span><%= text_field_tag 'edit_store_location_x', @store.position.nil? ? "" : @store.position.split(",")[0], :class => "xyAxis" %>
           <span>Y-</span><%= text_field_tag 'edit_store_location_y', @store.position.nil? ? "" : @store.position.split(",")[1], :class => "xyAxis" %>
-          <a href="http://api.map.baidu.com/lbsapi/creatmap/index.html" class="mapIcon"><img src="assets/mapIcon.png" alt="点击打开地图查看"/></a>
+         <a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank" class="mapIcon"><img src="assets/mapIcon.png" alt="点击打开地图查看" title="不知道门店坐标?点击此处"/></a>
+        </div>
+        <div class="item_textarea">
+          <label>门店照片：</label>
+          <%= file_field_tag 'edit_store_img' %>
+          <span class="show_pic"><img src="<%= @store.img_url.nil? ? "" : @store.img_url.gsub("img#{@store.id}", "img#{@store.id}_#{Constant::STORE_PICSIZE[1]}") %>"/></span>
         </div>
       </div>
       <div class="btn_box">
