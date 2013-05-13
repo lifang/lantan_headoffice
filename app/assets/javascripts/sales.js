@@ -237,6 +237,13 @@ $("#create_button").click(function(){  //创建验证
     }else if($("#sale_img").val() == ""){
         tishi_alert("请选择一张图片!");
         return false;
+    }else if($("#sale_img").val() != ""){
+        var img = $("#sale_img").val();
+        var img_suff = img.substring(img.lastIndexOf(".")+1).toLowerCase();
+        if(img_suff != "jpg" && img_suff != "bmp" && img_suff != "gif" && img_suff != "png"){
+            tishi_alert("请上传格式正确的图片!");
+            return false;
+        }
     }else if(new Date($("#ended_time").val()) > 0 && new Date($("#ended_time").val()) < new Date($("#started_time").val())){
         tishi_alert("结束时间必须在开始时间之后!");
         return false;
@@ -268,6 +275,13 @@ $("#edit_create_button").live("click",function(){ //编辑验证
     }else if(new Date($("#edit_ended_time").val()) > 0 && new Date($("#edit_ended_time").val()) < new Date($("#edit_started_time").val())){
         tishi_alert("结束时间必须在开始时间之后!");
         return false;
+    }else if($("#edit_sale_img").val() != ""){
+        var img = $("#edit_sale_img").val();
+        var img_suff = img.substring(img.lastIndexOf(".")+1).toLowerCase();
+        if(img_suff != "jpg" && img_suff != "png" && img_suff != "gif" && img_suff != "bmp"){
+            tishi_alert("请上传格式正确的图片!");
+            return false;
+        }
     }
      $("#edit_sale_introduction").val(edit_sale_desc.html());
 });

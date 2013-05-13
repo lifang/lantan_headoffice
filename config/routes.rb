@@ -43,6 +43,7 @@ LantanHeadoffice::Application.routes.draw do
       get :urge_payment
       post :ruku
       get :m_list
+      get :inval_notice
     end
   end
   resources :authorities do

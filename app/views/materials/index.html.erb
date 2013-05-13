@@ -1,7 +1,7 @@
 <div class="box">
   <% unless @mat_orders_urgent.blank? %>
   <div class="message">
-    有 <span class="red"><%= @mat_orders_urgent.length %></span> 条催款订单，请您及时与总部联系
+    有 <span class="red"><%= @mat_orders_urgent.length %></span> 条催货订单，请及时查看
     <a href="javascript:void(0);" onclick="toggle_notice(this)">点击查看</a>
     <%= render :partial => 'mat_order_notice', :locals => {:mo_notices => @mat_orders_urgent} %>
   </div>
