@@ -22,8 +22,8 @@ class Staff < ActiveRecord::Base
 
   scope :normal, where(:status => STATUS[:normal])
 
-  S_HEAD = {:BOSS=>0,:MANAGER=>2,:NORMAL=>1} #0老板 2 部门经理 1员工
-  N_HEAD = {0=>"老板", 2=>"部门经理",1=>"员工"}
+  S_HEAD = {:BOSS=>0,:MANAGER=>2,:NORMAL=>1} #0老板 2 店长 1员工
+  N_HEAD = {0=>"老板", 2=>"店长", 1=>"员工"}
 
 
   #教育程度
