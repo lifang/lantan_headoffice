@@ -57,6 +57,13 @@ $(document).ready(function(){
       }else if($("#card_url").val() == ""){
         tishi_alert("请上传卡的图片!");
         return false;
+      }else if($("#card_url").val() != ""){
+        var img = $("#card_url").val();
+        var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
+        if(img_suff != "jpg" && img_suff != "png" && img_suff != "gif" && img_suff != "bmp"){
+             tishi_alert("请上传格式正确的图片!");
+             return false;
+        }
       }else if($("#card_description").val() == ""){
         tishi_alert("请描述该卡!");
         return false;
@@ -74,6 +81,13 @@ $(document).ready(function(){
       }else if($("#card_url").val() == ""){
         tishi_alert("请上传卡的图片!");
         return false;
+      }else if($("#card_url").val() != ""){
+        var img = $("#card_url").val();
+        var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
+        if(img_suff != "jpg" && img_suff != "png" && img_suff != "gif" && img_suff != "bmp"){
+             tishi_alert("请上传格式正确的图片!");
+             return false;
+        }
       }else if($("#discount_value").val()== ""){
           tishi_alert("请输入折扣!");
           return false;
@@ -105,6 +119,13 @@ $(document).ready(function(){
       }else if($("#edit_ended_money").val() == "" || isNaN($("#edit_ended_money").val())){
         tishi_alert("请输入赠送金额!");
         return false;
+      }else if($("#edit_card_url").val() != ""){
+          var img = $("#edit_card_url").val();
+          var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
+          if(img_suff != "jpg" && img_suff != "png" && img_suff != "gif" && img_suff != "bmp" ){
+             tishi_alert("请上传格式正确的图片!");
+             return false;
+          }
       }
     }else if(type == 0){
       if($("#edit_card_name").val() == ""){
@@ -119,10 +140,16 @@ $(document).ready(function(){
       }else if($("#edit_discount_price").val() == "" || isNaN($("#edit_discount_price").val())){
           tishi_alert("请输入有效的打折卡金额!");
           return false;
-      }
-      else if($("#edit_card_description").val() == ""){
+      }else if($("#edit_card_description").val() == ""){
         tishi_alert("请描述该卡!");
         return false;
+      }else if($("#edit_card_url").val() != ""){
+          var img = $("#edit_card_url").val();
+          var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
+          if(img_suff != "jpg" && img_suff != "png" && img_suff != "gif" && img_suff != "bmp" ){
+             tishi_alert("请上传格式正确的图片!");
+             return false;
+          }
       }
     }
   })

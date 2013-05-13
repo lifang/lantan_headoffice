@@ -58,7 +58,7 @@
         </div>
         <div class="item_textarea">
           <label>门店照片：</label>
-          <%= file_field_tag 'edit_store_img' %>
+          <%= file_field_tag 'edit_store_img',:class => "file" %>
           <span class="show_pic"><img src="<%= @store.img_url.nil? ? "" : @store.img_url.gsub("img#{@store.id}", "img#{@store.id}_#{Constant::STORE_PICSIZE[1]}") %>"/></span>
         </div>
       </div>

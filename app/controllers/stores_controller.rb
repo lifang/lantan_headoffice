@@ -31,8 +31,7 @@ class StoresController < ApplicationController  #门店控制器
     @store = Store.find_by_sql("select s.*, c.name c_name, p.name p_name from lantan_db_all.stores s
                                 left join cities c on c.id = s.city_id
                                 left join cities p on c.parent_id = p.id
-                                where s.id = #{params[:store_id]}")[0]
-
+                                where s.id = #{params[:store_id].to_i}")[0]
   end
 
   def new #新建
@@ -55,7 +54,6 @@ class StoresController < ApplicationController  #门店控制器
           flash[:notice] = "图片上传失败!"
         end
         flash[:notice] = "创建成功!"
-
       end
     else
       flash[:notice] = "创建失败，该城市已存在同名的店面!"
