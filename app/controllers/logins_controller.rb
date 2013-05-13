@@ -21,6 +21,7 @@ class LoginsController < ApplicationController #登录控制器
 
   def create #登陆验证
     staff = Staff.find_by_username(params[:username])
+    @user_name = params[:username]
    if staff and staff.has_password?(params[:password])
       cookies[:user_id]={:value =>staff.id, :path => "/", :secure  => false}
       cookies[:user_name]={:value =>staff.name, :path => "/", :secure  => false}
@@ -32,12 +33,12 @@ class LoginsController < ApplicationController #登录控制器
         cookies.delete(:user_name)
         cookies.delete(:user_roles)
         cookies.delete(:model_role)
-        flash[:notice] = "抱歉，您没有访问权限"
-        redirect_to "/"
+        flash.now[:notice] = "抱歉，您没有访问权限"
+        render :action => :index, :layout => false
       end
     else
-      flash[:notice] = "用户名或密码错误!"
-      redirect_to '/'
+      flash.now[:notice] = "用户名或密码错误!"
+      render :action => :index, :layout => false
     end
   end
 

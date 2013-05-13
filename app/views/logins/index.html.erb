@@ -16,16 +16,16 @@
     <div class="login_bg">
       <div class="login_box">
         <%= form_tag "/logins/create", :onsubmit => "return login_validate()" do %>
-        <div class="login_list">
-          <%=  text_field_tag 'username' %>
-        </div>
-        <div class="login_list">
-          <%=  password_field_tag 'password'%>
-        </div>
-        <div class="login_btn">
-          <button>登录</button>
-        </div>
-      <% end %>        
+          <div class="login_list">
+            <%=  text_field_tag 'username',@user_name %>
+          </div>
+          <div class="login_list">
+            <%=  password_field_tag 'password'%>
+          </div>
+          <div class="login_btn">
+            <button>登录</button>
+          </div>
+        <% end %>
       </div>
     </div>
     <%= render :partial => "/common/tishi_alert" %>
