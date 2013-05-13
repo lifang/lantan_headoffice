@@ -145,4 +145,15 @@ class MaterialsController < ApplicationController   #库存控制器
       format.js
     end
   end
+
+  def inval_notice
+    material_order = MaterialOrder.find params[:mo_id] if params[:mo_id]
+    notice = Notice.find_by_target_id material_order.id unless material_order.nil?
+    render :text => "0" if notice.nil?
+    if notice.update_attributes({:status => Notice::STATUS[:INVALID]})
+      render :text => "1"
+    else
+      render :text => "0"
+    end
+  end
 end
