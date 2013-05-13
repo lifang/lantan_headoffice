@@ -23,6 +23,17 @@ $(document).ready(function(){
         }
     });
 
+    //after sort
+        $("#materials_tab_table").bind("sortEnd",function() {
+            $("#materials_tab_table tbody").find('tr').each(function(i){
+            if(i%2==0){
+              $(this).removeClass('tbg');
+            }else{
+              $(this).addClass('tbg');
+            }
+            })
+         });
+
     $("#mat_out_tab_table").tablesorter({
         headers:
         {
@@ -37,6 +48,16 @@ $(document).ready(function(){
             }
         }
     });
+        //after sort
+        $("#mat_out_tab_table").bind("sortEnd",function() {
+            $("#mat_out_tab_table tbody").find('tr').each(function(i){
+            if(i%2==0){
+              $(this).removeClass('tbg');
+            }else{
+              $(this).addClass('tbg');
+            }
+            })
+         });
 
     $("#mat_in_tab_table").tablesorter({
         headers:
@@ -55,6 +76,16 @@ $(document).ready(function(){
             }
         }
     });
+    //after sort
+        $("#mat_in_tab_table").bind("sortEnd",function() {
+            $("#mat_in_tab_table tbody").find('tr').each(function(i){
+            if(i%2==0){
+              $(this).removeClass('tbg');
+            }else{
+              $(this).addClass('tbg');
+            }
+            })
+         });
 
     $("#materials_list_table").tablesorter({
         headers:
@@ -73,6 +104,17 @@ $(document).ready(function(){
             }
         }
     })
+    //after sort
+        $("#materials_list_table").bind("sortEnd",function() {
+            $("#materials_list_table tbody").find('tr').each(function(i){
+            if(i%2==0){
+              $(this).removeClass('tbg');
+            }else{
+              $(this).addClass('tbg');
+            }
+            })
+         });
+
     $("#started_time").click(function(){
         WdatePicker();
     });
