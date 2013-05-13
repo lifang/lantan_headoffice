@@ -327,3 +327,21 @@ function toggle_notice(obj){
     }else{$(obj).text("点击查看")}
     $(obj).next().toggle();
 }
+function invalNotice(obj){
+    var mo_id = $(obj).attr('alt');
+    var mesNum = $(obj).parents(".message").find("span.red");
+    $.ajax({
+        url:'/materials/inval_notice',
+        type:'get',
+        data:{mo_id : mo_id},
+        success:function(data){
+          if(data=="1"){
+              tishi_alert("处理成功！");
+              $(obj).parents("tr").hide();
+              $(mesNum).text(parseInt($(mesNum).text())-1)
+          }else{
+              tishi_alert("处理失败！");
+          }
+        }
+    })
+}

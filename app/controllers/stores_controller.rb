@@ -31,8 +31,7 @@ class StoresController < ApplicationController  #门店控制器
     @store = Store.find_by_sql("select s.*, c.name c_name, p.name p_name from lantan_db_all.stores s
                                 left join cities c on c.id = s.city_id
                                 left join cities p on c.parent_id = p.id
-                                where s.id = #{params[:store_id]}")[0]
-
+                                where s.id = #{params[:store_id].to_i}")[0]
   end
 
   def new #新建
@@ -47,6 +46,13 @@ class StoresController < ApplicationController  #门店控制器
         :contact => params[:new_store_contact].strip, :status => params[:new_store_status].to_i,:opened_at => params[:new_store_open_time].strip,
         :city_id => params[:new_store_select_city].to_i, :position => params[:new_store_location_x].strip+","+params[:new_store_location_y].strip)
       if current_store.save
+        begin
+          new_store_img = params[:new_store_img]
+          new_store_url = Store.upload_img(new_store_img, current_store.id, Constant::STORE_PICS, Constant::STORE_PICSIZE)
+          current_store.update_attribute("img_url", new_store_url)
+        rescue
+          flash[:notice] = "图片上传失败!"
+        end
         flash[:notice] = "创建成功!"
       end
     else
@@ -57,12 +63,20 @@ class StoresController < ApplicationController  #门店控制器
 
   def update  #更新门店
     store = Store.find_by_id(params[:id])
-      if store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
+    if store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
         :contact => params[:edit_store_contact].strip, :phone => params[:edit_store_phone].strip, :address => params[:edit_store_address].strip,
         :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i, :position =>
           params[:edit_store_location_x]+","+params[:edit_store_location_y])
-        flash[:notice] = "更新成功!"
-        redirect_to stores_path
+      if !params[:edit_store_img].nil?
+        begin
+          new_store_url = Store.upload_img(params[:edit_store_img], store.id, Constant::STORE_PICS, Constant::STORE_PICSIZE)
+          store.update_attribute("img_url", new_store_url)
+        rescue
+          flash[:notice] = "图片更新失败"
+        end
+      end
+      flash[:notice] = "更新成功!"
+      redirect_to stores_path
     end
   end
 

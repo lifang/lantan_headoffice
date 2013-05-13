@@ -41,9 +41,9 @@ textarea {
 .alert_h { width: 400px; margin: 20px auto; line-height: 24px; font-size: 16px; color:#930205; text-align: center;}
 
 /*确定  取消 btn*/
-.btn_box, { width: 200px; margin: 10px auto; text-align: center;}
-.btn_box_s { width: 200px; margin: 10px auto; text-align: center;}
-.btn_box_w { width: 200px; margin: 10px auto; text-align: center;}
+.btn_box { margin: 10px auto; text-align: center;}
+.btn_box_s {margin: 10px auto; text-align: center;}
+.btn_box_w { margin: 10px auto; text-align: center;}
 .confirm_btn, .cancel_btn { padding: 5px 15px; margin: 0 10px; color: #FFF;cursor: pointer; display: inline-block;}
 .confirm_btn { background: #930205;}
 .cancel_btn { background: #999999;}
@@ -241,7 +241,7 @@ textarea {
 .data_table { text-align: center; margin-bottom: 30px;}
 
 .data_table tr.hbg td, .data_table tr.hbg th { background: #c59fa0; color: #FFF; font-weight: bolder; font-size: 14px;}
-.data_table td, .data_table th { background: #FFF; line-height: 32px; height: 32px; font-size: 12px;}
+.data_table td, .data_table th { background: #FFF; line-height: 32px; height: 32px; font-size: 12px;word-break: break-all;}
 
 .data_table tr.tbg td {background-color:#fff5f6}
 .data_table td a { background: #026c93; padding: 0px 5px; color: #FFF; font-size: 12px; margin: 0 5px;}

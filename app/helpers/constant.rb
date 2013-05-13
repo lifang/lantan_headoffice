@@ -77,6 +77,7 @@ module Constant
   PCARD_PICS = "pcard_pics"
   SALE_PICS = "saleimg"
   SVCARD_PICS = "cardimg"
+  STORE_PICS = "storeimg"
   #产品和活动的类别  图片名称分别为 product_pics 和service_pics
   PRODUCT = "PRODUCT"
   SERVICE = "SERVICE"
@@ -90,6 +91,6 @@ module Constant
   C_PICSIZE = [148,154]
   SVCARD_PICSIZE = [148,154,50]
   STAFF_PICSIZE = [100]
-
-  PICITURE_SIZE =1024  #按kb计算
+  STORE_PICSIZE = [1000,50]
+  PIC_SIZE =1024  #按kb计算
 end

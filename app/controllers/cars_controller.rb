@@ -40,7 +40,7 @@ class CarsController < ApplicationController   #车型控制器
 
   def update_model #修改型号名字
     model = CarModel.find(params[:id].to_i)
-    if CarModel.where("car_brand_id = #{params[:id].to_i} and name = '#{params[:name]}'").blank?
+     if  CarModel.where("car_brand_id = #{model.car_brand_id} and name = '#{params[:name]}'").blank?
       if model.update_attribute("name", params[:name])
       render :text => 1
       end

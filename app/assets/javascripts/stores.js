@@ -56,6 +56,21 @@ $(document).ready(function(){
             tishi_alert("请确定门店创建时间");
             return false;
         }
+        else if($("#new_store_location_x").val() == "" || $("#new_store_location_y").val() == ""){
+            tishi_alert("请输入正确的门店坐标");
+            return false;
+        }
+        else if($("#new_store_img").val() == ""){
+            tishi_alert("请上传门店的图片");
+            return false;
+        }else{
+            var img = $("#new_store_img").val();
+            var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
+            if(img_suff != "jpg" && img_suff != "png" && img_suff != "bmp" && img_suff != "gif"){
+                tishi_alert("请上传格式正确的图片!");
+                return false;
+            }
+        }
     })
 
     $("#edit_store_btn").live("click", function(){   //编辑门店验证
@@ -86,6 +101,17 @@ $(document).ready(function(){
         else if($("#edit_store_open_time").val() == ""){
             tishi_alert("请确定门店创建时间");
             return false;
+        }
+        else if($("#edit_store_location_x").val() == "" || $("#edit_store_location_y").val() == ""){
+            tishi_alert("请输入正确的门店坐标");
+            return false;
+        }else if($("#edit_store_img").val() != ""){
+           var img = $("#edit_store_img").val();
+           var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
+           if(img_suff != "jpg" && img_suff != "png" && img_suff != "bmp" && img_suff != "gif"){
+               tishi_alert("请上传格式正确的图片!");
+               return false;
+           }
         }
     })
 
