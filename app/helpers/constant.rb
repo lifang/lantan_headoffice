@@ -90,5 +90,5 @@ module Constant
   SVCARD_PICSIZE = [148,154,50]
   STAFF_PICSIZE = [100]
   STORE_PICSIZE = [1000,50]
-  PIC_SIZE =1024  #按kb计算
+  PICITURE_SIZE =1024  #按kb计算
 end

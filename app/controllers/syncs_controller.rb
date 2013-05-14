@@ -27,14 +27,14 @@ class SyncsController < ActionController::Base
 
   def upload_image
     filename = Time.now.to_i.to_s + params[:imgFile].original_filename
-    time = Time.now.strftime("%Y%m%d")
-    date =Time.now.strftime("%Y%m")
+    time = Time.now.strftime("%Y-%m-%d")
+    date =Time.now.strftime("%Y-%m")
     dir = "#{File.expand_path(Rails.root)}/public/upload_images"
     Dir.mkdir(dir) unless File.directory?(dir)
     Dir.mkdir("#{dir}/#{date}") unless File.directory?("#{dir}/#{date}")
     Dir.mkdir("#{dir}/#{date}/#{time}") unless File.directory?("#{dir}/#{date}/#{time}")
     img_size=params[:imgFile].size*100.0/1024/100
-    if img_size <= Constant::PIC_SIZE
+    if img_size <= Constant::PICITURE_SIZE
       File.open("#{dir}/#{date}/#{time}/#{filename}", "wb") do |f|
         f.write(params[:imgFile].read)
       end

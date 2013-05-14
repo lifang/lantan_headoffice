@@ -17,6 +17,16 @@
             }
         }
     });
+    //after sort
+        $("#mat_in_tab_table").bind("sortEnd",function() {
+            $("#mat_in_tab_table tbody").find('tr').each(function(i){
+            if(i%2==0){
+              $(this).removeClass('tbg');
+            }else{
+              $(this).addClass('tbg');
+            }
+            })
+         });
   });
 </script>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table" id="mat_in_tab_table">
