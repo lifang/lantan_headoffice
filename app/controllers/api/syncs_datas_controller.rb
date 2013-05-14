@@ -47,7 +47,7 @@ class Api::SyncsDatasController < ApplicationController
         :conditions => [" types in(#{JvSync::TYPES[:LANTAN_STORE]}, #{JvSync::TYPES[:LANTAN_DB_ALL]})"])
     else
       jv_sync = JvSync.find(:all, 
-        :conditions => [" types in(#{JvSync::TYPES[:LANTAN_STORE]}, #{JvSync::TYPES[:LANTAN_DB_ALL]}) and target_id > ?",
+        :conditions => [" types in(#{JvSync::TYPES[:LANTAN_STORE]}, #{JvSync::TYPES[:LANTAN_DB_ALL]}) and id > ?",
           target_id.to_i])
     end
     jv_sync_arr = []
