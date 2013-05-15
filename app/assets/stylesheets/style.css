@@ -8,7 +8,7 @@ button { cursor: pointer; font-family: "微软雅黑"; border: none; background:
 input {font-family: "微软雅黑";}
 input[type="button"] {font-family: "微软雅黑"; border: none;}
 textarea { 
-    height: 100px; 
+    height: 80px; 
 	font-size: 14px; 
 	line-height: 24px; 
 	padding: 5px;
