@@ -96,44 +96,53 @@ $(document).ready(function(){
       })
   });
 
-var pic_types = ['gif', 'jpg', 'jpeg', 'png', 'bmp'];
-    //创建员工信息验证, 编辑员工信息验证
-    $(".save_staff").live("click", function(){
-       if($(this).parents('form').find("#staff_name").val() == ''){
-           tishi_alert("名称不能为空!");
-           return false;
-       }
-       if($(this).parents('form').find("#staff_phone").val() == ''){
-           tishi_alert("联系方式不能为空!");
-           return false;
-       }
-       if($(this).parents('form').find("#staff_id_card").val() == ''){
-           tishi_alert("身份证不能为空!");
-           return false;
-       }
-       if($(this).parents('form').find("#staff_address").val() == ''){
-           tishi_alert("地址不能为空!");
-           return false;
-       }
-       if($(this).parents('form').find("#staff_photo").val() == ''){
-           tishi_alert("照片不能为空!");
-           return false;
-       }else{
-           var photo = $("#staff_photo").val().split(".")
-           var photo_type = photo[photo.length -1].toLowerCase();
-           if(pic_types.indexOf(photo_type)<0){
-              tishi_alert("照片格式不对！正确格式是："+pic_types);
-              return false;
-           }else{return true}
-       }
-       
-       $(this).parents('form').submit();
-    });
-})
+ });
 function selectAll(obj){
     if($(obj).attr("checked")=="checked"){
         $(obj).parent().next().find("input[type='checkbox']").attr("checked", "checked")
     }else{
         $(obj).parent().next().find("input[type='checkbox']").attr("checked", false)
     }
+}
+var pic_types = ['gif', 'jpg', 'jpeg', 'png', 'bmp'];
+
+function checkStaff(obj){
+     //var button = $(this);
+       if($(obj).parents('form').find("#staff_name").val() == ''){
+           tishi_alert("名称不能为空!");
+           return false;
+       }
+       if($(obj).parents('form').find("#staff_phone").val() == ''){
+           tishi_alert("联系方式不能为空!");
+           return false;
+       }
+       if($(obj).parents('form').find("#staff_id_card").val() == ''){
+           tishi_alert("身份证不能为空!");
+           return false;
+       }
+       if($(obj).parents('form').find("#staff_address").val() == ''){
+           tishi_alert("地址不能为空!");
+           return false;
+       }
+       if($(obj).parents('form').find("#staff_photo").val() == ''){
+           tishi_alert("照片不能为空!");
+           return false;
+       }else{
+           /*var img_val = $(this).parents('form').find("#staff_photo").val();
+               var pattern_str = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
+               var img_name_val = img_val.substring(img_val.lastIndexOf("\\")).toLowerCase();
+               var g_name_val = img_name_val.substring(1,img_name_val.length);
+               if(pattern_str.test(g_name_val.split(".")[0])){
+                  tishi_alert(g_name_val+"不能包含特殊字符!");
+                  return false;
+               }*/
+           var photo = $("#staff_photo").val().split(".")
+           var photo_type = photo[photo.length -1].toLowerCase();
+           if(pic_types.indexOf(photo_type)<0){
+              tishi_alert("照片格式不对！正确格式是："+pic_types);
+              return false;
+           }
+       }
+       $('#new_staff_btn').attr('disabled','disabled');
+       $('#new_staff_btn').parents('form').submit();
 }
