@@ -13,7 +13,8 @@ class CarsController < ApplicationController   #车型控制器
   def new_brand #添加汽车品牌
     brand_name = params[:brand_name]
     capital_name =  brand_name.pinyin[0][0].upcase
-    cb = CarBrand.where("name = '#{params[:brand_name]}'")
+#    cb = CarBrand.where("name = '#{brand_name}'")
+    cb = CarBrand.where(["name = ?", brand_name])
     if cb.blank?
       capital = Capital.find_or_create_by_name(capital_name)
       CarBrand.create(:name => params[:brand_name], :capital_id => capital.id)

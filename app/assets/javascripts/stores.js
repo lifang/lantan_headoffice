@@ -28,6 +28,7 @@ $(document).ready(function(){
     })
 
     $("#new_store_btn").live("click", function(){   //新建门店验证
+        var button = $(this);
         if($("#new_store_select_province").val() == 0){
             tishi_alert("请选择门店所在的省市!");
             return false;
@@ -71,9 +72,13 @@ $(document).ready(function(){
                 return false;
             }
         }
+        button.click(function(){
+            return false;
+        })
     })
 
     $("#edit_store_btn").live("click", function(){   //编辑门店验证
+        var button = $(this);
         if($("#edit_store_select_province").val() == 0){
             tishi_alert("请选择门店所在的省份!");
             return false;
@@ -113,6 +118,9 @@ $(document).ready(function(){
                return false;
            }
         }
+        button.click(function(){
+            return false;
+        })
     })
 
     $("#select_province").change(function(){    //查询门店时选择省份

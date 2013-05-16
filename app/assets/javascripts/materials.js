@@ -331,6 +331,7 @@ $(document).ready(function(){
         $("#m_num").val("");
     })
     $("#ruku_btn").click(function(){  //入库
+        var button = $(this);
         var num_flag = (new RegExp(/^\d+$/)).test( $("#m_num").val());
         var price_flag = (new RegExp("^[0-9]+\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
         if($("#m_name").val() == ""){
@@ -361,6 +362,9 @@ $(document).ready(function(){
                 }
             })
         }
+        button.click(function(){
+            return false;
+        })
     })   
 })
 function toggle_notice(obj){
