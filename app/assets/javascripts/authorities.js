@@ -3,10 +3,14 @@ $(document).ready(function(){
     popup("#add_role_form");
   })
   $("#add_role_btn").click(function(){    //添加角色验证
+      var button = $(this);
     if($("input[name='role_name']").val() == ""){
       tishi_alert("角色名不能为空!");
       return false;
     }
+    button.click(function(){
+        return false;
+    })
   })
   $("a[name='del_role_a']").click(function(){ //删除角色按钮
     var rid = $(this).parent().find($("input[name='hid_id']")).val();
@@ -120,7 +124,7 @@ var pic_types = ['gif', 'jpg', 'jpeg', 'png', 'bmp'];
            if(pic_types.indexOf(photo_type)<0){
               tishi_alert("照片格式不对！正确格式是："+pic_types);
               return false;
-           }else{ return true}
+           }else{return true}
        }
        
        $(this).parents('form').submit();

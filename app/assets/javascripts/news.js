@@ -53,6 +53,7 @@ $(document).ready(function(){
   })
 
    $("#edit_submit_btn").live("click",function(){ //编辑时确定按钮验证
+       var button = $(this);
     if($("#edit_new_title").val() == ""){
       tishi_alert("标题不能为空!");
       return false;
@@ -61,13 +62,17 @@ $(document).ready(function(){
       return false;
     }
      $("#edit_new_content").val(edit_news_detail.html());
+     button.click(function(){
+         return false;
+     })
   })
 
-  $("#edit_cancel_btn").live("click",function(){
+  $("#edit_cancel_btn").live("click",function(){ //取消按钮
     location.href="/news";
   })
 
    $("#create_new_btn").click(function(){ //创建时确定按钮验证
+       var button = $(this);
     if($("#create_new_title").val() == ""){
       tishi_alert("标题不能为空!");
       return false;
@@ -76,6 +81,9 @@ $(document).ready(function(){
       return false;
     }
      $("#create_new_content").val(news_detail.html());
+     button.click(function(){
+         return false;
+     })
   })
   $("#cancel_new_btn").click(function(){
     location.href="/news";

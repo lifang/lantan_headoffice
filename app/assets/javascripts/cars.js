@@ -3,10 +3,14 @@ $(document).ready(function(){
      popup("#new_brand");
   });
   $("#new_brands").click(function(){    //添加品牌验证
+      var button = $(this);
     if($("#brand_name").val() == ""){
       tishi_alert("请输入车牌名!");
       return false;
     }
+    button.click(function(){
+        return false;
+    })
   });
   $("a[name='check_model']").click(function(){  //查看汽车型号按钮
     var cid = $(this).attr("alt");
@@ -129,6 +133,7 @@ $(document).ready(function(){
             else{
                 $(".car_models").prepend(data);
                }
+            obj.removeAttr("value");
             obj.parent().attr("style", "display:none");
             obj.parent().next().attr("style", "display:block");
           }

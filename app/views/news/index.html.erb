@@ -3,7 +3,7 @@
 <div class="box">
   <div class="data_box">
     <div class="data_menu">
-      <% if permission?(:base_datas, :add_news) %><a href="/news/new">发布新闻</a><% end %>
+      <% if permission?(:base_datas, :add_news) %><a id="create_news" href="/news/new">发布新闻</a><% end %>
     </div>
     <div class="clear"></div>
     <div id="news_show"class="data_body">
