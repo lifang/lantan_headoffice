@@ -128,14 +128,14 @@ function checkStaff(obj){
            tishi_alert("照片不能为空!");
            return false;
        }else{
-           /*var img_val = $(this).parents('form').find("#staff_photo").val();
+           var img_val = $(obj).parents('form').find("#staff_photo").val();
                var pattern_str = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
                var img_name_val = img_val.substring(img_val.lastIndexOf("\\")).toLowerCase();
                var g_name_val = img_name_val.substring(1,img_name_val.length);
                if(pattern_str.test(g_name_val.split(".")[0])){
                   tishi_alert(g_name_val+"不能包含特殊字符!");
                   return false;
-               }*/
+               }
            var photo = $("#staff_photo").val().split(".")
            var photo_type = photo[photo.length -1].toLowerCase();
            if(pic_types.indexOf(photo_type)<0){
