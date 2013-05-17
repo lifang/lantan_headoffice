@@ -11,9 +11,8 @@ class CarsController < ApplicationController   #车型控制器
   end
 
   def new_brand #添加汽车品牌
-    brand_name = params[:brand_name]
+    brand_name = params[:brand_name].strip
     capital_name =  brand_name.pinyin[0][0].upcase
-#    cb = CarBrand.where("name = '#{brand_name}'")
     cb = CarBrand.where(["name = ?", brand_name])
     if cb.blank?
       capital = Capital.find_or_create_by_name(capital_name)
@@ -41,8 +40,8 @@ class CarsController < ApplicationController   #车型控制器
 
   def update_model #修改型号名字
     model = CarModel.find(params[:id].to_i)
-     if  CarModel.where("car_brand_id = #{model.car_brand_id} and name = '#{params[:name]}'").blank?
-      if model.update_attribute("name", params[:name])
+     if  CarModel.where(["car_brand_id = ? and name = ?", model.car_brand_id, params[:name].strip]).blank?
+      if model.update_attribute("name", params[:name].strip)
       render :text => 1
       end
     else
@@ -60,9 +59,9 @@ class CarsController < ApplicationController   #车型控制器
   end
   
   def new_model #添加型号
-    name = params[:model_name]
+    name = params[:model_name].strip
     id = params[:brand_id].to_i
-    if !CarModel.where("name = '#{name}' and car_brand_id='#{id}'").blank?
+    if !CarModel.where(["name = ? and car_brand_id = ?", name, id]).blank?
       render :text => 0
     else
       model = CarModel.create(:name => name, :car_brand_id => id)

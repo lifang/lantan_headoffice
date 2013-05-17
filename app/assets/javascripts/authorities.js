@@ -65,6 +65,7 @@ $(document).ready(function(){
            obj.val(obj.prev().text());
            obj.attr("style", "display:none");
            obj.prev().attr("style", "display:block");
+           tishi_alert("更新失败，已有同名角色!");
           }
         }
       })

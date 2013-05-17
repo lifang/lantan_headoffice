@@ -16,7 +16,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   def create          #创建优惠卡
     sv_card = SvCard.new
     card_type = params[:card_type].to_i
-    card_name = params[:card_name]
+    card_name = params[:card_name].strip
     card_description = params[:card_description]
     img = params[:card_url]      #获取上传的图片
     if card_type == 1                                       #如果是储值卡
@@ -44,8 +44,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
 
   def update    #更新优惠卡
     sc = SvCard.find(params[:edit_card_id].to_i)
-    old_img = sc.img_url
-    name = params[:edit_card_name]
+    name = params[:edit_card_name].strip
     type = sc.types
     description = params[:edit_card_description]
     img = params[:edit_card_url]

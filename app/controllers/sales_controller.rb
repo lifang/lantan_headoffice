@@ -14,14 +14,14 @@ class SalesController < ApplicationController   #活动控制器
   end
 
   def search_product #查询产品
-    p_id = (params[:type].to_i == 99999) ? "1 = 1" : "types = #{params[:type]}"
-    p_name = (params[:name].nil? || params[:name].empty?) ? "1 = 1" : "name like '%#{params[:name]}%'"
+    p_id = (params[:type].to_i == 99999) ? "1 = 1" : ["types = ? ", params[:type].tp_i]
+    p_name = (params[:name].nil? || params[:name].empty?) ? "1 = 1" : ["name like ? ", "%#{params[:name].strip}%"]
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}").where(p_id).where(p_name)
   end
 
   def edit_search_product #编辑活动时查询产品
-    p_id = (params[:type].to_i == 99999) ? "1 = 1" : "types = #{params[:type]}"
-    p_name = (params[:name].nil? || params[:name].empty?) ? "1 = 1" : "name like '%#{params[:name]}%'"
+    p_id = (params[:type].to_i == 99999) ? "1 = 1" : ["types = ? ", params[:type].tp_i]
+    p_name = (params[:name].nil? || params[:name].empty?) ? "1 = 1" : ["name like ? ", "%#{params[:name].strip}%"]
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}").where(p_id).where(p_name)
   end
 
