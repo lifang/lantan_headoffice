@@ -49,8 +49,8 @@ $(document).ready(function(){
     })
  })
  $("#sale_search_btn").click(function(){           //查询按钮
-    var p_types = $("#sale_product_types").val();
-    var p_name = $("#sale_product_name").val();
+    var p_types = $.trim($("#sale_product_types").val());
+    var p_name = $.trim($("#sale_product_name").val());
     $.ajax({
       type: "POST",
       url: "/sales/search_product",
@@ -59,8 +59,8 @@ $(document).ready(function(){
     return false;
   })
   $("#edit_sale_search_btn").live("click",function(){           //编辑时查询按钮
-    var p_types = $("#edit_sale_product_types").val();
-    var p_name = $("#edit_sale_product_name").val();
+    var p_types = $.trim($("#edit_sale_product_types").val());
+    var p_name = $.trim($("#edit_sale_product_name").val());
     $.ajax({
       type: "POST",
       url: "/sales/edit_search_product",
@@ -217,7 +217,7 @@ $("#ended_time").click(function(){       //结束时间选择插件
 
 $("#create_button").click(function(){  //创建验证
     var button = $(this);
-   if($("#sale_name").val() == ""){
+   if($.trim($("#sale_name").val()) == null || $.trim($("#sale_name").val()) == ""){
        tishi_alert("活动标题不能为空!");
        return false;
     }
@@ -225,7 +225,7 @@ $("#create_button").click(function(){  //创建验证
         tishi_alert("请至少选择一个项目!");
         return false;
     }
-    if($("#disc_money").val() == "" && $("#disc_discount").val() == ""){
+    if($.trim($("#disc_money").val()) == "" && $.trim($("#disc_discount").val()) == ""){
         tishi_alert("请选择优惠方式及数额!");
         return false;
     }
@@ -233,15 +233,15 @@ $("#create_button").click(function(){  //创建验证
         tishi_alert("请选择优惠时间段!");
         return false;
     }
-    if($("#sale_everycar_times").val() == "" || parseInt($("#sale_everycar_times").val()) <= 0){
+    if($.trim($("#sale_everycar_times").val()) == "" || parseInt($.trim($("#sale_everycar_times").val())) <= 0){
         tishi_alert("请输入每辆车的优惠次数!");
         return false;
     }
-    if($("#sale_car_num").val() == "" || parseInt($("#sale_car_num").val()) <= 0){
+    if($.trim($("#sale_car_num").val()) == "" || parseInt($.trim($("#sale_car_num").val())) <= 0){
          tishi_alert("请输入有效的车辆总数!");
         return false;
     }
-    if($("#sale_img").val() == ""){
+    if($.trim($("#sale_img").val()) == ""){
         tishi_alert("请选择一张图片!");
         return false;
     }else{
@@ -267,7 +267,7 @@ $("#create_button").click(function(){  //创建验证
 });
 $("#edit_create_button").live("click",function(){ //编辑验证
     var button = $(this);
-    if($("#edit_sale_name").val() == ""){
+    if($.trim($("#edit_sale_name").val()) == null || $.trim($("#edit_sale_name").val()) == ""){
        tishi_alert("活动标题不能为空!");
        return false;
     }
@@ -275,7 +275,7 @@ $("#edit_create_button").live("click",function(){ //编辑验证
         tishi_alert("请至少选择一个项目!");
         return false;
     }
-    if($("#edit_disc_money").val() == "" && $("#edit_disc_discount").val() == ""){
+    if($.trim($("#edit_disc_money").val()) == "" && $.trim($("#edit_disc_discount").val()) == ""){
         tishi_alert("请选择优惠方式及数额!");
         return false;
     }
@@ -283,11 +283,11 @@ $("#edit_create_button").live("click",function(){ //编辑验证
         tishi_alert("请选择优惠时间段!");
         return false;
     }
-    if($("#edit_sale_everycar_times").val() == "" || parseInt($("#edit_sale_everycar_times").val()) <= 0){
+    if($.trim($("#edit_sale_everycar_times").val()) == "" || parseInt($.trim($("#edit_sale_everycar_times").val())) <= 0){
         tishi_alert("请输入有效的优惠次数!");
         return false;
     }
-    if($("#edit_sale_car_num").val() == "" || parseInt($("#edit_sale_car_num").val()) <= 0){
+    if($.trim($("#edit_sale_car_num").val()) == "" || parseInt($.trim($("#edit_sale_car_num").val())) <= 0){
          tishi_alert("请输入有效的车辆总数!");
         return false;
     }

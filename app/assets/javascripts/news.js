@@ -54,10 +54,10 @@ $(document).ready(function(){
 
    $("#edit_submit_btn").live("click",function(){ //编辑时确定按钮验证
        var button = $(this);
-    if($("#edit_new_title").val() == ""){
+    if($.trim($("#edit_new_title").val()) == null || $.trim($("#edit_new_title").val()) == ""){
       tishi_alert("标题不能为空!");
       return false;
-    }else if(edit_news_detail.html() == ""){
+    }else if($.trim(edit_news_detail.html()) == null || $.trim(edit_news_detail.html()) == ""){
       tishi_alert("内容不能为空!");
       return false;
     }
@@ -73,7 +73,7 @@ $(document).ready(function(){
 
    $("#create_new_btn").click(function(){ //创建时确定按钮验证
        var button = $(this);
-    if($("#create_new_title").val() == ""){
+    if($.trim($("#create_new_title").val()) == null || $.trim($("#create_new_title").val()) == ""){
       tishi_alert("标题不能为空!");
       return false;
     }else if(news_detail.html() == ""){

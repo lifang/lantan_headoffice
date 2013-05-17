@@ -4,7 +4,7 @@ $(document).ready(function(){
   })
   $("#add_role_btn").click(function(){    //添加角色验证
       var button = $(this);
-    if($("input[name='role_name']").val() == ""){
+    if($.trim($("input[name='role_name']").val()) == null || $.trim($("input[name='role_name']").val()) == ""){
       tishi_alert("角色名不能为空!");
       return false;
     }
@@ -43,7 +43,7 @@ $(document).ready(function(){
 
   $("input[name='role_new_name']").blur(function(){ //编辑更新
     var obj = $(this);
-    if(obj.val() == ""){
+    if($.trim(obj.val()) == null || $.trim(obj.val()) == ""){
       tishi_alert("角色名不能为空!");
       obj.val(obj.prev().text());
       obj.attr("style", "display:none");

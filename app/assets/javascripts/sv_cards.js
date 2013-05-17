@@ -51,7 +51,7 @@ $(document).ready(function(){
     var type = parseInt($("#card_type").val());
     var button = $(this);
     if(type == 1){
-      if($("#card_name").val() == ""){
+      if($.trim($("#card_name").val()) == null || $.trim($("#card_name").val()) == ""){
         tishi_alert("优惠卡名称不能为空!");
         return false;
       }
@@ -66,20 +66,20 @@ $(document).ready(function(){
              return false;
         }
       }
-      if($("#card_description").val()==""){
+      if($.trim($("#card_description").val())== null || $.trim($("#card_description").val())== ""){
         tishi_alert("请描述该卡!");
         return false;
       }
-      if($("#started_money").val() == "" || isNaN($("#started_money").val())){
+      if($.trim($("#started_money").val()) == null || $.trim($("#started_money").val()) == "" || isNaN($.trim($("#started_money").val()))){
         tishi_alert("请输入充值金额!");
         return false;
       }
-      if($("#ended_money").val() == "" || isNaN($("#ended_money").val())){
+      if($.trim($("#ended_money").val()) == null || $.trim($("#ended_money").val()) == "" || isNaN($.trim($("#ended_money").val()))){
         tishi_alert("请输入赠送金额!");
         return false;
       }
     }else if(type == 0){
-      if($("#card_name").val() == ""){
+      if($.trim($("#card_name").val()) == null || $.trim($("#card_name").val()) == ""){
         tishi_alert("优惠卡名称不能为空!");
         return false;
       }
@@ -94,7 +94,7 @@ $(document).ready(function(){
              return false;
         }
       }
-      if($("#discount_value").val()== ""){
+      if($.trim($("#discount_value").val()) == null || $.trim($("#discount_value").val()) == ""){
           tishi_alert("请输入折扣!");
           return false;
       }
@@ -102,11 +102,11 @@ $(document).ready(function(){
           tishi_alert("折扣必须在1~10之间的数字!");
           return false;
       }
-      if($("#discount_price").val() == "" || isNaN($("#discount_price").val())){
+      if($.trim($("#discount_price").val()) == null || $.trim($("#discount_price").val()) == "" || isNaN($.trim($("#discount_price").val()))){
           tishi_alert("请输入有效的打折卡金额!");
           return false;
       }
-      if($("#card_description").val() == ""){
+      if($.trim($("#card_description").val()) == null || $.trim($("#card_description").val()) == ""){
         tishi_alert("请描述该卡!");
         return false;
       }
@@ -120,16 +120,16 @@ $(document).ready(function(){
     var type = parseInt($("#edit_card_type").val());
     var button = $(this);
     if(type == 1){
-      if($("#edit_card_name").val() == ""){
+      if($.trim($("#edit_card_name").val()) == null || $.trim($("#edit_card_name").val()) == ""){
         tishi_alert("优惠卡名称不能为空!");
         return false;
-      }else if($("#edit_card_description").val() == ""){
+      }else if($.trim($("#edit_card_description").val()) == null || $.trim($("#edit_card_description").val()) == ""){
         tishi_alert("请描述该卡!");
         return false;
-      }else if($("#edit_started_money").val() == "" || isNaN($("#edit_started_money").val())){
+      }else if($.trim($("#edit_started_money").val()) == null || $.trim($("#edit_started_money").val()) == "" || isNaN($.trim($("#edit_started_money").val()))){
         tishi_alert("请输入充值金额!");
         return false;
-      }else if($("#edit_ended_money").val() == "" || isNaN($("#edit_ended_money").val())){
+      }else if($.trim($("#edit_ended_money").val()) == null || $.trim($("#edit_ended_money").val()) == "" || isNaN($.trim($("#edit_ended_money").val()))){
         tishi_alert("请输入赠送金额!");
         return false;
       }else if($("#edit_card_url").val() != ""){
@@ -141,19 +141,19 @@ $(document).ready(function(){
           }
       }
     }else if(type == 0){
-      if($("#edit_card_name").val() == ""){
+      if($.trim($("#edit_card_name").val()) == null || $.trim($("#edit_card_name").val()) == ""){
         tishi_alert("优惠卡名称不能为空!");
         return false;
-      }else if($("#edit_discount_value").val()== ""){
+      }else if($.trim($("#edit_discount_value").val()) == null || $.trim($("#edit_discount_value").val()) == ""){
           tishi_alert("请输入折扣!");
           return false;
-      }else if(isNaN($("#edit_discount_value").val()) || parseFloat($("#edit_discount_value").val()) > 10 || parseFloat($("#edit_discount_value").val()) < 1){
+      }else if(isNaN($.trim($("#edit_discount_value").val())) || parseFloat($("#edit_discount_value").val()) > 10 || parseFloat($("#edit_discount_value").val()) < 1){
        tishi_alert("折扣必须在1~10之间的数字!");
           return false;
-      }else if($("#edit_discount_price").val() == "" || isNaN($("#edit_discount_price").val())){
+      }else if($.trim($("#edit_discount_price").val()) == null || $.trim($("#edit_discount_price").val()) == "" || isNaN($.trim($("#edit_discount_price").val()))){
           tishi_alert("请输入有效的打折卡金额!");
           return false;
-      }else if($("#edit_card_description").val() == ""){
+      }else if($.trim($("#edit_card_description").val()) == null || $.trim($("#edit_card_description").val()) == ""){
         tishi_alert("请描述该卡!");
         return false;
       }else if($("#edit_card_url").val() != ""){

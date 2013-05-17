@@ -4,7 +4,7 @@ class NewsController < ApplicationController  #新闻控制器
   before_filter :sign?
   
   def index   #新闻列表
-    @news = New.where("status >= ? and status <= ? ", New::STATUS[:NORMAL], New::STATUS[:UNRELEASED])
+    @news = New.where("status >= ? and status <= ? ", New::STATUS[:NORMAL], New::STATUS[:UNRELEASED]).order("created_at desc")
     .paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
   

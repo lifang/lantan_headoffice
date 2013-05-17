@@ -37,19 +37,19 @@ $(document).ready(function(){
             tishi_alert("请选择门店所在的省市!");
             return false;
         }
-        else if($("#new_store_name").val() == ""){
+        else if($.trim($("#new_store_name").val()) == null || $.trim($("#new_store_name").val()) == ""){
             tishi_alert("请输入门店名称");
             return false;
         }
-        else if($("#new_store_contact").val() == ""){
+        else if($.trim($("#new_store_contact").val()) == null || $.trim($("#new_store_contact").val()) == ""){
             tishi_alert("请输入负责人姓名");
             return false;
         }
-        else if($("#new_store_phone").val() == ""){
+        else if($.trim($("#new_store_phone").val()) == null || $.trim($("#new_store_phone").val()) == ""){
             tishi_alert("至少有个联系电话");
             return false;
         }
-        else if($("#new_store_address").val() == ""){
+        else if($.trim($("#new_store_address").val()) == null || $.trim($("#new_store_address").val()) == ""){
             tishi_alert("请输入门店地址");
             return false;
         }
@@ -57,11 +57,11 @@ $(document).ready(function(){
             tishi_alert("请确定门店创建时间");
             return false;
         }
-        else if($("#new_store_location_x").val() == "" || $("#new_store_location_y").val() == ""){
+        else if($.trim($("#new_store_location_x").val()) == null || $.trim($("#new_store_location_x").val()) == "" || $("#new_store_location_y").val() == null || $("#new_store_location_y").val() == ""){
             tishi_alert("请输入正确的门店坐标");
             return false;
         }
-        else if($("#new_store_img").val() == ""){
+        else if($.trim($("#new_store_img").val()) == ""){
             tishi_alert("请上传门店的图片");
             return false;
         }else{
@@ -87,19 +87,19 @@ $(document).ready(function(){
             tishi_alert("请选择门店所在的城市!");
             return false;
         }
-        else if($("#edit_store_name").val() == ""){
+        else if($.trim($("#edit_store_name").val()) == "" || $.trim($("#edit_store_name").val()) == null){
             tishi_alert("请输入门店名称");
             return false;
         }
-        else if($("#edit_store_contact").val() == ""){
+        else if($.trim($("#edit_store_contact").val()) == null || $.trim($("#edit_store_contact").val()) == ""){
             tishi_alert("请输入负责人姓名");
             return false;
         }
-        else if($("#edit_store_phone").val() == ""){
+        else if($.trim($("#edit_store_phone").val()) == null || $.trim($("#edit_store_phone").val()) == ""){
             tishi_alert("至少有个联系电话");
             return false;
         }
-        else if($("#edit_store_address").val() == ""){
+        else if($.trim($("#edit_store_address").val()) == null || $.trim($("#edit_store_address").val()) == ""){
             tishi_alert("请输入门店地址");
             return false;
         }
@@ -107,7 +107,7 @@ $(document).ready(function(){
             tishi_alert("请确定门店创建时间");
             return false;
         }
-        else if($("#edit_store_location_x").val() == "" || $("#edit_store_location_y").val() == ""){
+        else if($.trim($("#edit_store_location_x").val()) == null || $.trim($("#edit_store_location_x").val()) == "" || $.trim($("#edit_store_location_y").val()) == null || $.trim($("#edit_store_location_y").val()) == ""){
             tishi_alert("请输入正确的门店坐标");
             return false;
         }else if($("#edit_store_img").val() != ""){
