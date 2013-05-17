@@ -109,23 +109,23 @@ var pic_types = ['gif', 'jpg', 'jpeg', 'png', 'bmp'];
 
 function checkStaff(obj){
      //var button = $(this);
-       if($(obj).parents('form').find("#staff_name").val() == ''){
+       if($.trim($(obj).parents('form').find("#staff_name").val()) == ''){
            tishi_alert("名称不能为空!");
            return false;
        }
-       if($(obj).parents('form').find("#staff_phone").val() == ''){
+       if($.trim($(obj).parents('form').find("#staff_phone").val()) == ''){
            tishi_alert("联系方式不能为空!");
            return false;
        }
-       if($(obj).parents('form').find("#staff_id_card").val() == ''){
+       if($.trim($(obj).parents('form').find("#staff_id_card").val()) == ''){
            tishi_alert("身份证不能为空!");
            return false;
        }
-       if($(obj).parents('form').find("#staff_address").val() == ''){
+       if($.trim($(obj).parents('form').find("#staff_address").val()) == ''){
            tishi_alert("地址不能为空!");
            return false;
        }
-       if($(obj).parents('form').find("#staff_photo").val() == ''){
+       if($.trim($(obj).parents('form').find("#staff_photo").val()) == ''){
            tishi_alert("照片不能为空!");
            return false;
        }else{
