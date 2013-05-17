@@ -109,6 +109,6 @@ class AuthoritiesController < ApplicationController     #权限控制器
       end
     end
     flash[:notice] = "设置成功"
-    redirect_to "/authorities/set_staff"
+    redirect_to request.referer
   end
 end

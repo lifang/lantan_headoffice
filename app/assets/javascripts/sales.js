@@ -287,7 +287,7 @@ $("#edit_create_button").live("click",function(){ //编辑验证
         tishi_alert("请输入有效的优惠次数!");
         return false;
     }
-    if($.trim($("#edit_sale_car_num").val()) == "" || parseInt($.trim($("#edit_sale_car_num").val())) <= 0){
+    if($.trim($("#edit_sale_car_num").val()) == "" || parseFloat($("#edit_sale_car_num").val()) <= 0){
          tishi_alert("请输入有效的车辆总数!");
         return false;
     }

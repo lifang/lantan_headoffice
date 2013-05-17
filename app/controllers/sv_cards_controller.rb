@@ -5,7 +5,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
   before_filter :sign?
   
   def index #优惠卡主页
-    @sv_cards = SvCard.all.paginate(:page => params[:page] ||= 1,:per_page => 10,:order => "created_at asc")
+    @sv_cards = SvCard.order("created_at desc").paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
   
   def select_discount_card #新建时选择打折卡
@@ -53,23 +53,33 @@ class SvCardsController < ApplicationController   #优惠卡控制器
       ended_money = params[:edit_ended_money].to_f
       if sc.update_attributes(:name => name, :price => started_money, :description => description)
         SvcardProdRelation.destroy_all("sv_card_id = #{sc.id}")
-        SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)       
+        SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)
+        if !img.nil?
+          begin
+            new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
+            sc.update_attribute("img_url", new_url)
+          rescue
+            flash[:notice] ="图片更新失败！"
+          end
+        end
+        flash[:notice] = "更新成功!"
       end
     elsif type == 0
       discount = params[:edit_discount_value]
       price = params[:edit_discount_price]
-      sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
-    end
-    if !img.nil?
-      begin
-        new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
-        sc.update_attribute("img_url", new_url)
+      if sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
+        if !img.nil?
+          begin
+            new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
+            sc.update_attribute("img_url", new_url)      
+          rescue
+            flash[:notice] ="图片更新失败！"
+          end
+        end
         flash[:notice] = "更新成功!"
-      rescue
-        flash[:notice] ="图片更新失败！"
       end
     end
-    redirect_to sv_cards_path
+    redirect_to request.referer
   end
 
   def edit_card   #编辑优惠卡

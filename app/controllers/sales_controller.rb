@@ -108,7 +108,7 @@ class SalesController < ApplicationController   #活动控制器
         flash[:notice] = "更新失败!"
       end
     end
-    redirect_to sales_path
+    redirect_to request.referer
   end
 
   def edit #修改活动
