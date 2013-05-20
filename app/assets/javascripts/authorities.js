@@ -3,10 +3,14 @@ $(document).ready(function(){
     popup("#add_role_form");
   })
   $("#add_role_btn").click(function(){    //添加角色验证
-    if($("input[name='role_name']").val() == ""){
+      var button = $(this);
+    if($.trim($("input[name='role_name']").val()) == null || $.trim($("input[name='role_name']").val()) == ""){
       tishi_alert("角色名不能为空!");
       return false;
     }
+    button.click(function(){
+        return false;
+    })
   })
   $("a[name='del_role_a']").click(function(){ //删除角色按钮
     var rid = $(this).parent().find($("input[name='hid_id']")).val();
@@ -39,7 +43,7 @@ $(document).ready(function(){
 
   $("input[name='role_new_name']").blur(function(){ //编辑更新
     var obj = $(this);
-    if(obj.val() == ""){
+    if($.trim(obj.val()) == null || $.trim(obj.val()) == ""){
       tishi_alert("角色名不能为空!");
       obj.val(obj.prev().text());
       obj.attr("style", "display:none");
@@ -61,6 +65,7 @@ $(document).ready(function(){
            obj.val(obj.prev().text());
            obj.attr("style", "display:none");
            obj.prev().attr("style", "display:block");
+           tishi_alert("更新失败，已有同名角色!");
           }
         }
       })
@@ -92,44 +97,53 @@ $(document).ready(function(){
       })
   });
 
-var pic_types = ['gif', 'jpg', 'jpeg', 'png', 'bmp'];
-    //创建员工信息验证, 编辑员工信息验证
-    $(".save_staff").live("click", function(){
-       if($(this).parents('form').find("#staff_name").val() == ''){
-           tishi_alert("名称不能为空!");
-           return false;
-       }
-       if($(this).parents('form').find("#staff_phone").val() == ''){
-           tishi_alert("联系方式不能为空!");
-           return false;
-       }
-       if($(this).parents('form').find("#staff_id_card").val() == ''){
-           tishi_alert("身份证不能为空!");
-           return false;
-       }
-       if($(this).parents('form').find("#staff_address").val() == ''){
-           tishi_alert("地址不能为空!");
-           return false;
-       }
-       if($(this).parents('form').find("#staff_photo").val() == ''){
-           tishi_alert("照片不能为空!");
-           return false;
-       }else{
-           var photo = $("#staff_photo").val().split(".")
-           var photo_type = photo[photo.length -1].toLowerCase();
-           if(pic_types.indexOf(photo_type)<0){
-              tishi_alert("照片格式不对！正确格式是："+pic_types);
-              return false;
-           }else{ return true}
-       }
-       
-       $(this).parents('form').submit();
-    });
-})
+ });
 function selectAll(obj){
     if($(obj).attr("checked")=="checked"){
         $(obj).parent().next().find("input[type='checkbox']").attr("checked", "checked")
     }else{
         $(obj).parent().next().find("input[type='checkbox']").attr("checked", false)
     }
+}
+var pic_types = ['gif', 'jpg', 'jpeg', 'png', 'bmp'];
+
+function checkStaff(obj){
+     //var button = $(this);
+       if($.trim($(obj).parents('form').find("#staff_name").val()) == ''){
+           tishi_alert("名称不能为空!");
+           return false;
+       }
+       if($.trim($(obj).parents('form').find("#staff_phone").val()) == ''){
+           tishi_alert("联系方式不能为空!");
+           return false;
+       }
+       if($.trim($(obj).parents('form').find("#staff_id_card").val()) == ''){
+           tishi_alert("身份证不能为空!");
+           return false;
+       }
+       if($.trim($(obj).parents('form').find("#staff_address").val()) == ''){
+           tishi_alert("地址不能为空!");
+           return false;
+       }
+       if($.trim($(obj).parents('form').find("#staff_photo").val()) == ''){
+           tishi_alert("照片不能为空!");
+           return false;
+       }else{
+           var img_val = $(obj).parents('form').find("#staff_photo").val();
+               var pattern_str = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
+               var img_name_val = img_val.substring(img_val.lastIndexOf("\\")).toLowerCase();
+               var g_name_val = img_name_val.substring(1,img_name_val.length);
+               if(pattern_str.test(g_name_val.split(".")[0])){
+                  tishi_alert(g_name_val+"不能包含特殊字符!");
+                  return false;
+               }
+           var photo = $("#staff_photo").val().split(".")
+           var photo_type = photo[photo.length -1].toLowerCase();
+           if(pic_types.indexOf(photo_type)<0){
+              tishi_alert("照片格式不对！正确格式是："+pic_types);
+              return false;
+           }
+       }
+       $('#new_staff_btn').attr('disabled','disabled');
+       $('#new_staff_btn').parents('form').submit();
 }

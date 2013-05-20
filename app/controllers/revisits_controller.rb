@@ -4,11 +4,12 @@ class RevisitsController < ApplicationController  #回访控制器
   before_filter :sign?
   
   def index
-    revisits_sql = "select r.*, sto.name store_name, cu.name cus_name, cu.mobilephone cus_mobilephone, o.code order_code, o.id oid
-                    from lantan_db_all.revisits r left join lantan_db_all.complaints com on r.complaint_id = com.id
-                    left join lantan_db_all.customers cu on r.customer_id = cu.id
-                    left join lantan_db_all.orders o on com.order_id = o.id
-                    left join lantan_db_all.stores sto on o.store_id = sto.id"
+    revisits_sql = "select r.*, cus.name cus_name, cus.mobilephone cus_phone, o.code order_code,o.id order_id, s.name store_name
+                    from lantan_db_all.revisits r
+                    inner join lantan_db_all.customers cus on r.customer_id = cus.id
+                    inner join lantan_db_all.revisit_order_relations ror on r.id = ror.revisit_id
+                    inner join lantan_db_all.orders o on ror.order_id = o.id
+                    inner join lantan_db_all.stores s on o.store_id = s.id"
     params[:search_time].nil? ?
      revisits_sql += " where date_format(r.created_at, '%Y-%m') = '#{Time.now.months_ago(1).strftime("%Y-%m")}'" :
      revisits_sql += " where date_format(r.created_at, '%Y-%m') = '#{params[:search_time]}'"

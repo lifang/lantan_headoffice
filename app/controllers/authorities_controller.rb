@@ -8,8 +8,8 @@ class AuthoritiesController < ApplicationController     #权限控制器
   end
 
   def add_role #添加角色
-    name = params[:role_name]
-    if Role.where("name = '#{name}'").blank?
+    name = params[:role_name].strip
+    if Role.where(["name = ?", name]).blank?
       if Role.create(:name => name)
         flash[:notice] = "创建成功!"
         redirect_to authorities_path
@@ -35,10 +35,10 @@ class AuthoritiesController < ApplicationController     #权限控制器
 
   def update_role #更新角色
     role = Role.find(params[:r_id].to_i)
-    if role.nil? || !Role.where("name = '#{params[:r_name]}'").blank?
+    if role.nil? || !Role.where(["name = ? ", params[:r_name].strip]).blank?
       render :text => 0
     else
-      if role.update_attribute("name", "#{params[:r_name]}")
+      if role.update_attribute("name", params[:r_name].strip)
         render :text => 1
       else
         render :text => 0
@@ -91,7 +91,7 @@ class AuthoritiesController < ApplicationController     #权限控制器
   end
 
   def set_staff #用户设定页面
-    staff_sql = (params[:staff_name].nil? || params[:staff_name].empty?) ? "1 = 1" : "name like '%#{params[:staff_name].strip}%'"
+    staff_sql = (params[:staff_name].nil? || params[:staff_name].empty?) ? "1 = 1" : ["name like ?", "%#{params[:staff_name].strip}%"]
     @staff = Staff.where("status = #{Staff::STATUS[:normal]}").where(staff_sql).paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 
@@ -109,6 +109,6 @@ class AuthoritiesController < ApplicationController     #权限控制器
       end
     end
     flash[:notice] = "设置成功"
-    redirect_to "/authorities/set_staff"
+    redirect_to request.referer
   end
 end

@@ -6,10 +6,11 @@ class MaterialsController < ApplicationController   #库存控制器
   def index
     @init_tab = params[:init_tab]
     @tab = params[:tab]
-    status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : "material_orders.status = #{params[:status].to_i}"
-    started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : "date_format(material_orders.created_at, '%Y-%m-%d') >= '#{params[:started_time]}'"
-    ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : "date_format(material_orders.created_at, '%Y-%m-%d') <= '#{params[:ended_time]}'"
-    @urge_goods_msg = Notice.where("status = #{Notice::STATUS[:NOMAL]} and types = #{Notice::TYPES[:URGE_GOODS]}")
+    status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : ["material_orders.status = ?", params[:status].to_i]
+    started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : ["date_format(material_orders.created_at, '%Y-%m-%d') >= ?", params[:started_time]]
+    ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : ["date_format(material_orders.created_at, '%Y-%m-%d') <= ?", params[:ended_time]]
+    #@urge_goods_msg = Notice.where("status = #{Notice::STATUS[:NOMAL]} and types = #{Notice::TYPES[:URGE_GOODS]}")
+    @urge_goods_msg = Notice.where(["status = ? and types = ?", Notice::STATUS[:NOMAL], Notice::TYPES[:URGE_GOODS]])
     @mat_orders_urgent = MaterialOrder.where(:id => @urge_goods_msg.map(&:target_id))
     @materials = Material.normal.paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("materials_tab")
     @mat_out_orders = MatOutOrder.joins(:material).includes(:material).order("mat_out_orders.created_at desc").paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_out_tab")
@@ -22,7 +23,7 @@ class MaterialsController < ApplicationController   #库存控制器
   end
 
   def m_list #库存清单
-     @materials = Material.where("status = #{Material::STATUS[:NORMAL]}")
+     @materials = Material.where(["status = ? ", Material::STATUS[:NORMAL]])
   end
 
   def show_material_beizhu #显示库存备注
@@ -123,12 +124,13 @@ class MaterialsController < ApplicationController   #库存控制器
   end
   
   def ruku #入库
-    m_name = params[:m_name]
+    m_name = params[:m_name].strip
     m_type = params[:m_type].to_i
-    m_code = params[:m_code]
+    m_code = params[:m_code].strip
     m_num = params[:m_num].to_i
     m_price = params[:m_price].to_f
-    m = Material.where("name = '#{m_name}'").where("types = #{m_type}").where("code = '#{m_code}'").where("price = #{m_price}")
+#    m = Material.where("name = '#{m_name}'").where("types = #{m_type}").where("code = '#{m_code}'").where("price = #{m_price}")
+    m = Material.where(["name = ? and types = ? and code = ? and price = ? ", m_name, m_type, m_code, m_price])
     if !m.blank?
       material = m[0]
       total_num = material.storage + m_num

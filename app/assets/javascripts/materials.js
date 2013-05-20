@@ -159,11 +159,11 @@ $(document).ready(function(){
         var mat_storage = parseInt($(this).parent().siblings(".mat_stor").text());
         var count = $(this).parent().prev().find("input").val();
         if(isNaN(parseInt(count))){
-            tishi_alert("请输入核实数目!");
+            tishi_alert("请输入正确的盘点实数!");
         }else if(parseInt(count) < 0){
             tishi_alert("数量至少为零!");
-        }else if(count==""){
-            tishi_alert("请输入核实数目!")
+        }else if($.trim(count)== null || $.trim(count)== ""){
+            tishi_alert("请在核实数目中输入具体的盘点实数!")
         }else if(mat_storage==count){
             tishi_alert("已核实过!");
         }else{
@@ -244,11 +244,11 @@ $(document).ready(function(){
         var arrive_time = $("#arrive_time").val();
         var logistic_code = $("#logistic_code").val();
         var carrier = $("#carrier").val();
-        if(arrive_time == ""){
+        if($.trim(arrive_time) == null || $.trim(arrive_time) == ""){
             tishi_alert("输入到货时间!")
-        }else if(logistic_code == ""){
+        }else if($.trim(logistic_code) == null || $.trim(logistic_code) == ""){
             tishi_alert("输入运单号码");
-        }else if(carrier == ""){
+        }else if($.trim(carrier) == null || $.trim(carrier) == ""){
             tishi_alert("输入运单人姓名");
         }else{
             $.ajax({
@@ -331,19 +331,20 @@ $(document).ready(function(){
         $("#m_num").val("");
     })
     $("#ruku_btn").click(function(){  //入库
+        var button = $(this);
         var num_flag = (new RegExp(/^\d+$/)).test( $("#m_num").val());
         var price_flag = (new RegExp("^[0-9]+\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
-        if($("#m_name").val() == ""){
+        if($.trim($("#m_name").val()) == null || $.trim($("#m_name").val()) == ""){
             tishi_alert("物料名不能为空!");
-        }else if( $("#m_o_code").val() == ""){
+        }else if($.trim($("#m_o_code").val()) == null || $.trim($("#m_o_code").val()) == ""){
             tishi_alert("订货单号不能为空!");
-        }else if($("#m_code").val() == ""){
+        }else if($.trim($("#m_code").val()) == null || $.trim($("#m_code").val()) == ""){
             tishi_alert("请输入条形码");
-        }else if( $("#m_price").val() == ""){
+        }else if($.trim($("#m_price").val()) == null || $.trim($("#m_price").val()) == ""){
             tishi_alert("请输入单价");
         }else if(price_flag == false){
             tishi_alert("请输入正确的价格");
-        }else if( $("#m_num").val() == ""){
+        }else if($.trim($("#m_num").val()) == null || $.trim($("#m_num").val()) == ""){
             tishi_alert("请输入数量");
         }else if(num_flag == false){
             tishi_alert("数量必须是大于等于零的整数");
@@ -361,6 +362,9 @@ $(document).ready(function(){
                 }
             })
         }
+        button.click(function(){
+            return false;
+        })
     })   
 })
 function toggle_notice(obj){

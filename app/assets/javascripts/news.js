@@ -32,11 +32,9 @@ $(document).ready(function(){
          success: function(data){
            if(data == 0){
               tishi_alert("发布失败!");
-            }else{
-              tishi_alert("发布成功!");
-              setTimeout(function(){
-                location.href="/news";
-            }, 1500);
+            }else{            
+             location.href="/news";
+             tishi_alert("发布成功!");
             }
          }
        })
@@ -53,22 +51,27 @@ $(document).ready(function(){
   })
 
    $("#edit_submit_btn").live("click",function(){ //编辑时确定按钮验证
-    if($("#edit_new_title").val() == ""){
+       var button = $(this);
+    if($.trim($("#edit_new_title").val()) == null || $.trim($("#edit_new_title").val()) == ""){
       tishi_alert("标题不能为空!");
       return false;
-    }else if(edit_news_detail.html() == ""){
+    }else if($.trim(edit_news_detail.html()) == null || $.trim(edit_news_detail.html()) == ""){
       tishi_alert("内容不能为空!");
       return false;
     }
      $("#edit_new_content").val(edit_news_detail.html());
+     button.click(function(){
+         return false;
+     })
   })
 
-  $("#edit_cancel_btn").live("click",function(){
+  $("#edit_cancel_btn").live("click",function(){ //取消按钮
     location.href="/news";
   })
 
    $("#create_new_btn").click(function(){ //创建时确定按钮验证
-    if($("#create_new_title").val() == ""){
+       var button = $(this);
+    if($.trim($("#create_new_title").val()) == null || $.trim($("#create_new_title").val()) == ""){
       tishi_alert("标题不能为空!");
       return false;
     }else if(news_detail.html() == ""){
@@ -76,6 +79,9 @@ $(document).ready(function(){
       return false;
     }
      $("#create_new_content").val(news_detail.html());
+     button.click(function(){
+         return false;
+     })
   })
   $("#cancel_new_btn").click(function(){
     location.href="/news";

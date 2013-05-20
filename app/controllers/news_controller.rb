@@ -4,7 +4,7 @@ class NewsController < ApplicationController  #新闻控制器
   before_filter :sign?
   
   def index   #新闻列表
-    @news = New.where("status >= #{New::STATUS[:NORMAL]} and status <= #{New::STATUS[:UNRELEASED]}")
+    @news = New.where("status >= ? and status <= ? ", New::STATUS[:NORMAL], New::STATUS[:UNRELEASED]).order("created_at desc")
     .paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
   
@@ -46,7 +46,7 @@ class NewsController < ApplicationController  #新闻控制器
     if !new.nil?
       if new.update_attributes(:title => title, :content => content)
         flash[:notice] = "更新成功!"
-        redirect_to "/news"
+        redirect_to request.referer
       end
     end
   end

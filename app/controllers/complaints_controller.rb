@@ -5,14 +5,14 @@ class ComplaintsController < ApplicationController   #投诉控制器
   
   def index
      all_complaints_sql = (params[:search_time].nil? || params[:search_time].empty?) ?
-       "date_format(created_at, '%Y-%m') = '#{Time.now.months_ago(1).strftime("%Y-%m")}'" :
-       "date_format(created_at, '%Y-%m') = '#{params[:search_time]}'"
+       ["date_format(created_at, '%Y-%m') = ? ", Time.now.months_ago(1).strftime("%Y-%m")] :
+       ["date_format(created_at, '%Y-%m') = ? ", params[:search_time]]
      has_processed_complaints_sql = (params[:search_time].nil? || params[:search_time].empty?) ?
-       "status = 1 and date_format(created_at, '%Y-%m') = '#{Time.now.months_ago(1).strftime("%Y-%m")}'" :
-       "status = 1 and date_format(created_at, '%Y-%m') = '#{params[:search_time]}'"
+       ["status = 1 and date_format(created_at, '%Y-%m') = ? ", Time.now.months_ago(1).strftime("%Y-%m")] :
+       ["status = 1 and date_format(created_at, '%Y-%m') = ? ",  params[:search_time]]
      timely_sql = (params[:search_time].nil? || params[:search_time].empty?) ?
-       "status = 1 and date_format(created_at, '%Y-%m') = '#{Time.now.months_ago(1).strftime("%Y-%m")}' and timestampdiff(hour,created_at,process_at)<=2" :
-       "status = 1 and date_format(created_at, '%Y-%m') = '#{params[:search_time]}' and timestampdiff(hour,created_at,process_at)<=2 "
+       ["status = 1 and date_format(created_at, '%Y-%m') = ? and timestampdiff(hour,created_at,process_at)<= ? ", Time.now.months_ago(1).strftime("%Y-%m"), Complaint::TIMELY_HOURS] :
+       ["status = 1 and date_format(created_at, '%Y-%m') = ? and timestampdiff(hour,created_at,process_at)<= ?  ", params[:search_time], Complaint::TIMELY_HOURS]
     @current_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.months_ago(1).strftime("%Y-%m") : params[:search_time]
     @complaints_time = []    #当前年份所有已过的月份
      current_month = Time.now.strftime("%m").to_i

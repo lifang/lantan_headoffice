@@ -3,10 +3,14 @@ $(document).ready(function(){
      popup("#new_brand");
   });
   $("#new_brands").click(function(){    //添加品牌验证
-    if($("#brand_name").val() == ""){
+      var button = $(this);
+    if($.trim($("#brand_name").val()) == null || $.trim($("#brand_name").val()) == ""){
       tishi_alert("请输入车牌名!");
       return false;
     }
+    button.click(function(){
+        return false;
+    })
   });
   $("a[name='check_model']").click(function(){  //查看汽车型号按钮
     var cid = $(this).attr("alt");
@@ -48,7 +52,7 @@ $(document).ready(function(){
   $("input[name='model_name']").live("blur",function(){   //编辑型号时
     var cid = $(this).prev().val();
     var obj = $(this);
-    if(obj.val()==""){
+    if($.trim(obj.val())== null || $.trim(obj.val())== ""){
       tishi_alert("型号不能为空");
       obj.val(obj.prev().prev().text());
       obj.attr("style", "display:none");
@@ -107,7 +111,7 @@ $(document).ready(function(){
     var mname = $(this).val();
     var mid = $(this).next().val();
     var obj = $(this);
-    if( mname == ""){
+    if($.trim(mname) == null || $.trim(mname) == ""){
       tishi_alert("创建失败,型号不能为空!");
       obj.parent().attr("style", "display:none");
       obj.parent().next().attr("style", "display:block");
@@ -129,6 +133,7 @@ $(document).ready(function(){
             else{
                 $(".car_models").prepend(data);
                }
+            obj.removeAttr("value");
             obj.parent().attr("style", "display:none");
             obj.parent().next().attr("style", "display:block");
           }

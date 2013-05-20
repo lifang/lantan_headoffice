@@ -22,6 +22,7 @@ class StoresController < ApplicationController  #门店控制器
        sql_params << params[:select_city].to_i
        @cities = City.where("parent_id = #{params[:select_province].to_i}")
      end
+     params_sql += " order by s.created_at desc"
      sql_params[0] = sql + params_sql
      @stores = Store.paginate_by_sql(sql_params, :page => params[:page] ||= 1, :per_page => 10)
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
@@ -76,7 +77,7 @@ class StoresController < ApplicationController  #门店控制器
         end
       end
       flash[:notice] = "更新成功!"
-      redirect_to stores_path
+      redirect_to request.referer
     end
   end
 
