@@ -336,8 +336,6 @@ $(document).ready(function(){
         var price_flag = (new RegExp("^[0-9]+\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
         if($.trim($("#m_name").val()) == null || $.trim($("#m_name").val()) == ""){
             tishi_alert("物料名不能为空!");
-        }else if($.trim($("#m_o_code").val()) == null || $.trim($("#m_o_code").val()) == ""){
-            tishi_alert("订货单号不能为空!");
         }else if($.trim($("#m_code").val()) == null || $.trim($("#m_code").val()) == ""){
             tishi_alert("请输入条形码");
         }else if($.trim($("#m_price").val()) == null || $.trim($("#m_price").val()) == ""){
