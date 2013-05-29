@@ -332,7 +332,7 @@ $(document).ready(function(){
     })
     $("#ruku_btn").click(function(){  //入库
         var button = $(this);
-        var num_flag = (new RegExp(/^\d+$/)).test( $("#m_num").val());
+        var num_flag = (new RegExp(/^\d+$/)).test($.trim($("#m_num").val()));
         var price_flag = (new RegExp("^[0-9]+\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
         if($.trim($("#m_name").val()) == null || $.trim($("#m_name").val()) == ""){
             tishi_alert("物料名不能为空!");
