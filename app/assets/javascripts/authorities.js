@@ -143,7 +143,13 @@ function checkStaff(obj){
               tishi_alert("照片格式不对！正确格式是："+pic_types);
               return false;
            }
+                 var input_e = document.getElementById('staff_photo');
+               var file_size_e = input_e.files[0].size;
+               if(file_size_e > 500*1024){
+                  tishi_alert("图片大小不能超过500k！");
+                  return false;
+               }
        }
-       $('#new_staff_btn').attr('disabled','disabled');
-       $('#new_staff_btn').parents('form').submit();
+       $(obj).attr('disabled','disabled');
+       $(obj).parents('form').submit();
 }
