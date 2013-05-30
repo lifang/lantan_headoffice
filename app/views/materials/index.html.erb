@@ -7,9 +7,31 @@
   </div>
 <% end %>
   <div class="data_box">
+    <div class="search">
+    <div>
+      <label>条形码:</label>
+      <input type="text" id="search_material_code"/>
+        </div>
+    <div>
+      <label>物料名称:</label>
+      <input type="text" id="search_material_name"/>
+    </div>
+    <div>
+       <label>物料类别:</label>
+       <select id="search_material_type">
+         <option value="0">全部</option>
+         <% Material::TYPES_NAMES.each do |key,value| %>
+         <option value="<%= key %>"><%= value %></option>
+         <% end %>
+       </select>
+    </div>
+    <div>
+      <button class="search_btn" id="search_materials_button">查询物料</button>
+    </div>
+  </div>
     <div class="data_menu">
       <% if permission?(:logistics_manage, :storage) %><a id="ruku_a" href="JavaScript:void(0)">入库</a><% end %>
-      <% if permission?(:logistics_manage, :print_list) %><a href="/materials/m_list" target="_blank">打印库存清单</a><% end %>
+      <% if permission?(:logistics_manage, :print_list) %><a href="/materials/m_list" target="_blank">打印库存清单</a><% end %>  
     </div>
     <div class="clear"></div>
     <div class="tab_head">
@@ -54,11 +76,9 @@
             <% end %>
           </tbody>
         </table>
-        <div class="pageTurn">
           <% if !@materials.blank? %>
             <%= will_paginate  @materials, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
           <% end %>
-        </div>
       </div>
 
       <div id="mat_out_tab" style="display:none">  <!--出库记录-->
@@ -87,11 +107,9 @@
             <% end %>
           </tbody>
         </table>
-        <div class="pageTurn">
            <% if !@mat_out_orders.blank? %>
             <%= will_paginate  @mat_out_orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
           <% end %>
-        </div>
       </div>
 
       <div id="mat_in_tab" style="display:none"> <!--入库记录-->
@@ -125,11 +143,9 @@
            <% end %>
           </tbody>
         </table>
-        <div class="pageTurn">
           <% if !@mat_in_orders.blank? %>
             <%= will_paginate  @mat_in_orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
           <% end %>
-        </div>
       </div>
 
       <div style="<%= @init_tab.nil? ? "display:none" : "display:block" %>"> <!--门店订货记录-->
@@ -232,11 +248,9 @@
             <% end %>
           </tbody>
         </table>
-        <div class="pageTurn">
           <% if !@mat_orders.blank? %>
             <%= will_paginate  @mat_orders, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
           <% end %>
-        </div>
         </div>
       </div>
     </div>

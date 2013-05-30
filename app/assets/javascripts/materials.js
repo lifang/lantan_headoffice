@@ -122,6 +122,23 @@ $(document).ready(function(){
         WdatePicker();
     });
 
+  $("#search_materials_button").click(function(){           //查询物料
+      var mat_code = $.trim($("#search_material_code").val());
+      var mat_name = $.trim($("#search_material_name").val());
+      var mat_type = $("#search_material_type").val();
+      $.ajax({
+          async:true,
+          type:"get",
+          dataType:"script",
+          url: "/materials",
+          data: {
+              mat_code : mat_code,
+              mat_name : mat_name,
+              mat_type : mat_type,
+              tab : "materials_tab"
+          }
+      })
+  })
   $("#table_show .pageTurn a").live("click", function(){   //分页AJAX
        var url = $(this).attr("href");
        var tab = $(this).parents('.pageTurn').parent().attr("id");
