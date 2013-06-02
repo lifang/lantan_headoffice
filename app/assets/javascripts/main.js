@@ -49,7 +49,7 @@ $(function(){
 function popup(t){
 var scolltop = document.body.scrollTop|document.documentElement.scrollTop; //滚动条高度
     var doc_height = $(document).height(); //页面高度
-    var doc_width = $(document).width(); //页面宽度    
+    //var doc_width = $(document).width(); //页面宽度
     //var win_height = document.documentElement.clientHeight;//jQuery(document).height();
     var win_height = window.height; //窗口高度
     var layer_height = $(t).height(); //弹出层高度
