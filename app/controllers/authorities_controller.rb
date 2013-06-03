@@ -67,7 +67,7 @@ class AuthoritiesController < ApplicationController     #权限控制器
 
   def set_auth_commit #设置权限提交
     if params[:role_id]
-    role_id = params[:role_id]
+      role_id = params[:role_id]
       role = Role.find role_id
       if params[:menu_checks] #处理角色-菜单设置
         menus = Menu.where(:id => params[:menu_checks])
@@ -92,7 +92,7 @@ class AuthoritiesController < ApplicationController     #权限控制器
 
   def set_staff #用户设定页面
     staff_sql = (params[:staff_name].nil? || params[:staff_name].empty?) ? "1 = 1" : ["name like ?", "%#{params[:staff_name].strip}%"]
-    @staff = Staff.where("status = #{Staff::STATUS[:normal]}").where(staff_sql).paginate(:page => params[:page] ||= 1,:per_page => 10)
+    @staff = Staff.where("status = #{Staff::STATUS[:normal]}").where(staff_sql).paginate(:page => params[:page] ||= 1,:per_page => 2)
   end
 
   def set_staff_role#设定用户角色
