@@ -104,6 +104,8 @@ class MaterialsController < ApplicationController   #库存控制器
     if flag
       result.each do |material_num, material|
         material.update_attribute(:storage, (material.storage - material_num))
+        MatOutOrder.create(:material => material, :material_order => mo, :price => material.price,
+         :material_num => material_num, :staff_id  => cookies[:user_id])
       end
       if mo.update_attributes(:carrier => carrier, :arrival_at => arrive_time, :logistics_code => logistic_code, :m_status => 1)
         render :json => 1
