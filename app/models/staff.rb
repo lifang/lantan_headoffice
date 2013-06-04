@@ -49,14 +49,14 @@ class Staff < ActiveRecord::Base
     self.encrypted_password=encrypt(password)
   end
 
-  def operate_picture(photo, status)
+  def operate_picture(photo,original_filename, status)
     FileUtils.remove_dir "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}" if status.eql?("update") && FileTest.directory?("#{File.expand_path(Rails.root)}/public/uploads/#{self.id}")
     FileUtils.mkdir_p "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}"
-    File.new(Rails.root.join('public', "uploads", "#{self.id}", photo.original_filename), 'a+')
-    File.open(Rails.root.join('public', "uploads", "#{self.id}", photo.original_filename), 'wb') do |file|
+    File.new(Rails.root.join('public', "uploads", "#{self.id}", original_filename), 'a+')
+    File.open(Rails.root.join('public', "uploads", "#{self.id}", original_filename), 'wb') do |file|
       file.write(photo.read)
     end
-    file_path = "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}/#{photo.original_filename}"
+    file_path = "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}/#{original_filename}"
     img = MiniMagick::Image.open file_path,"rb"
 
     Constant::STAFF_PICSIZE.each do |size|
