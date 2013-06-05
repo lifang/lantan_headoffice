@@ -20,7 +20,7 @@ class StaffsController < ApplicationController
       @staff.operate_picture(photo,encrypt_name +"."+photo.original_filename.split(".").reverse[0], "create") unless photo.nil?
       flash[:notice] = "创建员工成功!"
     else
-      flash[:notice] = "创建员工失败!"
+      flash[:notice] = "创建员工失败!  #{@staff.errors.messages.values.flatten.join("<br/>")}"
     end
     redirect_to "/authorities/set_staff"
   end
