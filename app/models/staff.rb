@@ -12,6 +12,8 @@ class Staff < ActiveRecord::Base
   has_many :month_scores
   has_many :mat_in_orders
   belongs_to :store
+
+  validates :phone, :uniqueness => { :message => "联系方式已经存在!"}
   #门店员工职务
   S_COMPANY = {:BOSS=>0,:CHIC=>2,:FRONT=>3,:TECHNICIAN=>1} #0 老板 2 店长 3接待 1 技师
   N_COMPANY = {0=>"老板",2=>"店长",3=>"接待",1=>"技师"}
@@ -49,14 +51,14 @@ class Staff < ActiveRecord::Base
     self.encrypted_password=encrypt(password)
   end
 
-  def operate_picture(photo, status)
+  def operate_picture(photo,original_filename, status)
     FileUtils.remove_dir "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}" if status.eql?("update") && FileTest.directory?("#{File.expand_path(Rails.root)}/public/uploads/#{self.id}")
     FileUtils.mkdir_p "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}"
-    File.new(Rails.root.join('public', "uploads", "#{self.id}", photo.original_filename), 'a+')
-    File.open(Rails.root.join('public', "uploads", "#{self.id}", photo.original_filename), 'wb') do |file|
+    File.new(Rails.root.join('public', "uploads", "#{self.id}", original_filename), 'a+')
+    File.open(Rails.root.join('public', "uploads", "#{self.id}", original_filename), 'wb') do |file|
       file.write(photo.read)
     end
-    file_path = "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}/#{photo.original_filename}"
+    file_path = "#{File.expand_path(Rails.root)}/public/uploads/#{self.id}/#{original_filename}"
     img = MiniMagick::Image.open file_path,"rb"
 
     Constant::STAFF_PICSIZE.each do |size|

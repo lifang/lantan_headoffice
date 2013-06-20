@@ -44,5 +44,10 @@ module ApplicationHelper
     end
     str
   end
+
+  def random_file_name(file_name)
+    name = File.basename(file_name)
+    return (Digest::SHA1.hexdigest Time.now.to_s + name)[0..20]
+  end
   
 end

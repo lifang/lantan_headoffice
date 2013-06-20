@@ -161,14 +161,6 @@ $(document).ready(function(){
             }
         })
     });
-
- $(".sort_u, .sort_d").click(function(){
-        if($(this).attr("class") == "sort_u"){
-            $(this).attr("class", "sort_d");
-        }else{
-            $(this).attr("class", "sort_u");
-        }
-    });
     
     $("a[name='material_check']").live("click", function(){ //库存核实
         var obj = $(this);
@@ -382,6 +374,7 @@ $(document).ready(function(){
         })
     })   
 })
+
 function toggle_notice(obj){
     if($(obj).text()=="点击查看"){
        $(obj).text(" 隐藏");
@@ -405,4 +398,12 @@ function invalNotice(obj){
           }
         }
     })
+}
+   //排序切换箭头
+function sort_change(obj){
+    if($(obj).attr("class") == "sort_u"){
+        $(obj).attr("class", "sort_d");
+    }else if($(obj).attr("class") == "sort_d"){
+        $(obj).attr("class", "sort_u");
+    }
 }
