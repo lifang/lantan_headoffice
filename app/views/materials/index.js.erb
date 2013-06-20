@@ -1,9 +1,2 @@
 $("#<%= @tab %>").html("<%= escape_javascript(render :partial => "#{@tab}") %>");
 $("#<%= @tab %>_table > tbody > tr:odd").addClass("tbg");
-$(".sort_u, .sort_d").click(function(){
-if($(this).attr("class") == "sort_u"){
-$(this).attr("class", "sort_d");
-}else{
-$(this).attr("class", "sort_u");
-}
-});

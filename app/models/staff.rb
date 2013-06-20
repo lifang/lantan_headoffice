@@ -12,6 +12,8 @@ class Staff < ActiveRecord::Base
   has_many :month_scores
   has_many :mat_in_orders
   belongs_to :store
+
+  validates :phone, :uniqueness => { :message => "联系方式已经存在!"}
   #门店员工职务
   S_COMPANY = {:BOSS=>0,:CHIC=>2,:FRONT=>3,:TECHNICIAN=>1} #0 老板 2 店长 3接待 1 技师
   N_COMPANY = {0=>"老板",2=>"店长",3=>"接待",1=>"技师"}
