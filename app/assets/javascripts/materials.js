@@ -280,6 +280,18 @@ $(document).ready(function(){
                         $("#arrival_at"+moid).text(arrive_time);
                         $("#mo_status"+moid).text("已发货");
                         $("#logi_info"+moid).html("物流单号:"+logistic_code+"<br/>承运人:"+carrier);
+                        $.ajax({
+                            type : 'get',
+                            dataType : 'script',
+                            url : "/materials",
+                            data : {tab:"mat_out_tab"}
+                        });
+                        $.ajax({
+                            type: "get",
+                            dataType: "script",
+                            url: "/materials",
+                            data: {tab:"materials_tab"}
+                        })
                     }else if(data == 2){
                         tishi_alert("订单所需的物料数量库存不足,请核实!");
                     }
