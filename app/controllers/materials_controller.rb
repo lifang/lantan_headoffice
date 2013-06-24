@@ -87,7 +87,7 @@ class MaterialsController < ApplicationController   #库存控制器
   end
 
   def deliver_good #发货
-    mo = MaterialOrder.find(params[:m_o_id].to_i)
+    mo = MaterialOrder.find_by_id(params[:m_o_id].to_i)
     arrive_time = params[:arrive_time]
     logistic_code = params[:logistic_code]
     carrier = params[:carrier]
@@ -95,14 +95,15 @@ class MaterialsController < ApplicationController   #库存控制器
     mo.materials.each do |material|
       mat_order_item = MatOrderItem.find_by_material_order_id_and_material_id(mo.id, material.id)
       if mat_order_item && mat_order_item.material_num
-        if mat_order_item.material_num > material.storage
+        if mat_order_item.material_num > material.storage     #如果出库量大于实际库存量
         flag = false
-      end
-      result[mat_order_item.material_num] = material
+        end
+      #result[mat_order_item.material_num] = material
+      result[material] = mat_order_item.material_num
       end
     end
     if flag
-      result.each do |material_num, material|
+      result.each do |material, material_num|
         material.update_attribute(:storage, (material.storage - material_num))
         MatOutOrder.create(:material => material, :material_order => mo, :price => material.price,
          :material_num => material_num, :staff_id  => cookies[:user_id])
