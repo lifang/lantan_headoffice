@@ -1,10 +1,17 @@
 #encoding: utf-8
 class Api::MaterialsController < ApplicationController   #库存控制器api
   def search_material
-    str_name = params[:name].strip.length > 0 ? "name like '%#{params[:name]}%'" : "1=1 "
-    str_types = params[:types].strip.length > 0 ? "and types=#{params[:types]}": "and 1=1"
-    str = str_name + str_types
-    materials = Material.normal.all(:conditions => str)
+    str = ["status = ?", Material::STATUS[:NORMAL]]
+
+    if params[:name].strip.length > 0
+      str[0] += " and name like ? "
+      str << "%#{params[:name]}%"
+    end
+    if params[:types].strip.length > 0
+      str[0] += " and types = ?"
+      str << "#{params[:types]}"
+    end
+    materials = Material.where(str)
     render :json => materials
   end
 
