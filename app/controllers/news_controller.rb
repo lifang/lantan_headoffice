@@ -56,11 +56,10 @@ class NewsController < ApplicationController  #新闻控制器
     content = params[:create_new_content]
     if New.create(:title => title, :content => content, :status => New::STATUS[:UNRELEASED])
       flash[:notice] = "创建成功!"
-      redirect_to "/news"
     else
       flash[:notice] = "创建失败!"
-      redirect_to "/news"
     end
+          redirect_to "/news"
   end
 
 end

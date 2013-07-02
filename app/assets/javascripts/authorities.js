@@ -42,35 +42,45 @@ $(document).ready(function(){
   })
 
   $("input[name='role_new_name']").blur(function(){ //编辑更新
-    var obj = $(this);
-    if($.trim(obj.val()) == null || $.trim(obj.val()) == ""){
-      tishi_alert("角色名不能为空!");
-      obj.val(obj.prev().text());
-      obj.attr("style", "display:none");
-      obj.prev().attr("style", "display:block");
-    }else{
-      var rid = obj.prev().prev().val();
-      var rname = obj.val();
-      $.ajax({
-        type: "post",
-        url: "/authorities/update_role",
-        data: {r_id : rid, r_name : rname},
-        success: function(data){
-          if(data == 1){  
-            tishi_alert("更新成功!");
-            setTimeout(function(){
-                location.href = "/authorities";
-            }, 1500);
-          }else{
-           obj.val(obj.prev().text());
-           obj.attr("style", "display:none");
-           obj.prev().attr("style", "display:block");
-           tishi_alert("更新失败，已有同名角色!");
-          }
+        var obj = $(this);
+        if($.trim(obj.val()) == null || $.trim(obj.val()) == ""){
+            tishi_alert("角色名不能为空!");
+            obj.val(obj.prev().text());
+            obj.attr("style", "display:none");
+            obj.prev().attr("style", "display:block");
+        }else{
+            var rid = obj.prev().prev().val();
+            var rname = obj.val();
+            $.ajax({
+                type: "post",
+                url: "/authorities/update_role",
+                data: {
+                    r_id : rid,
+                    r_name : rname
+                },
+                success: function(data){
+                    if(data==1){
+                        tishi_alert("更新成功!");
+                        setTimeout(function(){
+                            location.href = "/authorities";
+                        }, 1500);
+                    }
+                    if(data==2){
+                        obj.val(obj.prev().text());
+                        obj.attr("style", "display:none");
+                        obj.prev().attr("style", "display:block");
+                        tishi_alert("更新失败，已有同名角色!");
+                    }
+                    if(data==0){
+                        obj.val(obj.prev().text());
+                        obj.attr("style", "display:none");
+                        obj.prev().attr("style", "display:block");
+                        tishi_alert("更新失败!");
+                    }
+                }
+            })
         }
-      })
-    }
-  })
+    })
 
   $("a[name='set_auth']").click(function(){   //设置权限按钮
    var rid = $(this).parent().parent().find($("input[name='hid_id']")).val();
