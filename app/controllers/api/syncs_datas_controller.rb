@@ -7,6 +7,7 @@ class Api::SyncsDatasController < ApplicationController
     dirs=["syncs_data","/#{Time.now.strftime("%Y-%m").to_s}","/#{Time.now.strftime("%Y-%m-%d").to_s}"]
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join unless File.directory? path+dirs[0..index].join }
     filename = params[:url].original_filename
+    temp_file = params[:url].tempfile
     path = path + dirs.join("")
     if filename.include? "zip"
       hour_dir = Time.now.hour >= 10 ? "/#{Time.now.hour}" : "/0#{Time.now.hour}"
@@ -14,6 +15,10 @@ class Api::SyncsDatasController < ApplicationController
       Dir.mkdir path unless File.directory? path
     end
     File.open(path + "/"+filename, "wb")  {|f|  f.write(params[:url].read) }
+    unless !File.exist?(temp_file.path)
+      temp_file.close
+      temp_file.unlink
+    end
     render :text=>"success"
   end
 

@@ -4,7 +4,7 @@ class AuthoritiesController < ApplicationController     #权限控制器
   layout "base_datas"
   
   def index
-      @roles = Role.all
+    @roles = Role.all
   end
 
   def add_role #添加角色
@@ -12,12 +12,11 @@ class AuthoritiesController < ApplicationController     #权限控制器
     if Role.where(["name = ?", name]).blank?
       if Role.create(:name => name)
         flash[:notice] = "创建成功!"
-        redirect_to authorities_path
       end
     else
-      flash[:notice] = "创建失败，该角色已存在!"
-      redirect_to authorities_path
+      flash[:notice] = "创建失败，该角色已存在!"    
     end
+    redirect_to authorities_path
   end
 
   def del_role #删除角色
@@ -35,14 +34,14 @@ class AuthoritiesController < ApplicationController     #权限控制器
 
   def update_role #更新角色
     role = Role.find(params[:r_id].to_i)
-    if role.nil? || !Role.where(["name = ? ", params[:r_name].strip]).blank?
-      render :text => 0
-    else
+    if Role.where(["id != ? and name = ? ", params[:r_id].to_i, params[:r_name].strip]).blank?
       if role.update_attribute("name", params[:r_name].strip)
         render :text => 1
       else
         render :text => 0
       end
+    else
+      render :text => 2
     end
   end
 
@@ -67,7 +66,7 @@ class AuthoritiesController < ApplicationController     #权限控制器
 
   def set_auth_commit #设置权限提交
     if params[:role_id]
-    role_id = params[:role_id]
+      role_id = params[:role_id]
       role = Role.find role_id
       if params[:menu_checks] #处理角色-菜单设置
         menus = Menu.where(:id => params[:menu_checks])
@@ -92,7 +91,7 @@ class AuthoritiesController < ApplicationController     #权限控制器
 
   def set_staff #用户设定页面
     staff_sql = (params[:staff_name].nil? || params[:staff_name].empty?) ? "1 = 1" : ["name like ?", "%#{params[:staff_name].strip}%"]
-    @staff = Staff.where("status = #{Staff::STATUS[:normal]}").where(staff_sql).paginate(:page => params[:page] ||= 1,:per_page => 10)
+    @staff = Staff.where("status = #{Staff::STATUS[:normal]}").where(staff_sql).paginate(:page => params[:page] ||= 1,:per_page => Constant::PER_PAGE)
   end
 
   def set_staff_role#设定用户角色

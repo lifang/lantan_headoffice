@@ -64,21 +64,27 @@ class StoresController < ApplicationController  #门店控制器
 
   def update  #更新门店
     store = Store.find_by_id(params[:id])
-    if store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
-        :contact => params[:edit_store_contact].strip, :phone => params[:edit_store_phone].strip, :address => params[:edit_store_address].strip,
-        :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i, :position =>
-          params[:edit_store_location_x]+","+params[:edit_store_location_y])
-      if !params[:edit_store_img].nil?
-        begin
-          new_store_url = Store.upload_img(params[:edit_store_img], store.id, Constant::STORE_PICS, Constant::STORE_PICSIZE)
-          store.update_attribute("img_url", new_store_url)
-        rescue
-          flash[:notice] = "图片更新失败"
+    if Store.where(["id != ? and city_id = ? and name = ?", store.id, params[:edit_store_select_city].to_i, params[:edit_store_name].strip]).blank?
+      if store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
+          :contact => params[:edit_store_contact].strip, :phone => params[:edit_store_phone].strip, :address => params[:edit_store_address].strip,
+          :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i, :position =>
+            params[:edit_store_location_x]+","+params[:edit_store_location_y])
+        if !params[:edit_store_img].nil?
+          begin
+            new_store_url = Store.upload_img(params[:edit_store_img], store.id, Constant::STORE_PICS, Constant::STORE_PICSIZE)
+            store.update_attribute("img_url", new_store_url)
+          rescue
+            flash[:notice] = "图片更新失败"
+          end
         end
+        flash[:notice] = "更新成功!"
+      else
+        flash[:notice] = "更新失败!"
       end
-      flash[:notice] = "更新成功!"
-      redirect_to request.referer
+    else
+      flash[:notice] = "更新失败，该城市下已有同名的门店!"
     end
+    redirect_to request.referer
   end
 
   def edit #编辑门店

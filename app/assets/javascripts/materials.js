@@ -122,6 +122,23 @@ $(document).ready(function(){
         WdatePicker();
     });
 
+  $("#search_materials_button").click(function(){           //查询物料
+      var mat_code = $.trim($("#search_material_code").val());
+      var mat_name = $.trim($("#search_material_name").val());
+      var mat_type = $("#search_material_type").val();
+      $.ajax({
+          async:true,
+          type:"get",
+          dataType:"script",
+          url: "/materials",
+          data: {
+              mat_code : mat_code,
+              mat_name : mat_name,
+              mat_type : mat_type,
+              tab : "materials_tab"
+          }
+      })
+  })
   $("#table_show .pageTurn a").live("click", function(){   //分页AJAX
        var url = $(this).attr("href");
        var tab = $(this).parents('.pageTurn').parent().attr("id");
@@ -143,14 +160,6 @@ $(document).ready(function(){
                 m_id : mid
             }
         })
-    });
-
- $(".sort_u, .sort_d").click(function(){
-        if($(this).attr("class") == "sort_u"){
-            $(this).attr("class", "sort_d");
-        }else{
-            $(this).attr("class", "sort_u");
-        }
     });
     
     $("a[name='material_check']").live("click", function(){ //库存核实
@@ -271,6 +280,18 @@ $(document).ready(function(){
                         $("#arrival_at"+moid).text(arrive_time);
                         $("#mo_status"+moid).text("已发货");
                         $("#logi_info"+moid).html("物流单号:"+logistic_code+"<br/>承运人:"+carrier);
+                        $.ajax({
+                            type : 'get',
+                            dataType : 'script',
+                            url : "/materials",
+                            data : {tab:"mat_out_tab"}
+                        });
+                        $.ajax({
+                            type: "get",
+                            dataType: "script",
+                            url: "/materials",
+                            data: {tab:"materials_tab"}
+                        })
                     }else if(data == 2){
                         tishi_alert("订单所需的物料数量库存不足,请核实!");
                     }
@@ -332,12 +353,10 @@ $(document).ready(function(){
     })
     $("#ruku_btn").click(function(){  //入库
         var button = $(this);
-        var num_flag = (new RegExp(/^\d+$/)).test( $("#m_num").val());
+        var num_flag = (new RegExp(/^\d+$/)).test($.trim($("#m_num").val()));
         var price_flag = (new RegExp("^[0-9]+\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
         if($.trim($("#m_name").val()) == null || $.trim($("#m_name").val()) == ""){
             tishi_alert("物料名不能为空!");
-        }else if($.trim($("#m_o_code").val()) == null || $.trim($("#m_o_code").val()) == ""){
-            tishi_alert("订货单号不能为空!");
         }else if($.trim($("#m_code").val()) == null || $.trim($("#m_code").val()) == ""){
             tishi_alert("请输入条形码");
         }else if($.trim($("#m_price").val()) == null || $.trim($("#m_price").val()) == ""){
@@ -367,6 +386,7 @@ $(document).ready(function(){
         })
     })   
 })
+
 function toggle_notice(obj){
     if($(obj).text()=="点击查看"){
        $(obj).text(" 隐藏");
@@ -390,4 +410,12 @@ function invalNotice(obj){
           }
         }
     })
+}
+   //排序切换箭头
+function sort_change(obj){
+    if($(obj).attr("class") == "sort_u"){
+        $(obj).attr("class", "sort_d");
+    }else if($(obj).attr("class") == "sort_d"){
+        $(obj).attr("class", "sort_u");
+    }
 }

@@ -39,7 +39,7 @@ class Sync < ActiveRecord::Base
     return list
   end
 
-  #当初次更新的时候选择目录下的所有为念
+  #当初次更新的时候选择目录下的所有文件
   @@files =[]
   def self.get_all_list(path)
     #获取目录列表
