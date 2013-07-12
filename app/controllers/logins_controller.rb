@@ -27,6 +27,8 @@ class LoginsController < ApplicationController #登录控制器
       cookies[:user_name]={:value =>staff.name, :path => "/", :secure  => false}
       session_role(cookies[:user_id])
       if has_authority?
+        cookies.delete(:manage_id) if cookies[:manage_id]
+        cookies.delete(:manage_name) if cookies[:manage_name]
         redirect_to backstages_path
       else
         cookies.delete(:user_id)

@@ -17,6 +17,14 @@ LantanHeadoffice::Application.routes.draw do
     end
   end
   resources :revisits
+  resources :s_staffs do
+    member do
+      post :create
+    end
+    collection do
+      get :logout
+    end
+  end
   resources :pleaseds do
     collection do
       get :search_cities
