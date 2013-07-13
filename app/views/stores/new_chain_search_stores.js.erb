@@ -1,0 +1,1 @@
+$("#new_chain_search_stores_list").html("<ul><% @stores.each do |s| %><li><input type='checkbox' id='new_chain_list_store_<%= s.s_id %>' value='<%= s.s_id %>' onclick='new_chain_store_change(this)'/><span><%= s.s_name %></span></li><% end %></ul>");

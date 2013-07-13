@@ -1,8 +1,9 @@
 class SStaff < ActiveRecord::Base
    set_table_name :"lantan_db.staffs"
    set_primary_key "id"
-
-
+   has_many :s_staff_role_relations
+  attr_accessor :password
+  
   def has_password?(submitted_password)
 		encrypted_password == encrypt(submitted_password)
 	end

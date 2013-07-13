@@ -7,7 +7,8 @@ module Constant
       :check_store => ["查询门店", 1],
       :new_store => ["新建门店", 2],
       :edit_store => ["编辑门店",4],
-      :del_store => ["删除门店", 8]
+      :del_store => ["删除门店", 8],
+      :new_chain => ["新建连锁店", 16]
     },
     #物流管理
     :logistics_manage => {

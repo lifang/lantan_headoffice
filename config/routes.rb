@@ -91,9 +91,16 @@ LantanHeadoffice::Application.routes.draw do
   end
   resources :stores do
     collection do
+      get :chain_validate
+      get :new_chain
+      post :create_chain
+      post :del_chain
+      post :new_chain_select_province
+      post :new_chain_search_stores
       post :province_change
       post :new_store_select_province
       post :edit_store_select_province
+      post :s_staff_validate
     end
   end
   resources :sv_cards do
