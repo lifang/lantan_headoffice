@@ -1,3 +1,4 @@
+#encoding: utf-8
 class SStaff < ActiveRecord::Base
    set_table_name :"lantan_db.staffs"
    set_primary_key "id"

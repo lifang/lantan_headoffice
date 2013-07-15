@@ -1,3 +1,4 @@
+#encoding: utf-8
 class Chain < ActiveRecord::Base
   set_table_name :"lantan_db.chains"
   set_primary_key "id"
