@@ -32,7 +32,7 @@
     <% end %>
     <div class="data_menu">
      <% if permission?(:operate_manage, :new_chain) %><%= link_to "新建连锁店", "JavaScript:void(0)", :id => "new_chain_a"%><% end %>
-     <% if permission?(:operate_manage, :new_store) %> <%= link_to "新建门店", "JavaScript:void(0)", :id => "new_store_a"%><% end %>
+     <% if permission?(:operate_manage, :new_store) %><%= link_to "新建门店", "JavaScript:void(0)", :id => "new_store_a"%><% end %>
     </div>
     <div class="clear"></div>
     <div class="tab_head">
@@ -120,8 +120,8 @@
                </table>
                </td>
                <td>
-                 <a href="JavaScript:void(0)" onclick="del_chain(this)">删除</a>
-                 <a>编辑</a>
+                 <% if permission?(:operate_manage, :del_chain) %><a href="JavaScript:void(0)" onclick="del_chain(this)">删除</a><% end %>
+                 <% if permission?(:operate_manage, :edit_chain) %><a href="JavaScript:void(0)" onclick="edit_chain(this)">编辑</a><% end %>
                </td>
             </tr>
             <% end if @group_chains %>

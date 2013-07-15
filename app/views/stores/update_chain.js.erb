@@ -1,0 +1,8 @@
+<% if @status == 1 %>
+tishi_alert("更新成功!");
+$("#new_store").hide();
+$(".mask").hide();
+$.ajax({type: "get", dataType: "script", url : "/stores", data : {div_name : "chains_div"}});
+<% else %>
+tishi_alert("更新失败!");
+<% end %>

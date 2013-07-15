@@ -227,7 +227,7 @@ function new_chain_select_province(pid){            //新建连锁店时选择�
       type: "post",
       url: "/stores/new_chain_select_province",
       dataType: "script",
-      data: {pid : pid}
+      data: {pid : pid, type : "new"}
   })
   }
 }
@@ -243,7 +243,8 @@ function new_chain_search_stores(){             //新建连锁店时查询门店
         data: {
             province : province,
             city : city,
-            name : name
+            name : name,
+            type : "new"
         }
     })
 }
@@ -340,3 +341,109 @@ function del_chain(obj){
         })
     }
 }
+
+function edit_chain(obj){               //编辑连锁店
+     var chain_id = $(obj).parents("tr").find("td:first input").val();
+     $.ajax({
+         type: "get",
+         url: "/stores/edit_chain",
+         dataType: "script",
+         data: {chain_id : chain_id}
+     })
+}
+
+function edit_chain_select_province(pid){           //编辑连锁店时选择省份
+    var pid = pid;
+    if(pid==0){
+      $("#edit_chain_select_city").html("<option value='0'>------</option>");
+  }else{
+       $.ajax({
+      type: "post",
+      url: "/stores/new_chain_select_province",
+      dataType: "script",
+      data: {pid : pid, type : "edit"}
+  })
+  }
+}
+
+function edit_chain_search_stores(){             //编辑连锁店时查询门店
+    var province = $("#edit_chain_select_province").val();
+    var city = $("#edit_chain_select_city").val();
+    var name = $.trim($("#edit_chain_select_name").val());
+    var a = new Array();
+    $("input[name='edit_selected_stores[]']").each(function(index,obj){
+        a[index] = $(obj).val();       
+    })
+    $.ajax({
+        type: "post",
+        dataType: "script",
+        url: "/stores/new_chain_search_stores",
+        data: {
+            province : province,
+            city : city,
+            name : name,
+            stores : a,
+            type : "edit"
+        }
+    })
+}
+
+function edit_chain_store_change(obj){       //编辑连锁店时选择连锁店关联的门店
+    var id = $(obj).val();
+    var name = $(obj).next().text();
+    var flag = $("#edit_chain_selected_stores_list ul").find("#edit_chain_selected_store_"+id).length<=0; //判断是否已选中
+    if($(obj).attr("checked")=="checked"){
+        if(flag){           //如果下面没选中...
+            $("#edit_chain_selected_stores_list ul").append("<li><input type='checkbox' name='edit_selected_stores[]' id='edit_chain_selected_store_"+id+"' value='"+id+"' onclick='edit_chain_cancel_select_store(this)' checked/><span>"+name+"</span></li>")
+        }
+    }else{
+        if(!flag){
+            $("#edit_chain_selected_stores_list ul").find("#edit_chain_selected_store_"+id).parent().remove();
+        }
+    }
+}
+
+function edit_chain_cancel_select_store(obj){          //编辑连锁店时取消已选中的门店
+    var id = $(obj).val();
+    if($(obj).attr("checked") != "checked"){
+        var flag = $("#edit_chain_list_store_"+id).attr("checked") == "checked"
+        if(flag){
+            $("#edit_chain_list_store_"+id).removeAttr("checked");
+        }
+        $(obj).parent().remove();
+    }
+}
+
+function edit_chain_validate(obj){    //编辑连锁店验证
+    var name = $.trim($("#edit_chain_name").val());
+    var id = $("#edit_chain_select_id").val();
+    var l = $("#edit_chain_selected_stores_list ul").find("input").length;
+    var flag = true;
+    if(name==""){
+        tishi_alert("连锁店名称不能为空!");
+        flag = false;
+    }else if(l<=0){
+        if(!confirm("您没有为该连锁店关联任何门店,需要继续创建吗？")){
+            flag = false;
+        }
+    }
+    if(flag){
+         $.ajax({
+            type: "get",
+            url: "/stores/chain_validate",
+            dataType: "json",
+            data: {name : name, id : id, type : "edit"},
+            success: function(data){
+                if(data.status==0){
+                    tishi_alert("创建失败,已有同名的连锁店!");
+                }else{
+                    $("#edit_chain_selected_stores_list").find("form").prepend("<input type='hidden' name='chain_name' value='"+name+"'/>");
+                    $("#edit_chain_selected_stores_list").find("form").prepend("<input type='hidden' name='chain_id' value='"+id+"'/>");
+                    $("#edit_chain_selected_stores_list").find("form").submit();
+                    $(obj).removeAttr("onclick");
+                }
+            }
+        })
+    }
+}
+

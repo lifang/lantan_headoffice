@@ -93,7 +93,9 @@ LantanHeadoffice::Application.routes.draw do
     collection do
       get :chain_validate
       get :new_chain
+      get :edit_chain
       post :create_chain
+      post :update_chain
       post :del_chain
       post :new_chain_select_province
       post :new_chain_search_stores

@@ -1,1 +1,5 @@
+<% if @type == "new" %>
 $("#new_chain_select_city").html("<option value='0'>请选择城市</option><%= @cities.each do |c| %><option value='<%= c.id %>'><%= c.name %></option><% end %>");
+<% elsif @type == "edit" %>
+$("#edit_chain_select_city").html("<option value='0'>请选择城市</option><%= @cities.each do |c| %><option value='<%= c.id %>'><%= c.name %></option><% end %>");
+<% end %>
