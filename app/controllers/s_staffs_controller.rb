@@ -1,3 +1,4 @@
+#encoding: utf-8
 class SStaffsController < ApplicationController #连锁店管理员控制器
   def index
     if cookies[:manage_id].nil?
