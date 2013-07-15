@@ -23,7 +23,7 @@ class SStaffsController < ApplicationController #连锁店管理员控制器
     if staff and staff.has_password?(params[:manager_password])
       chain = Chain.find_by_staff_id(staff.id)
       if chain.nil?
-       flash.now[:notice] = "您没有可供浏览的连锁店!"
+       flash.now[:notice] = "您没有可供查看的连锁店!"
        render :action => :index, :layout => false
       else
         cookies[:manage_id] = staff.id

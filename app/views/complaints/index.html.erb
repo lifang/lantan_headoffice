@@ -76,7 +76,7 @@
                 否
                 <% end %>
               </td>
-              <td><%= c.process_at.nil? ? "----" : c.process_at.strftime("%Y-%m-%d %H:%m")  %></td>
+              <td><%= c.process_at.nil? ? "----" : c.process_at.strftime("%Y-%m-%d %H:%M")  %></td>
               <td><%= c.remark ||= "----" %></td>
               <td>
                 <% if c.is_violation %>

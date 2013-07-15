@@ -28,8 +28,8 @@
                <div class="nav">
                     <ul>
                         <li><a href="/complaints" class=<%= is_hover("complaints") %>>投诉情况</a></li>
-                        <% if permission?(:service_manage, :satisfied) %><li><a href="/pleaseds" class=<%= is_hover("pleaseds") %>>满意度</a></li><% end %>
-                        <% if permission?(:service_manage, :revisit_check) %><li><a href="/revisits" class=<%= is_hover("revisits") %>>回访情况</a></li><% end %>
+                        <% if permission?(:service_manage, :satisfied) || cookies[:manage_id] %><li><a href="/pleaseds" class=<%= is_hover("pleaseds") %>>满意度</a></li><% end %>
+                        <% if permission?(:service_manage, :revisit_check) || cookies[:manage_id] %><li><a href="/revisits" class=<%= is_hover("revisits") %>>回访情况</a></li><% end %>
                     </ul>
                </div>
                <div class="back"><a href="/backstages" title="返回">Back</a>服务管理</div>

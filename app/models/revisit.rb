@@ -1,6 +1,6 @@
 #encoding: utf-8
 class Revisit < ActiveRecord::Base
-  set_table_name :"lantan_db_all.revisits"
+  set_table_name :"lantan_db.revisits"
   set_primary_key "id"
   belongs_to :customer
   has_many :revisit_order_relations
