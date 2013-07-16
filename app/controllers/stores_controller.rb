@@ -90,12 +90,19 @@ class StoresController < ApplicationController  #门店控制器
         end
         staff = SStaff.new(:username => params[:new_store_staff_name].strip, :name => params[:new_store_staff_name].strip,
                            :password => params[:new_store_staff_password],:store_id => current_store.id,
-                           :status => SStaff::STATUS[:normal])
+                           :status => SStaff::STATUS[:normal], :phone => params[:new_store_staff_name].strip)
         staff.encrypt_password
-        staff.save
-        role = SRole.create(:name => SRole::ADMIN, :store_id => current_store.id, :role_type => SRole::ROLE_TYPE[:STORE_MANAGER])
-        SStaffRoleRelation.create(:role_id => role.id, :staff_id => staff.id)
-        flash[:notice] = "创建成功!"
+        if staff.save
+          role = SRole.create(:name => SRole::ADMIN, :store_id => current_store.id, :role_type => SRole::ROLE_TYPE[:STORE_MANAGER])
+          SStaffRoleRelation.create(:role_id => role.id, :staff_id => staff.id)
+          menus = SMenu.all
+          menus.each do |m|
+            SRoleMenuRelation.create(:role_id => role.id, :menu_id => m.id)
+            SRoleModelRelation.create(:role_id => role.id, :num => SStaff::STAFF_MENUS_AND_ROLES[m.controller.to_sym],
+                                      :model_name => m.controller)
+          end
+          flash[:notice] = "创建成功!"
+        end
       end
     else
       flash[:notice] = "创建失败，该城市已存在同名的店面!"

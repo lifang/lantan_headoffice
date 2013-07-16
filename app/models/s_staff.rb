@@ -8,7 +8,16 @@ class SStaff < ActiveRecord::Base
   STATUS = {:normal => 0, :afl => 1, :vacation => 2, :resigned => 3, :deleted => 4}
   VALID_STATUS = [STATUS[:normal], STATUS[:afl], STATUS[:vacation]]
   STATUS_NAME = {0 => "在职", 1 => "请假", 2 => "休假", 3 => "离职", 4 => "删除"}
-  
+
+  STAFF_MENUS_AND_ROLES = {           #创建门店时创建的管理员将获取前台的所有权限
+    :customers => 32767,
+    :materials => 2147483647,
+    :staffs => 65535,
+    :datas => 524287,
+    :stations => 3,
+    :sales => 4194303,
+    :base_datas => 16383
+  }
   def has_password?(submitted_password)
 		encrypted_password == encrypt(submitted_password)
 	end
