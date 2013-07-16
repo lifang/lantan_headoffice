@@ -88,8 +88,9 @@ class StoresController < ApplicationController  #门店控制器
         rescue
           flash[:notice] = "图片上传失败!"
         end
-        staff = SStaff.new(:username => params[:new_store_staff_name].strip,
-                           :password => params[:new_store_staff_password],:store_id => current_store.id)
+        staff = SStaff.new(:username => params[:new_store_staff_name].strip, :name => params[:new_store_staff_name].strip,
+                           :password => params[:new_store_staff_password],:store_id => current_store.id,
+                           :status => SStaff::STATUS[:normal])
         staff.encrypt_password
         staff.save
         role = SRole.create(:name => SRole::ADMIN, :store_id => current_store.id, :role_type => SRole::ROLE_TYPE[:STORE_MANAGER])

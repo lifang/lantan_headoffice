@@ -27,8 +27,8 @@ class SStaffsController < ApplicationController #连锁店管理员控制器
        flash.now[:notice] = "您没有可供查看的连锁店!"
        render :action => :index, :layout => false
       else
-        cookies[:manage_id] = staff.id
-        cookies[:manage_name] = staff.name
+        cookies[:manage_id] = {:value => staff.id, :path => "/", :secure  => false}
+        cookies[:manage_name] = {:value => staff.name, :path => "/", :secure  => false}
         cookies.delete(:user_id) if cookies[:user_id]
         cookies.delete(:user_name) if cookies[:user_name]
         cookies.delete(:user_roles) if cookies[:user_roles]
