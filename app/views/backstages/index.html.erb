@@ -2,7 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8"/>
-    <title>澜泰总部后台管理系统</title>
+    <title>
+      <% if cookies[:user_id] %>
+      澜泰总部后台管理系统
+      <% elsif cookies[:manage_id] %>
+      澜泰连锁店后台管理系统
+      <% end %>
+    </title>
     <%= stylesheet_link_tag    "application", "style" %>
     <%= javascript_include_tag "application", "main", "backstages" %>
     <!--[if IE 6]>
@@ -15,16 +21,31 @@
   <body>
     <div class="head">
       <div class="box">
-        <div class="logo1"></div>
-        <div class="login">你好：<%= cookies[:user_name] %> | <a href="/logins/logout">退出</a></div>
+        <div class="logo1"><span>V1.0</span></div>
+        <div class="login">
+          你好：
+          <% if cookies[:user_id] %>
+            <%= cookies[:user_name] %>
+          <% elsif cookies[:manage_id] %>
+            <%= cookies[:manage_name] %>
+          <% end %>
+          | <% if cookies[:user_id] %><a href="/logins/logout">退出</a><% elsif cookies[:manage_id] %><a href="/s_staffs/logout">退出</a><% end %>
+        </div>
+        <div class="name">
+          <% if cookies[:user_id] %>
+          <span>澜泰总部后台管理系统</span>
+          <% elsif cookies[:manage_id] %>
+            <span>澜泰连锁店后台管理系统</span>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class="main">
       <div class="module">
         <ul>
-          <% if permissions_on_menus?(:operate_manage)%><li><%= link_to "运营管理", stores_path, :class => "m_one" %></li><% end %>
+          <% if permissions_on_menus?(:operate_manage) || cookies[:manage_id] %><li><%= link_to "运营管理", stores_path, :class => "m_one" %></li><% end %>
           <% if permissions_on_menus?(:logistics_manage)%><li><%= link_to "物流管理", materials_path, :class => "m_two" %><% if @mat_orders_urgent.length>0 %><a href="/materials?init_tab=mat_order" class="message"><%= @mat_orders_urgent.length %></a><% end %></li><% end %>
-          <% if permissions_on_menus?(:service_manage)%><li><a href="/complaints" class="m_three">服务管理</a></li><% end %>
+          <% if permissions_on_menus?(:service_manage) || cookies[:manage_id] %><li><a href="/complaints" class="m_three">服务管理</a></li><% end %>
           <% if permissions_on_menus?(:market_manage)%><li><%= link_to "营销管理", sv_cards_path, :class => "m_four" %></li><% end %>
           <% if permissions_on_menus?(:base_datas)%><li><%= link_to "基础数据", cars_path, :class => "m_five" %></li><% end %>
 

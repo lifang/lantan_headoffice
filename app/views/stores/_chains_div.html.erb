@@ -1,0 +1,32 @@
+<table id="chains_div_table" width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+  <thead>
+    <tr class="hbg">
+      <td>连锁店名称</td>
+      <td>门店名称</td>
+      <td>操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @group_chains.each do |key,value| %>
+      <tr>
+        <td><%= key %><input type="hidden" value="<%= value[0].id if value %>"/></td>
+        <td>
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" class="s_table">
+            <% value.each do |v| %>
+              <% if v.s_name && v.s_status && v.s_status != Store::STATUS[:DELETED] %>
+                <tr>
+                  <td><%= v.s_name %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </table>
+        </td>
+        <td>
+          <% if permission?(:operate_manage, :del_chain) %><a href="JavaScript:void(0)" onclick="del_chain(this)">删除</a><% end %>
+          <% if permission?(:operate_manage, :edit_chain) %><a href="JavaScript:void(0)" onclick="edit_chain(this)">编辑</a><% end %>
+        </td>
+      </tr>
+    <% end if @group_chains %>
+  </tbody>
+</table>
+<%= will_paginate  @chains, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>

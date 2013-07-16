@@ -1,0 +1,2 @@
+$("#<%= @div_name %>").html("<%= escape_javascript(render :partial => "#{@div_name}") %>");
+$("#<%= @div_name %>_table > tbody > tr:odd").addClass("tbg");

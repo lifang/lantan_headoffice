@@ -53,9 +53,17 @@
           <label>门店照片：</label>
           <%= file_field_tag 'new_store_img' %>
         </div>
+        <div class="item">
+          <label>管理员手机号：</label>
+          <%= text_field_tag 'new_store_staff_name'%>
+        </div>
+        <div class="item">
+          <label>管理员密码：</label>
+          <%= password_field_tag 'new_store_staff_password'%>
+        </div>
       </div>
       <div class="btn_box">
-        <button id="new_store_btn" type="submit" class="confirm_btn">确定</button>
+        <button type="button" class="confirm_btn" onclick="new_store_validate(this)">确定</button>
         <button type="reset" class="cancel_btn">取消</button>
       </div>
     </div>
