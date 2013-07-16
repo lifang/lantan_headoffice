@@ -66,7 +66,7 @@ module Constant
   #催货提醒
   URGE_GOODS_CONTENT = "门店订货提醒，请关注下"
 
-  SERVER_PATH = "http://bam.gankao.co/"
+  SERVER_PATH = "http://localhost:3001"
   FRONT_PATH = "http://official.gankao.co/"
 
   #施工现场文件目录
