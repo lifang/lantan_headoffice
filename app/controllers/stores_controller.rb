@@ -47,15 +47,6 @@ class StoresController < ApplicationController  #门店控制器
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
     @chains = Chain.paginate_by_sql(chain_sql, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("chains_div")
     @group_chains = @chains.group_by { |c| c.name  } if @chains
-#    @group_chains.each do |key, value|
-#      value.each do |v|
-#        p v.id
-#        p v.name
-#        p v.s_name
-#        p v.s_status
-#        p "*********"
-#      end
-#    end
     respond_to do |f|
       f.html
       f.js
@@ -262,10 +253,6 @@ class StoresController < ApplicationController  #门店控制器
      c = sql + b
      a[0] = c
      @stores = Store.find_by_sql(a)
-#     @stores.each do |s|
-#       p s.s_id
-#       p s.s_name
-#     end
    end
 
    def chain_validate     #新建或编辑连锁店和管理员重名验证
