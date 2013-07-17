@@ -236,6 +236,10 @@ function new_chain_search_stores(){             //新建连锁店时查询门店
     var province = $("#new_chain_select_province").val();
     var city = $("#new_chain_select_city").val();
     var name = $.trim($("#new_chain_select_name").val());
+    var a = new Array();
+    $("input[name='selected_stores[]']").each(function(index,obj){
+        a[index] = $(obj).val();
+    })
     $.ajax({
         type: "post",
         dataType: "script",
@@ -244,6 +248,7 @@ function new_chain_search_stores(){             //新建连锁店时查询门店
             province : province,
             city : city,
             name : name,
+            stores : a,
             type : "new"
         }
     })
@@ -373,7 +378,7 @@ function edit_chain_search_stores(){             //编辑连锁店时查询门�
     var a = new Array();
     $("input[name='edit_selected_stores[]']").each(function(index,obj){
         a[index] = $(obj).val();       
-    })
+    });
     $.ajax({
         type: "post",
         dataType: "script",

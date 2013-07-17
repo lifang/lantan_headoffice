@@ -107,18 +107,22 @@ class StoresController < ApplicationController  #门店控制器
 
   def create_chain    #创建连锁店
     SStaff.transaction do
-      staff = SStaff.new(:username => params[:staff_name], :password => params[:staff_password])
+      staff = SStaff.new(:username => params[:staff_name],:name => params[:staff_name], :password => params[:staff_password])
       staff.encrypt_password
       if staff.save
-        chain = Chain.create(:name => params[:chain_name], :status => Chain::STATUS[:NORMAL], :staff_id => staff.id)
-        if !params[:selected_stores].blank?
-          params[:selected_stores].each do |ss|
-            StoreChainRelation.create(:chain_id => chain.id, :store_id => ss.to_i)
+        chain = Chain.new(:name => params[:chain_name], :status => Chain::STATUS[:NORMAL], :staff_id => staff.id)
+        if chain.save
+          if !params[:selected_stores].blank?
+            params[:selected_stores].each do |ss|
+              StoreChainRelation.create(:chain_id => chain.id, :store_id => ss.to_i)
+            end
           end
+          flash[:notice] = "创建成功!"
+        else
+          flash[:notice] = "创建失败!"
         end
       end
-    end
-    flash[:notice] = "创建成功!"
+    end   
     redirect_to stores_path
   end
 

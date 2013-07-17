@@ -23,7 +23,15 @@
             <span>澜泰连锁店后台管理系统</span>
           <% end %>
                </div>
-               <div class="login">你好：<%= cookies[:user_name] %> | <a href="/logins/logout">退出</a></div>
+               <div class="login">
+                 你好：
+          <% if cookies[:user_id] %>
+            <%= cookies[:user_name] %>
+          <% elsif cookies[:manage_id] %>
+            <%= cookies[:manage_name] %>
+          <% end %>
+          | <% if cookies[:user_id] %><a href="/logins/logout">退出</a><% elsif cookies[:manage_id] %><a href="/s_staffs/logout">退出</a><% end %>
+               </div>
                <div class="clear"></div>
                <div class="nav">
                     <ul>

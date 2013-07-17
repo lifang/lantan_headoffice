@@ -1,7 +1,7 @@
 #encoding: utf-8
 class SStaffsController < ApplicationController #连锁店管理员控制器
   def index
-    if cookies[:manage_id].nil?
+    if cookies[:manage_id]
       staff = SStaff.find_by_id(cookies[:manage_id])
       if staff.nil?
         render :index, :layout => false
@@ -23,7 +23,7 @@ class SStaffsController < ApplicationController #连锁店管理员控制器
     @manager_name = params[:manager_name]
     if staff and staff.has_password?(params[:manager_password])
       chain = Chain.find_by_staff_id(staff.id)
-      if chain.nil?
+      if chain.nil? || chain.status == Chain::STATUS[:DELETED]
        flash.now[:notice] = "您没有可供查看的连锁店!"
        render :action => :index, :layout => false
       else
