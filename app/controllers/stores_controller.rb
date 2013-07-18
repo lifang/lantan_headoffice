@@ -1,5 +1,7 @@
 #encoding: utf-8
 class StoresController < ApplicationController  #门店控制器
+  require 'uri'
+  require 'net/http'
   layout "operate_manages"
   before_filter :sign?
   

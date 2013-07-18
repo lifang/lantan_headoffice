@@ -66,12 +66,12 @@ module Constant
   #催货提醒
   URGE_GOODS_CONTENT = "门店订货提醒，请关注下"
 
-  SERVER_PATH = "http://localhost:3001"
+  SERVER_PATH = "http://192.168.0.250:3001"
+  #STORE_IMAGE_PATH = "http://192.168.2.27:3001/"    存放门店图片的路径
   FRONT_PATH = "http://official.gankao.co/"
 
   #施工现场文件目录
-  VIDEO_DIR ="work_videos"
-
+  VIDEO_DIR ="work_videos" 
   LOCAL_DIR = "#{Rails.root}/public/"
   LOG_DIR = LOCAL_DIR + "logs/"
 
