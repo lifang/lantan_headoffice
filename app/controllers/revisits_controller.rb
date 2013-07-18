@@ -6,7 +6,7 @@ class RevisitsController < ApplicationController  #回访控制器
   def index
     search_time = (params[:search_time].nil? || params[:search_time].empty?) ?
                   Time.now.months_ago(1).strftime("%Y-%m") : params[:search_time]
-    if cookies[:user_id]
+    if cookies[:admin_id]
       revisits_sql = "select r.*, cus.name cus_name, cus.mobilephone cus_phone, o.code order_code,o.id order_id, s.name store_name
                       from lantan_db.revisits r
                       inner join lantan_db.customers cus on r.customer_id = cus.id

@@ -7,7 +7,7 @@ class StoresController < ApplicationController  #门店控制器
   
   def index
      @div_name = params[:div_name]
-     if cookies[:user_id]
+     if cookies[:admin_id]
      store_sql = "select s.*, c.name c_name, cp.name cp_name from lantan_db.stores s
           left join lantan_db.cities c on c.id = s.city_id
           left join lantan_db.cities cp on cp.id = c.parent_id
@@ -45,7 +45,7 @@ class StoresController < ApplicationController  #门店控制器
      end
      store_params_sql += " order by s.created_at desc"
      store_sql_params[0] = store_sql + store_params_sql
-    @stores = Store.paginate_by_sql(store_sql_params, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("stores_div")
+    @stores = Store.paginate_by_sql(store_sql_params, :page => params[:page] ||= 1, :per_page => 5) if @div_name.nil? || @div_name.eql?("stores_div")
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
     @chains = Chain.paginate_by_sql(chain_sql, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("chains_div")
     @group_chains = @chains.group_by { |c| c.name  } if @chains

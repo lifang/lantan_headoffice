@@ -29,8 +29,8 @@ class SStaffsController < ApplicationController #连锁店管理员控制器
       else
         cookies[:manage_id] = {:value => staff.id, :path => "/", :secure  => false}
         cookies[:manage_name] = {:value => staff.name, :path => "/", :secure  => false}
-        cookies.delete(:user_id) if cookies[:user_id]
-        cookies.delete(:user_name) if cookies[:user_name]
+        cookies.delete(:admin_id) if cookies[:admin_id]
+        cookies.delete(:admin_name) if cookies[:admin_name]
         cookies.delete(:user_roles) if cookies[:user_roles]
         cookies.delete(:model_role) if cookies[:model_role]
         redirect_to backstages_path

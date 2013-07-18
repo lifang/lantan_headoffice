@@ -17,7 +17,7 @@
      <div class="head">
           <div class="box">
                <div class="logo">
-                 <% if cookies[:user_id] %>
+                 <% if cookies[:admin_id] %>
           <span>澜泰总部后台管理系统</span>
           <% elsif cookies[:manage_id] %>
             <span>澜泰连锁店后台管理系统</span>
@@ -25,12 +25,12 @@
                </div>
                <div class="login">
                  你好：
-          <% if cookies[:user_id] %>
-            <%= cookies[:user_name] %>
+          <% if cookies[:admin_id] %>
+            <%= cookies[:admin_name] %>
           <% elsif cookies[:manage_id] %>
             <%= cookies[:manage_name] %>
           <% end %>
-          | <% if cookies[:user_id] %><a href="/logins/logout">退出</a><% elsif cookies[:manage_id] %><a href="/s_staffs/logout">退出</a><% end %>
+          | <% if cookies[:admin_id] %><a href="/logins/logout">退出</a><% elsif cookies[:manage_id] %><a href="/s_staffs/logout">退出</a><% end %>
                </div>
                <div class="clear"></div>
                <div class="nav">

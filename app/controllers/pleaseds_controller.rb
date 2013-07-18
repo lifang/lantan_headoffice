@@ -10,7 +10,7 @@ class PleasedsController < ApplicationController  #满意度控制器
     for m in (1..(current_month-1))
       @pleased_time << DateTime.now.months_ago(m).strftime("%Y-%m")
     end
-    if cookies[:user_id]
+    if cookies[:admin_id]
       @provinces = City.where("parent_id = 0")
       unless params[:search_province].nil? || params[:search_province].to_i == 0
         @cities = City.where("parent_id = #{params[:search_province].to_i}")

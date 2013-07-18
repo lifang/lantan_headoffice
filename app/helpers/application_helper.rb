@@ -6,7 +6,7 @@ module ApplicationHelper
   end
   
   def current_user
-    @current_user ||= Staff.find cookies[:user_id] if cookies[:user_id]
+    @current_user ||= Staff.find cookies[:admin_id] if cookies[:admin_id]
   end
   
   def sign?
@@ -18,9 +18,9 @@ module ApplicationHelper
   end
 
   def signed_in?
-    #return cookies[:user_id] != nil
-    if cookies[:user_id]
-      return cookies[:user_id]
+    #return cookies[:admin_id] != nil
+    if cookies[:admin_id]
+      return cookies[:admin_id]
     elsif
       cookies[:manage_id]
       return cookies[:manage_id]

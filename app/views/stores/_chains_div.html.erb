@@ -21,9 +21,9 @@
             <% end %>
           </table>
         </td>
-        <td>
-          <% if permission?(:operate_manage, :del_chain) %><a href="JavaScript:void(0)" onclick="del_chain(this)">删除</a><% end %>
+        <td>         
           <% if permission?(:operate_manage, :edit_chain) %><a href="JavaScript:void(0)" onclick="edit_chain(this)">编辑</a><% end %>
+          <% if permission?(:operate_manage, :del_chain) %><a href="JavaScript:void(0)" onclick="del_chain(this)">删除</a><% end %>
         </td>
       </tr>
     <% end if @group_chains %>

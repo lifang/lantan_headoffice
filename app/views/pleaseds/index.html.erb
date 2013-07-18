@@ -10,7 +10,7 @@
           <% end %>
         </select>
       </div>
-      <% if cookies[:user_id] %>
+      <% if cookies[:admin_id] %>
       <div>
         <label>区域：</label>
         <select id="search_province" name="search_province" class="select_marginRight">
@@ -50,13 +50,13 @@
         <% if @blank_msg %>
         <h3 align="center"><%= @blank_msg %></h3>
         <% elsif @chart_image.nil? %>
-          <% if cookies[:user_id] %>
+          <% if cookies[:admin_id] %>
           <h3 align="center">当前城市无数据!</h3>
           <% elsif cookies[:manage_id] %>
           <h3 align="center">当前门店无数据!</h3>
           <% end %>
          <% else %>
-            <% if cookies[:user_id] %>
+            <% if cookies[:admin_id] %>
             <%= image_tag @chart_image.image_url %>
             <% elsif cookies[:manage_id] %>
             <img alt="lantan" src="<%= Constant::SERVER_PATH + @chart_image.image_url %>"/>

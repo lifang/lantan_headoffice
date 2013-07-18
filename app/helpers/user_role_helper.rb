@@ -3,37 +3,37 @@ module UserRoleHelper
 
   #是否客服
   def is_staff?
-    #    session_role cookies[:user_id] unless session[:user_roles]
+    #    session_role cookies[:admin_id] unless session[:user_roles]
     #    roles.include? Constant::STAFF
-    session_role cookies[:user_id] unless cookies[:user_roles]
+    session_role cookies[:admin_id] unless cookies[:user_roles]
     roles = cookies[:user_roles].split(",")
     roles.include? Constant::STAFF
   end
 
   #是否仓库管理员
   def is_manager?
-    session_role cookies[:user_id] unless cookies[:user_roles]
+    session_role cookies[:admin_id] unless cookies[:user_roles]
     roles = cookies[:user_roles].split(",")
     roles.include? Constant::STORE_MANAGER
   end
 
   #是否老板
   def is_boss?
-    session_role cookies[:user_id] unless cookies[:user_roles]
+    session_role cookies[:admin_id] unless cookies[:user_roles]
     roles = cookies[:user_roles].split(",")
     roles.include? Constant::BOSS
   end
 
   #是否系统管理员
   def is_admin?
-    session_role cookies[:user_id] unless cookies[:user_roles]
+    session_role cookies[:admin_id] unless cookies[:user_roles]
     roles = cookies[:user_roles].split(",")
     roles.include? Constant::SYS_ADMIN
   end
   
   #是否有权限访问后台
   def has_authority?
-    user = Staff.find cookies[:user_id] if cookies[:user_id]
+    user = Staff.find cookies[:admin_id] if cookies[:admin_id]
     roles = user.roles if user
     return !roles.blank?
   end
@@ -67,11 +67,11 @@ module UserRoleHelper
     model = role[0]
     function = role[1]
     i = Constant::ROLES[model][function]
-    #    session_role cookies[:user_id] unless session[:model_role]
+    #    session_role cookies[:admin_id] unless session[:model_role]
     return false unless i
     role_flag = nil
-    if cookies[:user_id]
-      session_role(cookies[:user_id]) unless cookies[:model_role]
+    if cookies[:admin_id]
+      session_role(cookies[:admin_id]) unless cookies[:model_role]
       if cookies[:model_role]
         model_roles = cookies[:model_role].split(",")
         for j in (0..model_roles.length)

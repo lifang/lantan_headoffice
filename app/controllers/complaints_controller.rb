@@ -7,7 +7,7 @@ class ComplaintsController < ApplicationController   #投诉控制器
     search_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.months_ago(1).strftime("%Y-%m") : params[:search_time]
     has_processed_complaints = [] #已解决的投诉
     timely_complaints = [] #及时解决的投诉
-    if cookies[:user_id]
+    if cookies[:admin_id]
        all_complaints_sql = ["date_format(created_at, '%Y-%m') = ? ", search_time]      
        complaints = Complaint.where(all_complaints_sql)   #全部投诉       
     elsif cookies[:manage_id]
