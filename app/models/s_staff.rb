@@ -8,7 +8,8 @@ class SStaff < ActiveRecord::Base
   STATUS = {:normal => 0, :afl => 1, :vacation => 2, :resigned => 3, :deleted => 4}
   VALID_STATUS = [STATUS[:normal], STATUS[:afl], STATUS[:vacation]]
   STATUS_NAME = {0 => "在职", 1 => "请假", 2 => "休假", 3 => "离职", 4 => "删除"}
-
+  STORE_ADMIN = "门店管理员" #创建门店管理员的时候默认的name
+  CHAIN_ADMIN = "连锁店管理员" #创建连锁店管理员的时候默认的name
   STAFF_MENUS_AND_ROLES = {           #创建门店时创建的管理员将获取前台的所有权限
     :customers => 32767,
     :materials => 2147483647,

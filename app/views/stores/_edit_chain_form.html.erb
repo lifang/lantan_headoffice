@@ -1,14 +1,12 @@
 <div class="popup_box">
   <h1>编辑连锁店<a href="JavaScript:void(0)" class="close">关闭</a></h1>
   <div class="popup_body">
-    <div class="popup_body_area">
-      <div class="search">
-        <div>
+    <div class="popup_body_area">  
+        <div class="item_textarea">
           <label>连锁店店名：</label>
           <input type="text" id="edit_chain_name" value="<%= @chain.name %>" />
           <input type="hidden" id="edit_chain_select_id" value="<%= @chain.id %>"/>
         </div>
-      </div>
       <div class="clear"></div>
       <div class="search">
         <div>

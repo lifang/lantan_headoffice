@@ -81,7 +81,7 @@ class StoresController < ApplicationController  #门店控制器
         rescue
           flash[:notice] = "图片上传失败!"
         end
-        staff = SStaff.new(:username => params[:new_store_staff_name].strip, :name => params[:new_store_staff_name].strip,
+        staff = SStaff.new(:username => params[:new_store_staff_name].strip, :name => SStaff::STORE_ADMIN,
                            :password => params[:new_store_staff_password],:store_id => current_store.id,
                            :status => SStaff::STATUS[:normal], :phone => params[:new_store_staff_name].strip)
         staff.encrypt_password
@@ -109,7 +109,8 @@ class StoresController < ApplicationController  #门店控制器
 
   def create_chain    #创建连锁店
     SStaff.transaction do
-      staff = SStaff.new(:username => params[:staff_name],:name => params[:staff_name], :password => params[:staff_password])
+      staff = SStaff.new(:username => params[:staff_name],:name => SStaff::CHAIN_ADMIN,
+                         :password => params[:staff_password], :phone => params[:staff_name])
       staff.encrypt_password
       if staff.save
         chain = Chain.new(:name => params[:chain_name], :status => Chain::STATUS[:NORMAL], :staff_id => staff.id)
