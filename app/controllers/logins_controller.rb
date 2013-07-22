@@ -22,7 +22,13 @@ class LoginsController < ApplicationController #登录控制器
   def create #登陆验证
     staff = Staff.find_by_username(params[:username])
     @user_name = params[:username]
-   if staff and staff.has_password?(params[:password])
+   if staff.nil? or !staff.has_password?(params[:password])
+      flash.now[:notice] = "用户名或密码错误!"
+      render :action => :index, :layout => false
+   elsif staff.status
+     flash.now[:notice] = "用户已删除!"
+     render :action => :index, :layout => false
+   else
       cookies[:admin_id]={:value =>staff.id, :path => "/", :secure  => false}
       cookies[:admin_name]={:value =>staff.name, :path => "/", :secure  => false}
       session_role(cookies[:admin_id])
@@ -37,16 +43,15 @@ class LoginsController < ApplicationController #登录控制器
         cookies.delete(:model_role)
         flash.now[:notice] = "抱歉，您没有访问权限"
         render :action => :index, :layout => false
-      end
-    else
-      flash.now[:notice] = "用户名或密码错误!"
-      render :action => :index, :layout => false
+      end    
     end
   end
 
   def logout  #登出
     cookies.delete(:admin_id)
     cookies.delete(:admin_name)
+    cookies.delete(:user_roles)
+    cookies.delete(:model_role)
     redirect_to root_path
   end
 end

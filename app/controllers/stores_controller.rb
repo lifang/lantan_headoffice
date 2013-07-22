@@ -69,7 +69,8 @@ class StoresController < ApplicationController  #门店控制器
   end 
 
   def create    #创建门店
-    store = Store.find(:all, :conditions => ["city_id = ? and name = ? ", params[:new_store_select_city].strip.to_i, params[:new_store_name].strip])
+    store = Store.find(:all, :conditions => ["city_id = ? and name = ? and status != ?",
+        params[:new_store_select_city].strip.to_i, params[:new_store_name].strip, Store::STATUS[:DELETED]])
     if store.blank?
       current_store = Store.new(:name => params[:new_store_name].strip, :address => params[:new_store_address].strip, :phone => params[:new_store_phone].strip,
         :contact => params[:new_store_contact].strip, :status => params[:new_store_status].to_i,:opened_at => params[:new_store_open_time].strip,
@@ -115,7 +116,7 @@ class StoresController < ApplicationController  #门店控制器
   def create_chain    #创建连锁店
     status = 0
     SStaff.transaction do
-      staff = SStaff.new(:username => params[:staff_name],:name => SStaff::CHAIN_ADMIN,
+      staff = SStaff.new(:username => params[:staff_name],:name => SStaff::CHAIN_ADMIN, :status => SStaff::STATUS[:normal],
                          :password => params[:staff_password], :phone => params[:staff_name])
       staff.encrypt_password
       if staff.save
@@ -141,6 +142,8 @@ class StoresController < ApplicationController  #门店控制器
       render :json => {:status => 0}
     else
       if chain.update_attribute("status", Chain::STATUS[:DELETED])
+        staff = SStaff.find_by_id(chain.staff_id) if chain.staff_id
+        staff.update_attribute("status", SStaff::STATUS[:deleted]) if staff
         render :json => {:status => 1}
       else
         render :json => {:status => 0}
@@ -171,7 +174,8 @@ class StoresController < ApplicationController  #门店控制器
   end
   def update  #更新门店
     store = Store.find_by_id(params[:id])
-    if Store.where(["id != ? and city_id = ? and name = ?", store.id, params[:edit_store_select_city].to_i, params[:edit_store_name].strip]).blank?
+    if Store.where(["id != ? and city_id = ? and name = ? and status != ?", store.id, params[:edit_store_select_city].to_i,
+                  params[:edit_store_name].strip, Store::STATUS[:DELETED]]).blank?
       if store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
           :contact => params[:edit_store_contact].strip, :phone => params[:edit_store_phone].strip, :address => params[:edit_store_address].strip,
           :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i, :position =>
@@ -211,6 +215,8 @@ class StoresController < ApplicationController  #门店控制器
     status = 0
     if !store.nil?
       if store.update_attribute("status", Store::STATUS[:DELETED])
+        staff = SStaff.find_by_store_id(store.id)
+        staff.update_attribute("status", SStaff::STATUS[:deleted]) if staff
         status = 1
       else
         status = 0
@@ -226,7 +232,7 @@ class StoresController < ApplicationController  #门店控制器
    
 
     def s_staff_validate  #验证管理员是否唯一
-      staff = SStaff.find_by_username(params[:staff_name].strip)
+      staff = SStaff.where(["name = ? and status != ?", params[:staff_name].strip, SStaff::STATUS[:deleted]]).first
       if staff
         render :json => {:status => 0}
       else
@@ -279,18 +285,18 @@ class StoresController < ApplicationController  #门店控制器
    def chain_validate     #新建或编辑连锁店和管理员重名验证
      status = 0
      if params[:type].eql?("new")
-     chain = Chain.find_by_name(params[:name])
-     staff = SStaff.find_by_username(params[:staff_name])
-       if chain.nil? && staff.nil?
+       chains = Chain.where(["name = ? and status != ?", params[:name], Chain::STATUS[:DELETED]])
+       staffs = SStaff.where(["name = ? and status != ? ", params[:staff_name], SStaff::STATUS[:deleted]])
+       if chains.blank? && staffs.blank?
          status = 1
-       elsif !chain.nil?
+       elsif !chains.blank?
          status = 0
-       elsif !staff.nil?
+       elsif !staffs.blank?
          status = 2
        end
      elsif params[:type].eql?("edit")
        id = params[:id].to_i
-       chain = Chain.where(["id != ? and name = ?", id, params[:name]])
+       chain = Chain.where(["id != ? and name = ? and status != ? ", id, params[:name], Chain::STATUS[:DELETED]])
        if chain.blank?
          status = 1
        else
