@@ -166,13 +166,13 @@ $(document).ready(function(){
         var obj = $(this);
         var mid = $(this).parent().find("input").val();
         var mat_storage = parseInt($(this).parent().siblings(".mat_stor").text());
-        var count = $(this).parent().prev().find("input").val();
-        if(isNaN(parseInt(count))){
+        var count = $.trim($(this).parent().prev().find("input").val());
+        if(count == ""){
+            tishi_alert("请输入盘点实数!");
+        }else if(isNaN(count)){
             tishi_alert("请输入正确的盘点实数!");
-        }else if(parseInt(count) < 0){
-            tishi_alert("数量至少为零!");
-        }else if($.trim(count)== null || $.trim(count)== ""){
-            tishi_alert("请在核实数目中输入具体的盘点实数!")
+        }else if(new RegExp(/^\d+$/).test(count)==false){
+            tishi_alert("数量应为大于等于零的整数!")
         }else if(mat_storage==count){
             tishi_alert("已核实过!");
         }else{
@@ -353,8 +353,8 @@ $(document).ready(function(){
     })
     $("#ruku_btn").click(function(){  //入库
         var button = $(this);
-        var num_flag = (new RegExp(/^\d+$/)).test($.trim($("#m_num").val()));
-        var price_flag = (new RegExp("^[0-9]+\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val());
+        var num_flag = (new RegExp(/^\d+$/)).test($.trim($("#m_num").val()));       //大于等于零的整数
+        var price_flag = (new RegExp("^[0-9]+\.[0-9]+$")).test($("#m_price").val()) || (new RegExp(/^\d+$/)).test( $("#m_price").val()); //大于等于零的浮点数
         if($.trim($("#m_name").val()) == null || $.trim($("#m_name").val()) == ""){
             tishi_alert("物料名不能为空!");
         }else if($.trim($("#m_code").val()) == null || $.trim($("#m_code").val()) == ""){

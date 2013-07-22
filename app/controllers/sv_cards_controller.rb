@@ -125,8 +125,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     srr_started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? " 1 = 1 " : " date_format(created_at, '%Y-%m-%d') >= '#{params[:started_time]}'"
     srr_ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? " 1 = 1" : " date_format(created_at, '%Y-%m-%d') <= '#{params[:ended_time]}'"
     #获取时间段内所有使用了储值卡的已完成的订单数量，并且根据门店分组
-    @orders = Order.paginate_by_sql(["select o.store_id, count(o.id) id_count, sum(opt.price) t_price, s.name from lantan_db_all.orders o
-      inner join lantan_db_all.order_pay_types opt on opt.order_id = o.id left join lantan_db_all.stores s on s.id = o.store_id
+    @orders = Order.paginate_by_sql(["select o.store_id, count(o.id) id_count, sum(opt.price) t_price, s.name from lantan_db.orders o
+      inner join lantan_db.order_pay_types opt on opt.order_id = o.id left join lantan_db.stores s on s.id = o.store_id
       where opt.pay_type = ? #{order_started_time_sql} #{order_ended_time_sql} group by o.store_id",
         OrderPayType::PAY_TYPES[:SV_CARD]], :page => params[:page] ||= 1,:per_page => 10)
 

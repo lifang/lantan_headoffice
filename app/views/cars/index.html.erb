@@ -13,8 +13,7 @@
           <% @car_brands[c.id].each do |car| %>
           <li>
             <a name="check_model" alt="<%= car.id %>" href="JavaScript:void(0)"><%= car.name %></a>
-            <% if permission?(:base_datas, :del_brand) %><a name="del_brands" alt="<%= car.id %>" href="JavaScript:void(0)" class="group_x">Close</a><% end %>
-            
+            <% if permission?(:base_datas, :del_brand) %><a name="del_brands" alt="<%= car.id %>" href="JavaScript:void(0)" class="group_x">Close</a><% end %>            
           </li>
           <% end %>
         </ul>

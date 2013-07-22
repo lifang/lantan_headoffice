@@ -16,8 +16,14 @@ module Constant
     :logistics_manage => {
       :print_list => ["打印库存清单", 1],
       :storage => ["入库", 2],
-      :out_record => ["出库记录", 4],
-      :in_record => ["入库记录", 8]
+      :check_storage => ["库存核实", 4],
+      :storage_beizhu => ["库存备注", 8],
+      :out_record => ["出库记录", 16],
+      :in_record => ["入库记录", 32],
+      :mat_orders => ["门店订货记录", 64],
+      :send_goods => ["发货", 128],
+      :urge_money => ["催款", 256],
+      :mat_order_beizhu => ["门店订货记录备注", 512]
     },
     #服务管理
     :service_manage => {
@@ -26,11 +32,19 @@ module Constant
     },
     #营销管理
     :market_manage => {
-      :sell_situation => ["销售情况", 1],
-      :use_detail => ["使用情况详细", 2],
-      :use_collect => ["使用情况汇总", 4],
-      :sale_list => ["活动列表", 8],
-      :create_sale => ["发布活动", 16]
+      :new_svcard => ["新建优惠卡", 1],
+      :edit_svcard => ["编辑优惠卡", 2],
+      :del_svcard => ["删除优惠卡", 4],
+      :new_sale => ["新建活动", 8],
+      :edit_sale => ["编辑活动", 16],
+      :release_sale => ["发布活动", 32],
+      :del_sale => ["删除活动", 64],
+      :new_good => ["添加产品", 128],
+      :del_good => ["删除产品", 256],
+      :edit_good => ["编辑产品", 512],
+      :new_serv => ["添加服务", 1024],
+      :del_serv => ["删除服务", 2048],
+      :edit_serv => ["编辑服务", 4096]
     },
     #基础数据
     :base_datas => {

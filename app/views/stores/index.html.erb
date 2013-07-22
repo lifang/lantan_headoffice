@@ -43,91 +43,10 @@
     </div>
     <div class="data_body">
       <div id="stores_div">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
-          <thead>
-            <tr class="hbg">
-              <td>省市</td>
-              <td>门店名称</td>
-              <td>负责人</td>
-              <td>联系电话</td>
-              <td>地址</td>
-              <td>开业时间</td>
-              <td>门店状态</td>
-              <td>操作</td>
-            </tr>
-          </thead>
-          <tbody>
-            <% if @stores.blank? %>
-              <tr>
-                <th colspan="8">当前无门店!</th>
-              </tr>
-            <% else %>
-              <% @stores.each do |store| %>
-                <tr>
-                  <% if !store.city_id.nil? %>
-                    <td>
-                      <%= store.cp_name  %>/<%= store.c_name %>
-                    </td>
-                  <% else %>
-                    <td>--/--</td>
-                  <% end %>
-                <td><%= store.name.nil? ? "----" : store.name %></td>
-                 <td><%= store.contact.nil? ? "----" : store.contact %></td>
-                  <td><%= store.phone.nil? ? "----" : store.phone %></td>
-                  <td><%= store.address.nil? ? "----" : truncate(store.address, :length => 15) %></td>
-                  <td><%= store.opened_at.nil? ? "----" : store.opened_at.strftime("%Y-%m-%d")  %></td>
-                  <% if store.status == 0 %>
-                    <td>已关闭</td>
-                  <% elsif store.status == 1 %>
-                    <td>正常营业</td>
-                  <% else %>
-                    <td>筹备中</td>
-                  <% end %>
-                  <td>
-                    <% if permission?(:operate_manage, :edit_store) %> <%= link_to "编辑", "JavaScript:void(0)", :name => "edit_button", :sid => store.id %><% end %>
-                    <%= link_to "详细", "JavaScript:void(0)", :name => "show_button", :sid => store.id %>
-                    <% if permission?(:operate_manage, :del_store) %> <%= link_to "删除", store_path(store.id), :method => :delete, :confirm => "确定要删除吗？" %><% end %>
-                  </td>
-                </tr>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
-        <%= will_paginate  @stores, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+        <%= render :partial => "stores_div" %>
       </div>
       <div id="chains_div" style="display:none">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
-          <thead>
-            <tr class="hbg">
-              <td>连锁店名称</td>
-              <td>门店名称</td>
-              <td>操作</td>
-            </tr>
-          </thead>
-          <tbody>    
-            <% @group_chains.each do |key,value| %>
-             <tr>
-               <td><%= key %><input type="hidden" value="<%= value[0].id if value %>"/></td>
-               <td>
-               <table width="100%" border="0" cellspacing="1" cellpadding="0" class="s_table">
-                  <% value.each do |v| %>                 
-                  <% if v.s_name && v.s_status && v.s_status != Store::STATUS[:DELETED] %>
-                  <tr>
-                    <td><%= v.s_name %></td>
-                  </tr>
-                  <% end %>               
-                  <% end %>
-               </table>
-               </td>
-               <td>                 
-                 <% if permission?(:operate_manage, :edit_chain) %><a href="JavaScript:void(0)" onclick="edit_chain(this)">编辑</a><% end %>
-                 <% if permission?(:operate_manage, :del_chain) %><a href="JavaScript:void(0)" onclick="del_chain(this)">删除</a><% end %>
-               </td>
-            </tr>
-            <% end if @group_chains %>
-          </tbody>
-        </table>
-        <%= will_paginate  @chains, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+        <%= render :partial => "chains_div" %>
       </div>
     </div>
   </div>

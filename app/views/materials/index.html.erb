@@ -39,7 +39,7 @@
         <li class="<%= @init_tab.nil? ? "hover" : "" %>">库存列表</li>
         <% if permission?(:logistics_manage, :out_record) %><li>出库记录</li><% end %>
         <% if permission?(:logistics_manage, :in_record) %><li>入库记录</li><% end %>
-        <li class="<%= @init_tab.nil? ? "" : "hover" %>">门店订货记录</li>
+        <% if permission?(:logistics_manage, :mat_orders) %><li class="<%= @init_tab.nil? ? "" : "hover" %>">门店订货记录</li><% end %>
       </ul>
     </div>
     <div id="table_show" class="data_body">
@@ -69,8 +69,8 @@
                 <td><input type="text" style="width:50px"/></td>
                 <td>
                   <input type="hidden" value="<%= material.id %>"/>
-                  <a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a>
-                  <a name="material_check" href="JavaScript:void(0)">核实</a>
+                  <% if permission?(:logistics_manage, :storage_beizhu) %><a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a><% end %>
+                  <% if permission?(:logistics_manage, :check_storage) %><a name="material_check" href="JavaScript:void(0)">核实</a><% end %>
                 </td>
               </tr>
             <% end %>
@@ -242,7 +242,7 @@
               <td>
                 <input type="hidden" value="<%= mo.id %>"/>
                 <a name="mat_order_detail" href="JavaScript:void(0)">详情</a>
-                <a name="mat_order_beizhu" href="JavaScript:void(0)">备注</a>
+                <% if permission?(:logistics_manage, :mat_order_beizhu) %><a name="mat_order_beizhu" href="JavaScript:void(0)">备注</a><% end %>
               </td>
             </tr>
             <% end %>

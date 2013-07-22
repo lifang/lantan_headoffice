@@ -5,27 +5,28 @@ class SalesController < ApplicationController   #活动控制器
   before_filter :sign?
   
   def index #活动列表
-    @sales = Sale.where("status = #{Sale::STATUS[:UN_RELEASE]} or status = #{Sale::STATUS[:RELEASE]}").order("created_at desc").
+    @sales = Sale.where("status != #{Sale::STATUS[:DESTROY]}").order("created_at desc").
       paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
 
-  def release #创建活动
+  def new #创建活动
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
+    @page = params[:page]
   end
 
   def search_product #查询产品
-    p_id = (params[:type].to_i == 99999) ? "1 = 1" : ["types = ? ", params[:type].tp_i]
+    p_id = (params[:type].to_i == 99999) ? "1 = 1" : ["types = ? ", params[:type].to_i]
     p_name = (params[:name].nil? || params[:name].empty?) ? "1 = 1" : ["name like ? ", "%#{params[:name].strip}%"]
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}").where(p_id).where(p_name)
   end
 
   def edit_search_product #编辑活动时查询产品
-    p_id = (params[:type].to_i == 99999) ? "1 = 1" : ["types = ? ", params[:type].tp_i]
+    p_id = (params[:type].to_i == 99999) ? "1 = 1" : ["types = ? ", params[:type].to_i]
     p_name = (params[:name].nil? || params[:name].empty?) ? "1 = 1" : ["name like ? ", "%#{params[:name].strip}%"]
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}").where(p_id).where(p_name)
   end
 
-  def create  #发布活动  
+  def create  #创建活动
     sale_name = params[:sale_name]
     disc_types = params[:sale_disc_types].to_i
     if disc_types == 0
@@ -53,19 +54,19 @@ class SalesController < ApplicationController   #活动控制器
           s.sale_prod_relations.new(:product_id => item.to_i, :prod_num => selected_product_count[index])
        end
     Sale.transaction do
-      begin
         if s.save
           if !img.nil?
             url = Sale.upload_img(img, s.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
             s.update_attribute("img_url", url)
           end
           flash[:notice] = "活动创建成功!"
-        end
-      rescue
-        flash[:notice] = "活动创建失败!"
-      end
+          redirect_to sales_path
+        else
+          flash[:notice] = "活动创建失败!"
+          page = (params[:page].nil? || params[:page]=="") ? 1 : params[:page].to_i
+          redirect_to "/sales?page=#{page}"
+        end        
     end
-    redirect_to sales_path
   end
 
   def update #更新活动
@@ -90,7 +91,7 @@ class SalesController < ApplicationController   #活动控制器
     sale_introduction = params[:edit_sale_introduction]
     SaleProdRelation.destroy_all("sale_id = #{sale.id}")
     selected_product_id.each_with_index do |item, index|
-      sale.sale_prod_relations.new(:product_id => item.to_i, :prod_num => selected_product_count[index])
+      sale.sale_prod_relations.new(:product_id => item.to_i, :prod_num => selected_product_count[index].strip)
     end
     Sale.transaction do
       begin
@@ -108,40 +109,41 @@ class SalesController < ApplicationController   #活动控制器
         flash[:notice] = "更新失败!"
       end
     end
-    redirect_to request.referer
+    page = (params[:edit_sale_page].nil? || params[:edit_sale_page] == "") ? 1 : params[:edit_sale_page].to_i
+    redirect_to "/sales?page=#{page}"
   end
 
   def edit #修改活动
-    @sale = Sale.find(params[:s_id].to_i)
+    @sale = Sale.find(params[:id].to_i)
     @sale_products = @sale.sale_prod_relations
     @products = Product.where("status = #{Product::STATUS[:NOMAL]}")
+    @page = params[:page]
   end
   
-  def del_sale  #删除活动按钮
+  def destroy  #删除活动按钮
     sale = Sale.find(params[:id].to_i)
     if !sale.nil?
-      if sale.status == 2
-        render :text => 0
-      else
-        sale.update_attribute("status", Sale::STATUS[:DESTROY])
-        render :text => 1
-      end
+        if sale.update_attribute("status", Sale::STATUS[:DESTROY])
+          flash[:notice] = "删除成功!"
+        end
     else
-      render :text => 0
+      flash[:notice] = "删除失败!"
     end
+    page = (params[:page].nil? || params[:page]=="") ? 1 : params[:page].to_i
+    redirect_to "/sales?page=#{page}"
   end
 
   def rel_sale  #发布活动按钮
     sale = Sale.find(params[:id].to_i)
-    if !sale.nil?
-      if sale.status != 0
-        render :text => 0
-      else
-        sale.update_attribute("status", Sale::STATUS[:RELEASE])
-        render :text => 1
-      end
+    if !sale.nil?   
+       if sale.update_attribute("status", Sale::STATUS[:RELEASE])
+        flash[:notice] = "发布成功!"
+       end
     else
-      render :text => 0
+      flash[:notice] = "发布失败!"
     end
+    page = (params[:page].nil? || params[:page]=="") ? 1 : params[:page].to_i
+    redirect_to "/sales?page=#{page}"
   end
+
 end

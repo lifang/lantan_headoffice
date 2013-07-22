@@ -128,11 +128,9 @@ LantanHeadoffice::Application.routes.draw do
   end
   resources :sales do
     collection do
-      post :del_sale
-      post :rel_sale
+      get :rel_sale
       post :search_product
       post :edit_search_product
-      get :release
       get :edit
     end
     member do

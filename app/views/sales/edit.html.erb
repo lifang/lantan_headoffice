@@ -1,0 +1,133 @@
+<%= javascript_include_tag "/assets/kindEditor/kindeditor-min.js" %>
+<%= javascript_include_tag "/assets/kindEditor/zh_CN.js" %>
+<div class="box">
+  <div class="data_box">
+    <div class="clear"></div>
+    <div class="data_body">
+      <div>
+        <div>
+          <%= form_tag @sale, :multipart => true do %>
+          <input type="hidden" name="edit_sale_page" value="<%= @page %>"/>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">活动代码：</div>
+              <input name="edit_sale_id" type="hidden" value="<%= @sale.id %>"/>
+              <div class="releaseDiv_r"><input type="text" class="title_input" value="<%= @sale.code %>" disabled/></div><br/>
+              <div class="releaseDiv_l">标题：</div>
+              <div class="releaseDiv_r"><input id="edit_sale_name" name="edit_sale_name" type="text" class="title_input" value="<%= @sale.name %>"/></div>
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">选择项目：</div>
+              <div class="releaseDiv_r rdTop">
+                <div class="search">
+                  <div><label>类别：</label>
+                    <select id="edit_sale_product_types" name="edit_sale_product_types">
+                      <option value="99999">全部</option>
+                      <% Product::PRODUCT_TYPES.each do |key, value| %>
+                        <option value="<%= key %>"><%= value %></option>
+                      <% end %>
+                    </select>
+                  </div>
+                  <div><label>名称：</label><input id="edit_sale_product_name" name="edit_sale_product_name" type="text"/></div>
+                  <div><button id="edit_sale_search_btn"class="search_btn">查询</button></div>
+                </div>
+                <fieldset class="popup_body_fieldset">
+                  <legend class="popup_body_title">查询结果</legend>
+                  <div id="edit_product_name_div" class="popup_body_result">
+                    <ul>
+                      <% @products.each do |product| %>
+                        <li>
+                          <input name="edit_product_name" type="checkbox" value="<%= product.id %>" <% @sale_products.each do |sp| %><% if sp.product_id == product.id %>checked<% end %><% end %>/>
+                          <span><%= product.name %></span>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </fieldset>
+                <div class="pq"></div>
+                <fieldset class="popup_body_fieldset">
+                  <legend class="popup_body_title">已选择</legend>
+                  <div id="edit_selected_product_div" class="popup_body_result">
+                    <% @sale_products.each do |sp| %>
+                      <div id="edpro<%= sp.product_id %>">
+                        <em><%= sp.product.name if sp.product %></em>
+                        <a name="edit_add_button" href="JavaScript:void(0)" class="addre_a">+</a>
+                        <span><input name="edit_selected_product_count[]" type="text" class="addre_input" value="<%= sp.prod_num %>"/></span>
+                        <a name="edit_del_button" href="JavaScript:void(0)" class="addre_a" >-</a>
+                        <a name="edit_del_a" href="JavaScript:void(0)" class="remove_a">删除</a>
+                        <input type="hidden" name="edit_selected_product_id[]" value="<%= sp.product_id %>"/>
+                      </div>
+                    <% end %>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">优惠：</div>
+              <div class="releaseDiv_r">
+                <input name="edit_sale_disc_types" type="radio" value="<%= Sale::DISC_TYPES[:FEE] %>" <% if @sale.disc_types == Sale::DISC_TYPES[:FEE] %>checked<% end %>/>金额：<input id="edit_disc_money" name="edit_disc_money" type="text" <% if @sale.disc_types == Sale::DISC_TYPES[:DIS] %>disabled<% else %>value="<%= @sale.discount %>"<% end %>/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input name="edit_sale_disc_types" type="radio" value="<%= Sale::DISC_TYPES[:DIS] %>" <% if @sale.disc_types == Sale::DISC_TYPES[:DIS] %>checked<% end %>/>打折：<input id="edit_disc_discount" name="edit_disc_discount" type="text" <% if @sale.disc_types == Sale::DISC_TYPES[:FEE] %>disabled<% else %>value="<%= @sale.discount %>"<% end %>/>&nbsp;&nbsp;折
+              </div>
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">优惠时间：</div>
+              <div class="releaseDiv_r">
+                <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:DAY] %>" <% if @sale.disc_time_types == Sale::DISC_TIME[:DAY] %>checked<% end %>/>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:WEEK] %>" <% if @sale.disc_time_types == Sale::DISC_TIME[:WEEK] %>checked<% end %>/>周&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:MOUTH] %>"<% if @sale.disc_time_types == Sale::DISC_TIME[:MOUTH] %>checked<% end %>/>月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:YEAR] %>" <% if @sale.disc_time_types == Sale::DISC_TIME[:YEAR] %>checked<% end %>/>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:TIME] %>" <% if @sale.disc_time_types == Sale::DISC_TIME[:TIME] %>checked<% end %>/>有效期：
+                <input id="edit_started_time" name="edit_started_time" type="text" <% if !@sale.started_at.nil? %>value="<%= @sale.started_at.strftime("%Y-%m-%d") %>"<% end %> <% if @sale.disc_time_types != Sale::DISC_TIME[:TIME] %>disabled<% end %> class="Wdate" readonly/>&nbsp;&nbsp;到&nbsp;&nbsp;
+                <input id="edit_ended_time" name="edit_ended_time" type="text" <% if !@sale.ended_at.nil? %>value="<%= @sale.ended_at.strftime("%Y-%m-%d") %>"<% end %> <% if @sale.disc_time_types != Sale::DISC_TIME[:TIME] %>disabled<% end %> class="Wdate" readonly/>
+              </div>
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">每辆车享受优惠次数：</div>
+              <div class="releaseDiv_r"><input id="edit_sale_everycar_times" name="edit_sale_everycar_times" type="text" value="<%= @sale.everycar_times %>"/>&nbsp;&nbsp;次</div>
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">本次活动车辆总数：</div>
+              <div class="releaseDiv_r"><input id="edit_sale_car_num" name="edit_sale_car_num" type="text" value="<%= @sale.car_num %>"/>&nbsp;&nbsp;辆</div>
+            </div>
+
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">活动图片：</div>
+              <div class="releaseDiv_r">
+                <input class="file" type="file" name="edit_sale_img" id="edit_sale_img"/>
+                <span class="show_pic"><img src="<%= @sale.img_url.nil? ? "" : @sale.img_url.gsub("img#{@sale.id}", "img#{@sale.id}_#{Constant::SALE_PICSIZE[3]}") %>"/></span>
+              </div>
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">是否总店补贴：</div>
+              <div class="releaseDiv_r">
+                <input name="edit_sale_is_subsidy" type="radio" value="<%= Sale::IS_SUBSIDY[:YES] %>" <% if @sale.is_subsidy %>checked<% end %>/>是&nbsp;&nbsp;
+                <input id="edit_sale_subsidy_money" name="edit_sale_subsidy_money" type="text" value="<%= @sale.sub_content %>" <% if !@sale.is_subsidy %>disabled<% end %>/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input name="edit_sale_is_subsidy" type="radio" value="<%= Sale::IS_SUBSIDY[:NO] %>" <% if !@sale.is_subsidy %>checked<% end %>/>&nbsp;&nbsp;否
+              </div>
+            </div>
+            <div class="releaseDiv">
+              <div class="releaseDiv_l">活动介绍：</div>
+              <div class="releaseDiv_r">
+                <textarea id="edit_sale_textarea" name="edit_sale_textarea" cols="" rows=""><%= @sale.introduction %></textarea>
+                <input type="hidden" id="edit_sale_introduction" name="edit_sale_introduction"/>
+              </div>
+            </div>
+            <div class="btn_box">
+              <button type="button" class="confirm_btn" onclick="edit_sale_validate(this)">发布</button>
+              <button type="button" class="cancel_btn" onclick="cancel_edit_sale(<%= @page %>)">取消</button>
+            </div>
+          <% end %>
+        </div>
+        <script type="text/javascript">
+          var edit_sale_desc;
+          $(function() {
+            edit_sale_desc = KindEditor.create('textarea[id="edit_sale_textarea"]', {
+              allowFileManager : true
+            });
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,13 +1,10 @@
 <div class="box">
   <div class="data_box">
     <div class="second_menu">
-      <a href="/sv_cards" class="hover">优惠卡</a>
-      <% if permission?(:market_manage, :sell_situation) %><a href="/sv_cards/sell_situation">销售情况</a><% end %>
-      <% if permission?(:market_manage, :use_detail) %><a href="/sv_cards/use_detail">使用情况明细</a><% end %>
-      <% if permission?(:market_manage, :use_collect) %><a href="/sv_cards/use_collect">使用情况汇总</a><% end %>
+      <a href="/sv_cards" class="hover">优惠卡</a>    
     </div>
     <div class="data_menu">
-      <a id="new_card" href="JavaScript:void(0)" class="add_btn">新建优惠卡</a>
+      <% if permission?(:market_manage, :new_svcard) %><a id="new_card" href="JavaScript:void(0)" class="add_btn">新建优惠卡</a><% end %>
     </div>
     <div class="clear"></div>
     <div class="data_body">
@@ -19,7 +16,10 @@
             <% @sv_cards.each do |sv_card| %>
               <div class="card_list_box">
                 <input type="hidden" value="<%= sv_card.id %>"/>
-                <a href="JavaScript:void(0)"><img name="edit_card" src="<%= sv_card.img_url.nil? ? "" : sv_card.img_url.gsub("img#{sv_card.id}", "img#{sv_card.id}_#{Constant::SVCARD_PICSIZE[0]}") %>" title="<%= sv_card.name %>"/></a>
+
+                <a href="JavaScript:void(0)">
+                  <img  <% if permission?(:market_manage, :edit_svcard) %>name="edit_card"<% end %> src="<%= sv_card.img_url.nil? ? "" : sv_card.img_url.gsub("img#{sv_card.id}", "img#{sv_card.id}_#{Constant::SVCARD_PICSIZE[0]}") %>" title="<%= sv_card.name %>"/>
+                </a>
                 <h2><%= sv_card.name %></h2>
                 <% if sv_card.types.to_i == 1 %>
                   <p>类型:储值卡</p>

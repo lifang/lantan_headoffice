@@ -6,6 +6,7 @@
     <div class="data_body">
       <div>
         <%= form_tag "/sales", :multipart => true do %>
+        <input type="hidden" name="sale_page" value="<%= @page %>"/>
           <div class="releaseDiv">
             <div class="releaseDiv_l">标题：</div>
             <div class="releaseDiv_r"><input id="sale_name" name="sale_name" type="text" class="title_input"/></div>
@@ -94,8 +95,8 @@
               </div>
             </div>
             <div class="btn_box">
-              <button id="create_button" type="submit" class="confirm_btn">发布</button>
-              <button id="cancel_button" type="reset" class="cancel_btn">取消</button>
+              <button type="button" class="confirm_btn" onclick="new_sale_validate(this)">发布</button>
+              <button type="button" class="cancel_btn" onclick="cancel_edit_sale(<%= @page %>)">取消</button>
             </div>
           <% end %>
         </div>

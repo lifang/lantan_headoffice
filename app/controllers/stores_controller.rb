@@ -34,17 +34,18 @@ class StoresController < ApplicationController  #门店控制器
        store_params_sql += " and s.name like ? "
        store_sql_params << "%#{params[:store_name].strip}%"
      end
-     unless (params[:select_province].to_i == 0)
+     unless (params[:select_province].nil? || params[:select_province].to_i == 0)
        store_params_sql += " and cp.id = ?"
        store_sql_params << params[:select_province].to_i
        @cities = City.where("parent_id = #{params[:select_province].to_i}")
      end
-     unless (params[:select_city].to_i == 0)
+     unless (params[:select_city].nil? || params[:select_city].to_i == 0)
        store_params_sql += " and c.id = ?"
        store_sql_params << params[:select_city].to_i
      end
      store_params_sql += " order by s.created_at desc"
      store_sql_params[0] = store_sql + store_params_sql
+     chain_sql[0] += " order by c.created_at desc"
     @stores = Store.paginate_by_sql(store_sql_params, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("stores_div")
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
     @chains = Chain.paginate_by_sql(chain_sql, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("chains_div")
@@ -100,7 +101,11 @@ class StoresController < ApplicationController  #门店控制器
     else
       flash[:notice] = "创建失败，该城市已存在同名的店面!"
     end
-    redirect_to stores_path
+    select_province = params[:s_store_province]
+    select_city = params[:s_store_city]
+    store_name = params[:s_store_name]
+    page = params[:s_store_page]
+    redirect_to "/stores?select_province="+select_province+"&select_city="+select_city+"&store_name="+store_name+"&page="+page
   end
 
   def new_chain #新建连锁店
@@ -108,6 +113,7 @@ class StoresController < ApplicationController  #门店控制器
   end
 
   def create_chain    #创建连锁店
+    status = 0
     SStaff.transaction do
       staff = SStaff.new(:username => params[:staff_name],:name => SStaff::CHAIN_ADMIN,
                          :password => params[:staff_password], :phone => params[:staff_name])
@@ -120,13 +126,13 @@ class StoresController < ApplicationController  #门店控制器
               StoreChainRelation.create(:chain_id => chain.id, :store_id => ss.to_i)
             end
           end
-          flash[:notice] = "创建成功!"
+          status = 1
         else
-          flash[:notice] = "创建失败!"
+          status = 0
         end
       end
-    end   
-    redirect_to stores_path
+    end
+    @status = status
   end
 
   def del_chain     #删除连锁店
@@ -152,7 +158,7 @@ class StoresController < ApplicationController  #门店控制器
   def update_chain   #更新连锁店
     chain = Chain.find_by_id(params[:chain_id].to_i)
     if !chain.nil?
-      if chain.update_attribute("name", params[:chain_name])
+      if chain.update_attribute("name", params[:chain_name].strip)
         StoreChainRelation.delete_all(:chain_id => params[:chain_id].to_i)
         params[:edit_selected_stores].each do |a|
           StoreChainRelation.create(:chain_id => params[:chain_id].to_i, :store_id => a.to_i)
@@ -185,7 +191,11 @@ class StoresController < ApplicationController  #门店控制器
     else
       flash[:notice] = "更新失败，该城市下已有同名的门店!"
     end
-    redirect_to request.referer
+    select_province = params[:s_store_province]
+    select_city = params[:s_store_city]
+    store_name = params[:s_store_name]
+    page = params[:s_store_page]
+    redirect_to "/stores?select_province="+select_province+"&select_city="+select_city+"&store_name="+store_name+"&page="+page
   end
 
   def edit #编辑门店
@@ -194,19 +204,23 @@ class StoresController < ApplicationController  #门店控制器
     @store_city = City.find_by_id(@store.city_id) if @store.city_id
     @store_province = City.find_by_id(@store_city.parent_id) if @store_city
     @cities = City.where(:parent_id => @store_city.parent_id) if @store_city && @store_city.parent_id != 0
-
   end
   
    def destroy  #删除门店
-    @store = Store.find_by_id(params[:id].to_i)
-    if !@store.nil?
-      if @store.update_attribute("status", Store::STATUS[:DELETED])
-        flash[:notice] = "删除成功!"
+    store = Store.find_by_id(params[:id].to_i)
+    status = 0
+    if !store.nil?
+      if store.update_attribute("status", Store::STATUS[:DELETED])
+        status = 1
       else
-        falsh[:notice] = "删除失败!"
+        status = 0
       end
     end
-    redirect_to stores_path
+    @status = status
+    @province = params[:store_province]
+    @city = params[:store_city]
+    @name = params[:store_name]
+    @page = params[:store_page]
   end
   
    

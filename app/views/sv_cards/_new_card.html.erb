@@ -18,7 +18,7 @@
           <label>折扣：</label><input id="discount_value" name="discount_value" type="text" disabled="disabled"/>
         </div>
          <div class="item">
-          <label>打折卡金额：</label><input id="discount_price" name="discount_price" type="text" disabled="disabled"/>
+          <label>优惠卡金额：</label><input id="discount_price" name="discount_price" type="text" disabled="disabled"/>
         </div>
         <div class="item_textarea">
           <label>图片：</label>
@@ -38,8 +38,8 @@
         </div>
       </div>
       <div class="btn_box">
-        <button id="search_button" class="confirm_btn">确定</button>
-        <button type="reset" id="cancel1" class="cancel_btn">取消</button>
+        <button type="button" class="confirm_btn" onclick="new_card_validate(this)">确定</button>
+        <button type="button" class="cancel_btn">取消</button>
       <% end %>
     </div>
   </div>

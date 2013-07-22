@@ -99,10 +99,10 @@
     <div id="order_detail_btn_box" class="btn_box">
       <input type="hidden" value="<%= @mo.id %>"/>
       <% if @mo.status == 0 %>
-      <button id="urge_payment" class="confirm_btn">催款</button>
+      <% if permission?(:logistics_manage, :urge_money) %><button id="urge_payment" class="confirm_btn">催款</button><% end %>
       <% end %>
       <% if @mo.m_status == 0 %>
-      <button id="deliver_good" class="confirm_btn">发货</button>
+      <% if permission?(:logistics_manage, :send_goods) %><button id="deliver_good" class="confirm_btn">发货</button><% end %>
       <% end %>
     </div>
     <div class="clear"></div>

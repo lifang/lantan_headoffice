@@ -12,11 +12,6 @@
     </tr>
   </thead>
   <tbody>
-    <% if @stores.blank? %>
-      <tr>
-        <th colspan="8">当前无门店!</th>
-      </tr>
-    <% else %>
       <% @stores.each do |store| %>
         <tr>
           <% if !store.city_id.nil? %>
@@ -41,11 +36,14 @@
           <td>
             <% if permission?(:operate_manage, :edit_store) %> <%= link_to "编辑", "JavaScript:void(0)", :name => "edit_button", :sid => store.id %><% end %>
             <%= link_to "详细", "JavaScript:void(0)", :name => "show_button", :sid => store.id %>
-            <% if permission?(:operate_manage, :del_store) %> <%= link_to "删除", store_path(store.id), :method => :delete, :confirm => "确定要删除吗？" %><% end %>
+            <% if permission?(:operate_manage, :del_store) %> <%= link_to_function "删除", "del_store(#{store.id})", :href => "JavaScript:void(0)" %><% end %>
           </td>
         </tr>
       <% end %>
-    <% end %>
   </tbody>
 </table>
+<input type="hidden" id="s_store_province" value="<%= params[:select_province].to_i %>"/>
+<input type="hidden" id="s_store_city" value="<%= params[:select_city].to_i %>"/>
+<input type="hidden" id="s_store_name" value="<%= params[:store_name] %>"/>
+<input type="hidden" id="s_store_page" value="<%= params[:page] %>"/>
 <%= will_paginate  @stores, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>

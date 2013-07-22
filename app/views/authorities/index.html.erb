@@ -6,8 +6,10 @@
         <% if permission?(:base_datas, :role_set) %><a href="/authorities/set_staff">用户设定</a><% end %>
       </div>
     <% end %>
-    <div class="data_menu"><% if permission?(:base_datas, :add_role) %>
-      <a id="add_role_a" href="JavaScript:void(0)" class="add_btn">添加角色</a><% end %>
+    <div class="data_menu">
+      <% if permission?(:base_datas, :add_role) %>
+        <a id="add_role_a" href="JavaScript:void(0)" class="add_btn">添加角色</a>
+      <% end %>
     </div>
     <div class="clear"></div>
     <div class="data_body">
