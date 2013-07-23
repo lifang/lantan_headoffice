@@ -163,10 +163,14 @@ class StoresController < ApplicationController  #门店控制器
     if !chain.nil?
       if chain.update_attribute("name", params[:chain_name].strip)
         StoreChainRelation.delete_all(:chain_id => params[:chain_id].to_i)
+        if !params[:edit_selected_stores].blank?
         params[:edit_selected_stores].each do |a|
           StoreChainRelation.create(:chain_id => params[:chain_id].to_i, :store_id => a.to_i)
         end
+        end
         @status = 1
+      else
+        @status = 0
       end
     else
       @status = 0
@@ -217,6 +221,7 @@ class StoresController < ApplicationController  #门店控制器
       if store.update_attribute("status", Store::STATUS[:DELETED])
         staff = SStaff.find_by_store_id(store.id)
         staff.update_attribute("status", SStaff::STATUS[:deleted]) if staff
+        StoreChainRelation.delete_all(:store_id => store.id)
         status = 1
       else
         status = 0
