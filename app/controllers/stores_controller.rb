@@ -232,7 +232,7 @@ class StoresController < ApplicationController  #门店控制器
    
 
     def s_staff_validate  #验证管理员是否唯一
-      staff = SStaff.where(["name = ? and status != ?", params[:staff_name].strip, SStaff::STATUS[:deleted]]).first
+      staff = SStaff.where(["username = ? and status != ?", params[:staff_name].strip, SStaff::STATUS[:deleted]]).first
       if staff
         render :json => {:status => 0}
       else
@@ -286,7 +286,7 @@ class StoresController < ApplicationController  #门店控制器
      status = 0
      if params[:type].eql?("new")
        chains = Chain.where(["name = ? and status != ?", params[:name], Chain::STATUS[:DELETED]])
-       staffs = SStaff.where(["name = ? and status != ? ", params[:staff_name], SStaff::STATUS[:deleted]])
+       staffs = SStaff.where(["username = ? and status != ? ", params[:staff_name], SStaff::STATUS[:deleted]])
        if chains.blank? && staffs.blank?
          status = 1
        elsif !chains.blank?

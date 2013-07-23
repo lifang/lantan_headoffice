@@ -19,7 +19,7 @@ class SStaffsController < ApplicationController #连锁店管理员控制器
   end
 
   def create
-    staff = SStaff.where(["name = ? and status != ? ", params[:manager_name].strip, SStaff::STATUS[:deleted]]).first
+    staff = SStaff.where(["username = ? and status != ? ", params[:manager_name].strip, SStaff::STATUS[:deleted]]).first
     @manager_name = params[:manager_name]
     if staff.nil? or !staff.has_password?(params[:manager_password])
       flash.now[:notice] = "用户名或密码错误!"
