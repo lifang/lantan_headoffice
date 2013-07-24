@@ -49,7 +49,7 @@ module Constant
     #基础数据
     :base_datas => {
       :news => ["新闻", 1],
-      :add_news => ["发布新闻", 2],
+      :add_news => ["创建新闻", 2],
       :edit_news => ["修改新闻", 4],
       :del_news => ["删除新闻", 8],
       :add_brand => ["添加汽车品牌", 16],
@@ -60,8 +60,8 @@ module Constant
       :add_role => ["添加角色",1024],
       :edit_role => ["编辑角色",2048],
       :del_role => ["删除角色",4096],
-      :role_role_set => ["角色设定",8192]
-
+      :role_role_set => ["角色设定",8192],
+      :release_news => ["发布新闻", 16384]
     }
   }
 

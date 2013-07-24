@@ -16,19 +16,18 @@ $(document).ready(function(){
   $("#card_type").live("change", function(){    //新建时根据卡类型加载不同表格
     if ($("#card_type").val() == 0){
       $("#discount_value").removeAttr("disabled");
+      $("#discount_value").prev().prepend("<span class='red'>*</span>");
       $("#discount_price").removeAttr("disabled");
-      $.ajax({
-        type: "GET",
-        url: "/sv_cards/select_discount_card"
-      })    
-    }
-    else if ($("#card_type").val() == 1){
+      $("#discount_price").prev().prepend("<span class='red'>*</span>");
+      $("#setObj").remove();
+    }else if ($("#card_type").val() == 1){
       $("#discount_value").attr("disabled","disabled");
+      $("#discount_value").prev().html("折扣：");
       $("#discount_price").attr("disabled","disabled");
-      $.ajax({
-        type: "GET",
-        url: "/sv_cards/select_storeage_card"
-      })    
+      $("#discount_price").prev().html("优惠卡金额：");
+      $("#popup_body_area").append("<div id='setObj' class='setObj'><div class='setobj_name'><span class='red'>*</span>项目:</div><div class='setobj_box'>\n\
+        <div class='seto_list'><span>充<input id='started_money' name='started_money' type='text' class='input_s'/>元</span>&nbsp;&nbsp;\n\
+        <span>送<input id='ended_money' name='ended_money' type='text' class='input_s'/>元</span></div></div></div>")
     }
   });
    $("a[name='make_billing']").click(function(){    //开具发票按钮
@@ -135,7 +134,7 @@ function new_card_validate(obj){        //新建优惠卡验证
     }
 };
 
-function edit_card_validate(obj){
+function edit_card_validate(obj){       //编辑优惠卡验证
     var type = parseInt($("#edit_card_type").val());
     var flag = true;
     if(type == 1){

@@ -8,11 +8,6 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     @sv_cards = SvCard.order("created_at desc").paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
   
-  def select_discount_card #新建时选择打折卡
-    @product_types = Product::PRODUCT_TYPES
-  end
-
- 
   def create          #创建优惠卡
     sv_card = SvCard.new
     card_type = params[:card_type].to_i

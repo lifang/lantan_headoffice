@@ -8,7 +8,7 @@
         <%= form_tag "/sales", :multipart => true do %>
         <input type="hidden" name="sale_page" value="<%= @page %>"/>
           <div class="releaseDiv">
-            <div class="releaseDiv_l">标题：</div>
+            <div class="releaseDiv_l"><span class="red">*</span>标题：</div>
             <div class="releaseDiv_r"><input id="sale_name" name="sale_name" type="text" class="title_input"/></div>
           </div>
           <div class="releaseDiv">
@@ -38,14 +38,14 @@
               </fieldset>
               <div class="pq"></div>
               <fieldset class="popup_body_fieldset">
-                <legend class="popup_body_title">已选择</legend>
+                <legend class="popup_body_title"><span class="red">*</span>已选择</legend>
                 <div id="selected_product_div" class="popup_body_result">
                 </div>
               </fieldset>
             </div>
           </div>
           <div class="releaseDiv">
-            <div class="releaseDiv_l">优惠：</div>
+            <div class="releaseDiv_l"><span class="red">*</span>优惠：</div>
             <div class="releaseDiv_r">
               <input name="sale_disc_types" type="radio" value="1" checked/>金额：<input id="disc_money" name="disc_money" type="text"/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -53,7 +53,7 @@
             </div>
           </div>
           <div class="releaseDiv">
-            <div class="releaseDiv_l">优惠时间：</div>
+            <div class="releaseDiv_l"><span class="red">*</span>优惠时间：</div>
             <div class="releaseDiv_r">
               <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:DAY] %>" checked/>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <input name="sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:WEEK] %>"/>周&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -65,22 +65,22 @@
             </div>
           </div>
           <div class="releaseDiv">
-            <div class="releaseDiv_l">每辆车享受优惠次数：</div>
+            <div class="releaseDiv_l"><span class="red">*</span>每辆车享受优惠次数：</div>
             <div class="releaseDiv_r"><input id="sale_everycar_times" name="sale_everycar_times" type="text"/>&nbsp;&nbsp;次</div>
           </div>
           <div class="releaseDiv">
-            <div class="releaseDiv_l">本次活动车辆总数：</div>
+            <div class="releaseDiv_l"><span class="red">*</span>本次活动车辆总数：</div>
             <div class="releaseDiv_r"><input id="sale_car_num" name="sale_car_num" type="text"/>&nbsp;&nbsp;辆</div>
           </div>
 
           <div class="releaseDiv">
-            <div class="releaseDiv_l">活动图片：</div>
+            <div class="releaseDiv_l"><span class="red">*</span>活动图片：</div>
             <div class="releaseDiv_r">
               <input type="file" name="sale_img" id="sale_img"/>             
             </div>
           </div>
             <div class="releaseDiv">
-              <div class="releaseDiv_l">是否总店补贴：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>是否总店补贴：</div>
               <div class="releaseDiv_r">
                 <input name="sale_is_subsidy" type="radio" value="1" checked/>是&nbsp;&nbsp;<input id="sale_subsidy_money" name="sale_subsidy_money" type="text"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -88,7 +88,7 @@
               </div>
             </div>
             <div class="releaseDiv">
-              <div class="releaseDiv_l">活动介绍：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>活动介绍：</div>
               <div class="releaseDiv_r">
                 <textarea id="sale_textarea" name="sale_textarea" cols="" rows=""></textarea>
                 <input type="hidden" id="sale_introduction" name="sale_introduction"/>

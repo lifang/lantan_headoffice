@@ -4,8 +4,8 @@
     <div class="popup_body_area">  
         <div class="search">
           <div>
-          <label>连锁店店名：</label>
-          <input type="text" id="edit_chain_name" value="<%= @chain.name %>" />
+          <label><span class="red">*</span>连锁店店名：</label>
+          <input type="text" id="edit_chain_name" value="<%= @chain.name %>" style="width:285px;" />
           <input type="hidden" id="edit_chain_select_id" value="<%= @chain.id %>"/>
           </div>
         </div>

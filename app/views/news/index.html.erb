@@ -1,12 +1,10 @@
-<%= javascript_include_tag "/assets/kindEditor/kindeditor-min.js" %>
-<%= javascript_include_tag "/assets/kindEditor/zh_CN.js" %>
 <div class="box">
   <div class="data_box">
     <div class="data_menu">
       <% if permission?(:base_datas, :add_news) %><a id="create_news" href="/news/new">新建新闻</a><% end %>
     </div>
     <div class="clear"></div>
-    <div id="news_show"class="data_body">
+    <div class="data_body">
       <div>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
           <thead>
@@ -38,11 +36,12 @@
                   </td>
                   <td>
                     <% if new.status == 1 %>
-                    <a name="rel_new" href="JavaScript:void(0)">发布</a>
+                    <% if permission?(:base_datas, :release_news) %>
+                    <%= link_to "发布", "/news/release?id=#{new.id}&page=#{params[:page]}", :confirm => "确定发布该新闻?" %>
+                    <% end %>
                     <%end%>
-                    <input type="hidden" value="<%= new.id %>"/>
-                    <% if permission?(:base_datas, :edit_news) %><a name="edit_new" href="JavaScript:void(0)">修改</a><% end %>
-                    <% if permission?(:base_datas, :del_news) %><a name="del_new" href="JavaScript:void(0)">删除</a><% end %>
+                    <% if permission?(:base_datas, :edit_news) %><a href="/news/<%= new.id %>/edit?page=<%=  params[:page] %>">修改</a><% end %>
+                    <% if permission?(:base_datas, :del_news) %><%= link_to "删除", "/news/#{new.id}?page=#{params[:page]}", :method => "delete",:confirm => "确定删除该新闻?" %><% end %>
                   </td>
                 </tr>
               <% end %>
