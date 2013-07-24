@@ -363,6 +363,7 @@ function new_chain_validate(obj){    //创建连锁店验证
 }
 function del_chain(obj){
     var chain_id = $(obj).parents("tr").find("td:first input").val();
+    var chain_page = $("#s_chain_page").val();
     if(confirm("确定删除该连锁店?")){
         $.ajax({
             type: "post",
@@ -378,7 +379,7 @@ function del_chain(obj){
                         type: "get",
                         url: "/stores",
                         dataType: "script",
-                        data: {div_name : "chains_div"}
+                        data: {page : chain_page, div_name : "chains_div"}
                     })
                 }
             }
@@ -490,18 +491,20 @@ function edit_chain_validate(obj){    //编辑连锁店验证
         })
     }
 }
-function del_store(store_id){
+function del_store(store_id){       //删除门店
      var store_province = $("#s_store_province").val();
      var store_city = $("#s_store_city").val();
      var store_name = $("#s_store_name").val();
      var store_page = $("#s_store_page").val();
+     var chain_page = $("#s_chain_page").val();
      if(confirm("确定删除?")){
          $.ajax({
              type: "delete",
              url: "/stores/"+store_id,
              dataType: "script",
              data: {store_province : store_province, store_city : store_city,
-                    store_name : store_name, store_page : store_page}
+                    store_name : store_name, store_page : store_page,
+                    chain_page : chain_page}
          })
      }
 }

@@ -47,7 +47,7 @@ class StoresController < ApplicationController  #门店控制器
      store_sql_params[0] = store_sql + store_params_sql
      chain_sql[0] += " order by c.created_at desc"
     @stores = Store.paginate_by_sql(store_sql_params, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("stores_div")
-    @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE])
+    @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE]) if @div_name.nil?
     @chains = Chain.paginate_by_sql(chain_sql, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("chains_div")
     @group_chains = @chains.group_by { |c| c.name  } if @chains
     respond_to do |f|
@@ -231,7 +231,8 @@ class StoresController < ApplicationController  #门店控制器
     @province = params[:store_province]
     @city = params[:store_city]
     @name = params[:store_name]
-    @page = params[:store_page]
+    @store_page = params[:store_page]
+    @chain_page = params[:chain_page]
   end
   
    

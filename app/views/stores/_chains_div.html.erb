@@ -29,4 +29,5 @@
     <% end if @group_chains %>
   </tbody>
 </table>
+<input type="hidden" id="s_chain_page" value="<%= params[:page] %>"/>
 <%= will_paginate  @chains, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
