@@ -177,11 +177,11 @@ function new_store_validate(obj){   //新建门店验证
                     var store_province = $("#s_store_province").val();
                     var store_city = $("#s_store_city").val();
                     var store_name = $("#s_store_name").val();
-                    var store_page = $("#s_store_page").val();
+                    //var store_page = $("#s_store_page").val();
                     $(obj).parents("form").prepend("<input type='hidden' name='s_store_province' value='"+store_province+"'/>");
                     $(obj).parents("form").prepend("<input type='hidden' name='s_store_city' value='"+store_city+"'/>");
                     $(obj).parents("form").prepend("<input type='hidden' name='s_store_name' value='"+store_name+"'/>");
-                    $(obj).parents("form").prepend("<input type='hidden' name='s_store_page' value='"+store_page+"'/>");
+                    //$(obj).parents("form").prepend("<input type='hidden' name='s_store_page' value='"+store_page+"'/>");
                     $(obj).parents("form").submit();
                     $(obj).removeAttr("onclick");
                 }
@@ -243,7 +243,7 @@ function new_store_validate(obj){   //新建门店验证
            var store_province = $("#s_store_province").val();
            var store_city = $("#s_store_city").val();
            var store_name = $("#s_store_name").val();
-           var store_page = $("#s_store_page").val();
+           //var store_page = $("#s_store_page").val();
            $(obj).parents("form").prepend("<input type='hidden' name='s_store_province' value='"+store_province+"'/>");
            $(obj).parents("form").prepend("<input type='hidden' name='s_store_city' value='"+store_city+"'/>");
            $(obj).parents("form").prepend("<input type='hidden' name='s_store_name' value='"+store_name+"'/>");
