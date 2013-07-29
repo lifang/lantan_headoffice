@@ -105,8 +105,8 @@ class StoresController < ApplicationController  #门店控制器
     select_province = params[:s_store_province]
     select_city = params[:s_store_city]
     store_name = params[:s_store_name]
-    page = params[:s_store_page]
-    redirect_to "/stores?select_province="+select_province+"&select_city="+select_city+"&store_name="+store_name+"&page="+page
+    #page = params[:s_store_page]
+    redirect_to "/stores?select_province="+select_province+"&select_city="+select_city+"&store_name="+store_name
   end
 
   def new_chain #新建连锁店
@@ -202,8 +202,8 @@ class StoresController < ApplicationController  #门店控制器
     select_province = params[:s_store_province]
     select_city = params[:s_store_city]
     store_name = params[:s_store_name]
-    page = params[:s_store_page]
-    redirect_to "/stores?select_province="+select_province+"&select_city="+select_city+"&store_name="+store_name+"&page="+page
+    #page = params[:s_store_page]
+    redirect_to "/stores?select_province="+select_province+"&select_city="+select_city+"&store_name="+store_name
   end
 
   def edit #编辑门店

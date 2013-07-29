@@ -99,162 +99,157 @@ $(document).ready(function(){
 
 
 function new_store_validate(obj){   //新建门店验证
-        var flag = true;
-        if($("#new_store_select_province").val() == 0){
-            tishi_alert("请选择门店所在的省市!");
-            flag = false;
-        };
-        if($("#new_store_select_city").val() == 0){
-            tishi_alert("请选择门店所在的省市!");
-            flag = false;
-        };
-        if($.trim($("#new_store_name").val()) == ""){
-            tishi_alert("请输入门店名称");
-            flag = false;
-        };
-        if($.trim($("#new_store_contact").val()) == ""){
-            tishi_alert("请输入负责人姓名");
-            flag = false;
-        };
-        if($.trim($("#new_store_phone").val()) == ""){
-            tishi_alert("至少有个联系电话");
-            flag = false;
-        };
-        if($.trim($("#new_store_address").val()) == ""){
-            tishi_alert("请输入门店地址");
-            flag = false;
-        };
-        if($("#new_store_open_time").val() == ""){
-            tishi_alert("请确定门店创建时间");
-            flag = false;
-        };
-        if($.trim($("#new_store_location_x").val()) == ""){
-            tishi_alert("请输入门店X坐标");
-            flag = false;
-        }else if(isNaN($.trim($("#new_store_location_x").val())) || parseFloat($.trim($("#new_store_location_x").val()))<=0){
-            tishi_alert("请输入正确的门店X坐标");
-            flag = false;
-        };
-        if($.trim($("#new_store_location_y").val()) == ""){
-            tishi_alert("请输入门店Y坐标");
-            flag = false;
-        }else if(isNaN($.trim($("#new_store_location_y").val())) || parseFloat($.trim($("#new_store_location_y").val()))<=0){
-            tishi_alert("请输入正确的门店Y坐标");
-            flag = false;
-        };
-        if($.trim($("#new_store_img").val()) == ""){
-            tishi_alert("请上传门店的图片");
-            flag = false;
-        }else{
-            var img = $("#new_store_img").val();
-            var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
-            if(img_suff != "jpg" && img_suff != "png" && img_suff != "bmp" && img_suff != "gif"){
-                tishi_alert("请上传格式正确的图片!");
-                flag = false;
-            }
-        };
-        if($.trim($("#new_store_staff_name").val()) == ""){
-            tishi_alert("请输入管理员账号!")
-            flag = false;
-        };
-        if($.trim($("#new_store_staff_password").val()) == ""){
-            tishi_alert("请输入管理员密码!")
-            flag = false;
-        };
-        if(flag){
-         var staff_name = $("#new_store_staff_name").val();
-         $.ajax({
-          async: false,
-          type: "post",
-          url: "/stores/s_staff_validate",
-          dataType: "json",
-          data: {staff_name : staff_name},
-          success: function(data){
-              if(data.status==0){
-                  tishi_alert("管理员账号已存在!");
-                  flag = false;
-              }
-          }
-        })
-        };
-       if(flag){
-           var store_province = $("#s_store_province").val();
-           var store_city = $("#s_store_city").val();
-           var store_name = $("#s_store_name").val();
-           var store_page = $("#s_store_page").val();
-           $(obj).parents("form").prepend("<input type='hidden' name='s_store_province' value='"+store_province+"'/>");
-           $(obj).parents("form").prepend("<input type='hidden' name='s_store_city' value='"+store_city+"'/>");
-           $(obj).parents("form").prepend("<input type='hidden' name='s_store_name' value='"+store_name+"'/>");
-           $(obj).parents("form").prepend("<input type='hidden' name='s_store_page' value='"+store_page+"'/>");
-           $(obj).parents("form").submit();
-           $(obj).removeAttr("onclick");
-       }
+     if($("#new_store_select_province").val() == 0){
+        tishi_alert("请选择门店所在的省市!");
+        return false;
+    };
+    if($("#new_store_select_city").val() == 0){
+        tishi_alert("请选择门店所在的省市!");
+        return false;
+    };
+     if($.trim($("#show_detail #new_store_name").val()) == ''){
+        tishi_alert("请输入门店名称");
+        return false;
+    };
+     if($.trim($("#new_store_contact").val()) == ""){
+        tishi_alert("请输入负责人姓名");
+        return false;
+    };
+    if($.trim($("#new_store_phone").val()) == ""){
+        tishi_alert("至少有个联系电话");
+        return false;
+    };
+     if($.trim($("#new_store_address").val()) == ""){
+        tishi_alert("请输入门店地址");
+        return false;
+    };
+    if($("#new_store_open_time").val() == ""){
+        tishi_alert("请确定门店创建时间");
+        return false;
+    };
+    if($.trim($("#new_store_location_x").val()) == ""){
+        tishi_alert("请输入门店X坐标");
+        return false;
+    }else if(isNaN($.trim($("#new_store_location_x").val())) || parseFloat($.trim($("#new_store_location_x").val()))<=0){
+        tishi_alert("请输入正确的门店X坐标");
+        return false;
+    };
+    if($.trim($("#new_store_location_y").val()) == ""){
+        tishi_alert("请输入门店Y坐标");
+        return false;
     }
+    else if(isNaN($.trim($("#new_store_location_y").val())) || parseFloat($.trim($("#new_store_location_y").val()))<=0){
+        tishi_alert("请输入正确的门店Y坐标");
+        return false;
+    };
+     if($.trim($("#new_store_img").val()) == ""){
+        tishi_alert("请上传门店的图片");
+        return false;
+    }else{
+        var img = $("#new_store_img").val();
+        var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
+        if(img_suff != "jpg" && img_suff != "png" && img_suff != "bmp" && img_suff != "gif"){
+            tishi_alert("请上传格式正确的图片!");
+            return false;
+        }
+    };
+    if($.trim($("#new_store_staff_name").val()) == ""){
+        tishi_alert("请输入管理员账号!")
+        return false;
+    };
+    if($.trim($("#new_store_staff_password").val()) == ""){
+        tishi_alert("请输入管理员密码!")
+        return false;
+    };
+        var staff_name = $.trim($("#new_store_staff_name").val());
+        $.ajax({
+            async: false,
+            type: "post",
+            url: "/stores/s_staff_validate",
+            dataType: "json",
+            data: {
+                staff_name : staff_name
+            },
+            success: function(data){
+                if(data.status==0){
+                    tishi_alert("管理员账号已存在!");
+                }else if(data.status==1){
+                    var store_province = $("#s_store_province").val();
+                    var store_city = $("#s_store_city").val();
+                    var store_name = $("#s_store_name").val();
+                    //var store_page = $("#s_store_page").val();
+                    $(obj).parents("form").prepend("<input type='hidden' name='s_store_province' value='"+store_province+"'/>");
+                    $(obj).parents("form").prepend("<input type='hidden' name='s_store_city' value='"+store_city+"'/>");
+                    $(obj).parents("form").prepend("<input type='hidden' name='s_store_name' value='"+store_name+"'/>");
+                    //$(obj).parents("form").prepend("<input type='hidden' name='s_store_page' value='"+store_page+"'/>");
+                    $(obj).parents("form").submit();
+                    $(obj).removeAttr("onclick");
+                }
+            }
+        })
+}
 
     function edit_store_validate(obj){   //编辑门店验证
-      var flag = true;
         if($("#edit_store_select_province").val() == 0){
             tishi_alert("请选择门店所在的省份!");
-            flag = false;
+            return false;
         };
         if($("#edit_store_select_city").val() == 0){
             tishi_alert("请选择门店所在的城市!");
-            flag = false;
+             return false;
         };
         if($.trim($("#edit_store_name").val()) == ""){
             tishi_alert("请输入门店名称");
-            flag = false;
+            return false;
         };
         if($.trim($("#edit_store_contact").val()) == ""){
             tishi_alert("请输入负责人姓名");
-            flag = false;
+             return false;
         };
         if($.trim($("#edit_store_phone").val()) == ""){
             tishi_alert("至少有个联系电话");
-            flag = false;
+            return false;
         };
         if($.trim($("#edit_store_address").val()) == ""){
             tishi_alert("请输入门店地址");
-            flag = false;
+            return false;
         };
         if($("#edit_store_open_time").val() == ""){
             tishi_alert("请确定门店创建时间");
-            flag = false;
+             return false;
         };
         if($.trim($("#edit_store_location_x").val()) == ""){
             tishi_alert("请输入门店X坐标");
-            flag = false;
+             return false;
         }else if(isNaN($.trim($("#edit_store_location_x").val())) || parseFloat($.trim($("#edit_store_location_x").val()))<=0){
             tishi_alert("请输入正确的门店X坐标");
-            flag = false;
+            return false;
         };
          if($.trim($("#edit_store_location_y").val()) == ""){
             tishi_alert("请输入门店Y坐标");
-            flag = false;
+             return false;
         }else if(isNaN($.trim($("#edit_store_location_y").val())) || parseFloat($.trim($("#edit_store_location_y").val()))<=0){
             tishi_alert("请输入正确的门店Y坐标");
-            flag = false;
+             return false;
         };
         if($("#edit_store_img").val() != ""){
            var img = $("#edit_store_img").val();
            var img_suff = img.substring(img.lastIndexOf('.')+1).toLowerCase();
            if(img_suff != "jpg" && img_suff != "png" && img_suff != "bmp" && img_suff != "gif"){
                tishi_alert("请上传格式正确的图片!");
-               flag = false;
+                return false;
            }
         };
-       if(flag){
            var store_province = $("#s_store_province").val();
            var store_city = $("#s_store_city").val();
            var store_name = $("#s_store_name").val();
-           var store_page = $("#s_store_page").val();
+           //var store_page = $("#s_store_page").val();
            $(obj).parents("form").prepend("<input type='hidden' name='s_store_province' value='"+store_province+"'/>");
            $(obj).parents("form").prepend("<input type='hidden' name='s_store_city' value='"+store_city+"'/>");
            $(obj).parents("form").prepend("<input type='hidden' name='s_store_name' value='"+store_name+"'/>");
-           $(obj).parents("form").prepend("<input type='hidden' name='s_store_page' value='"+store_page+"'/>");
+           //$(obj).parents("form").prepend("<input type='hidden' name='s_store_page' value='"+store_page+"'/>");
            $(obj).parents("form").submit();
            $(obj).removeAttr("onclick");
-       }
     }
 
 function new_chain_select_province(pid){            //新建连锁店时选择省份
@@ -361,7 +356,7 @@ function new_chain_validate(obj){    //创建连锁店验证
         })
     }
 }
-function del_chain(obj){
+function del_chain(obj){            //删除连锁店
     var chain_id = $(obj).parents("tr").find("td:first input").val();
     var chain_page = $("#s_chain_page").val();
     if(confirm("确定删除该连锁店?")){
