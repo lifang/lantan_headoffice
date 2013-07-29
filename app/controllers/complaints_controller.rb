@@ -43,9 +43,9 @@ class ComplaintsController < ApplicationController   #投诉控制器
 String
   def show_order_detail
     @order = Order.find_by_id(params[:oid].to_i)
-    @front_staff = Staff.find_by_id(@order.front_staff_id)
-    @cons_staff1 = Staff.find_by_id(@order.cons_staff_id_1)
-    @cons_staff2 = Staff.find_by_id(@order.cons_staff_id_2)
+    @front_staff = SStaff.find_by_id(@order.front_staff_id)
+    @cons_staff1 = SStaff.find_by_id(@order.cons_staff_id_1)
+    @cons_staff2 = SStaff.find_by_id(@order.cons_staff_id_2)
     respond_to do |format|
       format.js
     end
