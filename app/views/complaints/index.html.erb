@@ -63,7 +63,7 @@
               </td>
               <td><%= c.reason ||= "----" %></td>
               <td>
-                <% if c.types != 17 %>
+                <% if c.types != Complaint::TYPES[:INVALID] %>
                 是
                 <% else %>
                 否
