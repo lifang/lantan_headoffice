@@ -35,16 +35,18 @@ module Constant
       :new_svcard => ["新建优惠卡", 1],
       :edit_svcard => ["编辑优惠卡", 2],
       :del_svcard => ["删除优惠卡", 4],
-      :new_sale => ["新建活动", 8],
-      :edit_sale => ["编辑活动", 16],
-      :release_sale => ["发布活动", 32],
-      :del_sale => ["删除活动", 64],
-      :new_good => ["添加产品", 128],
-      :del_good => ["删除产品", 256],
-      :edit_good => ["编辑产品", 512],
-      :new_serv => ["添加服务", 1024],
-      :del_serv => ["删除服务", 2048],
-      :edit_serv => ["编辑服务", 4096]
+      :sell_situation => ["销售情况", 8],
+      :make_billing => ["开具发票", 16],
+      :new_sale => ["新建活动", 32],
+      :edit_sale => ["编辑活动", 64],
+      :release_sale => ["发布活动", 128],
+      :del_sale => ["删除活动", 256],
+      :new_good => ["添加产品", 512],
+      :del_good => ["删除产品", 1024],
+      :edit_good => ["编辑产品", 2048],
+      :new_serv => ["添加服务", 4096],
+      :del_serv => ["删除服务", 8192],
+      :edit_serv => ["编辑服务", 16384]
     },
     #基础数据
     :base_datas => {

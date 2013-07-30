@@ -44,7 +44,7 @@ $(document).ready(function(){
     var pname = $(this).next().text();
     if($(this).attr("checked")=="checked"){
       $("#selected_product_div").append("<div id='pro"+pid+"'><em>"+pname+"</em><a name='add_button' href='JavaScript:void(0)' class='addre_a'>+</a><span><input name='selected_product_count[]'\n\
-      type='text' class='addre_input' value='1'/></span><a name='del_button' href='JavaScript:void(0)' class='addre_a'>-</a><a name='del_a' href='JavaScript:void(0)' class='remove_a'>删除</a>\n\
+      type='text' class='addre_input' value='1' readonly/></span><a name='del_button' href='JavaScript:void(0)' class='addre_a'>-</a><a name='del_a' href='JavaScript:void(0)' class='remove_a'>删除</a>\n\
       <input name='selected_product_id[]' type='hidden' value='"+pid+"'</div>")
     }else{
       $("#pro"+pid).remove();
@@ -55,7 +55,7 @@ $(document).ready(function(){
        var pname = $(this).next().text();
         if($(this).attr("checked")=="checked"){
             $("#edit_selected_product_div").append("<div id='edpro"+pid+"'><em>"+pname+"</em><a name='edit_add_button' href='JavaScript:void(0)' class='addre_a'>+</a><span><input name='edit_selected_product_count[]'\n\
-      type='text' class='addre_input' value='1'/></span><a name='edit_del_button' href='JavaScript:void(0)' class='addre_a'>-</a><a name='edit_del_a' href='JavaScript:void(0)' class='remove_a'>删除</a>\n\
+      type='text' class='addre_input' value='1' readonly/></span><a name='edit_del_button' href='JavaScript:void(0)' class='addre_a'>-</a><a name='edit_del_a' href='JavaScript:void(0)' class='remove_a'>删除</a>\n\
       <input name='edit_selected_product_id[]' type='hidden' value='"+pid+"'</div>")
         }else{
             $("#edpro"+pid).remove();

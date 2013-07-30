@@ -51,7 +51,7 @@
                       <div id="edpro<%= sp.product_id %>">
                         <em><%= sp.product.name if sp.product %></em>
                         <a name="edit_add_button" href="JavaScript:void(0)" class="addre_a">+</a>
-                        <span><input name="edit_selected_product_count[]" type="text" class="addre_input" value="<%= sp.prod_num %>"/></span>
+                        <span><input name="edit_selected_product_count[]" type="text" class="addre_input" value="<%= sp.prod_num %>" readonly/></span>
                         <a name="edit_del_button" href="JavaScript:void(0)" class="addre_a" >-</a>
                         <a name="edit_del_a" href="JavaScript:void(0)" class="remove_a">删除</a>
                         <input type="hidden" name="edit_selected_product_id[]" value="<%= sp.product_id %>"/>
