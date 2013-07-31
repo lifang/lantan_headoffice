@@ -145,10 +145,11 @@ function checkStaff(obj){
            tishi_alert("地址不能为空!");
            return false;
        }
-       if($.trim($(obj).parents('form').find("#staff_photo").val()) == ''){
-           tishi_alert("照片不能为空!");
-           return false;
-       }else{
+       //if($.trim($(obj).parents('form').find("#staff_photo").val()) == ''){
+       //    tishi_alert("照片不能为空!");
+       //    return false;
+       //}else{
+       if($.trim($(obj).parents('form').find("#staff_photo").val()) != ''){
            var img_val = $(obj).parents('form').find("#staff_photo").val();
                var pattern_str = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
                var img_name_val = img_val.substring(img_val.lastIndexOf("\\")).toLowerCase();
