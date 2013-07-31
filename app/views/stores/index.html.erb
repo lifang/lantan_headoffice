@@ -2,7 +2,6 @@
   <div class="data_box">
     <% if permission?(:operate_manage, :check_store) %>
     <div class="search">
-      <%= form_tag "/stores", :method => :get do %>
         <div>
           <label>省/市：</label>
           <select id="select_province" name="select_province" class="select_marginRight">
@@ -29,66 +28,25 @@
         <div>
           <button id="search_button" class="search_btn">查询</button>
         </div>
-      <% end %>
     </div>
     <% end %>
     <div class="data_menu">
-     <% if permission?(:operate_manage, :new_store) %> <%= link_to "新建申请", "JavaScript:void(0)", :id => "new_store_a"%><% end %>
+     <% if permission?(:operate_manage, :new_chain) %><%= link_to "新建连锁店", "JavaScript:void(0)", :id => "new_chain_a"%><% end %>
+     <% if permission?(:operate_manage, :new_store) %><%= link_to "新建门店", "JavaScript:void(0)", :id => "new_store_a"%><% end %>
     </div>
     <div class="clear"></div>
+    <div class="tab_head">
+      <ul>
+        <li class="hover" id="store_li">门店列表</li>
+        <li id="chain_li">连锁店列表</li>
+      </ul>
+    </div>
     <div class="data_body">
-      <div>
-        <table id="show_stores_detail" width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
-          <thead>
-            <tr class="hbg">
-              <td>省市</td>
-              <td>门店名称</td>
-              <td>负责人</td>
-              <td>联系电话</td>
-              <td>地址</td>
-              <td>开业时间</td>
-              <td>门店状态</td>
-              <td>操作</td>
-            </tr>
-          </thead>
-          <tbody>
-            <% if @stores.blank? %>
-              <tr>
-                <th colspan="8">当前无门店!</th>
-              </tr>
-            <% else %>
-              <% @stores.each do |store| %>
-                <tr>
-                  <% if !store.city_id.nil? %>
-                    <td>
-                      <%= store.cp_name  %>/<%= store.c_name %>
-                    </td>
-                  <% else %>
-                    <td>--/--</td>
-                  <% end %>
-                <td><%= store.name.nil? ? "----" : store.name %></td>
-                 <td><%= store.contact.nil? ? "----" : store.contact %></td>
-                  <td><%= store.phone.nil? ? "----" : store.phone %></td>
-                  <td><%= store.address.nil? ? "----" : store.address %></td>
-                  <td><%= store.opened_at.nil? ? "----" : store.opened_at.strftime("%Y-%m-%d")  %></td>
-                  <% if store.status == 0 %>
-                    <td>已关闭</td>
-                  <% elsif store.status == 1 %>
-                    <td>正常营业</td>
-                  <% else %>
-                    <td>筹备中</td>
-                  <% end %>
-                  <td>
-                    <% if permission?(:operate_manage, :edit_store) %> <%= link_to "编辑", "JavaScript:void(0)", :name => "edit_button", :sid => store.id %><% end %>
-                    <%= link_to "详细", "JavaScript:void(0)", :name => "show_button", :sid => store.id %>
-                    <% if permission?(:operate_manage, :del_store) %> <%= link_to "删除", store_path(store.id), :method => :delete, :confirm => "确定要删除吗？" %><% end %>
-                  </td>
-                </tr>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
-        <%= will_paginate  @stores, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
+      <div id="stores_div">
+        <%= render :partial => "stores_div" %>
+      </div>
+      <div id="chains_div" style="display:none">
+        <%= render :partial => "chains_div" %>
       </div>
     </div>
   </div>

@@ -12,7 +12,7 @@ class ChartImage < ActiveRecord::Base
   # 0 满意度 1 投诉统计 2 技师平均水平 3 前台平均水平 4 员工绩效
   
   def self.gchart()
-    sql="select count(*) total_num,s.name,s.id s_id,t.id,o.is_pleased from lantan_db_all.orders o inner join lantan_db_all.stores s on o.store_id=s.id inner join lantan_db_all.cities t on t.id=s.city_id
+    sql="select count(*) total_num,s.name,s.id s_id,t.id,o.is_pleased from lantan_db.orders o inner join lantan_db.stores s on o.store_id=s.id inner join lantan_db.cities t on t.id=s.city_id
     where date_format(o.created_at,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') and o.status in (#{Order::STATUS[:BEEN_PAYMENT]},#{Order::STATUS[:FINISHED]}) group by t.id,s.id,o.is_pleased"
     begin   
       datas = Order.find_by_sql(sql)

@@ -1,0 +1,63 @@
+<div class="popup_box">
+  <h1>编辑连锁店<a href="JavaScript:void(0)" class="close">关闭</a></h1>
+  <div class="popup_body">
+    <div class="popup_body_area">  
+        <div class="search">
+          <div>
+          <label><span class="red">*</span>连锁店店名：</label>
+          <input type="text" id="edit_chain_name" value="<%= @chain.name %>" style="width:285px;" />
+          <input type="hidden" id="edit_chain_select_id" value="<%= @chain.id %>"/>
+          </div>
+        </div>
+      <div class="clear"></div>
+      <div class="search">
+        <div>
+        <label>省/市</label>
+        <select class="select_marginRight" id="edit_chain_select_province" onchange="edit_chain_select_province(this.value)">
+          <option value="0">请选择省份</option>
+          <% @provinces.each do |p| %>
+          <option value="<%= p.id %>"><%= p.name %></option>
+          <% end %>
+        </select>
+        <select class="select_marginRight" id="edit_chain_select_city">
+          <option value="0">------</option>
+        </select>
+        </div>
+        <div>
+          <label>店名：</label>
+          <input type="text" name="new_chain_name" id="edit_chain_select_name"></input>
+        </div>
+        <div>
+          <button class="search_btn" onclick="edit_chain_search_stores()">查询</button>
+        </div>
+      </div>
+      <fieldset class="popup_body_fieldset">
+        <legend class="popup_body_title">查询结果</legend>
+        <div class="popup_body_result" id="edit_chain_search_stores_list">
+          <ul>
+          </ul>
+        </div>
+      </fieldset>
+      <div class="pq"></div>
+
+      <fieldset class="popup_body_fieldset">
+        <legend class="popup_body_title">已选择</legend>
+        <div class="popup_body_result" id="edit_chain_selected_stores_list">
+          <form action="/stores/update_chain" data-remote="true" data-type="script" method="post" >
+          <ul>
+            <% @chain_stores.each do |cs| %>
+            <li>
+              <input type="checkbox" name="edit_selected_stores[]" id="edit_chain_selected_store_<%= cs.s_id %>" value="<%= cs.s_id %>" onclick="edit_chain_cancel_select_store(this)" checked/>
+              <span><%= cs.s_name %></span>
+            </li>
+            <% end %>
+          </ul>
+          </form>
+        </div>
+      </fieldset>
+    </div>
+    <div class="btn_box">
+      <button type="button" class="confirm_btn" onclick="edit_chain_validate(this)">确定</button>
+    </div>
+  </div>
+</div>

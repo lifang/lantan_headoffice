@@ -1,0 +1,66 @@
+<div class="popup_box">
+  <h1>新建连锁店<a href="JavaScript:void(0)" class="close">关闭</a></h1>
+  <div class="popup_body">
+    <div class="popup_body_area">
+        <div class="search">
+          <div>
+          <label><span class="red">*</span>连锁店店名：</label>
+          <input type="text" id="new_chain_name" style="width:285px;"/>
+          </div>
+         </div>
+        <div class="search">
+          <div>
+          <label><span class="red">*</span>管理员手机号：</label>
+          <input type="text" id="new_chain_staff_name"/>
+          </div>
+          <div>
+          <label><span class="red">*</span>密码：</label>
+          <input type="password" id="new_chain_staff_password"/>
+          </div>
+        </div>
+      <div class="clear"></div>
+      <div class="search">
+        <div>
+        <label>省/市&nbsp;</label>
+        <select class="select_marginRight" id="new_chain_select_province" onchange="new_chain_select_province(this.value)">
+          <option value="0">请选择省份</option>
+          <% @provinces.each do |p| %>
+          <option value="<%= p.id %>"><%= p.name %></option>
+          <% end %>
+        </select>
+        <select class="select_marginRight" id="new_chain_select_city">
+          <option value="0">------</option>
+        </select>
+        </div>
+        <div>
+          <label>店名：</label>
+          <input type="text" name="new_chain_name" id="new_chain_select_name"></input>
+        </div>
+        <div>
+          <button class="search_btn" onclick="new_chain_search_stores()">查询</button>
+        </div>
+      </div>
+      <fieldset class="popup_body_fieldset">
+        <legend class="popup_body_title">查询结果</legend>
+        <div class="popup_body_result" id="new_chain_search_stores_list">
+          <ul>           
+          </ul>
+        </div>
+      </fieldset>
+      <div class="pq"></div>   
+      <fieldset class="popup_body_fieldset">
+        <legend class="popup_body_title">已选择</legend>
+        <div class="popup_body_result" id="new_chain_selected_stores_list">
+          <form action="/stores/create_chain" method="post" data-remote="true" data-type="script">
+          <ul>          
+          </ul>
+          </form>
+        </div>
+      </fieldset>
+    
+    </div>
+    <div class="btn_box">
+      <button type="button" class="confirm_btn" onclick="new_chain_validate(this)">确定</button>
+    </div>
+  </div>
+</div>

@@ -17,6 +17,14 @@ LantanHeadoffice::Application.routes.draw do
     end
   end
   resources :revisits
+  resources :s_staffs do
+    member do
+      post :create
+    end
+    collection do
+      get :logout
+    end
+  end
   resources :pleaseds do
     collection do
       get :search_cities
@@ -67,8 +75,10 @@ LantanHeadoffice::Application.routes.draw do
   resources :news do
     collection do
       get :release
-      get :detail
-      post :update_new
+    end
+    member do
+      post :update
+      get :edit
     end
   end
   resources :cars do
@@ -83,17 +93,24 @@ LantanHeadoffice::Application.routes.draw do
   end
   resources :stores do
     collection do
+      get :chain_validate
+      get :new_chain
+      get :edit_chain
+      post :create_chain
+      post :update_chain
+      post :del_chain
+      post :new_chain_select_province
+      post :new_chain_search_stores
       post :province_change
       post :new_store_select_province
       post :edit_store_select_province
+      post :s_staff_validate
     end
   end
   resources :sv_cards do
     collection do
       get :sell_situation
       post :search
-      get :select_discount_card
-      get :select_storeage_card
       get :search_products_all
       post :search_products_part
       post :make_billing
@@ -111,11 +128,9 @@ LantanHeadoffice::Application.routes.draw do
   end
   resources :sales do
     collection do
-      post :del_sale
-      post :rel_sale
+      get :rel_sale
       post :search_product
       post :edit_search_product
-      get :release
       get :edit
     end
     member do

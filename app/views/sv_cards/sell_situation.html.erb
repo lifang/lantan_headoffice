@@ -2,9 +2,9 @@
   <div class="data_box">
     <div class="second_menu">
       <a href="/sv_cards" >优惠卡</a>
+      <% if permission?(:market_manage, :sell_situation) %>
       <a href="/sv_cards/sell_situation" class="hover">销售情况</a>
-      <a href="/sv_cards/use_detail">使用情况明细</a>
-       <a href="/sv_cards/use_collect">使用情况汇总</a>
+      <% end %>
     </div>
     <div class="search">
     <%= form_tag "/sv_cards/sell_situation", :method => :get do %>
@@ -66,7 +66,9 @@
               <% else %>
               <td>否</td>
               <td>
+                <% if permission?(:market_manage, :make_billing) %>
                <a name="make_billing" href="JavaScript:void(0)">开据发票</a>
+               <% end %>
                <input type="hidden" value="<%= r.id %>"/>
               </td>
               <% end %>

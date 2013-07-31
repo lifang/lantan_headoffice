@@ -1,0 +1,5 @@
+<% if @type == "new" %>
+$("#new_chain_search_stores_list").html("<ul><% @stores.each do |s| %><li><input type='checkbox' id='new_chain_list_store_<%= s.s_id %>' value='<%= s.s_id %>' onclick='new_chain_store_change(this)'<% @stores_ids.each do |si| %><% if s.s_id == si.to_i %>checked<% end %><% end if @stores_ids %>/><span><%= s.s_name %></span></li><% end %></ul>");
+<% elsif @type == "edit" %>
+$("#edit_chain_search_stores_list").html("<ul><% @stores.each do |s| %><li><input type='checkbox' id='edit_chain_list_store_<%= s.s_id %>' value='<%= s.s_id %>' onclick='edit_chain_store_change(this)' <% @stores_ids.each do |si| %><% if s.s_id == si.to_i %>checked<% end %><% end if @stores_ids %>/><span><%= s.s_name %></span></li><% end %></ul>");
+<% end %>

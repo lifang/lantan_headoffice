@@ -1,0 +1,8 @@
+$("#<%= @div_name %>").html("<%= escape_javascript(render :partial => "#{@div_name}") %>");
+$("#<%= @div_name %>_table > tbody > tr:odd").addClass("tbg");
+<% if @div_name == "stores_div" %>
+$("#store_li").attr("class", "hover");
+$("#chain_li").removeAttr("class");
+$("#stores_div").show();
+$("#chains_div").hide();
+<% end %>

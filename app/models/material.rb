@@ -7,8 +7,10 @@ class Material < ActiveRecord::Base
   has_many :prod_mat_relations
 
   STATUS = {:NORMAL => 0, :DELETE => 1}
-  TYPES_NAMES = {1 => "施工耗材",2 => "辅助工具", 3 => "劳动保护", 4 =>"一次性用品", 5=>"产品"}
-  TYPES = { :COST_M =>1,:HELP_TOOL =>2,:PROTECTED_L =>3,:ONE_USE =>4,:PRODUCT =>5}
+  TYPES_NAMES = {0 => "清洁用品", 1 => "美容用品", 2 => "装饰产品", 3 => "配件产品", 4 => "电子产品",
+    5 =>"其他产品",6 => "辅助工具", 7 => "劳动保护"}
+  TYPES = { :CLEAN_PROD =>0, :BEAUTY_PROD =>1,:DECORATE_PROD =>2, :ACCESSORY_PROD =>3, :ELEC_PROD =>4,
+    :OTHER_PROD => 5, :ASSISTANT_TOOL => 6, :LABOR_PROTECT => 7}
 
   scope :normal, where(:status => STATUS[:NORMAL])
   after_save :strip_material_name

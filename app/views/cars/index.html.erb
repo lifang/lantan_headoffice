@@ -13,8 +13,7 @@
           <% @car_brands[c.id].each do |car| %>
           <li>
             <a name="check_model" alt="<%= car.id %>" href="JavaScript:void(0)"><%= car.name %></a>
-            <% if permission?(:base_datas, :del_brand) %><a name="del_brands" alt="<%= car.id %>" href="JavaScript:void(0)" class="group_x">Close</a><% end %>
-            
+            <% if permission?(:base_datas, :del_brand) %><a name="del_brands" alt="<%= car.id %>" href="JavaScript:void(0)" class="group_x">Close</a><% end %>            
           </li>
           <% end %>
         </ul>
@@ -31,7 +30,7 @@
     <%= form_tag "/cars/new_brand" do %>
     <div class="popup_body">
       <div class="popup_body_area">
-        <div class="brand">品牌：<input id="brand_name" name="brand_name" type="text"/></div>
+        <div class="brand"><span class="red">*</span>品牌：<input id="brand_name" name="brand_name" type="text"/></div>
       </div>
       <div class="btn_box">
         <button id="new_brands" type="submit" class="confirm_btn">确定</button>

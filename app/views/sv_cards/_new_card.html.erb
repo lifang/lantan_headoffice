@@ -4,31 +4,31 @@
     <div class="popup_body">
       <div id="popup_body_area" class="popup_body_area">
         <div class="item">
-          <label>名称：</label><input id="card_name" name="card_name" type="text"/>
+          <label><span class="red">*</span>名称：</label><input id="card_name" name="card_name" type="text"/>
         </div>
         <div class="item">
           <label>类型：</label>
           <select id="card_type" name="card_type">
-            <option value="1" selected>储值卡</option>
-            <option value="0">打折卡</option>
+            <% SvCard::S_FAVOR.each do |key, value| %>
+            <option value="<%= key %>"><%= value %></option>
+            <% end %>
           </select>
-        </div>
-        
+        </div>  
         <div class="item">
           <label>折扣：</label><input id="discount_value" name="discount_value" type="text" disabled="disabled"/>
         </div>
          <div class="item">
-          <label>打折卡金额：</label><input id="discount_price" name="discount_price" type="text" disabled="disabled"/>
+          <label>优惠卡金额：</label><input id="discount_price" name="discount_price" type="text" disabled="disabled"/>
         </div>
         <div class="item_textarea">
-          <label>图片：</label>
+          <label><span class="red">*</span>图片：</label>
           <input type="file" name="card_url" id="card_url"/>
         </div>
         <div class="item_textarea">
-          <label>具体内容：</label><textarea id="card_description" name="card_description"class="width_textarea"></textarea>
+          <label><span class="red">*</span>具体内容：</label><textarea id="card_description" name="card_description"class="width_textarea"></textarea>
         </div>
         <div id="setObj" class="setObj">
-          <div class="setobj_name">项目：</div>
+          <div class="setobj_name"><span class="red">*</span>项目：</div>
           <div class="setobj_box">
             <div class="seto_list">
               <span>充<input id="started_money" name="started_money" type="text" class="input_s"/>元</span>&nbsp;&nbsp;
@@ -38,8 +38,8 @@
         </div>
       </div>
       <div class="btn_box">
-        <button id="search_button" class="confirm_btn">确定</button>
-        <button type="reset" id="cancel1" class="cancel_btn">取消</button>
+        <button type="button" class="confirm_btn" onclick="new_card_validate(this)">确定</button>
+        <button type="button" class="cancel_btn">取消</button>
       <% end %>
     </div>
   </div>

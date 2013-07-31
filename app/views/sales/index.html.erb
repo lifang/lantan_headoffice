@@ -1,12 +1,12 @@
-<%= javascript_include_tag "/assets/kindEditor/kindeditor-min.js" %>
-<%= javascript_include_tag "/assets/kindEditor/zh_CN.js" %>
 <div class="box">
   <div class="data_box">
     <div class="data_menu" id="new_sale_button">
-      <a href="/sales/release">新建活动</a>
+      <% if permission?(:market_manage, :new_sale) %>
+      <a href="/sales/new?page=<%= params[:page] %>">新建活动</a>
+      <% end %>
     </div>
     <div class="clear"></div>
-    <div id="sale_show_and_edit" class="data_body">
+    <div id="sales_list" class="data_body">
       <div>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
           <thead>
@@ -15,16 +15,10 @@
               <td>活动代码</td>
               <td>活动时间</td>
               <td>状态</td>
-              <td>已报名人数</td>
               <td>操作</td>
             </tr>
           </thead>
           <tbody>
-            <% if @sales.blank? %>
-              <tr>
-                <th colspan="6">当前无活动记录!</th>
-              </tr>
-            <% else %>
               <% @sales.each do |s| %>
                 <tr>
                   <td><%= s.name ||= "----" %></td>
@@ -39,33 +33,21 @@
                   <% else %>
                     <td>已关闭</td>
                   <% end %>
-                  <td><%= s.orders.length %></td>
-                  <% if  s.status.to_i == 0 %>
-                    <td>
-                      <a name="edit" href="JavaScript:void(0)">修改</a>
-                      <a name="release"href="JavaScript:void(0)">发布</a>
-                      <a name="del" href="JavaScript:void(0)">删除</a>
-                      <input type="hidden" name="sid" value="<%= s.id %>" />
-                    </td>
-                  <% elsif s.status.to_i == 1 %>
-                    <td>
-                      <a name="edit" href="JavaScript:void(0)">修改</a>
-                      <a name="del" href="JavaScript:void(0)">删除</a>
-                      <input type="hidden" name="sid" value="<%= s.id %>" />
-                    </td>
-                  <% else %>
-                    <td>-----</td>
-                  <% end %>
+                  <td>
+                    <% if permission?(:market_manage, :edit_sale) %><a href="/sales/edit?id=<%= s.id %>&page=<%= params[:page] %>">修改</a><% end %>
+                    <% if s.status.to_i == Sale::STATUS[:UN_RELEASE] %>
+                      <% if permission?(:market_manage, :release_sale) %><%= link_to "发布", "/sales/rel_sale?id=#{s.id}&page=#{params[:page]}", :confirm => "确定发布该活动吗?" %><% end %>
+                    <% end %>
+                      <% if permission?(:market_manage, :del_sale) %><%= link_to "删除", "/sales/#{s.id}?page=#{params[:page]}", :method => "delete", :confirm => "确定删除该活动吗?" %><% end %>
+                  </td>
                 </tr>
               <% end %>
-            <% end %>
           </tbody>
         </table>
-        <div class="pageTurn">
+        <input type="hidden" id="current_page" value="<%= params[:page] %>" />
           <% if !@sales.blank? %>
             <%= will_paginate  @sales, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>
           <% end %>
-        </div>
       </div>
     </div>
   </div>

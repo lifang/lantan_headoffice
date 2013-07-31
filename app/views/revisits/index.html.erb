@@ -39,7 +39,7 @@
               <%  @revisits.each do |r|%>
                 <tr>
                   <td><%= r.store_name || "----" %></td>
-                  <td><%= r.created_at.nil? ? "----" : r.created_at.strftime("%Y-%m-%d %H:%m") %></td>
+                  <td><%= r.created_at.nil? ? "----" : r.created_at.strftime("%Y-%m-%d %H:%M") %></td>
                   <td><%= r.content ||= "----" %></td>
                   <td><%= r.answer ||= "----"%></td>
                   <td>

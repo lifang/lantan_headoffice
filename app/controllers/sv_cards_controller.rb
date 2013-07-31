@@ -8,38 +8,37 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     @sv_cards = SvCard.order("created_at desc").paginate(:page => params[:page] ||= 1,:per_page => 10)
   end
   
-  def select_discount_card #新建时选择打折卡
-    @product_types = Product::PRODUCT_TYPES
-  end
-
- 
   def create          #创建优惠卡
     sv_card = SvCard.new
     card_type = params[:card_type].to_i
     card_name = params[:card_name].strip
     card_description = params[:card_description]
     img = params[:card_url]      #获取上传的图片
-    if card_type == 1                                       #如果是储值卡
-      started_money = params[:started_money].to_f
-      ended_money = params[:ended_money].to_f
-      sv_card.update_attributes(:name => card_name, :types => card_type, :price => started_money, :description => card_description)
-      if sv_card.save
-        SvcardProdRelation.create(:sv_card_id => sv_card.id, :base_price => started_money, :more_price => ended_money)        
+    if SvCard.where(["types= ? and name = ?", card_type, card_name]).blank?
+      if card_type == 1                                       #如果是储值卡
+        started_money = params[:started_money].to_f
+        ended_money = params[:ended_money].to_f
+        sv_card.update_attributes(:name => card_name, :types => card_type, :price => started_money, :description => card_description)
+        if sv_card.save
+          SvcardProdRelation.create(:sv_card_id => sv_card.id, :base_price => started_money, :more_price => ended_money)
+        end
+      elsif card_type == 0                                        #如果是打折卡
+        discount = params[:discount_value]
+        price = params[:discount_price].to_f
+        sv_card.update_attributes(:name => card_name, :types => card_type,:discount => discount, :price => price, :description => card_description)
+        sv_card.save
       end
-    elsif card_type == 0                                        #如果是打折卡
-      discount = params[:discount_value]
-      price = params[:discount_price].to_f
-      sv_card.update_attributes(:name => card_name, :types => card_type,:discount => discount, :price => price, :description => card_description)
-      sv_card.save
+      begin
+        url = SvCard.upload_img(img, sv_card.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
+        sv_card.update_attribute("img_url", url)
+        flash[:notice] = "创建成功!"
+      rescue
+        flash[:notice] = "图片上传失败!"
+      end
+    else
+      flash[:notice] = "创建失败，已有同名的优惠卡!"
     end
-     begin
-          url = SvCard.upload_img(img, sv_card.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
-          sv_card.update_attribute("img_url", url)
-          flash[:notice] = "创建成功!"         
-        rescue
-          flash[:notice] = "图片上传失败!"
-      end
-       redirect_to sv_cards_path
+    redirect_to sv_cards_path
   end
 
   def update    #更新优惠卡
@@ -48,36 +47,40 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     type = sc.types
     description = params[:edit_card_description]
     img = params[:edit_card_url]
-    if type == 1
-      started_money = params[:edit_started_money].to_f
-      ended_money = params[:edit_ended_money].to_f
-      if sc.update_attributes(:name => name, :price => started_money, :description => description)
-        SvcardProdRelation.destroy_all("sv_card_id = #{sc.id}")
-        SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)
-        if !img.nil?
-          begin
-            new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
-            sc.update_attribute("img_url", new_url)
-          rescue
-            flash[:notice] ="图片更新失败！"
+    if SvCard.where(["id != ? and types = ? and name = ?", sc.id, type, name]).blank?
+      if type == 1
+        started_money = params[:edit_started_money].to_f
+        ended_money = params[:edit_ended_money].to_f
+        if sc.update_attributes(:name => name, :price => started_money, :description => description)
+          SvcardProdRelation.destroy_all("sv_card_id = #{sc.id}")
+          SvcardProdRelation.create(:sv_card_id => sc.id, :base_price => started_money, :more_price => ended_money)
+          if !img.nil?
+            begin
+              new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
+              sc.update_attribute("img_url", new_url)
+            rescue
+              flash[:notice] ="图片更新失败！"
+            end
           end
+          flash[:notice] = "更新成功!"
         end
-        flash[:notice] = "更新成功!"
-      end
-    elsif type == 0
-      discount = params[:edit_discount_value]
-      price = params[:edit_discount_price]
-      if sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
-        if !img.nil?
-          begin
-            new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
-            sc.update_attribute("img_url", new_url)      
-          rescue
-            flash[:notice] ="图片更新失败！"
+      elsif type == 0
+        discount = params[:edit_discount_value]
+        price = params[:edit_discount_price]
+        if sc.update_attributes(:name => name,:description => description, :discount => discount, :price => price)
+          if !img.nil?
+            begin
+              new_url = SvCard.upload_img(img, sc.id, Constant::SVCARD_PICS, Constant::STORE_ID, Constant::SVCARD_PICSIZE)
+              sc.update_attribute("img_url", new_url)
+            rescue
+              flash[:notice] ="图片更新失败！"
+            end
           end
+          flash[:notice] = "更新成功!"
         end
-        flash[:notice] = "更新成功!"
       end
+    else 
+      flash[:notice] = "更新失败,已有同名的优惠卡!"
     end
     redirect_to request.referer
   end
@@ -117,8 +120,8 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     srr_started_sql = (params[:started_time].nil? ||  params[:started_time].empty?) ? " 1 = 1 " : " date_format(created_at, '%Y-%m-%d') >= '#{params[:started_time]}'"
     srr_ended_sql = (params[:ended_time].nil? ||  params[:ended_time].empty?) ? " 1 = 1" : " date_format(created_at, '%Y-%m-%d') <= '#{params[:ended_time]}'"
     #获取时间段内所有使用了储值卡的已完成的订单数量，并且根据门店分组
-    @orders = Order.paginate_by_sql(["select o.store_id, count(o.id) id_count, sum(opt.price) t_price, s.name from lantan_db_all.orders o
-      inner join lantan_db_all.order_pay_types opt on opt.order_id = o.id left join lantan_db_all.stores s on s.id = o.store_id
+    @orders = Order.paginate_by_sql(["select o.store_id, count(o.id) id_count, sum(opt.price) t_price, s.name from lantan_db.orders o
+      inner join lantan_db.order_pay_types opt on opt.order_id = o.id left join lantan_db.stores s on s.id = o.store_id
       where opt.pay_type = ? #{order_started_time_sql} #{order_ended_time_sql} group by o.store_id",
         OrderPayType::PAY_TYPES[:SV_CARD]], :page => params[:page] ||= 1,:per_page => 10)
 

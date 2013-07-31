@@ -1,0 +1,49 @@
+<table id="stores_div_table" width="100%" border="0" cellspacing="0" cellpadding="0" class="data_table">
+  <thead>
+    <tr class="hbg">
+      <td>省市</td>
+      <td>门店名称</td>
+      <td>负责人</td>
+      <td>联系电话</td>
+      <td>地址</td>
+      <td>开业时间</td>
+      <td>门店状态</td>
+      <td>操作</td>
+    </tr>
+  </thead>
+  <tbody>
+      <% @stores.each do |store| %>
+        <tr>
+          <% if !store.city_id.nil? %>
+            <td>
+              <%= store.cp_name  %>/<%= store.c_name %>
+            </td>
+          <% else %>
+            <td>--/--</td>
+          <% end %>
+          <td><%= store.name.nil? ? "----" : store.name %></td>
+          <td><%= store.contact.nil? ? "----" : store.contact %></td>
+          <td><%= store.phone.nil? ? "----" : store.phone %></td>
+          <td><%= store.address.nil? ? "----" : truncate(store.address, :length => 15) %></td>
+          <td><%= store.opened_at.nil? ? "----" : store.opened_at.strftime("%Y-%m-%d")  %></td>
+          <% if store.status == 0 %>
+            <td>已关闭</td>
+          <% elsif store.status == 1 %>
+            <td>正常营业</td>
+          <% else %>
+            <td>筹备中</td>
+          <% end %>
+          <td>
+            <% if permission?(:operate_manage, :edit_store) %> <%= link_to "编辑", "JavaScript:void(0)", :name => "edit_button", :sid => store.id %><% end %>
+            <%= link_to "详细", "JavaScript:void(0)", :name => "show_button", :sid => store.id %>
+            <% if permission?(:operate_manage, :del_store) %> <%= link_to_function "删除", "del_store(#{store.id})", :href => "JavaScript:void(0)" %><% end %>
+          </td>
+        </tr>
+      <% end %>
+  </tbody>
+</table>
+<input type="hidden" id="s_store_province" value="<%= params[:select_province].to_i %>"/>
+<input type="hidden" id="s_store_city" value="<%= params[:select_city].to_i %>"/>
+<input type="hidden" id="s_store_name" value="<%= params[:store_name] %>"/>
+<input type="hidden" id="s_store_page" value="<%= params[:page] %>"/>
+<%= will_paginate  @stores, :previous_label => "上一页", :next_label=> "下一页", :class => "pageTurn" %>

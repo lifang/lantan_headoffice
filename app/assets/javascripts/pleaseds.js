@@ -12,3 +12,14 @@ $(document).ready(function(){
     }
   })
 })
+
+function search_validate(){
+    if($("#search_city").length>0 && $("#search_city").val()==0){
+        tishi_alert("请选择城市!");
+         return false;
+    }else if($("#search_store_name").length>0 && $("#search_store_name").val()==0){
+        tishi_alert("请选择门店!");
+        return false;
+    }
+   
+}

@@ -17,7 +17,7 @@ development:
 #  username: comdo
   username: root
   password: comdo2012
-#  host: 116.255.135.175
+  #host: 192.168.0.250
   host: localhost
 
 storedb:
@@ -29,6 +29,7 @@ storedb:
   username: root
   password: comdo2012
   host: localhost
+  #host: 192.168.0.250
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

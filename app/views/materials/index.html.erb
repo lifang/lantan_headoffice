@@ -19,14 +19,14 @@
     <div>
        <label>物料类别:</label>
        <select id="search_material_type">
-         <option value="0">全部</option>
+         <option value="99999">全部</option>
          <% Material::TYPES_NAMES.each do |key,value| %>
          <option value="<%= key %>"><%= value %></option>
          <% end %>
        </select>
     </div>
     <div>
-      <button class="search_btn" id="search_materials_button">查询物料</button>
+      <button class="search_btn" id="search_materials_button">查询</button>
     </div>
   </div>
     <div class="data_menu">
@@ -39,7 +39,7 @@
         <li class="<%= @init_tab.nil? ? "hover" : "" %>">库存列表</li>
         <% if permission?(:logistics_manage, :out_record) %><li>出库记录</li><% end %>
         <% if permission?(:logistics_manage, :in_record) %><li>入库记录</li><% end %>
-        <li class="<%= @init_tab.nil? ? "" : "hover" %>">门店订货记录</li>
+        <% if permission?(:logistics_manage, :mat_orders) %><li class="<%= @init_tab.nil? ? "" : "hover" %>">门店订货记录</li><% end %>
       </ul>
     </div>
     <div id="table_show" class="data_body">
@@ -69,8 +69,8 @@
                 <td><input type="text" style="width:50px"/></td>
                 <td>
                   <input type="hidden" value="<%= material.id %>"/>
-                  <a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a>
-                  <a name="material_check" href="JavaScript:void(0)">核实</a>
+                  <% if permission?(:logistics_manage, :storage_beizhu) %><a name="material_beizhu" href="JavaScript:void(0)" class="bz_btn">备注</a><% end %>
+                  <% if permission?(:logistics_manage, :check_storage) %><a name="material_check" href="JavaScript:void(0)">核实</a><% end %>
                 </td>
               </tr>
             <% end %>
@@ -242,7 +242,7 @@
               <td>
                 <input type="hidden" value="<%= mo.id %>"/>
                 <a name="mat_order_detail" href="JavaScript:void(0)">详情</a>
-                <a name="mat_order_beizhu" href="JavaScript:void(0)">备注</a>
+                <% if permission?(:logistics_manage, :mat_order_beizhu) %><a name="mat_order_beizhu" href="JavaScript:void(0)">备注</a><% end %>
               </td>
             </tr>
             <% end %>
@@ -266,7 +266,7 @@
       <div class="popup_body">
         <div class="popup_body_area">
           <div class="item">
-            <label>物料名称：</label><input id="m_name" name="m_name" type="text"/>
+            <label><span class="red">*</span>物料名称：</label><input id="m_name" name="m_name" type="text"/>
           </div>
           <div class="item">
             <label>物料类别：</label><select id="m_type" name="m_type">
@@ -276,13 +276,13 @@
             </select>
           </div>
           <div class="item">
-            <label>条形码：</label><input id="m_code" name="m_code" type="text"/>
+            <label><span class="red">*</span>条形码：</label><input id="m_code" name="m_code" type="text"/>
           </div>
           <div class="item">
-            <label>单价：</label><input id="m_price" name="m_price" type="text"/>
+            <label><span class="red">*</span>单价：</label><input id="m_price" name="m_price" type="text"/>
           </div>
           <div class="item">
-            <label>数量：</label><input id="m_num" name="m_num" type="text"/>
+            <label><span class="red">*</span>数量：</label><input id="m_num" name="m_num" type="text"/>
           </div>
         </div>
         <div class="btn_box">

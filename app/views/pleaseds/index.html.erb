@@ -10,7 +10,9 @@
           <% end %>
         </select>
       </div>
-      <div><label>区域：</label>
+      <% if cookies[:admin_id] %>
+      <div>
+        <label>区域：</label>
         <select id="search_province" name="search_province" class="select_marginRight">
           <option value="0">全部</option>
           <% @provinces.each do |p| %>
@@ -28,7 +30,18 @@
           <% end %>
         </select>
       </div>
-      <div><button class="search_btn">查询</button></div>
+      <% elsif cookies[:manage_id] %>
+        <div>
+          <label>请选择门店：</label>
+          <select id="search_store_name" name="search_store_name">
+          <option value="0">请选择门店</option>
+          <% @stores.each do |s| %>
+          <option value="<%= s.id %>"<% if params[:search_store_name].to_i == s.id %>selected<% end %>><%= s.name %></option>
+          <% end %>
+          </select>
+        </div>
+      <% end %>
+      <div><button class="search_btn" onclick="return search_validate()">查询</button></div>
       <% end %>
     </div>
     <div class="clear"></div>
@@ -37,9 +50,17 @@
         <% if @blank_msg %>
         <h3 align="center"><%= @blank_msg %></h3>
         <% elsif @chart_image.nil? %>
-        <h3 align="center">当前城市无数据!</h3>
+          <% if cookies[:admin_id] %>
+          <h3 align="center">当前城市无数据!</h3>
+          <% elsif cookies[:manage_id] %>
+          <h3 align="center">当前门店无数据!</h3>
+          <% end %>
          <% else %>
-        <%= image_tag @chart_image.image_url %>       
+            <% if cookies[:admin_id] %>
+            <%= image_tag @chart_image.image_url %>
+            <% elsif cookies[:manage_id] %>
+            <img alt="lantan" src="<%= Constant::SERVER_PATH + @chart_image.image_url %>"/>
+            <% end %>
         <% end %>
       </div>
     </div>

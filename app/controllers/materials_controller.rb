@@ -8,17 +8,16 @@ class MaterialsController < ApplicationController   #库存控制器
     @tab = params[:tab]
     mat_code_sql = params[:mat_code].nil? || params[:mat_code].empty? ? "1 = 1" : ["code = ?", params[:mat_code]]
     mat_name_sql = params[:mat_name].nil? || params[:mat_name].empty? ? "1 = 1" : ["name like ?", "%#{params[:mat_name]}%"]
-    mat_type_sql = params[:mat_type].nil? || params[:mat_type].to_i == 0 ? "1 = 1" : ["types = ?", params[:mat_type].to_i]
+    mat_type_sql = params[:mat_type].nil? || params[:mat_type].to_i == 99999 ? "1 = 1" : ["types = ?", params[:mat_type].to_i]
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : ["material_orders.status = ?", params[:status].to_i]
     started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : ["date_format(material_orders.created_at, '%Y-%m-%d') >= ?", params[:started_time]]
     ended_time = (params[:ended_time].nil? || params[:ended_time].empty?) ? "1 = 1" : ["date_format(material_orders.created_at, '%Y-%m-%d') <= ?", params[:ended_time]]
-    @urge_goods_msg = Notice.where(["status = ? and types = ?", Notice::STATUS[:NOMAL], Notice::TYPES[:URGE_GOODS]])
-    @mat_orders_urgent = MaterialOrder.where(:id => @urge_goods_msg.map(&:target_id))
-    #@materials = Material.normal.paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("materials_tab")
+    @urge_goods_msg = Notice.where(["status = ? and types = ?", Notice::STATUS[:NOMAL], Notice::TYPES[:URGE_GOODS]]) if @tab.nil?
+    @mat_orders_urgent = MaterialOrder.where(:id => @urge_goods_msg.map(&:target_id)) if @urge_goods_msg
     @materials = Material.normal.where(mat_code_sql).where(mat_name_sql).where(mat_type_sql).paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("materials_tab")
     @mat_out_orders = MatOutOrder.joins(:material).includes(:material).order("mat_out_orders.created_at desc").paginate(:page => params[:page] ||= 1, :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_out_tab")
     @mat_in_orders = MatInOrder.joins(:material).includes(:material).order("mat_in_orders.created_at desc").paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_in_tab")
-    @mat_orders = MaterialOrder.joins(:mat_order_items => :material).includes(:mat_order_items => :material).is_headoffice_not_canceled.where(status).where(started_time).where(ended_time).order("material_orders.created_at desc").uniq.paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_orders_tab")
+    @mat_orders = MaterialOrder.joins(:mat_order_items => :material).includes(:mat_order_items => :material).is_headoffice.where(status).where(started_time).where(ended_time).order("material_orders.created_at desc").uniq.paginate(:page => params[:page] ||= 1 , :per_page => Constant::PER_PAGE) if @tab.nil? || @tab.eql?("mat_orders_tab")
     respond_to do |format|
       format.html
       format.js
@@ -106,7 +105,7 @@ class MaterialsController < ApplicationController   #库存控制器
       result.each do |material, material_num|
         material.update_attribute(:storage, (material.storage - material_num))
         MatOutOrder.create(:material => material, :material_order => mo, :price => material.price,
-         :material_num => material_num, :staff_id  => cookies[:user_id])
+         :material_num => material_num, :staff_id  => cookies[:admin_id])
       end
       if mo.update_attributes(:carrier => carrier, :arrival_at => arrive_time, :logistics_code => logistic_code, :m_status => 1)
         render :json => 1
@@ -141,13 +140,13 @@ class MaterialsController < ApplicationController   #库存控制器
       material = m[0]
       total_num = material.storage + m_num
       MatInOrder.create(:material_id => material.id, :material_num => m_num,
-        :price => m_price, :staff_id => cookies[:user_id].to_i)
+        :price => m_price, :staff_id => cookies[:admin_id].to_i)
       material.update_attributes(:storage => total_num)
     else
       material = Material.create(:name => m_name, :code => m_code, :price => m_price, :types => m_type,
         :status => Material::STATUS[:NORMAL], :storage => m_num)
       MatInOrder.create(:material_id => material.id, :material_num => m_num,
-        :price => m_price, :staff_id => cookies[:user_id].to_i)
+        :price => m_price, :staff_id => cookies[:admin_id].to_i)
     end
     respond_to do |format|
       format.js
