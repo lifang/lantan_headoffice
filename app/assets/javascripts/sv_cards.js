@@ -5,14 +5,6 @@ $(document).ready(function(){
         url: "/sv_cards/new_card"
     })
   });
-  $("img[name='edit_card']").click(function(){  //编辑优惠卡
-    var cid = $(this).parent().prev().val();
-    $.ajax({
-        type: "get",
-        url: "/sv_cards/edit_card",
-        data: {c_id : cid}
-    })
-  });
   $("#card_type").live("change", function(){    //新建时根据卡类型加载不同表格
     if ($("#card_type").val() == 0){
       $("#discount_value").removeAttr("disabled");
@@ -208,3 +200,10 @@ function edit_card_validate(obj){       //编辑优惠卡验证
         $(obj).parents("form").submit();
         $(obj).removeAttr("onclick");
 }
+  function edit_card(cid){  //编辑优惠卡
+    $.ajax({
+        type: "get",
+        url: "/sv_cards/edit_card",
+        data: {c_id : cid}
+    })
+  }
