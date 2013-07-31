@@ -43,6 +43,11 @@ class ComplaintsController < ApplicationController   #投诉控制器
 String
   def show_order_detail
     @order = Order.find_by_id(params[:oid].to_i)
+    @products = OrderProdRelation.find_by_sql(["select opr.pro_num num, opr.price price, p.name name
+                                               from lantan_db.order_prod_relations opr left join
+                                               lantan_db.products p on opr.product_id=p.id where opr.order_id = ?",
+                                               @order.id])
+    @sale = SSale.find_by_id(@order.sale_id)
     @front_staff = SStaff.find_by_id(@order.front_staff_id)
     @cons_staff1 = SStaff.find_by_id(@order.cons_staff_id_1)
     @cons_staff2 = SStaff.find_by_id(@order.cons_staff_id_2)

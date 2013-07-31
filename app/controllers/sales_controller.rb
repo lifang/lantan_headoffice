@@ -74,9 +74,9 @@ class SalesController < ApplicationController   #活动控制器
     sale_name = params[:edit_sale_name]
     disc_types = params[:edit_sale_disc_types].to_i
     if disc_types == 0
-      disc = params[:disc_discount].to_f
+      disc = params[:edit_disc_discount].to_f
     else
-      disc = params[:disc_money].to_f
+      disc = params[:edit_disc_money].to_f
     end
     img = params[:edit_sale_img]
     selected_product_count = params[:edit_selected_product_count].to_a
@@ -88,26 +88,22 @@ class SalesController < ApplicationController   #活动控制器
     sale_car_num = params[:edit_sale_car_num].to_i
     sale_is_subsidy = params[:edit_sale_is_subsidy].to_i
     sale_subsidy_money = params[:edit_sale_subsidy_money] ||= ""
-    sale_introduction = params[:edit_sale_introduction]
-    SaleProdRelation.destroy_all("sale_id = #{sale.id}")
-    selected_product_id.each_with_index do |item, index|
-      sale.sale_prod_relations.new(:product_id => item.to_i, :prod_num => selected_product_count[index].strip)
-    end
-    Sale.transaction do
-      begin
-        if sale.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
-          :introduction => sale_introduction, :disc_types => disc_types, :discount => disc,
-          :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
-          :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money)
-          if !img.nil?
-            new_url = Sale.upload_img(img, sale.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
-            sale.update_attribute("img_url", new_url)
-          end
-          flash[:notice] = "活动修改成功!"
-        end
-      rescue
-        flash[:notice] = "更新失败!"
+    sale_introduction = params[:edit_sale_introduction]   
+    if sale.update_attributes(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
+        :introduction => sale_introduction, :disc_types => disc_types, :discount => disc,
+        :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
+        :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money)
+      SaleProdRelation.destroy_all("sale_id = #{sale.id}")
+      selected_product_id.each_with_index do |item, index|
+        SaleProdRelation.create(:product_id => item.to_i, :prod_num => selected_product_count[index].strip, :sale_id => sale.id)
       end
+      if !img.nil?
+        new_url = Sale.upload_img(img, sale.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
+        sale.update_attribute("img_url", new_url)
+      end
+      flash[:notice] = "活动修改成功!"
+    else
+      flash[:notice] = "活动修改失败!"
     end
     page = (params[:edit_sale_page].nil? || params[:edit_sale_page] == "") ? 1 : params[:edit_sale_page].to_i
     redirect_to "/sales?page=#{page}"

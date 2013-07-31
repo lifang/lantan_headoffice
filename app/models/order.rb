@@ -7,9 +7,9 @@ class Order < ActiveRecord::Base
   has_many :work_orders
   has_many :revisits
   belongs_to :car_num
-  belongs_to :c_pcard_relation
-  belongs_to :c_svc_relation
-  belongs_to :sale
+  belongs_to :s_c_pcard_relation
+  belongs_to :s_c_svc_relation
+  belongs_to :s_sale
   belongs_to :store
   has_many :revisit_order_relations
 
