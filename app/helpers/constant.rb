@@ -84,7 +84,7 @@ module Constant
 
   SERVER_PATH = "http://192.168.0.250:3001"
   #STORE_IMAGE_PATH = "http://192.168.2.27:3001/"    存放门店图片的路径
-  FRONT_PATH = "http://192.168.0.250:3003"     #门店前台地址
+  FRONT_PATH = "http://116.255.135.175:3006"     #门店前台地址
 
   #施工现场文件目录
   VIDEO_DIR ="work_videos" 
