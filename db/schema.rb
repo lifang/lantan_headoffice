@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130801051421) do
+ActiveRecord::Schema.define(:version => 20130731085348) do
 
   create_table "c_pcard_relations", :force => true do |t|
     t.integer  "customer_id"
@@ -41,39 +41,32 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
   add_index "c_svc_relations", ["sv_card_id"], :name => "index_c_svc_relations_on_sv_card_id"
 
   create_table "capitals", :force => true do |t|
-    t.string   "name"
-    t.datetime "updated_at"
+    t.string "name"
   end
 
   create_table "car_brands", :force => true do |t|
-    t.string   "name"
-    t.integer  "capital_id"
-    t.datetime "updated_at"
-    t.datetime "created_at"
+    t.string  "name"
+    t.integer "capital_id"
   end
 
   add_index "car_brands", ["capital_id"], :name => "index_car_brands_on_capital_id"
   add_index "car_brands", ["name"], :name => "index_car_brands_on_name"
-  add_index "car_brands", ["updated_at"], :name => "index_car_brands_on_updated_at"
 
   create_table "car_models", :force => true do |t|
     t.string   "name"
     t.integer  "car_brand_id"
     t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   add_index "car_models", ["car_brand_id"], :name => "index_car_models_on_car_brand_id"
   add_index "car_models", ["created_at"], :name => "index_car_models_on_created_at"
   add_index "car_models", ["name"], :name => "index_car_models_on_name"
-  add_index "car_models", ["updated_at"], :name => "index_car_models_on_updated_at"
 
   create_table "car_nums", :force => true do |t|
     t.string   "num"
     t.integer  "car_model_id"
     t.datetime "created_at"
     t.integer  "buy_year"
-    t.datetime "updated_at"
   end
 
   add_index "car_nums", ["car_model_id"], :name => "index_car_nums_on_car_model_id"
@@ -92,11 +85,9 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
   add_index "chart_images", ["image_url"], :name => "index_chart_images_on_image_url"
 
   create_table "cities", :force => true do |t|
-    t.integer  "order_index"
-    t.string   "name"
-    t.integer  "parent_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "order_index"
+    t.string  "name"
+    t.integer "parent_id"
   end
 
   add_index "cities", ["order_index"], :name => "index_cities_on_order_index"
@@ -106,7 +97,6 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
     t.integer  "customer_id"
     t.integer  "car_num_id"
     t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   add_index "customer_num_relations", ["car_num_id"], :name => "index_customer_num_relations_on_car_num_id"
@@ -141,17 +131,6 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
   end
 
   add_index "image_urls", ["product_id"], :name => "index_image_urls_on_product_id"
-
-  create_table "m_order_types", :force => true do |t|
-    t.integer  "material_order_id"
-    t.integer  "pay_types"
-    t.float    "price"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "m_order_types", ["material_order_id"], :name => "index_m_order_types_on_material_order_id"
-  add_index "m_order_types", ["pay_types"], :name => "index_m_order_types_on_pay_types"
 
   create_table "mat_in_orders", :force => true do |t|
     t.integer  "material_order_id"
@@ -257,6 +236,67 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
   add_index "news", ["created_at"], :name => "index_news_on_created_at"
   add_index "news", ["status"], :name => "index_news_on_status"
 
+  create_table "order_pay_types", :force => true do |t|
+    t.integer "order_id"
+    t.integer "pay_type"
+    t.float   "price"
+  end
+
+  add_index "order_pay_types", ["order_id"], :name => "index_order_pay_types_on_order_id"
+  add_index "order_pay_types", ["pay_type"], :name => "index_order_pay_types_on_pay_type"
+
+  create_table "order_prod_relations", :force => true do |t|
+    t.integer "order_id"
+    t.integer "product_id"
+    t.integer "pro_num"
+    t.float   "price"
+  end
+
+  add_index "order_prod_relations", ["order_id"], :name => "index_order_prod_relations_on_order_id"
+  add_index "order_prod_relations", ["product_id"], :name => "index_order_prod_relations_on_product_id"
+
+  create_table "orders", :force => true do |t|
+    t.string   "code"
+    t.integer  "car_num_id"
+    t.boolean  "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.float    "price"
+    t.boolean  "is_visited"
+    t.integer  "is_pleased"
+    t.boolean  "is_billing"
+    t.integer  "front_staff_id"
+    t.integer  "cons_staff_id_1"
+    t.string   "cons_staff_id_2"
+    t.integer  "station_id"
+    t.integer  "sale_id"
+    t.integer  "c_pcard_relation_id"
+    t.integer  "c_svc_relation_id"
+    t.boolean  "is_free"
+    t.integer  "types"
+    t.integer  "store_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_id"
+  end
+
+  add_index "orders", ["c_pcard_relation_id"], :name => "index_orders_on_c_pcard_relation_id"
+  add_index "orders", ["c_svc_relation_id"], :name => "index_orders_on_c_svc_relation_id"
+  add_index "orders", ["car_num_id"], :name => "index_orders_on_car_num_id"
+  add_index "orders", ["code"], :name => "index_orders_on_code"
+  add_index "orders", ["cons_staff_id_1"], :name => "index_orders_on_cons_staff_id_1"
+  add_index "orders", ["cons_staff_id_2"], :name => "index_orders_on_cons_staff_id_2"
+  add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
+  add_index "orders", ["customer_id"], :name => "index_orders_on_customer_id"
+  add_index "orders", ["front_staff_id"], :name => "index_orders_on_front_staff_id"
+  add_index "orders", ["is_visited"], :name => "index_orders_on_is_visited"
+  add_index "orders", ["price"], :name => "index_orders_on_price"
+  add_index "orders", ["sale_id"], :name => "index_orders_on_sale_id"
+  add_index "orders", ["station_id"], :name => "index_orders_on_station_id"
+  add_index "orders", ["status"], :name => "index_orders_on_status"
+  add_index "orders", ["store_id"], :name => "index_orders_on_store_id"
+  add_index "orders", ["types"], :name => "index_orders_on_types"
+
   create_table "pcard_prod_relations", :force => true do |t|
     t.integer "product_id"
     t.integer "product_num"
@@ -267,11 +307,9 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
   add_index "pcard_prod_relations", ["product_id"], :name => "index_pcard_prod_relations_on_product_id"
 
   create_table "prod_mat_relations", :force => true do |t|
-    t.integer  "product_id"
-    t.integer  "material_num"
-    t.integer  "material_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "product_id"
+    t.integer "material_num"
+    t.integer "material_id"
   end
 
   add_index "prod_mat_relations", ["material_id"], :name => "index_prod_mat_relations_on_material_id"
@@ -281,7 +319,7 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
     t.string   "name"
     t.float    "base_price"
     t.float    "sale_price"
-    t.text     "description"
+    t.string   "description"
     t.integer  "types"
     t.string   "service_code"
     t.boolean  "status"
@@ -297,6 +335,12 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
     t.datetime "updated_at"
     t.float    "deduct_percent"
   end
+
+  add_index "products", ["is_service"], :name => "index_products_on_is_service"
+  add_index "products", ["name"], :name => "index_products_on_name"
+  add_index "products", ["status"], :name => "index_products_on_status"
+  add_index "products", ["store_id"], :name => "index_products_on_store_id"
+  add_index "products", ["types"], :name => "index_products_on_types"
 
   create_table "res_prod_relations", :force => true do |t|
     t.integer "product_id"
@@ -465,11 +509,12 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
     t.string   "name"
     t.string   "img_url"
     t.integer  "types"
-    t.float    "price"
+    t.integer  "price"
     t.float    "discount"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "description"
+    t.integer  "status"
   end
 
   add_index "sv_cards", ["types"], :name => "index_sv_cards_on_types"
@@ -478,8 +523,6 @@ ActiveRecord::Schema.define(:version => 20130801051421) do
     t.integer "product_id"
     t.integer "product_num"
     t.integer "sv_card_id"
-    t.float   "base_price"
-    t.float   "more_price"
   end
 
   add_index "svcard_prod_relations", ["product_id"], :name => "index_svcard_prod_relations_on_product_id"
