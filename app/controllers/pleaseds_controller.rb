@@ -31,7 +31,8 @@ class PleasedsController < ApplicationController  #满意度控制器
       else
         current_month_condition = params[:search_time]
         store_condition = "store_id = #{params[:search_store_name].to_i}"
-        @chart_image = SChartImage.where(store_condition).where("date_format(current_day,'%Y-%m') = '#{current_month_condition}'").first
+        @chart_image = SChartImage.where(store_condition).
+          where("date_format(current_day,'%Y-%m') = '#{current_month_condition}'").where("types = #{SChartImage::TYPES[:SATIFY]}").first
       end
     end
   end

@@ -19,7 +19,7 @@
           <li>
             <input name="hid_id" type="hidden" value="<%= role.id %>"/>
             <a style="display:block;"><%= role.name %></a>
-            <input name="role_new_name" type="text" value="<%= role.name %>" style="display:none;"/>
+            <input name="role_new_name" type="text" style="display:none;"/>
             <% if permission?(:base_datas, :del_role) %><a name="del_role_a" href="JavaScript:void(0)" class="group_x">Close</a><% end %>
             <span class="group_func">
               <% if permission?(:base_datas, :edit_role) %><a name="edit_role" href="JavaScript:void(0)">编辑</a><% end %>
@@ -40,11 +40,11 @@
     <h1>添加角色<a href="JavaScript:void(0)" class="close">关闭</a></h1>
     <div class="popup_body">
       <div class="popup_body_area">
-        <div class="brand">角色：<input name="role_name" type="text"/></div>
+        <div class="brand"><span class="red">*</span>角色：<input name="role_name" type="text"/></div>
       </div>
       <div class="btn_box">
-        <button id="add_role_btn" type="submit" class="confirm_btn">确定</button>
-        <button type="reset" class="cancel_btn">取消</button>
+        <button type="button" class="confirm_btn" onclick="add_role(this)">确定</button>
+        <button type="button" class="cancel_btn">取消</button>
       </div>
     </div>
     <% end %>

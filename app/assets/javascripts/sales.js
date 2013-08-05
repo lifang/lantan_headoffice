@@ -44,7 +44,7 @@ $(document).ready(function(){
     var pname = $(this).next().text();
     if($(this).attr("checked")=="checked"){
       $("#selected_product_div").append("<div id='pro"+pid+"'><em>"+pname+"</em><a name='add_button' href='JavaScript:void(0)' class='addre_a'>+</a><span><input name='selected_product_count[]'\n\
-      type='text' class='addre_input' value='1'/></span><a name='del_button' href='JavaScript:void(0)' class='addre_a'>-</a><a name='del_a' href='JavaScript:void(0)' class='remove_a'>删除</a>\n\
+      type='text' class='addre_input' value='1' readonly/></span><a name='del_button' href='JavaScript:void(0)' class='addre_a'>-</a><a name='del_a' href='JavaScript:void(0)' class='remove_a'>删除</a>\n\
       <input name='selected_product_id[]' type='hidden' value='"+pid+"'</div>")
     }else{
       $("#pro"+pid).remove();
@@ -55,7 +55,7 @@ $(document).ready(function(){
        var pname = $(this).next().text();
         if($(this).attr("checked")=="checked"){
             $("#edit_selected_product_div").append("<div id='edpro"+pid+"'><em>"+pname+"</em><a name='edit_add_button' href='JavaScript:void(0)' class='addre_a'>+</a><span><input name='edit_selected_product_count[]'\n\
-      type='text' class='addre_input' value='1'/></span><a name='edit_del_button' href='JavaScript:void(0)' class='addre_a'>-</a><a name='edit_del_a' href='JavaScript:void(0)' class='remove_a'>删除</a>\n\
+      type='text' class='addre_input' value='1' readonly/></span><a name='edit_del_button' href='JavaScript:void(0)' class='addre_a'>-</a><a name='edit_del_a' href='JavaScript:void(0)' class='remove_a'>删除</a>\n\
       <input name='edit_selected_product_id[]' type='hidden' value='"+pid+"'</div>")
         }else{
             $("#edpro"+pid).remove();
@@ -194,147 +194,141 @@ function cancel_edit_sale(page){        //取消编辑按钮
     window.location.href="/sales?page="+page
 };
 function new_sale_validate(button){     //创建活动验证
-    var flag = true;
-    var a = new Array();
-    $("input[name='selected_product_count[]']").each(function(index,obj){
-       if((new RegExp(/^\d+$/)).test($.trim($(obj).val()))==false){
-           a.push($(obj).parents("div").find("em").first().text())
-       }
+    var a = "";
+    $("input[name='selected_product_count[]']").each(function(){
+        if((new RegExp(/^^\+?(0|[1-9]\d*)$/).test($(this).val()))==false){      //判断值是否是正整数
+            a += $(this).parents("div").find("em").first().text()+" ";
+        }
     });
-    if(a.length>0){
-        tishi_alert("项目"+a+"数量输入不正确,数目必须为大于零的整数!");
-        flag = false;
+    if(a!=""){
+        tishi_alert("项目"+a+"数量输入不正确,数目必须为大于零的整数!<br/>");
+        return false;
     };
     if($.trim($("#sale_name").val()) == ""){
        tishi_alert("活动标题不能为空!");
-       flag = false;
+        return false;
     };
      if($("input[name='selected_product_id[]']").length <= 0){
         tishi_alert("请至少选择一个项目!");
-        flag = false;
+         return false;
     };
      if($("input[name='sale_disc_types']:checked").val()==1){
         if($.trim($("#disc_money").val())=="" || isNaN($.trim($("#disc_money").val())) || parseFloat($.trim($("#disc_money").val()))<=0){
             tishi_alert("请输入正确的优惠金额!");
-            flag = false;
+             return false;
         }
     }else if($("input[name='sale_disc_types']:checked").val()==0){
         if($.trim($("#disc_discount").val())=="" || isNaN($.trim($("#disc_discount").val())) || parseFloat($.trim($("#disc_discount").val()))<=0 || parseFloat($.trim($("#disc_discount").val()))>10){
             tishi_alert("请输入正确的优惠折扣，折扣必须为0~10之间的数");
-            flag = false;
+             return false;
         }
     };
      if(parseInt($("input[name='sale_disc_time_types']:checked").val()) == 0 && $("#started_time").val() == "" && $("#ended_time").val() == ""){
         tishi_alert("请选择优惠时间段!");
-        flag = false;
+         return false;
     };
      if($.trim($("#sale_everycar_times").val()) == "" || isNaN($.trim($("#sale_everycar_times").val())) || parseInt($.trim($("#sale_everycar_times").val())) <= 0){
         tishi_alert("请输入每辆车的优惠次数!");
-        flag = false;
+         return false;
     };
      if($.trim($("#sale_car_num").val()) == "" || isNaN($.trim($("#sale_car_num").val())) || parseInt($.trim($("#sale_car_num").val())) <= 0){
          tishi_alert("请输入有效的车辆总数!");
-        flag = false;
+         return false;
     };
      if($.trim($("#sale_img").val()) == ""){
         tishi_alert("请选择一张图片!");
-        flag = false;
+         return false;
     }else{
         var img = $("#sale_img").val();
         var img_suff = img.substring(img.lastIndexOf(".")+1).toLowerCase();
         if(img_suff != "jpg" && img_suff != "bmp" && img_suff != "gif" && img_suff != "png"){
             tishi_alert("请上传格式正确的图片!");
-            flag = false;
+             return false;
         }
     };
     if(new Date($("#ended_time").val()) > 0 && new Date($("#ended_time").val()) < new Date($("#started_time").val())){
         tishi_alert("结束时间必须在开始时间之后!");
-        flag = false;
+         return false;
     };
     if($("input[name='sale_is_subsidy']:checked").val()==1){
         if($.trim($("#sale_subsidy_money").val())=="" || isNaN($.trim($("#sale_subsidy_money").val())) || parseFloat($.trim($("#sale_subsidy_money").val()))<=0){
             tishi_alert("请输入正确的补贴金额!");
-            flag = false;
+             return false;
         }
     };
     if(sale_desc.html() == ""){
         tishi_alert("请输入活动介绍!");
-        flag = false;
+         return false;
     };
-    if(flag){
         $("#sale_introduction").val(sale_desc.html());
         $(button).parents("form").submit();
         $(button).removeAttr("onclick");
-    }
 };
 function edit_sale_validate(button){ //编辑验证
-    var flag = true;
-    var a = new Array();
-    $("input[name='edit_selected_product_count[]']").each(function(index,obj){
-       if((new RegExp(/^\d+$/)).test($.trim($(obj).val()))==false){
-           a.push($(obj).parents("div").find("em").first().text());
+    var a = "";
+    $("input[name='edit_selected_product_count[]']").each(function(){
+       if((new RegExp(/^^\+?(0|[1-9]\d*)$/)).test($.trim($(this).val()))==false){
+           a += $(this).parents("div").find("em").first().text()+" ";
        }
     });
-    if(a.length>0){
+    if(a!=""){
         tishi_alert("项目"+a+"数量输入不正确,数目必须为大于零的整数!");
-        flag = false;
+         return false;
     };
     if($.trim($("#edit_sale_name").val()) == ""){
        tishi_alert("活动标题不能为空!");
-       flag = false;
+        return false;
     };
     if($("input[name='edit_selected_product_id[]']").length <= 0){
         tishi_alert("请至少选择一个项目!");
-        flag = false;
+         return false;
     };
     if($("input[name='edit_sale_disc_types']:checked").val()==1){
         if($.trim($("#edit_disc_money").val())=="" || isNaN($.trim($("#edit_disc_money").val())) || parseFloat($.trim($("#edit_disc_money").val()))<=0){
             tishi_alert("请输入正确的优惠金额!");
-            flag = false;
+             return false;
         }
     }else if($("input[name='edit_sale_disc_types']:checked").val()==0){
         if($.trim($("#edit_disc_discount").val())=="" || isNaN($.trim($("#edit_disc_discount").val())) || parseFloat($.trim($("#edit_disc_discount").val()))<=0 || parseFloat($.trim($("#edit_disc_discount").val()))>10){
             tishi_alert("请输入正确的优惠折扣，折扣必须为0~10之间的数");
-            flag = false;
+             return false;
         }
     }
     if(parseInt($("input[name='edit_sale_disc_time_types']:checked").val()) == 0 && $("#edit_started_time").val() == "" && $("#edit_ended_time").val() == ""){
         tishi_alert("请选择优惠时间段!");
-        flag = false;
+         return false;
     };
     if($.trim($("#edit_sale_everycar_times").val()) == "" || parseInt($.trim($("#edit_sale_everycar_times").val())) <= 0){
         tishi_alert("请输入有效的优惠次数!");
-        flag = false;
+         return false;
     };
     if($.trim($("#edit_sale_car_num").val()) == "" || parseFloat($("#edit_sale_car_num").val()) <= 0){
          tishi_alert("请输入有效的车辆总数!");
-        flag = false;
+         return false;
     };
     if(new Date($("#edit_ended_time").val()) > 0 && new Date($("#edit_ended_time").val()) < new Date($("#edit_started_time").val())){
         tishi_alert("结束时间必须在开始时间之后!");
-        flag = false;
+         return false;
     };
     if($("#edit_sale_img").val() != ""){
         var img = $("#edit_sale_img").val();
         var img_suff = img.substring(img.lastIndexOf(".")+1).toLowerCase();
         if(img_suff != "jpg" && img_suff != "png" && img_suff != "gif" && img_suff != "bmp"){
             tishi_alert("请上传格式正确的图片!");
-            flag = false;
+             return false;
         }
     };
     if($("input[name='edit_sale_is_subsidy']:checked").val()==1){
         if($.trim($("#edit_sale_subsidy_money").val())=="" || isNaN($.trim($("#edit_sale_subsidy_money").val())) || parseFloat($.trim($("#edit_sale_subsidy_money").val()))<=0){
             tishi_alert("请输入正确的补贴金额!");
-            flag = false;
+            return false;
         }
     };
     if(edit_sale_desc.html() == ""){
         tishi_alert("请输入活动介绍!");
-        flag = false;
+        return false;
     };
-    if(flag){
          $("#edit_sale_introduction").val(edit_sale_desc.html());
          $(button).parents("form").submit();
          $(button).removeAttr("onclick");
-    } 
 };

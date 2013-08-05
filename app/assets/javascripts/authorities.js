@@ -1,17 +1,8 @@
 $(document).ready(function(){
      $("#add_role_a").click(function(){  //添加角色按钮
     popup("#add_role_form");
-  })
-  $("#add_role_btn").click(function(){    //添加角色验证
-      var button = $(this);
-    if($.trim($("input[name='role_name']").val()) == null || $.trim($("input[name='role_name']").val()) == ""){
-      tishi_alert("角色名不能为空!");
-      return false;
-    }
-    button.click(function(){
-        return false;
-    })
-  })
+  });
+
   $("a[name='del_role_a']").click(function(){ //删除角色按钮
     var rid = $(this).parent().find($("input[name='hid_id']")).val();
     var flag = confirm("确定删除该角色?");
@@ -35,19 +26,24 @@ $(document).ready(function(){
   })
 
  $("a[name='edit_role']").click(function(){  //编辑按钮
-     var obj = $(this).parent().parent().find($("input[name='role_new_name']"));
-     obj.prev().attr("style", "display:none");
-     obj.attr("style", "display:inline");
-     obj.focus();
+    var name = $(this).parents("li").find("a").first().text();
+    $(this).parents("li").find("a").first().attr("style", "display:none;");
+    $(this).parents("li").find("input[name='role_new_name']").first().attr("style","display:inline;");
+    $(this).parents("li").find("input[name='role_new_name']").first().focus();
+    $(this).parents("li").find("input[name='role_new_name']").first().val(name);
   })
 
   $("input[name='role_new_name']").blur(function(){ //编辑更新
         var obj = $(this);
-        if($.trim(obj.val()) == null || $.trim(obj.val()) == ""){
+        if($.trim(obj.val()) == ""){
             tishi_alert("角色名不能为空!");
-            obj.val(obj.prev().text());
+            obj.val("");
             obj.attr("style", "display:none");
-            obj.prev().attr("style", "display:block");
+            obj.parents("li").find("a").first().attr("style","display:block;");
+        }else if($.trim(obj.val()) == obj.parents("li").find("a").first().text()){
+            obj.val("");
+            obj.attr("style","display:none;");
+            obj.parents("li").find("a").first().attr("style","display:block;");
         }else{
             var rid = obj.prev().prev().val();
             var rname = obj.val();
@@ -61,20 +57,21 @@ $(document).ready(function(){
                 success: function(data){
                     if(data==1){
                         tishi_alert("更新成功!");
-                        setTimeout(function(){
-                            location.href = "/authorities";
-                        }, 1500);
+                        obj.val("");
+                        obj.attr("style", "display:none");
+                        obj.parents("li").find("a").first().text(rname);
+                        obj.parents("li").find("a").first().attr("style","display:block;");
                     }
                     if(data==2){
-                        obj.val(obj.prev().text());
+                        obj.val("");
                         obj.attr("style", "display:none");
-                        obj.prev().attr("style", "display:block");
+                        obj.parents("li").find("a").first().attr("style","display:block;");
                         tishi_alert("更新失败，已有同名角色!");
                     }
                     if(data==0){
-                        obj.val(obj.prev().text());
+                        obj.val("");
                         obj.attr("style", "display:none");
-                        obj.prev().attr("style", "display:block");
+                        obj.parents("li").find("a").first().attr("style","display:block;");
                         tishi_alert("更新失败!");
                     }
                 }
@@ -108,6 +105,19 @@ $(document).ready(function(){
   });
 
  });
+
+ function add_role(obj){            //添加角色验证
+   var flag = true;
+    if($.trim($("input[name='role_name']").val()) == ""){
+      tishi_alert("角色名不能为空!");
+      flag = false;
+    };
+    if(flag){
+        $(obj).parents("form").submit();
+        $(obj).removeAttr("onclick");
+    }
+ };
+
 function selectAll(obj){
     if($(obj).attr("checked")=="checked"){
         $(obj).parent().next().find("input[type='checkbox']").attr("checked", "checked")
@@ -135,10 +145,11 @@ function checkStaff(obj){
            tishi_alert("地址不能为空!");
            return false;
        }
-       if($.trim($(obj).parents('form').find("#staff_photo").val()) == ''){
-           tishi_alert("照片不能为空!");
-           return false;
-       }else{
+       //if($.trim($(obj).parents('form').find("#staff_photo").val()) == ''){
+       //    tishi_alert("照片不能为空!");
+       //    return false;
+       //}else{
+       if($.trim($(obj).parents('form').find("#staff_photo").val()) != ''){
            var img_val = $(obj).parents('form').find("#staff_photo").val();
                var pattern_str = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
                var img_name_val = img_val.substring(img_val.lastIndexOf("\\")).toLowerCase();

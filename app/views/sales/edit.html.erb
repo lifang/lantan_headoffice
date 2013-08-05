@@ -12,7 +12,7 @@
               <div class="releaseDiv_l">活动代码：</div>
               <input name="edit_sale_id" type="hidden" value="<%= @sale.id %>"/>
               <div class="releaseDiv_r"><input type="text" class="title_input" value="<%= @sale.code %>" disabled/></div><br/>
-              <div class="releaseDiv_l">标题：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>标题：</div>
               <div class="releaseDiv_r"><input id="edit_sale_name" name="edit_sale_name" type="text" class="title_input" value="<%= @sale.name %>"/></div>
             </div>
             <div class="releaseDiv">
@@ -45,13 +45,13 @@
                 </fieldset>
                 <div class="pq"></div>
                 <fieldset class="popup_body_fieldset">
-                  <legend class="popup_body_title">已选择</legend>
+                  <legend class="popup_body_title"><span class="red">*</span>已选择</legend>
                   <div id="edit_selected_product_div" class="popup_body_result">
                     <% @sale_products.each do |sp| %>
                       <div id="edpro<%= sp.product_id %>">
                         <em><%= sp.product.name if sp.product %></em>
                         <a name="edit_add_button" href="JavaScript:void(0)" class="addre_a">+</a>
-                        <span><input name="edit_selected_product_count[]" type="text" class="addre_input" value="<%= sp.prod_num %>"/></span>
+                        <span><input name="edit_selected_product_count[]" type="text" class="addre_input" value="<%= sp.prod_num %>" readonly/></span>
                         <a name="edit_del_button" href="JavaScript:void(0)" class="addre_a" >-</a>
                         <a name="edit_del_a" href="JavaScript:void(0)" class="remove_a">删除</a>
                         <input type="hidden" name="edit_selected_product_id[]" value="<%= sp.product_id %>"/>
@@ -62,7 +62,7 @@
               </div>
             </div>
             <div class="releaseDiv">
-              <div class="releaseDiv_l">优惠：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>优惠：</div>
               <div class="releaseDiv_r">
                 <input name="edit_sale_disc_types" type="radio" value="<%= Sale::DISC_TYPES[:FEE] %>" <% if @sale.disc_types == Sale::DISC_TYPES[:FEE] %>checked<% end %>/>金额：<input id="edit_disc_money" name="edit_disc_money" type="text" <% if @sale.disc_types == Sale::DISC_TYPES[:DIS] %>disabled<% else %>value="<%= @sale.discount %>"<% end %>/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -70,7 +70,7 @@
               </div>
             </div>
             <div class="releaseDiv">
-              <div class="releaseDiv_l">优惠时间：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>优惠时间：</div>
               <div class="releaseDiv_r">
                 <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:DAY] %>" <% if @sale.disc_time_types == Sale::DISC_TIME[:DAY] %>checked<% end %>/>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input name="edit_sale_disc_time_types" type="radio" value="<%= Sale::DISC_TIME[:WEEK] %>" <% if @sale.disc_time_types == Sale::DISC_TIME[:WEEK] %>checked<% end %>/>周&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -82,11 +82,11 @@
               </div>
             </div>
             <div class="releaseDiv">
-              <div class="releaseDiv_l">每辆车享受优惠次数：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>每辆车享受优惠次数：</div>
               <div class="releaseDiv_r"><input id="edit_sale_everycar_times" name="edit_sale_everycar_times" type="text" value="<%= @sale.everycar_times %>"/>&nbsp;&nbsp;次</div>
             </div>
             <div class="releaseDiv">
-              <div class="releaseDiv_l">本次活动车辆总数：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>本次活动车辆总数：</div>
               <div class="releaseDiv_r"><input id="edit_sale_car_num" name="edit_sale_car_num" type="text" value="<%= @sale.car_num %>"/>&nbsp;&nbsp;辆</div>
             </div>
 
@@ -98,7 +98,7 @@
               </div>
             </div>
             <div class="releaseDiv">
-              <div class="releaseDiv_l">是否总店补贴：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>是否总店补贴：</div>
               <div class="releaseDiv_r">
                 <input name="edit_sale_is_subsidy" type="radio" value="<%= Sale::IS_SUBSIDY[:YES] %>" <% if @sale.is_subsidy %>checked<% end %>/>是&nbsp;&nbsp;
                 <input id="edit_sale_subsidy_money" name="edit_sale_subsidy_money" type="text" value="<%= @sale.sub_content %>" <% if !@sale.is_subsidy %>disabled<% end %>/>
@@ -107,7 +107,7 @@
               </div>
             </div>
             <div class="releaseDiv">
-              <div class="releaseDiv_l">活动介绍：</div>
+              <div class="releaseDiv_l"><span class="red">*</span>活动介绍：</div>
               <div class="releaseDiv_r">
                 <textarea id="edit_sale_textarea" name="edit_sale_textarea" cols="" rows=""><%= @sale.introduction %></textarea>
                 <input type="hidden" id="edit_sale_introduction" name="edit_sale_introduction"/>

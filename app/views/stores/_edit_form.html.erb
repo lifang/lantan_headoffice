@@ -4,7 +4,7 @@
     <div class="popup_body">
       <div class="popup_body_area">
         <div class="item">
-          <label>选择省市：</label>
+          <label><span class="red">*</span>选择省市：</label>
           <select id="edit_store_select_province" name="edit_store_select_province" class="staff">
             <option value="0">请选择省份</option>
             <% @provinces.each do |province| %>
@@ -23,23 +23,23 @@
           </select>
         </div>
         <div class="item">
-          <label>门店名称：</label>
+          <label><span class="red">*</span>门店名称：</label>
           <%= text_field_tag 'edit_store_name', @store.name %>
         </div>
         <div class="item">
-          <label>负责人：</label>
+          <label><span class="red">*</span>负责人：</label>
           <%= text_field_tag 'edit_store_contact', @store.contact %>
         </div>
         <div class="item">
-          <label>联系电话：</label>
+          <label><span class="red">*</span>联系电话：</label>
           <%= text_field_tag 'edit_store_phone', @store.phone %>
         </div>
         <div class="item">
-          <label>地址：</label>
+          <label><span class="red">*</span>地址：</label>
           <%= text_field_tag 'edit_store_address', @store.address %>
         </div>
         <div class="item">
-          <label>开店时间：</label>
+          <label><span class="red">*</span>开店时间：</label>
           <%= text_field_tag 'edit_store_open_time', @store.opened_at.nil? ? "" : @store.opened_at.strftime("%Y-%m-%d"), :class => "Wdate", :readonly => true %>
         </div>
         <div class="item">
@@ -51,13 +51,13 @@
           </select>
         </div>
         <div class="item">
-          <label>门店坐标：</label>
+          <label><span class="red">*</span>门店坐标：</label>
           <span>X-</span><%= text_field_tag 'edit_store_location_x', @store.position.nil? ? "" : @store.position.split(",")[0], :class => "xyAxis" %>
           <span>Y-</span><%= text_field_tag 'edit_store_location_y', @store.position.nil? ? "" : @store.position.split(",")[1], :class => "xyAxis" %>
          <a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank" class="mapIcon"><img src="assets/mapIcon.png" alt="点击打开地图查看" title="不知道门店坐标?点击此处"/></a>
         </div>
         <div class="item_textarea">
-          <label>门店照片：</label>
+          <label><span class="red">*</span>门店照片：</label>
           <%= file_field_tag 'edit_store_img',:class => "file" %>
           <span class="show_pic"><img src="<%= @store.img_url.nil? ? "" : @store.img_url.gsub("img#{@store.id}", "img#{@store.id}_#{Constant::STORE_PICSIZE[1]}") %>"/></span>
         </div>

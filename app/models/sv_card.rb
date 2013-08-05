@@ -6,6 +6,8 @@ class SvCard < ActiveRecord::Base
 
   FAVOR = {:value=>1,:discount=>0} #1 储值卡 0 打折卡
   S_FAVOR = {1 => "储值卡", 0 => "打折卡"}
+  STATUS = {:NORMAL => 1, :DELETED => 0} #状态 1正常 0删除
+  
   #上传图片并裁剪不同比例 目前为50,100,200和原图
   #img_url 上传文件的路径 sale_id所属对象的id
   #pic_types存放文件的文件夹名称 store_id 门店编号

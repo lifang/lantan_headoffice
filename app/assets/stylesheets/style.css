@@ -758,3 +758,12 @@ a.compile_btn { width: 100px;}
 	background: #f5f5f5;
 	color: #CCC;
 }
+
+/*在线QQ*/
+.online_qq { 
+	padding: 10px 10px 10px 35px; 
+	background: url(../images/online_qq.jpg) no-repeat 3px center #930205;
+	position: fixed; 
+	top: 200px; 
+	right: -90px; 
+}

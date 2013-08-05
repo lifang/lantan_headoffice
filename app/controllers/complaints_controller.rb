@@ -5,8 +5,8 @@ class ComplaintsController < ApplicationController   #投诉控制器
   
   def index
     search_time = (params[:search_time].nil? || params[:search_time].empty?) ? Time.now.months_ago(1).strftime("%Y-%m") : params[:search_time]
-    has_processed_complaints = [] #已解决的投诉
-    timely_complaints = [] #及时解决的投诉
+    has_processed_complaints = [] #已处理的投诉
+    timely_complaints = [] #及时处理的投诉
     if cookies[:admin_id]
        all_complaints_sql = ["date_format(created_at, '%Y-%m') = ? ", search_time]      
        complaints = Complaint.where(all_complaints_sql)   #全部投诉       
@@ -20,7 +20,7 @@ class ComplaintsController < ApplicationController   #投诉控制器
     complaints.each do |c|
          if c.status && c.created_at.strftime("%Y-%m") == search_time
            has_processed_complaints << c
-           if ((c.process_at.to_i-c.created_at.to_i)/3600) <= Complaint::TIMELY_HOURS
+           if !c.process_at.nil? && ((c.process_at.to_i-c.created_at.to_i) <= Complaint::TIMELY_HOURS*3600)
              timely_complaints << c
            end
          end
@@ -43,9 +43,14 @@ class ComplaintsController < ApplicationController   #投诉控制器
 String
   def show_order_detail
     @order = Order.find_by_id(params[:oid].to_i)
-    @front_staff = Staff.find_by_id(@order.front_staff_id)
-    @cons_staff1 = Staff.find_by_id(@order.cons_staff_id_1)
-    @cons_staff2 = Staff.find_by_id(@order.cons_staff_id_2)
+    @products = OrderProdRelation.find_by_sql(["select opr.pro_num num, opr.price price, p.name name
+                                               from lantan_db.order_prod_relations opr left join
+                                               lantan_db.products p on opr.product_id=p.id where opr.order_id = ?",
+                                               @order.id])
+    @sale = SSale.find_by_id(@order.sale_id)
+    @front_staff = SStaff.find_by_id(@order.front_staff_id)
+    @cons_staff1 = SStaff.find_by_id(@order.cons_staff_id_1)
+    @cons_staff2 = SStaff.find_by_id(@order.cons_staff_id_2)
     respond_to do |format|
       format.js
     end

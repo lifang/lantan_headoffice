@@ -75,8 +75,10 @@ LantanHeadoffice::Application.routes.draw do
   resources :news do
     collection do
       get :release
-      get :detail
-      post :update_new
+    end
+    member do
+      post :update
+      get :edit
     end
   end
   resources :cars do
@@ -109,8 +111,6 @@ LantanHeadoffice::Application.routes.draw do
     collection do
       get :sell_situation
       post :search
-      get :select_discount_card
-      get :select_storeage_card
       get :search_products_all
       post :search_products_part
       post :make_billing

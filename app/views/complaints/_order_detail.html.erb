@@ -20,22 +20,22 @@
           </tr>
         </thead>
         <tbody>
-          <% if @order.order_prod_relations.blank? %>
+          <% if @products.blank? %>
           <tr>
             <td>------</td>
           </tr>
           <% else %>
-          <% @order.order_prod_relations.each do |opr| %>
+          <% @products.each do |p| %>
             <tr>
-              <td><%= opr.product.nil? || opr.product.name.nil? ? "----" : opr.product.name %></td>
-              <td><%= opr.pro_num ||= "----" %></td>
-              <td><%= opr.price ||= "----" %></td>
+              <td><%= p.name ||= "----" %></td>
+              <td><%= p.num  ||= "----" %></td>
+              <td><%= p.price ||= "----" %></td>
             </tr>
             <% end %>
      <% end %>
             <tr>
               <td colspan="3">
-                参加活动：<% if @order.sale %><%= @order.sale.name %><% else %>无<% end %>
+                参加活动：<% if !@sale.nil? %><%= @sale.name %><% else %>无<% end %>
               </td>
             </tr>
           <% if @order.c_pcard_relation_id %>
