@@ -51,6 +51,7 @@ class ProductsController < ApplicationController
     else
       product.update_attributes({:standard=>params[:standard]})
     end
+    flash[:notice] = "添加成功"
     begin
       if params[:img_url] and !params[:img_url].keys.blank?
         params[:img_url].each_with_index {|img,index|
@@ -89,6 +90,7 @@ class ProductsController < ApplicationController
     else
       parms.merge!({:standard=>params[:standard]})
     end
+    flash[:notice] = "更新成功"
     begin
       if params[:img_url] and !params[:img_url].keys.blank?
         product.image_urls.inject(Array.new) {|arr,mat| mat.destroy}
@@ -142,6 +144,7 @@ class ProductsController < ApplicationController
 
   def delete_p(types,id)
     Product.find(id).update_attribute(:status, Product::IS_VALIDATE[:NO])
+    flash[:notice] = "删除成功"
     if types == Constant::SERVICE
       redit = "/products/prod_services"
     else
