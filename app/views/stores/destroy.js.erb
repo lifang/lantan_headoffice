@@ -2,6 +2,6 @@
 tishi_alert("删除失败!");
 <% else %>
 tishi_alert("删除成功!");
-$.ajax({type: "get", dataType: "script", url : "/stores", data : {store_name : "<%= @name %>", select_province : <%=  @province %>, select_city : <%= @city %>, page : <%= @store_page %>, div_name : "stores_div"}});
+$.ajax({type: "get", dataType: "script", url : "/stores", data : {store_name : "<%= @name %>", select_province : <%=  @province %>, select_city : <%= @city %>, div_name : "stores_div"}});
 $.ajax({type: "get", dataType: "script", url : "/stores", data : { page : <%= @chain_page %>, div_name : "chains_div"}});
 <% end %>

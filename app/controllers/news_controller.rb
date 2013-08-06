@@ -10,7 +10,7 @@ class NewsController < ApplicationController  #新闻控制器
   
   def destroy #删除新闻
     new = New.find(params[:id].to_i)
-    page = params[:page].nil? ? 1 : params[:page].to_i
+    #page = params[:page].nil? ? 1 : params[:page].to_i
     if !new.nil?
       if new.update_attribute("status", New::STATUS[:DELETED])
        flash[:notice] = "删除成功!";
@@ -20,7 +20,7 @@ class NewsController < ApplicationController  #新闻控制器
     else
        flash[:notice] = "操作失败!";
     end
-    redirect_to "/news?page=#{page}"
+    redirect_to "/news"
   end
 
   def release #发布新闻

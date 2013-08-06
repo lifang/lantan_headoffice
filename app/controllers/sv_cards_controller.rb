@@ -99,7 +99,7 @@ class SvCardsController < ApplicationController   #优惠卡控制器
     else
       flash[:notice] = "删除失败!"
     end
-     redirect_to request.referer
+     redirect_to sv_cards_path
   end
 
   def sell_situation  #销售情况

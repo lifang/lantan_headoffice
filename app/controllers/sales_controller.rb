@@ -125,8 +125,8 @@ class SalesController < ApplicationController   #活动控制器
     else
       flash[:notice] = "删除失败!"
     end
-    page = (params[:page].nil? || params[:page]=="") ? 1 : params[:page].to_i
-    redirect_to "/sales?page=#{page}"
+    #page = (params[:page].nil? || params[:page]=="") ? 1 : params[:page].to_i
+    redirect_to sales_path
   end
 
   def rel_sale  #发布活动按钮

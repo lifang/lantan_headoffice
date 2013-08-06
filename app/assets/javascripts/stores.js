@@ -358,7 +358,7 @@ function new_chain_validate(obj){    //创建连锁店验证
 }
 function del_chain(obj){            //删除连锁店
     var chain_id = $(obj).parents("tr").find("td:first input").val();
-    var chain_page = $("#s_chain_page").val();
+    //var chain_page = $("#s_chain_page").val();
     if(confirm("确定删除该连锁店?")){
         $.ajax({
             type: "post",
@@ -374,7 +374,7 @@ function del_chain(obj){            //删除连锁店
                         type: "get",
                         url: "/stores",
                         dataType: "script",
-                        data: {page : chain_page, div_name : "chains_div"}
+                        data: {div_name : "chains_div"}
                     })
                 }
             }
