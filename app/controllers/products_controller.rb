@@ -150,6 +150,7 @@ class ProductsController < ApplicationController
     else
       redit =  "/products"
     end
+    flash[:notice] = "删除成功!"
     return redit
   end
 
