@@ -82,7 +82,7 @@ module Constant
   #催货提醒
   URGE_GOODS_CONTENT = "门店订货提醒，请关注下"
 
-  SERVER_PATH = "http://192.168.0.250:3001"
+  SERVER_PATH = "http://116.255.135.175:3004"
   #STORE_IMAGE_PATH = "http://192.168.2.27:3001/"    存放门店图片的路径
   FRONT_PATH = "http://116.255.135.175:3006"     #门店前台地址
 
