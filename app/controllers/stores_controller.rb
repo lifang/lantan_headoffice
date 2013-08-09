@@ -31,8 +31,9 @@ class StoresController < ApplicationController  #门店控制器
     store_params_sql = ""
     store_sql_params = [""]
      unless (params[:store_name].nil? || params[:store_name].empty?)
-       store_params_sql += " and s.name like ? "
-       store_sql_params << "%#{params[:store_name].strip}%"
+       store_name = params[:store_name].strip.gsub('%', '\%')
+       store_params_sql += " and s.name like (?) "
+       store_sql_params << "\%"+store_name+"\%"
      end
      unless (params[:select_province].nil? || params[:select_province].to_i == 0)
        store_params_sql += " and cp.id = ?"

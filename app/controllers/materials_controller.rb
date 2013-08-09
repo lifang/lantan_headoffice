@@ -6,8 +6,9 @@ class MaterialsController < ApplicationController   #库存控制器
   def index
     @init_tab = params[:init_tab]
     @tab = params[:tab]
+    mat_name = params[:mat_name].gsub('%', '\%') if params[:mat_name]
     mat_code_sql = params[:mat_code].nil? || params[:mat_code].empty? ? "1 = 1" : ["code = ?", params[:mat_code]]
-    mat_name_sql = params[:mat_name].nil? || params[:mat_name].empty? ? "1 = 1" : ["name like ?", "%#{params[:mat_name]}%"]
+    mat_name_sql = params[:mat_name].nil? || params[:mat_name].empty? ? "1 = 1" : ["name like (?)", "\%"+mat_name+"\%"]
     mat_type_sql = params[:mat_type].nil? || params[:mat_type].to_i == 99999 ? "1 = 1" : ["types = ?", params[:mat_type].to_i]
     status = (params[:status].nil? || params[:status].empty? || params[:status].to_i == 999) ? "1 = 1" : ["material_orders.status = ?", params[:status].to_i]
     started_time = (params[:started_time].nil? || params[:started_time].empty?) ? "1 = 1" : ["date_format(material_orders.created_at, '%Y-%m-%d') >= ?", params[:started_time]]

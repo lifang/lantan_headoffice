@@ -463,7 +463,7 @@ function edit_chain_validate(obj){    //编辑连锁店验证
         tishi_alert("连锁店名称不能为空!");
         flag = false;
     }else if(l<=0){
-        if(!confirm("您没有为该连锁店关联任何门店,需要继续创建吗？")){
+        if(!confirm("您没有为该连锁店关联任何门店,需要继续编辑吗？")){
             flag = false;
         }
     }
