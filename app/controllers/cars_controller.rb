@@ -19,7 +19,7 @@ class CarsController < ApplicationController   #车型控制器
       CarBrand.create(:name => brand_name, :capital_id => capital.id)
       flash[:notice] = "创建成功!"
     else
-      flash[:notice] = "创建失败或该品牌已存在!"
+      flash[:notice] = "创建失败,该品牌已存在!"
     end
     redirect_to cars_path
   end

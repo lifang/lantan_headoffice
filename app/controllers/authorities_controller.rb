@@ -90,8 +90,8 @@ class AuthoritiesController < ApplicationController     #权限控制器
   end
 
   def set_staff #用户设定页面
-    staff_name = params[:staff_name].strip.gsub('%', '\%') if params[:staff_name]
-    staff_sql = (params[:staff_name].nil? || params[:staff_name].empty?) ? "1 = 1" : ["name like (?)", "\%"+staff_name+"\%"]
+    staff_name = params[:staff_name].strip.gsub(/[%_]/){|x|'\\' + x} if params[:staff_name]
+    staff_sql = (params[:staff_name].nil? || params[:staff_name].empty?) ? "1 = 1" : ["name like (?)", "%"+staff_name+"%"]
     @staff = Staff.where("status = #{Staff::STATUS[:normal]}").where(staff_sql).paginate(:page => params[:page] ||= 1,:per_page => Constant::PER_PAGE)
   end
 
