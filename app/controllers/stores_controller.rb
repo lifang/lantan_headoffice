@@ -73,9 +73,11 @@ class StoresController < ApplicationController  #门店控制器
     store = Store.find(:all, :conditions => ["city_id = ? and name = ? and status != ?",
         params[:new_store_select_city].strip.to_i, params[:new_store_name].strip, Store::STATUS[:DELETED]])
     if store.blank?
+      store_code = Store.set_code(12,"store","code")
       current_store = Store.new(:name => params[:new_store_name].strip, :address => params[:new_store_address].strip, :phone => params[:new_store_phone].strip,
         :contact => params[:new_store_contact].strip, :status => params[:new_store_status].to_i,:opened_at => params[:new_store_open_time].strip,
-        :city_id => params[:new_store_select_city].to_i, :position => params[:new_store_location_x].strip+","+params[:new_store_location_y].strip)
+        :city_id => params[:new_store_select_city].to_i, :position => params[:new_store_location_x].strip+","+params[:new_store_location_y].strip,
+        :code => store_code)
       if current_store.save
         begin
           new_store_img = params[:new_store_img]

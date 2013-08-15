@@ -18,6 +18,7 @@ class Store < ActiveRecord::Base
     3 => "已删除"
   }
 
+  #上传门店图片
   def self.upload_img(img_url,store_id,pic_types,pics_size,img_code=nil)
     path = Constant::LOCAL_DIR
     dirs=["/#{pic_types}","/#{store_id}"]
@@ -33,5 +34,18 @@ class Store < ActiveRecord::Base
       img.run_command("convert #{path+filename}  -resize #{resize}x#{height} #{path+new_file}")
     end
     return filename
+  end
+
+  #生成门店的code
+   #生成code
+  def self.set_code(length,model_n,code_name)
+    chars = (1..9).to_a + ("a".."z").to_a + ("A".."Z").to_a
+    code=(1..length).inject(Array.new) {|codes| codes << chars[rand(chars.length)]}.join("")
+    codes=eval(model_n.capitalize).all.map(&:"#{code_name}")
+    if codes.index(code)
+      set_code(length)
+    else
+      return code
+    end
   end
 end
