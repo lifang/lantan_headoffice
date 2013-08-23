@@ -61,6 +61,14 @@
           <%= file_field_tag 'edit_store_img',:class => "file" %>
           <span class="show_pic"><img src="<%= @store.img_url.nil? ? "" : @store.img_url.gsub("img#{@store.id}", "img#{@store.id}_#{Constant::STORE_PICSIZE[1]}") %>"/></span>
         </div>
+        <div class="item">
+          <label>系统版本：</label>
+          <select name="edit_store_edition_lv">
+            <% Store::EDITION_LV.each do |key, value| %>
+            <option value="<%= key %>" <% if @store.edition_lv.to_i==key.to_i %>selected<% end %>><%= value %></option>
+            <% end %>
+          </select>
+        </div>
       </div>
       <div class="btn_box">
         <button id="edit_store_btn" onclick="edit_store_validate(this)" type="button" class="confirm_btn">确定</button>

@@ -54,11 +54,19 @@
           <%= file_field_tag 'new_store_img' %>
         </div>
         <div class="item">
+          <label>系统版本：</label>
+          <select name="new_store_edition_lv" id="new_store_edition_lv">
+          <% Store::EDITION_LV.each do |key, value| %>
+          <option value="<%= key %>"><%= value %></option>
+          <% end %>
+          </select>
+        </div>
+        <div class="item">
           <label><span class="red">*</span>管理员手机：</label>
           <%= text_field_tag 'new_store_staff_name'%>
         </div>
         <div class="item">
-          <label><span class="red">*</span>密码：</label>
+          <label><span class="red">*</span>管理员密码：</label>
           <%= password_field_tag 'new_store_staff_password'%>
         </div>
       </div>
