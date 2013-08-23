@@ -5,7 +5,7 @@ gem 'rails', '3.1.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-
+gem 'rake', '10.1.0'
 gem 'mysql2','0.3.10'
 gem 'spreadsheet', '0.6.5.5'
 gem 'will_paginate', '3.0.pre2'
