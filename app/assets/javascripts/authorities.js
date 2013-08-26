@@ -44,8 +44,8 @@ $(document).ready(function(){
             obj.val("");
             obj.attr("style","display:none;");
             obj.parents("li").find("a").first().attr("style","display:block;");
-        }else if(getLen($.trim(obj.val()))>16){
-            tishi_alert("角色名不能超过16个字符!");
+        }else if(getLen($.trim(obj.val()))>8){
+            tishi_alert("角色名不能超过8个汉字、字母或数字!");
             obj.val("");
             obj.attr("style", "display:none");
             obj.parents("li").find("a").first().attr("style","display:block;");
@@ -116,8 +116,8 @@ $(document).ready(function(){
     if($.trim($("input[name='role_name']").val()) == ""){
       tishi_alert("角色名不能为空!");
       flag = false;
-    }else if(getLen($.trim($("input[name='role_name']").val()))>16){
-        tishi_alert("角色名不能超过16个字符!");
+    }else if(getLen($.trim($("input[name='role_name']").val()))>8){
+        tishi_alert("角色名不能超过8个汉字、字母或数字!");
         flag =false;
     }
     if(flag){
