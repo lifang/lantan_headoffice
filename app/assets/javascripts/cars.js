@@ -3,10 +3,13 @@ $(document).ready(function(){
      popup("#new_brand");
   });
   $("#new_brands").click(function(){    //添加品牌验证
-      var button = $(this);
+      var button = $(this);    
     if($.trim($("#brand_name").val()) == null || $.trim($("#brand_name").val()) == ""){
       tishi_alert("请输入车牌名!");
       return false;
+    }else if(getLen($.trim($("#brand_name").val()))>16){
+        tishi_alert("名称不能超过16个字符!");
+        return false;
     }
     button.click(function(){
         return false;
@@ -55,6 +58,11 @@ $(document).ready(function(){
     if($.trim(obj.val())== null || $.trim(obj.val())== ""){
       tishi_alert("型号不能为空");
       obj.val(obj.prev().prev().text());
+      obj.attr("style", "display:none");
+      obj.prev().prev().attr("style", "display:block");
+    }else if(getLen($.trim(obj.val()))>16){
+        tishi_alert("名称不能超过16个字符!");
+        obj.val(obj.prev().prev().text());
       obj.attr("style", "display:none");
       obj.prev().prev().attr("style", "display:block");
     }else{
@@ -115,6 +123,10 @@ $(document).ready(function(){
       tishi_alert("创建失败,型号不能为空!");
       obj.parent().attr("style", "display:none");
       obj.parent().next().attr("style", "display:block");
+    }else if(getLen($.trim(mname))>16){
+         tishi_alert("名称不能超过16个字符!");
+         obj.parent().attr("style", "display:none");
+         obj.parent().next().attr("style", "display:block");
     }else{
       $.ajax({
         type: "POST",
@@ -143,4 +155,17 @@ $(document).ready(function(){
   })
 })
 
-
+function getLen(str){       //获取带汉字的字符串长度
+    var totalLen = 0;
+    for(var i=0;i<str.length;i++){
+        var charCode = str.charCodeAt(i);
+        if(charCode>=0 && charCode<=128){   //如果是字母...
+            //totalLen = totalLen + 1;
+            totalLen += 1;
+        }else{                              //如果是汉字...
+            //totalLen = totalLen + 2;
+            totalLen += 2;
+        }
+    }
+    return totalLen;
+}
