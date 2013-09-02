@@ -17,9 +17,9 @@ class SvCard < ActiveRecord::Base
     dirs.each_with_index {|dir,index| Dir.mkdir path+dirs[0..index].join   unless File.directory? path+dirs[0..index].join }
     file=img_url.original_filename
     filename="#{dirs.join}/#{img_code}img#{sv_card_id}."+ file.split(".").reverse[0]
-    File.open(path+filename, "wb")  {|f|  f.write(img_url.read) }
-    img = MiniMagick::Image.open path+filename,"rb"
-    pics_size.each do |size|
+    File.open(path+filename, "wb")  {|f|  f.write(img_url.read) }  #保存原图
+    img = MiniMagick::Image.open path+filename,"rb" #保存后对该图片切图
+    pics_size.each do |size|    #按像素大小切图
       new_file="#{dirs.join}/#{img_code}img#{sv_card_id}_#{size}."+ file.split(".").reverse[0]
       resize = size > img["width"] ? img["width"] : size
       img.run_command("convert #{path+filename}  -resize #{resize}x#{resize} #{path+new_file}")
