@@ -1,17 +1,17 @@
 #encoding: utf-8
 class Api::MaterialsController < ApplicationController   #库存控制器api
   def search_material
-    str = ["status = ?", Material::STATUS[:NORMAL]]
-
-    if params[:name].strip.length > 0
-      str[0] += " and name like ? "
-      str << "%#{params[:name]}%"
+    sql = ["select m.* from lantan_db.categories c inner join lantan_db.materials m on c.id=m.category_id
+            where m.status = ?", Material::STATUS[:NORMAL]]
+    unless params[:name].nil? || params[:name].strip == ""
+      sql[0] += " and m.name like ? "
+      sql << "%#{params[:name].strip.gsub(/[%_]/){|x| '\\' + x}}%"
     end
-    if params[:types].strip.length > 0
-      str[0] += " and types = ?"
-      str << "#{params[:types]}"
+    unless params[:types].nil? || params[:types].strip == ""
+      sql[0] += " and c.id = ?"
+      sql << "#{params[:types].to_i}"
     end
-    materials = Material.where(str)
+    materials = Material.find_by_sql(sql)
     render :json => materials
   end
 
