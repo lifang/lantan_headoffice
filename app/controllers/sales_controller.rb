@@ -48,26 +48,26 @@ class SalesController < ApplicationController   #活动控制器
     sale_subsidy_money = params[:sale_subsidy_money] ||= ""
     sale_introduction = params[:sale_introduction]
     sale_code = Sale.set_code(8,"sale","code")
-     s = Sale.new(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
+    s = Sale.new(:name => sale_name, :started_at => started_time, :ended_at => ended_time,
       :introduction => sale_introduction, :disc_types => disc_types, :status => Sale::STATUS[:UN_RELEASE], :discount => disc,
       :disc_time_types => sale_disc_time_types, :car_num => sale_car_num, :everycar_times => sale_everycar_times,
-     :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :code => sale_code)
+      :is_subsidy => sale_is_subsidy, :sub_content => sale_subsidy_money, :code => sale_code)
     selected_product_id.each_with_index do |item, index|
-          s.sale_prod_relations.new(:product_id => item.to_i, :prod_num => selected_product_count[index])
-       end
+      s.sale_prod_relations.new(:product_id => item.to_i, :prod_num => selected_product_count[index])
+    end
     Sale.transaction do
-        if s.save
-          if !img.nil?
-            url = Sale.upload_img(img, s.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
-            s.update_attribute("img_url", url)
-          end
-          flash[:notice] = "活动创建成功!"
-          redirect_to sales_path
-        else
-          flash[:notice] = "活动创建失败!"
-          page = (params[:page].nil? || params[:page]=="") ? 1 : params[:page].to_i
-          redirect_to "/sales?page=#{page}"
-        end        
+      if s.save
+        if !img.nil?
+          url = upload_stream(img,[Constant::SALE_PICS, Constant::STORE_ID, s.id], Constant::SALE_PICSIZE)
+          s.update_attribute("img_url", url)
+        end
+        flash[:notice] = "活动创建成功!"
+        redirect_to sales_path
+      else
+        flash[:notice] = "活动创建失败!"
+        page = (params[:page].nil? || params[:page]=="") ? 1 : params[:page].to_i
+        redirect_to "/sales?page=#{page}"
+      end
     end
   end
 
@@ -100,7 +100,7 @@ class SalesController < ApplicationController   #活动控制器
         SaleProdRelation.create(:product_id => item.to_i, :prod_num => selected_product_count[index].strip, :sale_id => sale.id)
       end
       if !img.nil?
-        new_url = Sale.upload_img(img, sale.id, Constant::SALE_PICS, Constant::STORE_ID, Constant::SALE_PICSIZE)
+        new_url = upload_stream(img,[Constant::SALE_PICS, Constant::STORE_ID, sale.id], Constant::SALE_PICSIZE)
         sale.update_attribute("img_url", new_url)
       end
       flash[:notice] = "活动修改成功!"
@@ -121,9 +121,9 @@ class SalesController < ApplicationController   #活动控制器
   def destroy  #删除活动按钮
     sale = Sale.find(params[:id].to_i)
     if !sale.nil?
-        if sale.update_attribute("status", Sale::STATUS[:DESTROY])
-          flash[:notice] = "删除成功!"
-        end
+      if sale.update_attribute("status", Sale::STATUS[:DESTROY])
+        flash[:notice] = "删除成功!"
+      end
     else
       flash[:notice] = "删除失败!"
     end
@@ -134,14 +134,25 @@ class SalesController < ApplicationController   #活动控制器
   def rel_sale  #发布活动按钮
     sale = Sale.find(params[:id].to_i)
     if !sale.nil?   
-       if sale.update_attribute("status", Sale::STATUS[:RELEASE])
+      if sale.update_attribute("status", Sale::STATUS[:RELEASE])
         flash[:notice] = "发布成功!"
-       end
+      end
     else
       flash[:notice] = "发布失败!"
     end
     page = (params[:page].nil? || params[:page]=="") ? 1 : params[:page].to_i
     redirect_to "/sales?page=#{page}"
+  end
+
+  def upload_stream(img_url,dirs,img_code=nil)
+    path = Constant::LOCAL_DIR + dirs.join("/")
+    FileUtils.remove_dir path if  File.directory? path
+    FileUtils.mkdir_p  path unless  File.directory? path
+    filename = img_url.original_filename.split(".")
+    dirs << "#{filename[0].pinyin.push(dirs[2]).join("")}."+ filename.reverse[0]
+    path = Constant::LOCAL_DIR + dirs.join("/")
+    File.open(path, "wb")  {|f|f.write(img_url.read)}
+    return "/"+dirs.join("/")
   end
 
 end
