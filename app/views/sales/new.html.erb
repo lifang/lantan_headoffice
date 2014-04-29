@@ -6,7 +6,7 @@
     <div class="data_body">
       <div>
         <%= form_tag "/sales", :multipart => true do %>
-        <input type="hidden" name="sale_page" value="<%= @page %>"/>
+          <input type="hidden" name="sale_page" value="<%= @page %>"/>
           <div class="releaseDiv">
             <div class="releaseDiv_l"><span class="red">*</span>标题：</div>
             <div class="releaseDiv_r"><input id="sale_name" name="sale_name" type="text" class="title_input"/></div>
@@ -75,34 +75,34 @@
 
           <div class="releaseDiv">
             <div class="releaseDiv_l"><span class="red">*</span>活动图片：</div>
+            <span class="show_pic" >
+              <%=  @sale.img_url.nil? ? "" : @sale.img_url.split("/")[-1] %>
+            </span>
+          </div>
+          <div class="releaseDiv">
+            <div class="releaseDiv_l"><span class="red">*</span>是否总店补贴：</div>
             <div class="releaseDiv_r">
-              <input type="file" name="sale_img" id="sale_img"/>             
+              <input name="sale_is_subsidy" type="radio" value="1" checked/>是&nbsp;&nbsp;<input id="sale_subsidy_money" name="sale_subsidy_money" type="text"/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input name="sale_is_subsidy" type="radio" value="0"/>&nbsp;&nbsp;否
             </div>
           </div>
-            <div class="releaseDiv">
-              <div class="releaseDiv_l"><span class="red">*</span>是否总店补贴：</div>
-              <div class="releaseDiv_r">
-                <input name="sale_is_subsidy" type="radio" value="1" checked/>是&nbsp;&nbsp;<input id="sale_subsidy_money" name="sale_subsidy_money" type="text"/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input name="sale_is_subsidy" type="radio" value="0"/>&nbsp;&nbsp;否
-              </div>
+          <div class="releaseDiv">
+            <div class="releaseDiv_l"><span class="red">*</span>活动介绍：</div>
+            <div class="releaseDiv_r">
+              <textarea id="sale_textarea" name="sale_textarea" cols="" rows=""></textarea>
+              <input type="hidden" id="sale_introduction" name="sale_introduction"/>
             </div>
-            <div class="releaseDiv">
-              <div class="releaseDiv_l"><span class="red">*</span>活动介绍：</div>
-              <div class="releaseDiv_r">
-                <textarea id="sale_textarea" name="sale_textarea" cols="" rows=""></textarea>
-                <input type="hidden" id="sale_introduction" name="sale_introduction"/>
-              </div>
-            </div>
-            <div class="btn_box">
-              <button type="button" class="confirm_btn" onclick="new_sale_validate(this)">发布</button>
-              <button type="button" class="cancel_btn" onclick="cancel_edit_sale(<%= @page %>)">取消</button>
-            </div>
-          <% end %>
-        </div>
+          </div>
+          <div class="btn_box">
+            <button type="button" class="confirm_btn" onclick="new_sale_validate(this)">发布</button>
+            <button type="button" class="cancel_btn" onclick="cancel_edit_sale(<%= @page %>)">取消</button>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
+</div>
 <script type="text/javascript">
   var sale_desc;
   $(function() {

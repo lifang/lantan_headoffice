@@ -24,6 +24,8 @@ class Store < ActiveRecord::Base
     3 => "旗舰版"
   }
 
+  IS_CHAIN = {:YES => 1,:NO => 0} #是否有关联的连锁店
+
   #上传门店图片
   def self.upload_img(img_url,store_id,pic_types,pics_size,img_code=nil)
     path = Constant::LOCAL_DIR

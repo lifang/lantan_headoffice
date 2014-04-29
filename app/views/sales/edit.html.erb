@@ -7,7 +7,7 @@
       <div>
         <div>
           <%= form_tag @sale, :multipart => true do %>
-          <input type="hidden" name="edit_sale_page" value="<%= @page %>"/>
+            <input type="hidden" name="edit_sale_page" value="<%= @page %>"/>
             <div class="releaseDiv">
               <div class="releaseDiv_l">活动代码：</div>
               <input name="edit_sale_id" type="hidden" value="<%= @sale.id %>"/>
@@ -89,12 +89,13 @@
               <div class="releaseDiv_l"><span class="red">*</span>本次活动车辆总数：</div>
               <div class="releaseDiv_r"><input id="edit_sale_car_num" name="edit_sale_car_num" type="text" value="<%= @sale.car_num %>"/>&nbsp;&nbsp;辆</div>
             </div>
-
             <div class="releaseDiv">
               <div class="releaseDiv_l">活动图片：</div>
               <div class="releaseDiv_r">
                 <input class="file" type="file" name="edit_sale_img" id="edit_sale_img"/>
-                <span class="show_pic"><img src="<%= @sale.img_url.nil? ? "" : @sale.img_url.gsub("img#{@sale.id}", "img#{@sale.id}_#{Constant::SALE_PICSIZE[3]}") %>"/></span>
+                <span class="show_pic" >
+                  <%=  @sale.img_url.nil? ? "" : @sale.img_url.split("/")[-1] %>
+                </span>
               </div>
             </div>
             <div class="releaseDiv">

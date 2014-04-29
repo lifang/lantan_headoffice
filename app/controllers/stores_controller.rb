@@ -6,18 +6,18 @@ class StoresController < ApplicationController  #门店控制器
   before_filter :sign?
   
   def index
-     @div_name = params[:div_name]
-     if cookies[:admin_id]
-     store_sql = "select s.*, c.name c_name, cp.name cp_name from lantan_db.stores s
+    @div_name = params[:div_name]
+    if cookies[:admin_id]
+      store_sql = "select s.*, c.name c_name, cp.name cp_name from lantan_db.stores s
           left join lantan_db.cities c on c.id = s.city_id
           left join lantan_db.cities cp on cp.id = c.parent_id
           where s.status != #{Store::STATUS[:DELETED]}"
-    chain_sql = "select c.*, s.name s_name, s.status s_status from lantan_db.chains c
+      chain_sql = "select c.*, s.name s_name, s.status s_status from lantan_db.chains c
           left join lantan_db.store_chains_relations scr on c.id = scr.chain_id
           left join lantan_db.stores s on scr.store_id = s.id
           where c.status = ?", Chain::STATUS[:NORMAL]
-     elsif cookies[:manage_id]
-       store_sql = "select s.*, c.name c_name, cp.name cp_name from lantan_db.chains ca
+    elsif cookies[:manage_id]
+      store_sql = "select s.*, c.name c_name, cp.name cp_name from lantan_db.chains ca
                     left join lantan_db.store_chains_relations scr on ca.id = scr.chain_id
                     left join lantan_db.stores s on scr.store_id = s.id
                     left join lantan_db.cities c on c.id = s.city_id
@@ -27,26 +27,26 @@ class StoresController < ApplicationController  #门店控制器
                   left join lantan_db.store_chains_relations scr on c.id = scr.chain_id
                   left join lantan_db.stores s on scr.store_id = s.id
                   where c.status = ? and c.staff_id = ?", Chain::STATUS[:NORMAL], cookies[:manage_id]
-     end
+    end
     store_params_sql = ""
     store_sql_params = [""]
-     unless (params[:store_name].nil? || params[:store_name].empty?)
-       store_name = params[:store_name].strip.gsub(/[%_]/){|x|'\\' + x}
-       store_params_sql += " and s.name like (?) "
-       store_sql_params << "%"+store_name+"%"
-     end
-     unless (params[:select_province].nil? || params[:select_province].to_i == 0)
-       store_params_sql += " and cp.id = ?"
-       store_sql_params << params[:select_province].to_i
-       @cities = City.where("parent_id = #{params[:select_province].to_i}")
-     end
-     unless (params[:select_city].nil? || params[:select_city].to_i == 0)
-       store_params_sql += " and c.id = ?"
-       store_sql_params << params[:select_city].to_i
-     end
-     store_params_sql += " order by s.created_at desc"
-     store_sql_params[0] = store_sql + store_params_sql
-     chain_sql[0] += " order by c.created_at desc"
+    unless (params[:store_name].nil? || params[:store_name].empty?)
+      store_name = params[:store_name].strip.gsub(/[%_]/){|x|'\\' + x}
+      store_params_sql += " and s.name like (?) "
+      store_sql_params << "%"+store_name+"%"
+    end
+    unless (params[:select_province].nil? || params[:select_province].to_i == 0)
+      store_params_sql += " and cp.id = ?"
+      store_sql_params << params[:select_province].to_i
+      @cities = City.where("parent_id = #{params[:select_province].to_i}")
+    end
+    unless (params[:select_city].nil? || params[:select_city].to_i == 0)
+      store_params_sql += " and c.id = ?"
+      store_sql_params << params[:select_city].to_i
+    end
+    store_params_sql += " order by s.created_at desc"
+    store_sql_params[0] = store_sql + store_params_sql
+    chain_sql[0] += " order by c.created_at desc"
     @stores = Store.paginate_by_sql(store_sql_params, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("stores_div")
     @provinces = City.find(:all, :conditions => ["parent_id = ?", City::IS_PROVINCE]) if @div_name.nil?
     @chains = Chain.paginate_by_sql(chain_sql, :page => params[:page] ||= 1, :per_page => 10) if @div_name.nil? || @div_name.eql?("chains_div")
@@ -80,7 +80,7 @@ class StoresController < ApplicationController  #门店控制器
         :code => store_code, :edition_lv => params[:new_store_edition_lv].to_i)
       if current_store.save
         begin
-          new_store_img = params[:new_store_img]
+          new_store_img = params[:new_store_img] 
           new_store_url = Store.upload_img(new_store_img, current_store.id, Constant::STORE_PICS, Constant::STORE_PICSIZE)
           current_store.update_attribute("img_url", new_store_url)
         rescue
@@ -92,17 +92,17 @@ class StoresController < ApplicationController  #门店控制器
           end
         end
         staff = SStaff.new(:username => params[:new_store_staff_name].strip, :name => SStaff::STORE_ADMIN,
-                           :password => params[:new_store_staff_password],:store_id => current_store.id,
-                           :status => SStaff::STATUS[:normal], :phone => params[:new_store_staff_name].strip)
+          :password => params[:new_store_staff_password],:store_id => current_store.id,
+          :status => SStaff::STATUS[:normal], :phone => params[:new_store_staff_name].strip)
         staff.encrypt_password
         if staff.save
           role = SRole.create(:name => SRole::ADMIN, :store_id => current_store.id, :role_type => SRole::ROLE_TYPE[:STORE_MANAGER])
           SStaffRoleRelation.create(:role_id => role.id, :staff_id => staff.id)
           menus = SMenu.all
           menus.each do |m|
-            SRoleMenuRelation.create(:role_id => role.id, :menu_id => m.id)
+            SRoleMenuRelation.create(:role_id => role.id, :menu_id => m.id,:store_id=>current_store.id)
             SRoleModelRelation.create(:role_id => role.id, :num => SStaff::STAFF_MENUS_AND_ROLES[m.controller.to_sym],
-                                      :model_name => m.controller)
+              :model_name => m.controller,:store_id=>current_store.id)
           end
           flash[:notice] = "创建成功!"
         end
@@ -125,7 +125,7 @@ class StoresController < ApplicationController  #门店控制器
     status = 0
     SStaff.transaction do
       staff = SStaff.new(:username => params[:staff_name],:name => SStaff::CHAIN_ADMIN, :status => SStaff::STATUS[:normal],
-                         :password => params[:staff_password], :phone => params[:staff_name])
+        :password => params[:staff_password], :phone => params[:staff_name])
       staff.encrypt_password
       if staff.save
         chain = Chain.new(:name => params[:chain_name], :status => Chain::STATUS[:NORMAL], :staff_id => staff.id)
@@ -134,6 +134,7 @@ class StoresController < ApplicationController  #门店控制器
             params[:selected_stores].each do |ss|
               StoreChainRelation.create(:chain_id => chain.id, :store_id => ss.to_i)
             end
+            Store.where(:id => params[:selected_stores]).update_all(:is_chain => Store::IS_CHAIN[:YES])
           end
           status = 1
         else
@@ -150,6 +151,10 @@ class StoresController < ApplicationController  #门店控制器
       render :json => {:status => 0}
     else
       if chain.update_attribute("status", Chain::STATUS[:DELETED])
+        store_ids = StoreChainRelation.where(:chain_id=>chain.id).map(&:store_id)
+        store_chains = StoreChainRelation.joins(:chain).where(:"chains.status"=>Chain::STATUS[:NORMAL],:store_id=>store_ids).group_by{|i|i.store_id}
+        change_ids = store_ids.inject([]) {|arr,store_id| arr << store_id if store_chains[store_id].nil? }
+        Store.where(:id =>change_ids).update_all(:is_chain => Store::IS_CHAIN[:NO])
         staff = SStaff.find_by_id(chain.staff_id) if chain.staff_id
         staff.update_attribute("status", SStaff::STATUS[:deleted]) if staff
         render :json => {:status => 1}
@@ -172,9 +177,9 @@ class StoresController < ApplicationController  #门店控制器
       if chain.update_attribute("name", params[:chain_name].strip)
         StoreChainRelation.delete_all(:chain_id => params[:chain_id].to_i)
         if !params[:edit_selected_stores].blank?
-        params[:edit_selected_stores].each do |a|
-          StoreChainRelation.create(:chain_id => params[:chain_id].to_i, :store_id => a.to_i)
-        end
+          params[:edit_selected_stores].each do |a|
+            StoreChainRelation.create(:chain_id => params[:chain_id].to_i, :store_id => a.to_i)
+          end
         end
         @status = 1
       else
@@ -187,7 +192,7 @@ class StoresController < ApplicationController  #门店控制器
   def update  #更新门店
     store = Store.find_by_id(params[:id])
     if Store.where(["id != ? and city_id = ? and name = ? and status != ?", store.id, params[:edit_store_select_city].to_i,
-                  params[:edit_store_name].strip, Store::STATUS[:DELETED]]).blank?
+          params[:edit_store_name].strip, Store::STATUS[:DELETED]]).blank?
       if store.update_attributes(:city_id => params[:edit_store_select_city].to_i, :name => params[:edit_store_name].strip,
           :contact => params[:edit_store_contact].strip, :phone => params[:edit_store_phone].strip, :address => params[:edit_store_address].strip,
           :opened_at => params[:edit_store_open_time].strip, :status => params[:edit_store_status].to_i, :position =>
@@ -222,7 +227,7 @@ class StoresController < ApplicationController  #门店控制器
     @cities = City.where(:parent_id => @store_city.parent_id) if @store_city && @store_city.parent_id != 0
   end
   
-   def destroy  #删除门店
+  def destroy  #删除门店
     store = Store.find_by_id(params[:id].to_i)
     status = 0
     if !store.nil?
@@ -245,16 +250,82 @@ class StoresController < ApplicationController  #门店控制器
   
    
 
-    def s_staff_validate  #验证管理员是否唯一
-      staff = SStaff.where(["username = ? and status != ?", params[:staff_name].strip, SStaff::STATUS[:deleted]]).first
-      if staff
-        render :json => {:status => 0}
+  def s_staff_validate  #验证管理员是否唯一
+    staff = SStaff.where(["username = ? and status != ?", params[:staff_name].strip, SStaff::STATUS[:deleted]]).first
+    if staff
+      render :json => {:status => 0}
+    else
+      render :json => {:status => 1}
+    end
+  end
+
+  def new_store_select_province #新建门店的省份下拉菜单
+    if params[:province_id].to_i != 0
+      @cities = City.find(:all, :conditions => ["parent_id = ?",params[:province_id].to_i])
+    else
+      @cities = nil
+    end
+  end
+
+  def new_chain_select_province  #新建连锁店时的省份下拉菜单
+    @type = params[:type]
+    if params[:pid].to_i != 0
+      @cities = City.find(:all, :conditions => ["parent_id = ?",params[:pid].to_i])
+    else
+      @cities = nil
+    end
+  end
+
+  def new_chain_search_stores  #新建连锁店时的查询门店
+    @type = params[:type]
+    @stores_ids = params[:stores] if params[:stores]
+    a = [""]
+    b = ""
+    sql = "select s.id s_id, s.name s_name from lantan_db.stores s left join lantan_db.cities c on s.city_id = c.id
+            left join lantan_db.cities cp on c.parent_id = cp.id where s.status != ?"
+    a << Store::STATUS[:DELETED]
+    unless params[:province].to_i == 0
+      b += " and cp.id = ?"
+      a << params[:province].to_i
+    end
+    unless params[:city].to_i == 0
+      b += " and c.id = ?"
+      a << params[:city].to_i
+    end
+    unless params[:name].nil? || params[:name] == "" || params[:name].empty?
+      b += " and s.name like (?)"
+      a << "%#{params[:name].strip.gsub(/[%_]/){|x|'\\' + x}}%"
+    end
+    c = sql + b
+    a[0] = c
+    @stores = Store.find_by_sql(a)
+  end
+
+  def chain_validate     #新建或编辑连锁店和管理员重名验证
+    status = 0
+    if params[:type].eql?("new")
+      chains = Chain.where(["name = ? and status != ?", params[:name], Chain::STATUS[:DELETED]])
+      staffs = SStaff.where(["username = ? and status != ? ", params[:staff_name], SStaff::STATUS[:deleted]])
+      if chains.blank? && staffs.blank?
+        status = 1
+      elsif !chains.blank?
+        status = 0
+      elsif !staffs.blank?
+        status = 2
+      end
+    elsif params[:type].eql?("edit")
+      id = params[:id].to_i
+      chain = Chain.where(["id != ? and name = ? and status != ? ", id, params[:name], Chain::STATUS[:DELETED]])
+      if chain.blank?
+        status = 1
       else
-        render :json => {:status => 1}
+        status = 0
       end
     end
+    render :json => {:status => status}
+  end
 
-   def new_store_select_province #新建门店的省份下拉菜单
+  def province_change     #搜索店面的省份下拉菜单
     if params[:province_id].to_i != 0
       @cities = City.find(:all, :conditions => ["parent_id = ?",params[:province_id].to_i])
     else
@@ -262,77 +333,11 @@ class StoresController < ApplicationController  #门店控制器
     end
   end
 
-   def new_chain_select_province  #新建连锁店时的省份下拉菜单
-     @type = params[:type]
-     if params[:pid].to_i != 0
-       @cities = City.find(:all, :conditions => ["parent_id = ?",params[:pid].to_i])
-     else
-       @cities = nil
-     end
-   end
-
-   def new_chain_search_stores  #新建连锁店时的查询门店
-     @type = params[:type]
-     @stores_ids = params[:stores] if params[:stores]
-     a = [""]
-     b = ""
-     sql = "select s.id s_id, s.name s_name from lantan_db.stores s left join lantan_db.cities c on s.city_id = c.id
-            left join lantan_db.cities cp on c.parent_id = cp.id where s.status != ?"
-     a << Store::STATUS[:DELETED]
-     unless params[:province].to_i == 0
-       b += " and cp.id = ?"
-       a << params[:province].to_i
-     end
-     unless params[:city].to_i == 0
-       b += " and c.id = ?"
-       a << params[:city].to_i
-     end
-     unless params[:name].nil? || params[:name] == "" || params[:name].empty?
-       b += " and s.name like (?)"
-       a << "%#{params[:name].strip.gsub(/[%_]/){|x|'\\' + x}}%"
-     end
-     c = sql + b
-     a[0] = c
-     @stores = Store.find_by_sql(a)
-   end
-
-   def chain_validate     #新建或编辑连锁店和管理员重名验证
-     status = 0
-     if params[:type].eql?("new")
-       chains = Chain.where(["name = ? and status != ?", params[:name], Chain::STATUS[:DELETED]])
-       staffs = SStaff.where(["username = ? and status != ? ", params[:staff_name], SStaff::STATUS[:deleted]])
-       if chains.blank? && staffs.blank?
-         status = 1
-       elsif !chains.blank?
-         status = 0
-       elsif !staffs.blank?
-         status = 2
-       end
-     elsif params[:type].eql?("edit")
-       id = params[:id].to_i
-       chain = Chain.where(["id != ? and name = ? and status != ? ", id, params[:name], Chain::STATUS[:DELETED]])
-       if chain.blank?
-         status = 1
-       else
-         status = 0
-       end
-     end
-     render :json => {:status => status}
-   end
-
-   def province_change     #搜索店面的省份下拉菜单
+  def edit_store_select_province #编辑门店的省份下拉菜单
     if params[:province_id].to_i != 0
       @cities = City.find(:all, :conditions => ["parent_id = ?",params[:province_id].to_i])
     else
       @cities = nil
     end
   end
-
-   def edit_store_select_province #编辑门店的省份下拉菜单
-      if params[:province_id].to_i != 0
-      @cities = City.find(:all, :conditions => ["parent_id = ?",params[:province_id].to_i])
-    else
-      @cities = nil
-    end
-   end
 end
